@@ -1,5 +1,5 @@
 # Apothecary Schnabel  
-Course project for the Software Design course
+Software Design class project
 
 ## Team
 - Kristian Farkaš
