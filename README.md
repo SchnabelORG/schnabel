@@ -8,7 +8,7 @@ and recieve professional consulting from pharmacists and dermatologists.
 
 Basic functionalities required of all members.
 
-*<member one>*
+**Member one**
 
 | Spec. id | Functionality                                     | Status |
 |----------|---------------------------------------------------|--------|
@@ -24,7 +24,7 @@ Basic functionalities required of all members.
 | 3.31     | Pharmacy search and filtering                     |        |
 | 3.41     | Rating system                                     |        |
 
-*<member two>*
+**Member two**
 
 | Spec. id | Functionality                                     | Status |
 |----------|---------------------------------------------------|--------|
@@ -39,7 +39,7 @@ Basic functionalities required of all members.
 | 3.33     | Pharmacist search and filtering                   |        |
 | 3.38     | Accept or reject vacation or paid leave request   |        |
 
-*<member three>*
+**Member three**
 
 | Spec. id | Functionality                                     | Status |
 |----------|---------------------------------------------------|--------|
@@ -55,7 +55,7 @@ Basic functionalities required of all members.
 | 3.36     | Pharmacist calendar display                       |        |
 | 3.37     | Dermatologist calendar display                    |        |
 
-*<member four>*
+**Member four**
 
 | Spec. id | Functionality                                     | Status |
 |----------|---------------------------------------------------|_--------|
@@ -71,9 +71,9 @@ Basic functionalities required of all members.
 | 3.42     | Drug and eReceipt specification                   |        |
 
 
-### Optional functionalities
+### Optional functionalities  
 
-*<member one>*
+**Member one**  
 
 | Spec. id | Functionality                                     | Status |
 |----------|---------------------------------------------------|--------|
@@ -83,7 +83,7 @@ Basic functionalities required of all members.
 |    /     | 5 unit and integrational test                     |        |
 | 5.8      | Scalability                                       |        |
 
-*<member two>*
+**Member two**
 
 | Spec. id | Functionality                                     | Status |
 |----------|---------------------------------------------------|--------|
@@ -93,7 +93,7 @@ Basic functionalities required of all members.
 |    /     | 5 unit and integrational test                     |        |
 | 5.8      | Scalability                                       |        |
 
-*<member three>*
+**Member three
 
 | Spec. id | Functionality                                     | Status |
 |----------|---------------------------------------------------|--------|
@@ -103,7 +103,7 @@ Basic functionalities required of all members.
 |    /     | 5 unit and integrational test                     |        |
 | 5.8      | Scalability                                       |        |
 
-*<member one>*
+**Member four**
 
 | Spec. id | Functionality                                     | Status |
 |----------|---------------------------------------------------|--------|
