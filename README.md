@@ -58,7 +58,7 @@ Basic functionalities required of all members.
 **Member four**
 
 | Spec. id | Functionality                                     | Status |
-|----------|---------------------------------------------------|_--------|
+|----------|---------------------------------------------------|--------|
 | 3.2      | User registration and log in                      |        |
 | 3.6      | Admin profile                                     |        |
 | 3.7      | Supplier profile                                  |        |
