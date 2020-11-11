@@ -5,10 +5,10 @@ Centralized Pharmacy Information System allowing users to acquire medical suppli
 and recieve professional consulting from pharmacists and dermatologists.
 
 ## Table of Contents
-* [Members and functionalities](#membersandfunctionalities) 
-* [Setup Guide](#setupguide)
-..* [Linux / Mac](#linux/mac)
-..* [Windows](#windows)
+- [Members and functionalities](#membersandfunctionalities)   
+- [Setup Guide](#setupguide)
+..- [Linux and Mac](#linux/mac)
+..- [Windows](#windows)   
 
 ## Setup Guide
 
