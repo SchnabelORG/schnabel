@@ -33,7 +33,7 @@ sudo apt update
 sudo apt install openjdk-11-jre-headless
 ```
 
-**Node**
+**Node**  
 For Node.js it is recommended to use [nvm](https://github.com/nvm-sh/nvm)  
 Once nvm is installed, do the following:
 ```bash
@@ -42,7 +42,7 @@ nvm install 14.0.0
 nvm use 14.0.0
 ```
 
-**Maven**
+**Maven**  
 ```bash
 # Update repositories and install Maven
 sudo apt update
@@ -65,7 +65,7 @@ npm install
 sudo pacman -Syyu jdk11-openjdk
 ```
 
-**Node**
+**Node**  
 For Node.js it is recommended to use [nvm](https://wiki.archlinux.org/index.php/Node.js#Alternate_installations)  
 Once nvm is installed, do the following:
 ```bash
@@ -90,10 +90,10 @@ npm install
 
 #### Mac
 
-**JDK 11**
+**JDK 11**  
 Follow this well written guide on [medium](https://medium.com/w-logs/installing-java-11-on-macos-with-homebrew-7f73c1e9fadf)
 
-**Node**
+**Node**  
 For Node.js it is recommended to use [nvm](https://jamesauble.medium.com/install-nvm-on-mac-with-brew-adb921fb92cc)  
 Once nvm is installed, do the following:
 ```bash
@@ -102,7 +102,7 @@ nvm install 14.0.0
 nvm use 14.0.0
 ```
 
-**Maven**
+**Maven**  
 Follow the Official Apache [tutorial](https://maven.apache.org/install.html)  
 
 After installing the necessary packages, clone this repo, cd to /src/main/frontent/ and run: 
@@ -112,10 +112,10 @@ npm install
 
 ### Windows
 
-**JDK11**
+**JDK11**  
 Download and install the Official [installer](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)  
 
-**Node**
+**Node**  
 For Node.js it is recommended to use [nvm-windows](https://github.com/coreybutler/nvm-windows)  
 Once nvm-windows is installed, close any opened CMD's and open a new one, then:  
 ```bash
@@ -123,6 +123,9 @@ Once nvm-windows is installed, close any opened CMD's and open a new one, then:
 nvm install 14.0.0
 nvm use 14.0.0
 ```
+
+**Maven**  
+Download and install from the Official [website](https://maven.apache.org/install.html)  
 
 After installing the necessary packages, clone this repo, cd to /src/main/frontent/ and run: 
 ```bash
