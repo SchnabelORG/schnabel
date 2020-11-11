@@ -5,16 +5,109 @@ Centralized Pharmacy Information System allowing users to acquire medical suppli
 and recieve professional consulting from pharmacists and dermatologists.
 
 ## Table of Contents
-- [Members and functionalities](#membersandfunctionalities)   
-- [Setup Guide](#setupguide)
-..- [Linux and Mac](#linux/mac)
-..- [Windows](#windows)   
+- [Requirements](#requirements)
+- [Setup Guide](#setup-guide)
+  * [Linux / Mac](#linux---mac)
+    + [Ubuntu](#ubuntu)
+    + [Arch](#arch)
+    + [Mac](#mac)
+  * [Windows](#windows)
+- [Members and functionalities](#members-and-functionalities)
+  * [Optional functionalities](#optional-functionalities)
+
+## Requirements
+- JDK 11 or newer
+- Node.js 14.0.0
+- Maven
 
 ## Setup Guide
 
 ### Linux / Mac
+Setup above listed requirements depending on your OS/distro
+#### Ubuntu
+
+**JDK 11**  
+```bash
+# Update repositories and install JDK11
+sudo apt update
+sudo apt install openjdk-11-jre-headless
+```
+
+**Node**
+For Node.js it is recommended to use [nvm](https://github.com/nvm-sh/nvm)  
+Once nvm is installed, do the following:
+```bash
+# Install node 14.0.0 and set it as current default
+nvm install 14.0.0
+nvm use 14.0.0
+```
+
+**Maven**
+```bash
+# Update repositories and install Maven
+sudo apt update
+sudo apt install maven
+
+# Verify installation
+mvn -version
+```
+
+#### Arch
+
+**JDK 11**
+```bash
+# Update repositories and install JDK11
+sudo pacman -Syyu jdk11-openjdk
+```
+
+**Node**
+For Node.js it is recommended to use [nvm](https://wiki.archlinux.org/index.php/Node.js#Alternate_installations)  
+Once nvm is installed, do the following:
+```bash
+# Install node 14.0.0 and set it as current default
+nvm install 14.0.0
+nvm use 14.0.0
+```
+
+**Maven**
+```bash
+# Update repositories and install Maven
+sudo pacman -Syyu maven
+
+# Verify installation
+mvn -version
+```
+
+#### Mac
+
+**JDK 11**
+Follow this well written guide on [medium](https://medium.com/w-logs/installing-java-11-on-macos-with-homebrew-7f73c1e9fadf)
+
+**Node**
+For Node.js it is recommended to use [nvm](https://jamesauble.medium.com/install-nvm-on-mac-with-brew-adb921fb92cc)  
+Once nvm is installed, do the following:
+```bash
+# Install node 14.0.0 and set it as current default
+nvm install 14.0.0
+nvm use 14.0.0
+```
+
+**Maven**
+Follow the Official Apache [tutorial](https://maven.apache.org/install.html)  
 
 ### Windows
+
+**JDK11**
+Download and install the Official [installer](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)  
+
+**Node**
+For Node.js it is recommended to use [nvm-windows](https://github.com/coreybutler/nvm-windows)  
+Once nvm-windows is installed, close any opened CMD's and open a new one, then:  
+```bash
+# Install node 14.0.0 and set it as current default
+nvm install 14.0.0
+nvm use 14.0.0
+```
 
 ## Members and functionalities
 
