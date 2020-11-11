@@ -52,6 +52,11 @@ sudo apt install maven
 mvn -version
 ```
 
+After installing the necessary packages, clone this repo, cd to /src/main/frontent/ and run: 
+```bash
+npm install
+```
+
 #### Arch
 
 **JDK 11**
@@ -78,6 +83,11 @@ sudo pacman -Syyu maven
 mvn -version
 ```
 
+After installing the necessary packages, clone this repo, cd to /src/main/frontent/ and run: 
+```bash
+npm install
+```
+
 #### Mac
 
 **JDK 11**
@@ -95,6 +105,11 @@ nvm use 14.0.0
 **Maven**
 Follow the Official Apache [tutorial](https://maven.apache.org/install.html)  
 
+After installing the necessary packages, clone this repo, cd to /src/main/frontent/ and run: 
+```bash
+npm install
+```
+
 ### Windows
 
 **JDK11**
@@ -107,6 +122,11 @@ Once nvm-windows is installed, close any opened CMD's and open a new one, then:
 # Install node 14.0.0 and set it as current default
 nvm install 14.0.0
 nvm use 14.0.0
+```
+
+After installing the necessary packages, clone this repo, cd to /src/main/frontent/ and run: 
+```bash
+npm install
 ```
 
 ## Members and functionalities
