@@ -4,6 +4,16 @@ Internet Software Architectures class project
 Centralized Pharmacy Information System allowing users to acquire medical supplies  
 and recieve professional consulting from pharmacists and dermatologists.
 
+After setup, to run:
+
+```bash
+# On Linux / Mac
+./mvnw spring-boot:run
+
+# On Windows
+mwnw spring-boot:run
+```
+
 ## Table of Contents
 - [Requirements](#requirements)
 - [Setup Guide](#setup-guide)
