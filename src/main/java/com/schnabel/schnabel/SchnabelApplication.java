@@ -14,20 +14,5 @@ public class SchnabelApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SchnabelApplication.class, args);
 	}
-	
-	@Bean
-	public CommandLineRunner commandLineRunner(ApplicationContext ctx)
-	{
-		return args ->
-		{
-			System.out.println("Beans provided by SB:");
-			String[] names = ctx.getBeanDefinitionNames();
-			Arrays.sort(names);
-			for(String name : names)
-			{
-				System.out.println(name);
-			}
-		};
-	}
 
 }

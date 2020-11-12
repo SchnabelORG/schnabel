@@ -1,9 +1,5 @@
 <template>
     <div>
-        <router-link
-        to="/test">
-          Test
-        </router-link>
         <v-content transition="slide-x-transition">
             <router-view></router-view>
         </v-content>
