@@ -1,0 +1,5 @@
+- name: screenshot-website
+    uses: swinton/screenshot-website@v1.0.0
+  with:
+    source: https://schnabel.herokuapp.com/
+    destination: screenshot.png
