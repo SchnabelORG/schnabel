@@ -3,7 +3,7 @@
         <v-content transition="slide-x-transition">
             <router-view></router-view>
         </v-content>
-    <div>
+    </div>
 </template>
 
 <script>

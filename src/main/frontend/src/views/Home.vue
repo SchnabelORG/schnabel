@@ -1,11 +1,17 @@
 <template>
-  <div id="header">
-    <div id="header-title">
-      <h1 id="title">Schnabel</h1>
-      <p id="header-desc">Centralized pharmaceutical information system</p>
-    </div>
-    <div id="header-img">
-      <img src="img/flask.svg" alt="Header image">
+  <div id="home">
+    <main-navigation />
+    <div id="header">
+      <div id="header-text">
+        <div id="header-title">
+          <h1 id="title">Schnabel</h1>
+          <p id="header-desc">Centralized pharmaceutical information system</p>
+          <v-btn id="mainbtn" elevation="1">Get your API key</v-btn>
+        </div>
+      </div>
+      <div id="header-img">
+        <img src="img/flask.svg" alt="Header image">
+      </div>
     </div>
   </div>
 </template>
@@ -21,22 +27,32 @@ export default {
 </script>
 
 <style scoped>
+  #mainbtn {
+    color: #fff;
+    background-color: #ff5722
+  }
   #header {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
 
-    height: 80vh;
+    height: 100vh;
     background: none;
-    background-color: #324A5E;
+    /*background-color: #324A5E;*/
+    background: rgb(50,74,94);
+    background: linear-gradient(69deg, rgba(63,81,181,1) 5%, rgba(197,202,233,1) 100%); 
   }
 
-  #header-title {
-    
+  #header-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 10vw;
   }
 
   #title {
-    font-size: 4.5rem;
+    font-weight: 500;
+    font-size: 3.5rem;
     color: #fff;
   }
 
