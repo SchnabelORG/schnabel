@@ -4,15 +4,11 @@
         id="pswreg-card"
         elevation="2">
             <v-card-title>Hospital API registration</v-card-title>
-            <v-card-subtitle v-if="apiKey"><b class="red--text">Your api key:</b> {{apiKey}}</v-card-subtitle>
+            <v-card-subtitle v-if="apiKey"><b class="green--text">Your api key:</b> {{apiKey}}</v-card-subtitle>
+            <v-card-subtitle v-else-if="failedMsg"><b class="red--text">{{failedMsg}}</b></v-card-subtitle>
             <v-card-text>
                 <!-- TODO(Jovan): Registration form -->
                 <v-form v-model="valid">
-                    <v-text-field
-                    v-model="id"
-                    :rules="idRules"
-                    label="Hospital ID"
-                    ></v-text-field>
                     <v-text-field
                     v-model="name"
                     :rules="nameRules"
@@ -37,29 +33,32 @@
         data() {
             return {
                 valid: false,
-                id: '',
-                idRules: [
-                    v => !!v || "Id is required",
-                ],
                 name: '',
                 nameRules: [
                     v => !!v || "Name is required",
                 ],
 
                 apiKey: "",
+                failedMsg: "",
             }
         },
         methods: {
             register: function() {
                 if (!this.valid) return;
+                this.failedMsg = "";
                 this.apiKey = "";
-                this.axios.get("pswapi/" + this.id)
+                let hospital = {
+                    id: "",
+                    apiKey: "",
+                    name: this.name,
+                };
+                this.axios.post("pswapi", hospital)
                 .then(response => {
                     this.apiKey = response.data;
                     console.log(response);
                 })
                 .catch(response => {
-                    this.apiKey = "Failed to load";
+                    this.failed = "Failed to get API key";
                     console.log(response);
                 })
             },

@@ -1,6 +1,6 @@
 package com.schnabel.schnabel.pswregistration;
 
-import org.apache.catalina.connector.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,16 +12,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class RegistrationController {
+
+    @Autowired
+    private IHospitalService hospitalService;
+
     @GetMapping("/pswapi/{id}")
     ResponseEntity<String> getAPIKey(@PathVariable String id)
     {
-        // TODO(Jovan): Replace dummy data
-        return ResponseEntity.ok(id + "123456789");
+        Hospital hospital = hospitalService.get(id);
+        return hospital == null ? 
+            new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+            ResponseEntity.ok(hospital.getApiKey());
     }
 
     @PostMapping("/pswapi")
-    ResponseEntity<Hospital> register(@RequestBody Hospital hospital)
+    ResponseEntity<String> register(@RequestBody Hospital hospital)
     {
-        return ResponseEntity.ok(hospital);
+        return hospitalService.add(hospital) ?
+            ResponseEntity.ok(hospital.getApiKey()) :
+            new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

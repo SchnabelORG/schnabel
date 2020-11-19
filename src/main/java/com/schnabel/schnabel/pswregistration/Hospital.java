@@ -1,19 +1,40 @@
 package com.schnabel.schnabel.pswregistration;
 
+import java.util.Objects;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "hospitals")
 public class Hospital {
+    @Id
     private String apiKey;
-    private String id;
+    private String name;
 
     public Hospital()
     {
         this.apiKey = "placeholderapi";
-        this.id = "placeholderid";
+        this.name = "placeholdername";
     }
 
-    public Hospital(String id, String api)
+    public Hospital(String name, String api)
     {
-        this.id = id;
+        this.name = name;
         this.apiKey = api;
+    }
+
+    public String getName()
+    {
+        return this.name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
     public String getApiKey()
@@ -26,13 +47,26 @@ public class Hospital {
         this.apiKey = api;
     }
 
-    public String getId()
+
+    @Override
+    public int hashCode()
     {
-        return this.id;
+        // TODO(Jovan): Remake?
+        int hash = 100;
+        hash = 123 * hash + Objects.hashCode(this.name);
+        hash = 123 * hash + Objects.hashCode(this.apiKey);
+        return hash;
     }
 
-    public void setId(String id)
+    @Override
+    public boolean equals(Object o)
     {
-        this.id = id;
+        if(this == o) return true;
+        if(o == null) return false;
+        if(this.getClass() != o.getClass()) return false;
+        final Hospital h = (Hospital) o;
+        if(!this.name.equals(h.getName())) return false;
+        if(!this.apiKey.equals(h.getApiKey())) return false;
+        return true;
     }
 }
