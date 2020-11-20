@@ -4,7 +4,10 @@
         id="pswreg-card"
         elevation="2">
             <v-card-title>Hospital API registration</v-card-title>
-            <v-card-subtitle v-if="apiKey"><b class="green--text">Your api key:</b> {{apiKey}}</v-card-subtitle>
+            <v-card-subtitle v-if="apiKey">
+                <b class="green--text">Your API key:</b> {{apiKey}}
+                <div><b class="green--text">API Endpoint:</b> /pswapi</div>
+            </v-card-subtitle>
             <v-card-subtitle v-else-if="failedMsg"><b class="red--text">{{failedMsg}}</b></v-card-subtitle>
             <v-card-text>
                 <!-- TODO(Jovan): Registration form -->
@@ -67,6 +70,9 @@
 </script>
 
 <style scoped>
+    #pswreg-main {
+        background: linear-gradient(69deg, rgba(63,81,181,1) 5%, rgba(197,202,233,1) 100%); 
+    }
     #pswreg-card {
         display: flex;
         flex-direction: column;

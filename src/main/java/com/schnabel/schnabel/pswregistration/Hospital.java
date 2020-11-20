@@ -12,8 +12,8 @@ import javax.persistence.Table;
 @Table(name = "hospitals")
 public class Hospital {
     @Id
-    private String apiKey;
     private String name;
+    private String apiKey;
 
     public Hospital()
     {

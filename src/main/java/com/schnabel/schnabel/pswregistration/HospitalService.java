@@ -14,6 +14,7 @@ public class HospitalService implements IHospitalService{
     {
         if(get(hospital.getName()) == null)
         {
+            hospital.setName(hospital.getName().toLowerCase().replace(' ', '_'));
             hospital.setApiKey(("api" + hospital.getName() + "1234").replace(' ', '_'));
             repository.save(hospital);
             return true;
@@ -44,7 +45,7 @@ public class HospitalService implements IHospitalService{
     @Override
     public Hospital get(String name)
     {
-        return repository.findById(name).orElse(null);
+        return repository.findById(name.toLowerCase()).orElse(null);
     }
 
     @Override
