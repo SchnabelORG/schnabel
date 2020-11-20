@@ -12,7 +12,7 @@ public class HospitalService implements IHospitalService{
     @Override
     public boolean add(Hospital hospital)
     {
-        if(get(hospital.getName()) == null)
+        if(get(hospital.getApiKey()) == null)
         {
             hospital.setName(hospital.getName().toLowerCase().replace(' ', '_'));
             hospital.setApiKey(("api" + hospital.getName() + "1234").replace(' ', '_'));
@@ -23,9 +23,9 @@ public class HospitalService implements IHospitalService{
     }
 
     @Override
-    public boolean remove(String name)
+    public boolean remove(String apiKey)
     {
-        Hospital h = get(name);
+        Hospital h = get(apiKey);
         if(h == null)
         {
             return false;
@@ -37,7 +37,7 @@ public class HospitalService implements IHospitalService{
     @Override
     public boolean update(Hospital hospital)
     {
-        if(get(hospital.getName()) == null) return false;
+        if(get(hospital.getApiKey()) == null) return false;
         repository.save(hospital);
         return true;
     }
