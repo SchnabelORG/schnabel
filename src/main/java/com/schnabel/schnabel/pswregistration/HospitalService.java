@@ -45,7 +45,8 @@ public class HospitalService implements IHospitalService{
     @Override
     public Hospital get(String apiKey)
     {
-        return repository.findById(apiKey.toLowerCase()).orElse(null);
+        System.out.println(apiKey);
+        return repository.findById(apiKey).orElse(null);
     }
 
     @Override
