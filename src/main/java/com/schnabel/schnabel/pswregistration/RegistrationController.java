@@ -16,13 +16,13 @@ public class RegistrationController {
     @Autowired
     private IHospitalService hospitalService;
 
-    @GetMapping("/pswapi/{id}")
-    ResponseEntity<String> getAPIKey(@PathVariable String id)
+    @GetMapping("/pswapi/{api}")
+    ResponseEntity<String> getByAPIKey(@PathVariable String api)
     {
-        Hospital hospital = hospitalService.get(id);
+        Hospital hospital = hospitalService.get(api);
         return hospital == null ? 
             new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-            ResponseEntity.ok(hospital.getApiKey());
+            ResponseEntity.ok(hospital.getName());
     }
 
     @PostMapping("/pswapi")

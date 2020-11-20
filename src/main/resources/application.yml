@@ -5,9 +5,9 @@ spring:
   # Database
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${JDBC_DATABASE_URL} # jdbc:postgresql://localhost:5432/isadb
-    username: ${JDBC_DATABASE_USERNAME} #isa
-    password: ${JDBC_DATABASE_PASSWORD} #isa
+    url: jdbc:postgresql://localhost:5432/isadb #${JDBC_DATABASE_URL}
+    username: isa #${JDBC_DATABASE_USERNAME}
+    password: isa #${JDBC_DATABASE_PASSWORD}
     initialization-mode: always
   # JPA properties
   jpa:
