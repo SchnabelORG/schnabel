@@ -11,7 +11,7 @@ After setup, to run:
 ./mvnw spring-boot:run
 
 # On Windows
-mwnw spring-boot:run
+./mvnw spring-boot:run
 ```
 
 ## Table of Contents
