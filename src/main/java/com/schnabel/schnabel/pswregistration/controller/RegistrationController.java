@@ -1,4 +1,7 @@
-package com.schnabel.schnabel.pswregistration;
+package com.schnabel.schnabel.pswregistration.controller;
+
+import com.schnabel.schnabel.pswregistration.model.Hospital;
+import com.schnabel.schnabel.pswregistration.service.IHospitalService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

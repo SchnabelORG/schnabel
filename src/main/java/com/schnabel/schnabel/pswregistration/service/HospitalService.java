@@ -1,8 +1,11 @@
-package com.schnabel.schnabel.pswregistration;
+package com.schnabel.schnabel.pswregistration.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+
+import com.schnabel.schnabel.pswregistration.repository.HospitalRepository;
+import com.schnabel.schnabel.pswregistration.model.Hospital;
 
 @Service
 public class HospitalService implements IHospitalService{
