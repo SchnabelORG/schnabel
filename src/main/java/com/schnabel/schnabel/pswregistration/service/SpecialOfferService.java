@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class SpecialOfferService implements ISpecialOfferService {
 
     @Autowired
-    ISpecialOfferRepository repository;
+    private ISpecialOfferRepository repository;
 
     @Override
     public boolean add(SpecialOffer offer) {

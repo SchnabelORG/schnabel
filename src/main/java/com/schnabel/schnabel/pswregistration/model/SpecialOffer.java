@@ -79,4 +79,10 @@ public class SpecialOffer {
         if(!Objects.equals(this.id, so.getId())) return false;
         return true;
     }
+
+    @Override
+    public String toString()
+    {
+        return this.name + " " + this.content;
+    }
 }
