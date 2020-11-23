@@ -4,20 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-import com.schnabel.schnabel.pswregistration.repository.HospitalRepository;
+import com.schnabel.schnabel.pswregistration.repository.IHospitalRepository;
 import com.schnabel.schnabel.pswregistration.model.Hospital;
 
 @Service
 public class HospitalService implements IHospitalService{
     @Autowired
-    private HospitalRepository repository;
+    private IHospitalRepository repository;
 
     @Override
     public boolean add(Hospital hospital)
     {
         if(get(hospital.getApiKey()) == null)
         {
-            hospital.setName(hospital.getName().toLowerCase().replace(' ', '_'));
             hospital.setApiKey(("api" + hospital.getName() + "1234").replace(' ', '_'));
             repository.save(hospital);
             return true;

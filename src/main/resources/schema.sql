@@ -1,3 +1,5 @@
 DROP TABLE IF EXISTS hospitals;
 CREATE TABLE hospitals(api_key VARCHAR(255) PRIMARY KEY, "name" VARCHAR(255));
-ALTER TABLE hospitals ADD CONSTRAINT chkNoSpaces CHECK ("name" NOT LIKE '% %');
+
+DROP TABLE IF EXISTS specialoffers;
+CREATE TABLE hospitals(id SERIAL PRIMARY KEY, "name" VARCHAR(255));
