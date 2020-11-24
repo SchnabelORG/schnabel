@@ -1,13 +1,15 @@
 # Spring Boot configuration
 spring:
+  main:
+    allow-bean-definition-overriding: true
   profiles:
     active: development
   # Database
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${JDBC_DATABASE_URL} # jdbc:postgresql://localhost:5432/isadb
-    username: ${JDBC_DATABASE_USERNAME} #isa
-    password: ${JDBC_DATABASE_PASSWORD} #isa
+    url: ${JDBC_DATABASE_URL} #jdbc:postgresql://localhost:5432/isadb
+    username: ${JDBC_DATABASE_USERNAME} #isa 
+    password: ${JDBC_DATABASE_PASSWORD} #isa 
     initialization-mode: always
   # JPA properties
   jpa:
@@ -18,3 +20,14 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
     generate-ddl: true
+  # RabbitMQ ONLY WHEN USING ON LOCAL MACHINE
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: vmaqngrm
+#    password: BHAFy2pYqDLrQxDduUD-03HH-N0ACEVW
+custom:
+  rabbitmq:
+    queue: psw-queue
+    exchange: psw-exchange
+    routingkey: psw-key
