@@ -29,5 +29,5 @@ spring:
 custom:
   rabbitmq:
     queue: psw-queue
-    exchange: amq.direct
+    exchange: psw-exchange
     routingkey: psw-key
