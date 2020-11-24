@@ -16,5 +16,4 @@ public class SchnabelApplication {
           .singletonMap("server.port", "8082"));
         app.run(args);
 	}
-
 }
