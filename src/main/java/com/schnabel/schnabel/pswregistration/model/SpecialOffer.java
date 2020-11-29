@@ -13,19 +13,22 @@ public class SpecialOffer {
     private int id;
     private String name;
     private String content;
+    private String pharmacyId;
 
     public SpecialOffer()
     {
         this.id = 1;
         this.name = "placeholdername";
         this.content = "placeholdercontent";
+        this.pharmacyId = "Jankovic";
     }
 
-    public SpecialOffer(int id, String name, String content)
+    public SpecialOffer(int id, String name, String content, Stirng pharmacyId)
     {
         this.id = id;
         this.name = name;
         this.content = content;
+        this.pharmacyId = pharmacyId;
     }
 
     public void setId(int id)
@@ -57,6 +60,17 @@ public class SpecialOffer {
     {
         return this.content;
     }
+
+    public void setPharmacyId(String pharmacyId)
+    {
+        this.pharmacyId = pharmacyId;
+    }
+
+    public String getPharmacyId()
+    {
+        return this.pharmacyId;
+    }
+
     
     @Override
     public int hashCode()
