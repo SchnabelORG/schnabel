@@ -23,7 +23,7 @@ public class SpecialOffer {
         this.pharmacyId = "Jankovic";
     }
 
-    public SpecialOffer(int id, String name, String content, Stirng pharmacyId)
+    public SpecialOffer(int id, String name, String content, String pharmacyId)
     {
         this.id = id;
         this.name = name;
