@@ -23,7 +23,7 @@ public class ScheduledTasks {
         
     }
 
-    @Scheduled(fixedRate = 3000)
+    @Scheduled(fixedRate = 180000)
     public void sendMessage()
     {
         SpecialOffer specialOffer = specialOfferService.get(rnd.nextInt(4) + 1);
