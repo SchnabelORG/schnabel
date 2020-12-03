@@ -15,6 +15,7 @@ public class SpecialOffer {
     private String content;
     private String pharmacyId;
 
+
     public SpecialOffer()
     {
         this.id = 1;
@@ -25,10 +26,12 @@ public class SpecialOffer {
 
     public SpecialOffer(int id, String name, String content, String pharmacyId)
     {
+    
         this.id = id;
         this.name = name;
         this.content = content;
         this.pharmacyId = pharmacyId;
+
     }
 
     public void setId(int id)
@@ -60,6 +63,7 @@ public class SpecialOffer {
     {
         return this.content;
     }
+
 
     public void setPharmacyId(String pharmacyId)
     {
