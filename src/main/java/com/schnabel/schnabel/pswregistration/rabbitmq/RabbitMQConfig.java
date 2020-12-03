@@ -76,7 +76,6 @@ public class RabbitMQConfig {
         rabbitTemplate.setMessageConverter(jsonMessageConverter());
         return rabbitTemplate;
     }
-
     @Bean
     public MessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory ) {
         SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer();
@@ -86,4 +85,5 @@ public class RabbitMQConfig {
         return simpleMessageListenerContainer;
 
     }
+
 }
