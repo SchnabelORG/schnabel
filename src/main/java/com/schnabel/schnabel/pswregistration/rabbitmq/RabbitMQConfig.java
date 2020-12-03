@@ -76,14 +76,5 @@ public class RabbitMQConfig {
         rabbitTemplate.setMessageConverter(jsonMessageConverter());
         return rabbitTemplate;
     }
-    @Bean
-    public MessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory ) {
-        SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer();
-        simpleMessageListenerContainer.setConnectionFactory(connectionFactory);
-        simpleMessageListenerContainer.setQueues(queue());
-        simpleMessageListenerContainer.setMessageListener(new RabbitMQListener());
-        return simpleMessageListenerContainer;
-
-    }
 
 }
