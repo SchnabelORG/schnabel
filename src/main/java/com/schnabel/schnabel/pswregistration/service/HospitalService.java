@@ -9,8 +9,14 @@ import com.schnabel.schnabel.pswregistration.model.Hospital;
 
 @Service
 public class HospitalService implements IHospitalService{
+
+    private final IHospitalRepository repository;
+
     @Autowired
-    private IHospitalRepository repository;
+    public HospitalService(IHospitalRepository repository)
+    {
+        this.repository = repository;
+    }
 
     @Override
     public boolean add(Hospital hospital)
