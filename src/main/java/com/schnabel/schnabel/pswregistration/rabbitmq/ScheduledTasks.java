@@ -8,12 +8,14 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import java.util.Random; 
 
+
 @Component
 public class ScheduledTasks {
     private final RabbitMQSender sender;
     @Autowired
     private ISpecialOfferService specialOfferService;
     private Random rnd;
+
 
     @Autowired
     public ScheduledTasks(RabbitMQSender sender)

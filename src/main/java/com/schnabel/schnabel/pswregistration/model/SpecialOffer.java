@@ -21,6 +21,7 @@ public class SpecialOffer
     private LocalDate validUntil;
     private String pharmacyId;
 
+
     public SpecialOffer()
     {
         this.id = 1;
@@ -33,12 +34,14 @@ public class SpecialOffer
 
     public SpecialOffer(int id, String name, String content, LocalDate validFrom, LocalDate validUntil, String pharmacyId)
     {
+    
         this.id = id;
         this.name = name;
         this.content = content;
         this.validFrom = validFrom;
         this.validUntil = validUntil;
         this.pharmacyId = pharmacyId;
+
     }
 
     public boolean isValidPeriod(LocalDate from, LocalDate until)
