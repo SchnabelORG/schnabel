@@ -7,11 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.TypeDef;
 
 @Entity
 @Table(name = "specialoffers")
-public class SpecialOffer {
+public class SpecialOffer
+{
     @Id
     private int id;
     private String name;
@@ -19,6 +19,7 @@ public class SpecialOffer {
     // TODO(Jovan): Make DateRange class that works with PostgreSQL?
     private LocalDate validFrom;
     private LocalDate validUntil;
+    private String pharmacyId;
 
     public SpecialOffer()
     {
@@ -27,15 +28,17 @@ public class SpecialOffer {
         this.content = "placeholdercontent";
         this.validFrom = LocalDate.now();
         this.validUntil = LocalDate.now();
+        this.pharmacyId = "Jankovic";
     }
 
-    public SpecialOffer(int id, String name, String content, LocalDate validFrom, LocalDate validUntil)
+    public SpecialOffer(int id, String name, String content, LocalDate validFrom, LocalDate validUntil, String pharmacyId)
     {
         this.id = id;
         this.name = name;
         this.content = content;
         this.validFrom = validFrom;
         this.validUntil = validUntil;
+        this.pharmacyId = pharmacyId;
     }
 
     public boolean isValidPeriod(LocalDate from, LocalDate until)
@@ -74,20 +77,34 @@ public class SpecialOffer {
         return this.content;
     }
 
-    public void setValidFrom(LocalDate validFrom) {
+    public void setValidFrom(LocalDate validFrom)
+    {
         this.validFrom = validFrom;
     }
 
-    public LocalDate getValidFrom() {
+    public LocalDate getValidFrom()
+    {
         return validFrom;
     }
 
-    public void setValidUntil(LocalDate validUntil) {
+    public void setValidUntil(LocalDate validUntil)
+    {
         this.validUntil = validUntil;
     }
 
-    public LocalDate getValidUntil() {
+    public LocalDate getValidUntil()
+    {
         return validUntil;
+    }
+
+    public void setPharmacyId(String pharmacyId)
+    {
+        this.pharmacyId = pharmacyId;
+    }
+
+    public String getPharmacyId()
+    {
+        return this.pharmacyId;
     }
     
     @Override

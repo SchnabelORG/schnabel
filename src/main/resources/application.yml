@@ -27,7 +27,13 @@ spring:
 #    username: vmaqngrm
 #    password: BHAFy2pYqDLrQxDduUD-03HH-N0ACEVW
 custom:
-  rabbitmq:
+  rabbitmq: # amqps://vmaqngrm:BHAFy2pYqDLrQxDduUD-03HH-N0ACEVW@squid.rmq.cloudamqp.com/vmaqngrm
     queue: psw-queue
     exchange: psw-exchange
     routingkey: psw-key
+
+amazonProperties:
+  endpointUrl: ${AWS_ENDPOINT}  #https://s3.eu-central-1.amazonaws.com
+  accessKey: ${AWS_ACCESS_KEY}  #AKIAZUDWIGESYWABLPFX
+  secretKey: ${AWS_SECRET_KEY}  #pgq0h0xwJrE9R0kTNcC6QXYcmnJoKub8DBpY2CYR
+  bucketName: ${AWS_BUCKET_NAME} #schnabelbucket

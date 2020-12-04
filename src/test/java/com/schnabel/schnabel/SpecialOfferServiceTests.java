@@ -22,9 +22,9 @@ public class SpecialOfferServiceTests {
     @MethodSource("datePeriods")
     void validPeriodTest(LocalDate from, LocalDate until, boolean isEmpty)
     {
-        SpecialOffer so1 = new SpecialOffer(1, "Offer 1", "Aspiring 50% off", LocalDate.of(2020, 8, 1), LocalDate.of(2020, 9, 1));
-        SpecialOffer so2 = new SpecialOffer(2, "Offer 2", "Aspiring 50% off", LocalDate.of(2020, 3, 1), LocalDate.of(2020, 9, 1));
-        SpecialOffer so3 = new SpecialOffer(3, "Offer 3", "Aspiring 50% off", LocalDate.of(2020, 7, 1), LocalDate.of(2020, 9, 1));
+        SpecialOffer so1 = new SpecialOffer(1, "Offer 1", "Aspiring 50% off", LocalDate.of(2020, 8, 1), LocalDate.of(2020, 9, 1), "Jankovic");
+        SpecialOffer so2 = new SpecialOffer(2, "Offer 2", "Aspiring 50% off", LocalDate.of(2020, 3, 1), LocalDate.of(2020, 9, 1), "Jankovic");
+        SpecialOffer so3 = new SpecialOffer(3, "Offer 3", "Aspiring 50% off", LocalDate.of(2020, 7, 1), LocalDate.of(2020, 9, 1), "Jankovic");
         ArrayList<SpecialOffer> offers = new ArrayList<SpecialOffer>();
         offers.add(so1);
         offers.add(so2);
