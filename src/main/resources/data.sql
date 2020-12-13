@@ -8,3 +8,6 @@ INSERT INTO specialoffers(id, "name", content, valid_from, valid_until, pharmacy
 INSERT INTO specialoffers(id, "name", content, valid_from, valid_until, pharmacy_id) VALUES(3, 'Suplements', '30% of for all suplements', '2020-07-01', '2020-09-01' ,'Liman');
 INSERT INTO specialoffers(id, "name", content, valid_from, valid_until, pharmacy_id) VALUES(4, 'Special gift', 'Special gift for spent over 30e', '2020-07-01', '2020-09-01','Jankovic');
 
+INSERT INTO drugs(id, "name", description) VALUES(1, 'Brufen 600mg', 'Analgetik Brufen 600mg film tableta');
+INSERT INTO drugs(id, "name", description) VALUES(2, 'Vitamin C 1000mg', 'Vitaminski suplement 1000mg film tableta');
+INSERT INTO drugs(id, "name", description) VALUES(3, 'B12 1000mcg', 'Vitaminski supleent 1000mcg B12, cijankobalamin');

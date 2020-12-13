@@ -15,18 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SpecialOfferController {
 
-    private final ISpecialOfferService specialOfferService;
+    private final ISpecialOfferService _specialOfferService;
 
     @Autowired
     public SpecialOfferController(ISpecialOfferService specialOfferService)
     {
-        this.specialOfferService = specialOfferService;
+        this._specialOfferService = specialOfferService;
     }
 
     @GetMapping("pswapi/specialoffers")
     public ResponseEntity<List<SpecialOffer>> getAll()
     {
-        return ResponseEntity.ok(specialOfferService.getAll());
+        return ResponseEntity.ok(_specialOfferService.getAll());
     }
 
     @ExceptionHandler(RuntimeException.class)
