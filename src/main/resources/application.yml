@@ -28,9 +28,11 @@ spring:
 #    password: BHAFy2pYqDLrQxDduUD-03HH-N0ACEVW
 custom:
   rabbitmq: # amqps://vmaqngrm:BHAFy2pYqDLrQxDduUD-03HH-N0ACEVW@squid.rmq.cloudamqp.com/vmaqngrm
-    queue: psw-queue
-    exchange: psw-exchange
-    routingkey: psw-key
+    exchange: psw
+    specialOffersQueue: psw-special-offers-queue
+    usageReportsQueue: psw-usage-reports-queue
+    specialOffersKey: psw.specialoffers
+    usageReportsKey: psw.usagereports
     
 
 amazonProperties:

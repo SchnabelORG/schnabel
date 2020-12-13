@@ -1,4 +1,4 @@
-package com.schnabel.schnabel.pswregistration.rabbitmq;
+package com.schnabel.schnabel.rabbitmq;
 
 import com.schnabel.schnabel.pswregistration.model.SpecialOffer;
 import com.schnabel.schnabel.pswregistration.service.ISpecialOfferService;
@@ -11,6 +11,7 @@ import java.util.Random;
 
 @Component
 public class ScheduledTasks {
+    
     private final RabbitMQSender sender;
     @Autowired
     private ISpecialOfferService specialOfferService;

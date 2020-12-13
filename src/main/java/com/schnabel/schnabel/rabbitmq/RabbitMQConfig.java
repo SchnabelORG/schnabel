@@ -1,4 +1,4 @@
-package com.schnabel.schnabel.pswregistration.rabbitmq;
+package com.schnabel.schnabel.rabbitmq;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -21,31 +21,61 @@ import org.springframework.context.annotation.Configuration;
 import static java.lang.System.getenv;
 
 @Configuration
-public class RabbitMQConfig {
+public class RabbitMQConfig
+{
     
-    @Value("${custom.rabbitmq.queue}")
-    private String queueName;
     @Value("${custom.rabbitmq.exchange}")
-    private String exchange;
-    @Value("${custom.rabbitmq.routingkey}")
-    private String routingKey;
+    private String _exchange;
+
+    @Value("${custom.rabbitmq.specialOffersQueue}")
+    private String _specialOffersQueue;
+    @Value("${custom.rabbitmq.usageReportsQueue}")
+    private String _usageReportsQueue;
+    
+    @Value("${custom.rabbitmq.specialOffersKey}")
+    private String _specialOffersKey;
+    @Value("${custom.rabbitmq.usageReportsKey}")
+    private String _usageReportsKey;
+    
+    @Bean
+    DirectExchange exchange()
+    {
+        return new DirectExchange(_exchange);
+    }
 
     @Bean
-    Queue queue() { return new Queue(queueName, false); }
-    @Bean
-    DirectExchange exchange() { return new DirectExchange(exchange); }
-    @Bean
-    Binding binding(Queue queue, DirectExchange exchange)
+    Queue specialOffersQueue()
     {
-        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+        return new Queue(_specialOffersQueue, false);
+    }
+
+    @Bean
+    Queue usageReportsQueue()
+    {
+        return new Queue(_usageReportsQueue, false);
     }
     
     @Bean
-    public ConnectionFactory connectionFactory() {
+    Binding specialOffersBinding(DirectExchange exchange)
+    {
+        return BindingBuilder.bind(specialOffersQueue()).to(exchange).with(_specialOffersKey);
+    }
+
+    Binding usageReportsBinding(DirectExchange exchange)
+    {
+        return BindingBuilder.bind(usageReportsQueue()).to(exchange).with(_usageReportsKey);
+    }
+    
+    @Bean
+    public ConnectionFactory connectionFactory()
+    {
         final URI rabbitMqUrl;
-        try {
+        try
+        {
             rabbitMqUrl = new URI(getEnvOrThrow("CLOUDAMQP_URL"));
-        } catch (URISyntaxException e) {
+        }
+        catch (URISyntaxException e)
+        {
             throw new RuntimeException(e);
         }
    
@@ -59,18 +89,36 @@ public class RabbitMQConfig {
         return factory;
     }
 
-    private static String getEnvOrThrow(String name) {
+    @Bean
+    public MessageListenerContainer messageListenerContainer()
+    {
+        SimpleMessageListenerContainer simpleMessageListenerContainer
+            = new SimpleMessageListenerContainer();
+        simpleMessageListenerContainer.setConnectionFactory((connectionFactory()));
+        simpleMessageListenerContainer.setQueues(usageReportsQueue());
+        simpleMessageListenerContainer.setMessageListener(new RabbitMQListener());
+        return simpleMessageListenerContainer;
+    }
+
+    private static String getEnvOrThrow(String name)
+    {
         final String env = getenv(name);
-        if (env == null) {
+        if (env == null)
+        {
             throw new IllegalStateException("Environment variable [" + name + "] is not set.");
         }
         return env;
     }
 
     @Bean
-    public MessageConverter jsonMessageConverter() { return new Jackson2JsonMessageConverter(); }
+    public MessageConverter jsonMessageConverter()
+    {
+        return new Jackson2JsonMessageConverter();
+    
+    }
+
     @Bean
-    public AmqpTemplate rabbitTemplate(ConnectionFactory connectionFactory)
+    public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory)
     {
         final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(jsonMessageConverter());
