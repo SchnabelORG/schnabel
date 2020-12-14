@@ -11,4 +11,5 @@ public interface IDrugService
     boolean update(Drug drug);
     Drug get(int id);
     List<Drug> getAll();
+    boolean getByName(String name);
 }

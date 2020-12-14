@@ -1,6 +1,7 @@
 package com.schnabel.schnabel.drugs.service;
 
 import java.util.List;
+import java.util.Locale;
 
 import com.schnabel.schnabel.drugs.model.Drug;
 import com.schnabel.schnabel.drugs.repository.IDrugRepository;
@@ -55,5 +56,14 @@ public class DrugService implements IDrugService
     {
         return (List<Drug>) _drugRepository.findAll();
 	}
-    
+
+    @Override
+    public boolean getByName(String name) {
+        List<Drug> drugs = getAll();
+        for (Drug drug: drugs) {
+            if(drug.getName().toLowerCase(Locale.ROOT).contains(name.toLowerCase(Locale.ROOT))) return true;
+        }
+        return false;
+    }
+
 }

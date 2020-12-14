@@ -35,6 +35,14 @@ public class DrugController
             : ResponseEntity.ok(drug);
     }
 
+    @GetMapping("/pswapi/drugs/name/{name}")
+    public ResponseEntity<String> getById(@PathVariable String name)
+    {
+        return _drugService.getByName(name) ?
+                ResponseEntity.ok("We have the desired medication!")
+            : ResponseEntity.ok("We don't have that medication!");
+    }
+
     @GetMapping("/pswapi/drugs")
     public ResponseEntity<List<Drug>> getAll()
     {
