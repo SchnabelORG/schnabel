@@ -6,3 +6,7 @@ CREATE TABLE specialoffers(id SERIAL PRIMARY KEY, "name" VARCHAR(255), content V
 
 DROP TABLE IF EXISTS drugs;
 CREATE TABLE drugs(id SERIAL PRIMARY KEY, "name" VARCHAR(255), description VARCHAR(255));
+
+
+DROP TABLE IF EXISTS usagereportnotifications;
+CREATE TABLE usagereportnotifications(id SERIAL PRIMARY KEY, "endpoint" VARCHAR(255), "message" VARCHAR(255), "filename" VARCHAR(255));

@@ -7,7 +7,10 @@
           <h1 id="title">Schnabel</h1>
           <p id="header-desc">Centralized pharmaceutical information system</p>
           <router-link to="/pswreg" v-slot="{href, navigate}">
-            <v-btn :href="href" @click="navigate" id="mainbtn" elevation="1">Get your API key</v-btn>
+            <v-btn :href="href" @click="navigate" class="accent" elevation="1">Get your API key</v-btn>
+          </router-link>
+          <router-link to="/pswreports" v-slot="{href, navigate}">
+            <v-btn :href="href" @click="navigate" class="accent" elevation="1">View reports</v-btn>
           </router-link>
         </div>
       </div>
@@ -29,10 +32,6 @@ export default {
 </script>
 
 <style scoped>
-  #mainbtn {
-    color: #fff;
-    background-color: #ff5722
-  }
   #header {
     display: flex;
     flex-direction: row;
