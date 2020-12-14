@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IUsageReportNotificationRepository extends CrudRepository<UsageReportNotification, Integer>
+public interface IUsageReportNotificationRepository extends CrudRepository<UsageReportNotification, String>
 {
     
 }

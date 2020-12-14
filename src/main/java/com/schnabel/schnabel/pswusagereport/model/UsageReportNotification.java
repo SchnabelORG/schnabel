@@ -10,64 +10,52 @@ public class UsageReportNotification
 {
 
     @Id
-    private int _id;
-    private String _endpoint;
-    private String _message;
-    private String _filename;
+    private String filename;
+    private String endpoint;
+    private String message;
 
     public UsageReportNotification()
     {
-        _id = 1;
-        _endpoint = "placeholderendpoint";
-        _message = "placeholdermessage";
-        _filename = "placeholderfilename";
+        this.endpoint = "placeholderendpoint";
+        this.message = "placeholdermessage";
+        this.filename = "placeholderfilename";
     }
 
     public UsageReportNotification(String endpoint, String message, String filename)
     {
-        _endpoint = endpoint;
-        _message = message;
-        _filename = filename;
-    }
-
-    public int getId()
-    {
-        return _id;
-    }
-
-    public void setId(int id)
-    {
-        _id = id;
+        this.endpoint = endpoint;
+        this.message = message;
+        this.filename = filename;
     }
 
     public String getEndpoint()
     {
-        return _endpoint;
+        return this.endpoint;
     }
 
     public void setEndpoint(String endpoint)
     {
-        _endpoint = endpoint;
+        this.endpoint = endpoint;
     }
 
     public String getMessage()
     {
-        return _message;
+        return this.message;
     }
 
     public void setMessage(String message)
     {
-        _message = message;
+        this.message = message;
     }
 
     public String getFilename()
     {
-        return _filename;
+        return this.filename;
     }
 
     public void setFilename(String filename)
     {
-        _filename = filename;
+        this.filename = filename;
     }
 
     @Override
@@ -77,13 +65,13 @@ public class UsageReportNotification
         if(o == null) return false;
         if(this.getClass() != o.getClass()) return false;
         UsageReportNotification notification = (UsageReportNotification) o;
-        if(_id != notification.getId()) return false;
+        if(this.filename != notification.getFilename()) return false;
         return true;
     }
 
     @Override
     public String toString()
     {
-        return "Endpoint: " + _endpoint + " Message: " + _message + " Filename: " + _filename;
+        return "Endpoint: " + this.endpoint + " Message: " + this.message + " Filename: " + this.filename;
     }
 }

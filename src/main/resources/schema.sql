@@ -9,4 +9,4 @@ CREATE TABLE drugs(id SERIAL PRIMARY KEY, "name" VARCHAR(255), description VARCH
 
 
 DROP TABLE IF EXISTS usagereportnotifications;
-CREATE TABLE usagereportnotifications(id SERIAL PRIMARY KEY, "endpoint" VARCHAR(255), "message" VARCHAR(255), "filename" VARCHAR(255));
+CREATE TABLE usagereportnotifications("filename" VARCHAR(255) PRIMARY KEY, "endpoint" VARCHAR(255), "message" VARCHAR(255));

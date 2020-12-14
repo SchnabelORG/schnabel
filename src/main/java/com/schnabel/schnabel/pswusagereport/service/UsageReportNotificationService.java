@@ -23,15 +23,15 @@ public class UsageReportNotificationService implements IUsageReportNotificationS
 	@Override
     public boolean add(UsageReportNotification notification)
     {
-        if(get(notification.getId()) != null) return false;
+        if(get(notification.getFilename()) != null) return false;
         _notificationRepository.save(notification);
         return true;
 	}
 
 	@Override
-    public boolean remove(int id)
+    public boolean remove(String filename)
     {
-        UsageReportNotification notification = get(id);
+        UsageReportNotification notification = get(filename);
         if(notification == null) return false;
         _notificationRepository.delete(notification);
         return true;
@@ -40,15 +40,15 @@ public class UsageReportNotificationService implements IUsageReportNotificationS
 	@Override
     public boolean update(UsageReportNotification notification)
     {
-        if(get(notification.getId()) == null) return false;
+        if(get(notification.getFilename()) == null) return false;
         _notificationRepository.save(notification);
         return true;
 	}
 
 	@Override
-    public UsageReportNotification get(int id)
+    public UsageReportNotification get(String filename)
     {
-        return _notificationRepository.findById(id).orElse(null);
+        return _notificationRepository.findById(filename).orElse(null);
 	}
 
 	@Override
