@@ -10,12 +10,12 @@ import com.schnabel.schnabel.pswregistration.model.Hospital;
 @Service
 public class HospitalService implements IHospitalService{
 
-    private final IHospitalRepository repository;
+    private final IHospitalRepository _hospitalRepository;
 
     @Autowired
     public HospitalService(IHospitalRepository repository)
     {
-        this.repository = repository;
+        this._hospitalRepository = repository;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class HospitalService implements IHospitalService{
         if(get(hospital.getApiKey()) == null)
         {
             hospital.setApiKey(("api" + hospital.getName() + "1234").replace(' ', '_'));
-            repository.save(hospital);
+            _hospitalRepository.save(hospital);
             return true;
         }
         return false;
@@ -38,7 +38,7 @@ public class HospitalService implements IHospitalService{
         {
             return false;
         }
-        repository.delete(h);
+        _hospitalRepository.delete(h);
         return true;
     }
 
@@ -46,20 +46,19 @@ public class HospitalService implements IHospitalService{
     public boolean update(Hospital hospital)
     {
         if(get(hospital.getApiKey()) == null) return false;
-        repository.save(hospital);
+        _hospitalRepository.save(hospital);
         return true;
     }
 
     @Override
     public Hospital get(String apiKey)
     {
-        System.out.println(apiKey);
-        return repository.findById(apiKey).orElse(null);
+        return _hospitalRepository.findById(apiKey).orElse(null);
     }
 
     @Override
     public List<Hospital> getAll()
     {
-        return (List<Hospital>) repository.findAll();
+        return (List<Hospital>) _hospitalRepository.findAll();
     }
 }
