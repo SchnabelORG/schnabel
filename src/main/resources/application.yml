@@ -28,7 +28,7 @@ spring:
 #    password: BHAFy2pYqDLrQxDduUD-03HH-N0ACEVW
 custom:
   port: ${SCHNABEL_PORT}
-  rabbitmq: # amqps://vmaqngrm:BHAFy2pYqDLrQxDduUD-03HH-N0ACEVW@squid.rmq.cloudamqp.com/vmaqngrm
+  rabbitmq: # 
     exchange: psw
     specialOffersQueue: psw-special-offers-queue
     usageReportsQueue: psw-usage-reports-queue
