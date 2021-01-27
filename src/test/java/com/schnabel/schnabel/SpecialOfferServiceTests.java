@@ -22,6 +22,15 @@ public class SpecialOfferServiceTests {
     @MethodSource("datePeriods")
     void validPeriodTest(LocalDate from, LocalDate until, boolean isEmpty)
     {
+        SpecialOfferService service = new SpecialOfferService(getStubRepository());
+
+        ArrayList<SpecialOffer> validOffers = (ArrayList<SpecialOffer>) service.getOffersForTimePeriod(from, until);
+        assertEquals(validOffers.isEmpty(), isEmpty);
+    }
+
+    private ISpecialOfferRepository getStubRepository()
+    {
+        ISpecialOfferRepository stubRepository = Mockito.mock(ISpecialOfferRepository.class);
         SpecialOffer so1 = new SpecialOffer(1, "Offer 1", "Aspiring 50% off", LocalDate.of(2020, 8, 1), LocalDate.of(2020, 9, 1), "Jankovic");
         SpecialOffer so2 = new SpecialOffer(2, "Offer 2", "Aspiring 50% off", LocalDate.of(2020, 3, 1), LocalDate.of(2020, 9, 1), "Jankovic");
         SpecialOffer so3 = new SpecialOffer(3, "Offer 3", "Aspiring 50% off", LocalDate.of(2020, 7, 1), LocalDate.of(2020, 9, 1), "Jankovic");
@@ -29,13 +38,8 @@ public class SpecialOfferServiceTests {
         offers.add(so1);
         offers.add(so2);
         offers.add(so3);
-        
-        ISpecialOfferRepository stubRepository = Mockito.mock(ISpecialOfferRepository.class);
         when(stubRepository.findAll()).thenReturn(offers);
-        SpecialOfferService service = new SpecialOfferService(stubRepository);
-        ArrayList<SpecialOffer> validOffers = (ArrayList<SpecialOffer>) service.getOffersForTimePeriod(from, until);
-        System.out.println(validOffers);
-        assertEquals(validOffers.isEmpty(), isEmpty);
+        return stubRepository;
     }
 
     private static Stream<Arguments> datePeriods()
@@ -45,7 +49,8 @@ public class SpecialOfferServiceTests {
             Arguments.of(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1), false),
             Arguments.of(LocalDate.of(2020, 3, 1), LocalDate.of(2020, 9, 1), false),
             Arguments.of(LocalDate.of(2020, 3, 5), LocalDate.of(2020, 7, 1), false),
-            Arguments.of(LocalDate.of(2020, 10, 1), LocalDate.of(2020, 12, 1), true)
+            Arguments.of(LocalDate.of(2020, 10, 1), LocalDate.of(2020, 12, 1), false),
+            Arguments.of(LocalDate.of(2020, 9, 2), LocalDate.of(2020, 12, 1), false)
         );
     }
 }

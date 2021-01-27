@@ -4,8 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.EqualsAndHashCode;
+
 @Entity
 @Table(name = "drugs")
+@EqualsAndHashCode
 public class Drug {
     @Id
     private int id; 
@@ -54,18 +57,5 @@ public class Drug {
     public void setDescription(String description)
     {
         this.description = description;
-    }
-
-    @Override
-    public boolean equals(Object o)
-    {
-        if(this == o) return true;
-        if(o == null) return false;
-        if(this.getClass() != o.getClass()) return false;
-        final Drug drug = (Drug) o;
-        if(this.id != drug.getId()) return false;
-        if(!this.name.equals(drug.getName())) return false;
-        if(!this.description.equals(drug.getDescription())) return false;
-        return true;
     }
 }
