@@ -13,7 +13,7 @@ public class SchnabelApplication {
 		// NOTE(Jovan): Change default port to 8082 and run
 		SpringApplication app = new SpringApplication(SchnabelApplication.class);
         app.setDefaultProperties(Collections
-          .singletonMap("server.port", "9000"));
+          .singletonMap("server.port", "${custom.port}"));
         app.run(args);
 	}
 }

@@ -7,6 +7,9 @@ CREATE TABLE specialoffers(id SERIAL PRIMARY KEY, "name" VARCHAR(255), content V
 DROP TABLE IF EXISTS drugs;
 CREATE TABLE drugs(id SERIAL PRIMARY KEY, "name" VARCHAR(255), description VARCHAR(255));
 
-
 DROP TABLE IF EXISTS usagereportnotifications;
 CREATE TABLE usagereportnotifications("filename" VARCHAR(255) PRIMARY KEY, "endpoint" VARCHAR(255), "message" VARCHAR(255));
+
+DROP TABLE IF EXISTS pharmacies;
+CREATE TABLE pharmacies(id SERIAL PRIMARY KEY, city VARCHAR(255), postcode VARCHAR(255), street VARCHAR(255), street_no INTEGER, avg_rating REAL, "name" VARCHAR(255));
+-- NOTE(Jovan): Is table auto-gen?

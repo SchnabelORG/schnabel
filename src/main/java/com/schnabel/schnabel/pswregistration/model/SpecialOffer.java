@@ -7,9 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.EqualsAndHashCode;
+
 
 @Entity
 @Table(name = "specialoffers")
+@EqualsAndHashCode
 public class SpecialOffer
 {
     @Id
@@ -109,29 +112,6 @@ public class SpecialOffer
     {
         return this.pharmacyId;
     }
-    
-    @Override
-    public int hashCode()
-    {
-        // TODO(Jovan): Remake?
-        int hash = 100;
-        hash = 123 * hash + Objects.hashCode(this.name);
-        hash = 123 * hash + Objects.hashCode(this.id);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object o)
-    {
-        if(this == o) return true;
-        if(o == null) return false;
-        if(this.getClass() != o.getClass()) return false;
-        final SpecialOffer so = (SpecialOffer) o;
-        if(!Objects.equals(this.name, so.getName())) return false;
-        if(!Objects.equals(this.id, so.getId())) return false;
-        return true;
-    }
-
     @Override
     public String toString()
     {
