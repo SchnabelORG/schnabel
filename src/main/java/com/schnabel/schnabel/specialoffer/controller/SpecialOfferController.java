@@ -1,9 +1,9 @@
-package com.schnabel.schnabel.pswregistration.controller;
+package com.schnabel.schnabel.specialoffer.controller;
 
 import java.util.List;
 
-import com.schnabel.schnabel.pswregistration.model.SpecialOffer;
-import com.schnabel.schnabel.pswregistration.service.ISpecialOfferService;
+import com.schnabel.schnabel.specialoffer.model.SpecialOffer;
+import com.schnabel.schnabel.specialoffer.service.ISpecialOfferService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
