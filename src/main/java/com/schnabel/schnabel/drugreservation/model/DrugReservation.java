@@ -2,6 +2,7 @@ package com.schnabel.schnabel.drugreservation.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
@@ -28,9 +29,9 @@ public class DrugReservation implements IIdentifiable<Integer>
 {
     @Id
     private int id;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Patient patient;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Drug drug;
     private LocalDate validUntil;
 

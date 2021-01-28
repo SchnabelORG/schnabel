@@ -19,7 +19,7 @@ public class DrugReservationController
         this.drugReservationService = drugReservationService;
     }
 
-    @GetMapping("/api/drugReservation")
+    @GetMapping("/api/drugreservation")
     public ResponseEntity<Iterable<DrugReservation>> getAll()
     {
         return ResponseEntity.ok(this.drugReservationService.getAll());
