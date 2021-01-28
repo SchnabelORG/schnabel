@@ -1,7 +1,7 @@
-package com.schnabel.schnabel.drugreservation.controller;
+package com.schnabel.schnabel.drugreservations.controller;
 
-import com.schnabel.schnabel.drugreservation.model.DrugReservation;
-import com.schnabel.schnabel.drugreservation.service.IDrugReservationService;
+import com.schnabel.schnabel.drugreservations.model.DrugReservation;
+import com.schnabel.schnabel.drugreservations.service.IDrugReservationService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

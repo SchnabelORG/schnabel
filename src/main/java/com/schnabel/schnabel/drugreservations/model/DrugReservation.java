@@ -1,4 +1,4 @@
-package com.schnabel.schnabel.drugreservation.model;
+package com.schnabel.schnabel.drugreservations.model;
 
 import java.time.LocalDate;
 

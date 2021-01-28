@@ -1,6 +1,6 @@
-package com.schnabel.schnabel.drugreservation.repository;
+package com.schnabel.schnabel.drugreservations.repository;
 
-import com.schnabel.schnabel.drugreservation.model.DrugReservation;
+import com.schnabel.schnabel.drugreservations.model.DrugReservation;
 
 import org.springframework.data.repository.CrudRepository;
 
