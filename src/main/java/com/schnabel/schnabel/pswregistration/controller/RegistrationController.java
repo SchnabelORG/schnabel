@@ -19,19 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class RegistrationController
 {
 
-    private final IHospitalService _hospitalService;
+    private final IHospitalService hospitalService;
 
     @Autowired
     public RegistrationController(IHospitalService hospitalService)
     {
-        this._hospitalService = hospitalService;
+        this.hospitalService = hospitalService;
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/pswapi/{api}")
     ResponseEntity<String> getByAPIKey(@PathVariable String api)
     {
-        Hospital hospital = _hospitalService.get(api);
+        Hospital hospital = hospitalService.get(api);
         return hospital == null ? 
             new ResponseEntity<>(HttpStatus.NOT_FOUND) :
             ResponseEntity.ok(hospital.getName());
@@ -40,7 +40,7 @@ public class RegistrationController
     @PostMapping("/pswapi")
     ResponseEntity<String> register(@RequestBody Hospital hospital)
     {
-        return _hospitalService.add(hospital) ?
+        return hospitalService.add(hospital) ?
             ResponseEntity.ok(hospital.getApiKey()) :
             new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

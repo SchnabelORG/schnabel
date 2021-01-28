@@ -19,17 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsageReportNotificationController
 {
 
-    private IUsageReportNotificationService _notificationService;
+    private IUsageReportNotificationService notificationService;
 
     public UsageReportNotificationController(IUsageReportNotificationService notificationService)
     {
-        _notificationService = notificationService;
+        this.notificationService = notificationService;
     }
 
     @PostMapping("/pswapi/usagereportnotifications")
     public ResponseEntity<String> add(@RequestBody UsageReportNotification notification)
     {
-        boolean success = _notificationService.add(notification);
+        boolean success = notificationService.add(notification);
         return success ?
             ResponseEntity.ok("Added")
             : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -38,16 +38,16 @@ public class UsageReportNotificationController
     @GetMapping("/pswapi/usagereportnotifications/{filename}")
     public ResponseEntity<UsageReportNotification> get(@PathVariable String filename)
     {
-        UsageReportNotification notification = _notificationService.get(filename);
+        UsageReportNotification notification = notificationService.get(filename);
         return notification == null ?
             new ResponseEntity<>(HttpStatus.BAD_REQUEST)
             : ResponseEntity.ok(notification);
     }
 
     @GetMapping("/pswapi/usagereportnotifications")
-    public ResponseEntity<List<UsageReportNotification>> getAll()
+    public ResponseEntity<Iterable<UsageReportNotification>> getAll()
     {
-        return ResponseEntity.ok(_notificationService.getAll());
+        return ResponseEntity.ok(notificationService.getAll());
     }
 
 }

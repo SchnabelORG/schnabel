@@ -16,26 +16,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class PharmacyController
 {
-    private final IPharmacyService _pharmacyService;
+    private final IPharmacyService pharmacyService;
 
     @Autowired
     public PharmacyController(IPharmacyService pharmacyService)
     {
-        this._pharmacyService = pharmacyService;
+        this.pharmacyService = pharmacyService;
     }
 
     @GetMapping("/api/pharmacy/{id}")
     public ResponseEntity<Pharmacy> getById(@PathVariable int id)
     {
-        Pharmacy pharmacy = _pharmacyService.get(id);
+        Pharmacy pharmacy = pharmacyService.get(id);
         return pharmacy == null ?
             new ResponseEntity<>(HttpStatus.BAD_REQUEST)
             : ResponseEntity.ok(pharmacy);
     }
 
     @GetMapping("/api/pharmacy")
-    public ResponseEntity<List<Pharmacy>> getAll()
+    public ResponseEntity<Iterable<Pharmacy>> getAll()
     {
-        return ResponseEntity.ok(_pharmacyService.getAll());
+        return ResponseEntity.ok(pharmacyService.getAll());
     }
 }

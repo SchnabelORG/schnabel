@@ -4,58 +4,31 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.schnabel.schnabel.misc.model.IIdentifiable;
+
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "drugs")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
-public class Drug {
+public class Drug implements IIdentifiable<Integer>
+{
     @Id
     private int id; 
     private String name; 
     private String description;
 
-    public Drug()
-    {
-        this.id = 1;
-        this.name = "placeholdername";
-        this.description = "placeholderdescription";
-    }
-
-    public Drug(int id, String name, String description)
-    {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-    }
-
-    public int getId()
+    @Override
+    public Integer getId()
     {
         return this.id;
-    }
-
-    public void setId(int id)
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return this.name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public String getDescription()
-    {
-        return this.description;
-    }
-
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 }

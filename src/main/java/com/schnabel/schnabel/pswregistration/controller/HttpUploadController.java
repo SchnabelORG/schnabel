@@ -11,18 +11,18 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 public class HttpUploadController
 {
-    private AmazonClient _amazonClient;
+    private AmazonClient amazonClient;
 
     @Autowired
     public HttpUploadController(AmazonClient amazonClient)
     {
-        this._amazonClient = amazonClient;
+        this.amazonClient = amazonClient;
     }
 
     @PostMapping("pswupload")
     public String uploadFile(@RequestPart(value = "file") MultipartFile file)
     {
-        return this._amazonClient.uploadFile(file);
+        return this.amazonClient.uploadFile(file);
     }
 
 }

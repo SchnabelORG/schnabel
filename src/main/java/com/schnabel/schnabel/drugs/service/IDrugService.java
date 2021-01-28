@@ -1,15 +1,8 @@
 package com.schnabel.schnabel.drugs.service;
-
-import java.util.List;
-
 import com.schnabel.schnabel.drugs.model.Drug;
+import com.schnabel.schnabel.misc.interfaces.ICrudService;
 
-public interface IDrugService
+public interface IDrugService extends ICrudService<Drug, Integer>
 {
-    boolean add(Drug drug);
-    boolean remove(int id);
-    boolean update(Drug drug);
-    Drug get(int id);
-    List<Drug> getAll();
     boolean getByName(String name);
 }

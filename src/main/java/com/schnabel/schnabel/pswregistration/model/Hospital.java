@@ -6,45 +6,30 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.schnabel.schnabel.misc.model.IIdentifiable;
+
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "hospitals")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @EqualsAndHashCode
-public class Hospital {
+public class Hospital implements IIdentifiable<String>
+{
     @Id
     private String apiKey;
     private String name;
 
-    public Hospital()
-    {
-        this.apiKey = "placeholderapi";
-        this.name = "placeholdername";
-    }
-
-    public Hospital(String name, String api)
-    {
-        this.name = name;
-        this.apiKey = api;
-    }
-
-    public String getName()
-    {
-        return this.name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public String getApiKey()
+	@Override
+    public String getId()
     {
         return this.apiKey;
-    }
-
-    public void setApiKey(String api)
-    {
-        this.apiKey = api;
-    }
+	}
 }

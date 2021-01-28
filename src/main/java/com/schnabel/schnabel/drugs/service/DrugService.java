@@ -1,65 +1,27 @@
 package com.schnabel.schnabel.drugs.service;
 
-import java.util.List;
 import java.util.Locale;
 
 import com.schnabel.schnabel.drugs.model.Drug;
 import com.schnabel.schnabel.drugs.repository.IDrugRepository;
+import com.schnabel.schnabel.misc.implementations.CrudService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DrugService implements IDrugService
+public class DrugService extends CrudService<Drug, Integer> implements IDrugService
 {
-    private IDrugRepository _drugRepository;
 
     @Autowired
-    public DrugService(IDrugRepository drugRepository)
+    public DrugService(IDrugRepository repository)
     {
-        this._drugRepository = drugRepository;
+        super(repository);
     }
 
 	@Override
-    public boolean add(Drug drug)
-    {
-        if(get(drug.getId()) != null) return false;
-        _drugRepository.save(drug);
-        return true;
-	}
-
-	@Override
-    public boolean remove(int id)
-    {
-        Drug drug = get(id);
-        if(drug == null) return false;
-        _drugRepository.delete(drug);
-        return true;
-	}
-
-	@Override
-    public boolean update(Drug drug)
-    {
-        if(get(drug.getId()) == null) return false;
-        _drugRepository.save(drug);
-        return true;
-	}
-
-	@Override
-    public Drug get(int id)
-    {
-		return _drugRepository.findById(id).orElse(null);
-	}
-
-	@Override
-    public List<Drug> getAll()
-    {
-        return (List<Drug>) _drugRepository.findAll();
-	}
-
-    @Override
     public boolean getByName(String name) {
-        List<Drug> drugs = getAll();
+        Iterable<Drug> drugs = getAll();
         for (Drug drug: drugs) {
             if(drug.getName().toLowerCase(Locale.ROOT).contains(name.toLowerCase(Locale.ROOT))) return true;
         }
