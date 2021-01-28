@@ -17,6 +17,6 @@ INSERT INTO pharmacies(city, postcode, street, street_no, avg_rating, "name")
 VALUES('Novi Sad', '21000', 'Balzakova', 44, 4.5, 'Cvjetkovic');
 
 INSERT INTO patients(city, postcode, street, street_no, "name", surname, email)
-VALUES("Novi Sad", "21000", "Balzakova", 69, "Jovan", "Ivosevic", "ivosevic.jovan@uns.ac.rs");
+VALUES('Novi Sad', '21000', 'Balzakova', 69, 'Jovan', 'Ivosevic', 'ivosevic.jovan@uns.ac.rs');
 INSERT INTO patients(city, postcode, street, street_no, "name", surname, email)
-VALUES("Beograd", "11000", "Carlija Caplina", 12, "Petar", "Petrovic", "petrovic.petar@bg.ac.rs");
+VALUES('Beograd', '11000', 'Carlija Caplina', 12, 'Petar', 'Petrovic', 'petrovic.petar@bc.ac.rs');
