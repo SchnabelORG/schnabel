@@ -5,9 +5,11 @@ import com.schnabel.schnabel.pswregistration.model.SpecialOffer;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 @Service
+@ConditionalOnProperty("${custom.rabbitmq.enabled}")
 public class RabbitMQSender
 {
 
