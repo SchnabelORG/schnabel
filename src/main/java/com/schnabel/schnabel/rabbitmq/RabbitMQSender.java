@@ -1,6 +1,6 @@
 package com.schnabel.schnabel.rabbitmq;
 
-import com.schnabel.schnabel.pswregistration.model.SpecialOffer;
+import com.schnabel.schnabel.specialoffer.model.SpecialOffer;
 
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;

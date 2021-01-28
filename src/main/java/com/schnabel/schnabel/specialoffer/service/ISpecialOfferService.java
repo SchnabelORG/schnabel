@@ -1,10 +1,10 @@
-package com.schnabel.schnabel.pswregistration.service;
+package com.schnabel.schnabel.specialoffer.service;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import com.schnabel.schnabel.misc.interfaces.ICrudService;
-import com.schnabel.schnabel.pswregistration.model.SpecialOffer;
+import com.schnabel.schnabel.specialoffer.model.SpecialOffer;
 
 public interface ISpecialOfferService extends ICrudService<SpecialOffer, Integer>
 {

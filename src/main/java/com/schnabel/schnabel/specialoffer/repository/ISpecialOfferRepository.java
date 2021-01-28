@@ -1,6 +1,6 @@
-package com.schnabel.schnabel.pswregistration.repository;
+package com.schnabel.schnabel.specialoffer.repository;
 
-import com.schnabel.schnabel.pswregistration.model.SpecialOffer;
+import com.schnabel.schnabel.specialoffer.model.SpecialOffer;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

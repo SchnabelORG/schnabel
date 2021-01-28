@@ -7,9 +7,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
-import com.schnabel.schnabel.pswregistration.model.SpecialOffer;
-import com.schnabel.schnabel.pswregistration.repository.ISpecialOfferRepository;
-import com.schnabel.schnabel.pswregistration.service.SpecialOfferService;
+import com.schnabel.schnabel.specialoffer.model.SpecialOffer;
+import com.schnabel.schnabel.specialoffer.repository.ISpecialOfferRepository;
+import com.schnabel.schnabel.specialoffer.service.SpecialOfferService;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
