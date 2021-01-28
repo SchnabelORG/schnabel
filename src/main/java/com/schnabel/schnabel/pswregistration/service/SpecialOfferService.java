@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import com.schnabel.schnabel.misc.implementations.CrudService;
 import com.schnabel.schnabel.pswregistration.model.SpecialOffer;
 import com.schnabel.schnabel.pswregistration.repository.ISpecialOfferRepository;
 
@@ -12,49 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SpecialOfferService implements ISpecialOfferService 
+public class SpecialOfferService extends CrudService<SpecialOffer, Integer> implements ISpecialOfferService 
 {
 
-    private final ISpecialOfferRepository repository;
-
     @Autowired
-    public SpecialOfferService(ISpecialOfferRepository repository) {
-        this.repository = repository;
-    }
-
-    @Override
-    public boolean add(SpecialOffer offer) {
-        if (get(offer.getId()) != null)
-            return false;
-        repository.save(offer);
-        return true;
-    }
-
-    @Override
-    public boolean remove(Integer id) {
-        SpecialOffer offer = get(id);
-        if (offer == null)
-            return false;
-        repository.delete(offer);
-        return true;
-    }
-
-    @Override
-    public boolean update(SpecialOffer offer) {
-        if (get(offer.getId()) == null)
-            return false;
-        repository.save(offer);
-        return true;
-    }
-
-    @Override
-    public SpecialOffer get(Integer id) {
-        return repository.findById(id).orElse(null);
-    }
-
-    @Override
-    public Iterable<SpecialOffer> getAll() {
-        return repository.findAll();
+    public SpecialOfferService(ISpecialOfferRepository repository)
+    {
+        super(repository);
     }
 
     @Override

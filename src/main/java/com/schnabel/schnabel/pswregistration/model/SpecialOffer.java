@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.schnabel.schnabel.misc.model.IIdentifiable;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -21,7 +23,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class SpecialOffer
+public class SpecialOffer implements IIdentifiable<Integer>
 {
     @Id
     private int id;
@@ -35,6 +37,12 @@ public class SpecialOffer
     {
         return this.validFrom.compareTo(from) >= 0
             || this.validUntil.compareTo(until) <= 0;
+    }
+
+    @Override
+    public Integer getId()
+    {
+        return this.id;
     }
 
     @Override

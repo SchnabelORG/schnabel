@@ -1,3 +1,5 @@
+-- TODO(Jovan): Use annotations
+
 DROP TABLE IF EXISTS hospitals;
 CREATE TABLE hospitals(api_key VARCHAR(255) PRIMARY KEY, "name" VARCHAR(255));
 
@@ -12,4 +14,7 @@ CREATE TABLE usagereportnotifications("filename" VARCHAR(255) PRIMARY KEY, "endp
 
 DROP TABLE IF EXISTS pharmacies;
 CREATE TABLE pharmacies(id SERIAL PRIMARY KEY, city VARCHAR(255), postcode VARCHAR(255), street VARCHAR(255), street_no INTEGER, avg_rating REAL, "name" VARCHAR(255));
--- NOTE(Jovan): Is table auto-gen?
+
+DROP TABLE IF EXISTS patients;
+CREATE TABLE patients(id SERIAL PRIMARY KEY, city VARCHAR(255), postcode VARCHAR(255), street VARCHAR(255), street_no INTEGER,
+    "name" VARCHAR(255), surname VARCHAR(255), email VARCHAR(255));

@@ -6,17 +6,22 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.schnabel.schnabel.misc.model.Address;
+import com.schnabel.schnabel.misc.model.IIdentifiable;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@Table(name = "pharmacies")
 @Getter
 @Setter
-@Table(name = "pharmacies")
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
-public class Pharmacy
+public class Pharmacy implements IIdentifiable<Integer>
 {
     @Id
     private int id;
@@ -30,18 +35,16 @@ public class Pharmacy
     // TODO(Jovan): Pharmacist list
     // TODO(Jovan): Available drug list
 
-    public Pharmacy()
-    {
-        this.id = 1;
-        this.name = "Placholdername";
-        this.address = new Address();
-        this.avgRating = 5.0;
-    }
-
     public Pharmacy(String name, Address address)
     {
         this.name = name;
         this.address = address;
         this.avgRating = 0.0;
+    }
+
+    @Override
+    public Integer getId()
+    {
+        return this.id;
     }
 }

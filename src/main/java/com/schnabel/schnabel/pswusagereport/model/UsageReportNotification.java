@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.schnabel.schnabel.misc.model.IIdentifiable;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,13 +19,19 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class UsageReportNotification
+public class UsageReportNotification implements IIdentifiable<String>
 {
 
     @Id
     private String filename;
     private String endpoint;
     private String message;
+
+    @Override
+    public String getId()
+    {
+        return this.filename;
+    }
 
     @Override
     public String toString()
