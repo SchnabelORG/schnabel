@@ -4,13 +4,16 @@ import com.schnabel.schnabel.pswregistration.model.SpecialOffer;
 import com.schnabel.schnabel.pswregistration.service.ISpecialOfferService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import java.util.Random; 
 
 
 @Component
-public class ScheduledTasks {
+@ConditionalOnProperty("${custom.rabbitmq.enabled}")
+public class ScheduledTasks
+{
     
     private final RabbitMQSender sender;
     @Autowired

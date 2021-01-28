@@ -9,26 +9,28 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 @Service
+@ConditionalOnProperty("${custom.rabbitmq.enabled}")
 public class RabbitMQListener
 {
 
     // TODO(Jovan): Remove to decouple
-    private IUsageReportNotificationService _notificationService;
+    private IUsageReportNotificationService notificationService;
 
     @Autowired
     public RabbitMQListener(IUsageReportNotificationService notificationService)
     {
-        _notificationService = notificationService;
+        this.notificationService = notificationService;
     }
 
     @RabbitListener(queues = "${custom.rabbitmq.usageReportsQueue}")
     public void consumeMessage(UsageReportNotification message)
     {
         System.out.println("Received: " + message.toString());
-        _notificationService.add(message);
+        this.notificationService.add(message);
 	}
 
 }

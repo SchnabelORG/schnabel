@@ -28,7 +28,8 @@ spring:
 #    password: BHAFy2pYqDLrQxDduUD-03HH-N0ACEVW
 custom:
   port: ${SCHNABEL_PORT}
-  rabbitmq: # 
+  rabbitmq:
+    enabled: false # TODO(Jovan): Move to envvar?
     exchange: psw
     specialOffersQueue: psw-special-offers-queue
     usageReportsQueue: psw-usage-reports-queue
