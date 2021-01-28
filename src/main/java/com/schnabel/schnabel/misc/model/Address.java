@@ -1,4 +1,4 @@
-package com.schnabel.misc;
+package com.schnabel.schnabel.misc.model;
 
 import javax.persistence.Embeddable;
 

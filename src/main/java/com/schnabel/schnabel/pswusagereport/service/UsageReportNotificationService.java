@@ -12,19 +12,19 @@ import org.springframework.stereotype.Service;
 public class UsageReportNotificationService implements IUsageReportNotificationService
 {
 
-    private IUsageReportNotificationRepository _notificationRepository;
+    private IUsageReportNotificationRepository notificationRepository;
 
     @Autowired
     public UsageReportNotificationService(IUsageReportNotificationRepository notificationRepository)
     {
-        _notificationRepository = notificationRepository;
+        this.notificationRepository = notificationRepository;
     }
 
 	@Override
     public boolean add(UsageReportNotification notification)
     {
         if(get(notification.getFilename()) != null) return false;
-        _notificationRepository.save(notification);
+        notificationRepository.save(notification);
         return true;
 	}
 
@@ -33,7 +33,7 @@ public class UsageReportNotificationService implements IUsageReportNotificationS
     {
         UsageReportNotification notification = get(filename);
         if(notification == null) return false;
-        _notificationRepository.delete(notification);
+        notificationRepository.delete(notification);
         return true;
 	}
 
@@ -41,20 +41,20 @@ public class UsageReportNotificationService implements IUsageReportNotificationS
     public boolean update(UsageReportNotification notification)
     {
         if(get(notification.getFilename()) == null) return false;
-        _notificationRepository.save(notification);
+        notificationRepository.save(notification);
         return true;
 	}
 
 	@Override
     public UsageReportNotification get(String filename)
     {
-        return _notificationRepository.findById(filename).orElse(null);
+        return notificationRepository.findById(filename).orElse(null);
 	}
 
 	@Override
-    public List<UsageReportNotification> getAll()
+    public Iterable<UsageReportNotification> getAll()
     {
-        return (List<UsageReportNotification>) _notificationRepository.findAll();
+        return notificationRepository.findAll();
 	}
 
 }

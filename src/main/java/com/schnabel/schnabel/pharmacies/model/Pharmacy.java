@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.schnabel.misc.Address;
+import com.schnabel.schnabel.misc.model.Address;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

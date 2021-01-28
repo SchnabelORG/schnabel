@@ -2,7 +2,6 @@ package com.schnabel.schnabel.pswregistration.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 import com.schnabel.schnabel.pswregistration.repository.IHospitalRepository;
 import com.schnabel.schnabel.pswregistration.model.Hospital;
@@ -10,12 +9,12 @@ import com.schnabel.schnabel.pswregistration.model.Hospital;
 @Service
 public class HospitalService implements IHospitalService{
 
-    private final IHospitalRepository _hospitalRepository;
+    private final IHospitalRepository hospitalRepository;
 
     @Autowired
     public HospitalService(IHospitalRepository repository)
     {
-        this._hospitalRepository = repository;
+        this.hospitalRepository = repository;
     }
 
     @Override
@@ -24,7 +23,7 @@ public class HospitalService implements IHospitalService{
         if(get(hospital.getApiKey()) == null)
         {
             hospital.setApiKey(("api" + hospital.getName() + "1234").replace(' ', '_'));
-            _hospitalRepository.save(hospital);
+            hospitalRepository.save(hospital);
             return true;
         }
         return false;
@@ -38,7 +37,7 @@ public class HospitalService implements IHospitalService{
         {
             return false;
         }
-        _hospitalRepository.delete(h);
+        hospitalRepository.delete(h);
         return true;
     }
 
@@ -46,19 +45,19 @@ public class HospitalService implements IHospitalService{
     public boolean update(Hospital hospital)
     {
         if(get(hospital.getApiKey()) == null) return false;
-        _hospitalRepository.save(hospital);
+        hospitalRepository.save(hospital);
         return true;
     }
 
     @Override
     public Hospital get(String apiKey)
     {
-        return _hospitalRepository.findById(apiKey).orElse(null);
+        return hospitalRepository.findById(apiKey).orElse(null);
     }
 
     @Override
-    public List<Hospital> getAll()
+    public Iterable<Hospital> getAll()
     {
-        return (List<Hospital>) _hospitalRepository.findAll();
+        return hospitalRepository.findAll();
     }
 }

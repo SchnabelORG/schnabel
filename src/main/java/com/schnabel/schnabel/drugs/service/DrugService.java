@@ -1,6 +1,5 @@
 package com.schnabel.schnabel.drugs.service;
 
-import java.util.List;
 import java.util.Locale;
 
 import com.schnabel.schnabel.drugs.model.Drug;
@@ -12,28 +11,28 @@ import org.springframework.stereotype.Service;
 @Service
 public class DrugService implements IDrugService
 {
-    private IDrugRepository _drugRepository;
+    private final IDrugRepository drugRepository;
 
     @Autowired
     public DrugService(IDrugRepository drugRepository)
     {
-        this._drugRepository = drugRepository;
+        this.drugRepository = drugRepository;
     }
 
 	@Override
     public boolean add(Drug drug)
     {
         if(get(drug.getId()) != null) return false;
-        _drugRepository.save(drug);
+        drugRepository.save(drug);
         return true;
 	}
 
 	@Override
-    public boolean remove(int id)
+    public boolean remove(Integer id)
     {
         Drug drug = get(id);
         if(drug == null) return false;
-        _drugRepository.delete(drug);
+        drugRepository.delete(drug);
         return true;
 	}
 
@@ -41,25 +40,25 @@ public class DrugService implements IDrugService
     public boolean update(Drug drug)
     {
         if(get(drug.getId()) == null) return false;
-        _drugRepository.save(drug);
+        drugRepository.save(drug);
         return true;
 	}
 
 	@Override
-    public Drug get(int id)
+    public Drug get(Integer id)
     {
-		return _drugRepository.findById(id).orElse(null);
+		return drugRepository.findById(id).orElse(null);
 	}
 
 	@Override
-    public List<Drug> getAll()
+    public Iterable<Drug> getAll()
     {
-        return (List<Drug>) _drugRepository.findAll();
+        return drugRepository.findAll();
 	}
 
     @Override
     public boolean getByName(String name) {
-        List<Drug> drugs = getAll();
+        Iterable<Drug> drugs = getAll();
         for (Drug drug: drugs) {
             if(drug.getName().toLowerCase(Locale.ROOT).contains(name.toLowerCase(Locale.ROOT))) return true;
         }

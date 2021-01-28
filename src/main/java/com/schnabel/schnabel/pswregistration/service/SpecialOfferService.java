@@ -3,6 +3,7 @@ package com.schnabel.schnabel.pswregistration.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import com.schnabel.schnabel.pswregistration.model.SpecialOffer;
 import com.schnabel.schnabel.pswregistration.repository.ISpecialOfferRepository;
@@ -11,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SpecialOfferService implements ISpecialOfferService {
+public class SpecialOfferService implements ISpecialOfferService 
+{
 
     private final ISpecialOfferRepository repository;
 
@@ -29,7 +31,7 @@ public class SpecialOfferService implements ISpecialOfferService {
     }
 
     @Override
-    public boolean remove(int id) {
+    public boolean remove(Integer id) {
         SpecialOffer offer = get(id);
         if (offer == null)
             return false;
@@ -46,19 +48,21 @@ public class SpecialOfferService implements ISpecialOfferService {
     }
 
     @Override
-    public SpecialOffer get(int id) {
+    public SpecialOffer get(Integer id) {
         return repository.findById(id).orElse(null);
     }
 
     @Override
-    public List<SpecialOffer> getAll() {
-        return (List<SpecialOffer>) repository.findAll();
+    public Iterable<SpecialOffer> getAll() {
+        return repository.findAll();
     }
 
     @Override
-    public List<SpecialOffer> getOffersForTimePeriod(LocalDate from, LocalDate until)
+    public Iterable<SpecialOffer> getOffersForTimePeriod(LocalDate from, LocalDate until)
     {
-        return getAll().stream().filter(so -> so.isValidPeriod(from, until)).collect(Collectors.toList());
+        // TODO(Jovan): Compatible with iterable?
+        return StreamSupport.stream(getAll().spliterator(), false)
+            .filter(so -> so.isValidPeriod(from, until)).collect(Collectors.toList());
     }
     
 }
