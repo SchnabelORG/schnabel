@@ -40,4 +40,9 @@ public class DrugReservation implements IIdentifiable<Integer>
     {
         return this.id;
     }
+
+    public boolean isValid(LocalDate date)
+    {
+        return this.validUntil.compareTo(date) >= 0;
+    }
 }
