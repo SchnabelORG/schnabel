@@ -1,7 +1,6 @@
 package com.schnabel.schnabel.specialoffer.service;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import com.schnabel.schnabel.misc.interfaces.ICrudService;
 import com.schnabel.schnabel.specialoffer.model.SpecialOffer;

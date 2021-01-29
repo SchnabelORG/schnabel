@@ -3,7 +3,6 @@ package com.schnabel.schnabel.misc.implementations;
 import com.schnabel.schnabel.misc.interfaces.ICrudService;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 
 public class CrudService<T extends IIdentifiable<ID>, ID> implements ICrudService<T, ID>

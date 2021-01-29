@@ -1,7 +1,5 @@
 package com.schnabel.schnabel.pswusagereport.controller;
 
-import java.util.List;
-
 import com.schnabel.schnabel.pswusagereport.model.UsageReportNotification;
 import com.schnabel.schnabel.pswusagereport.service.IUsageReportNotificationService;
 
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UsageReportNotificationController
 {
-
     private IUsageReportNotificationService notificationService;
 
     public UsageReportNotificationController(IUsageReportNotificationService notificationService)

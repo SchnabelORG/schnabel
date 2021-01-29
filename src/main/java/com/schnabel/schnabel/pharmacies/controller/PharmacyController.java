@@ -1,11 +1,8 @@
 package com.schnabel.schnabel.pharmacies.controller;
 
-import java.util.List;
-
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.pharmacies.service.IPharmacyService;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
