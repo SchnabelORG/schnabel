@@ -9,16 +9,21 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 
 @Component
-class VueRoutePathFilter implements WebFilter {
+class VueRoutePathFilter implements WebFilter
+{
 
-        private ArrayList<String> BOOT_PATHS = new ArrayList<String>(){{
+    private final ArrayList<String> BOOT_PATHS = new ArrayList<String>()
+    {
+        private static final long serialVersionUID = 1929150336885770015L;
+        {
             add("/actuator/");
             add("/api/");
             add("/js/");
             add("/css/");
             add("/img/");
 
-        }};
+        }
+    };
 
 
         private final String SPA_PATH = "/index.html";

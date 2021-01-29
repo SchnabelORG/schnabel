@@ -1,7 +1,5 @@
 package com.schnabel.schnabel.specialoffer.controller;
 
-import java.util.List;
-
 import com.schnabel.schnabel.specialoffer.model.SpecialOffer;
 import com.schnabel.schnabel.specialoffer.service.ISpecialOfferService;
 

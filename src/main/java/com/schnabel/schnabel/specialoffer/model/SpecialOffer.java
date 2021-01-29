@@ -1,7 +1,6 @@
-package com.schnabel.schnabel.pswregistration.model;
+package com.schnabel.schnabel.specialoffer.model;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
