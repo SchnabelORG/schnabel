@@ -1,6 +1,12 @@
 package com.schnabel.schnabel.misc.model;
 
-public interface IIdentifiable<ID>
+/**
+ * Interface used for entities containing ID's
+ * 
+ * @param <I> Type of ID variable
+ */
+
+public interface IIdentifiable<I>
 {
-    public ID getId();
+    public I getId();
 }

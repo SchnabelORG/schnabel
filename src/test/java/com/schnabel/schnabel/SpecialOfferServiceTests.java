@@ -16,7 +16,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 
-public class SpecialOfferServiceTests {
+class SpecialOfferServiceTests {
 
     @ParameterizedTest
     @MethodSource("datePeriods")

@@ -30,6 +30,6 @@ public class SpecialOfferController {
     @ExceptionHandler(RuntimeException.class)
     public final ResponseEntity<Exception> handleAllExceptions(Exception exception)
     {
-        return new ResponseEntity<Exception>(exception, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(exception, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
