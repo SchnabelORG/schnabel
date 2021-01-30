@@ -1,0 +1,23 @@
+sudo: required
+language: java
+jdk: openjdk11
+
+services:
+  - postgresql
+
+before_install:
+  - chmod +x mvnw
+
+before_script:
+  - psql -c "CREATE DATABASE isadb;" -U postgres
+  - psql -c "CREATE USER isa WITH PASSWORD 'isa';" -U postgres
+
+script:
+  - ./mvnw clean install -DskipTests=false -B
+
+dist: trusty
+
+deploy:
+  provider: heroku
+  api_key: $HEROKU_API_KEY
+  app: schnabel
