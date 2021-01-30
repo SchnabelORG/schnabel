@@ -2,7 +2,6 @@ sudo: required
 language: java
 jdk: openjdk11
 
-secure: "3gZ8gnn5Gaa9kqzvY7/1uV+qUD2lk+W7pWb5IE2z7mzy6pDaDgm2jFLTfZKKD9HpcaNTPCOPrOjp2E7bRQhusr8ngzQF2BEJAJ62bMwUpvpMeGeqrJ9+oFXIXlLaycB8xoQ+S299iLGVmvrHbzw0FYNjooo1hpma6NB+lRjtXgRdhewMHj2+tSg183Jy3CqE0C1EfEJ4/                  MP0c4oF1NZ68jUW8uneaLmFyq9BIKSCExm2JHlz4uNiP9u1HW9+54FVwNuLge44JN1vtwLrON7ncPWfjSQ7RXIXzMGoN7cwAmuCKQIs0IxQ4Sip4boJX7kEXvjfrN9EYN0V/cMVFbBZqZQOcaH3R7llDPjKcQZr4hiDrHbdazLJ4c17yuwWp0DnU2hd/myxbp2Yfa/MPh8JPCQxvq3f0OUd+bLMWSH7s7jZlVES665nB9297w6X6Lhrm0398dGBZ5q6Lv3JpKIIJZK/qtjHpFlVIjQy9kj7CtYd6vmBfMMDCr9HFpBBazoSDjcM/E+uwDSnQLcH1xcfvaRcFgqC/GEYrkjEBDMYK9h5tGRuKlAII/aCMaAb1OErMDbvcp0cWvlKKyLIZKjT4A3Vcsqum5bWVhqmcDIABEfT7qWN23VcZ1UhO6rtyb8XOLeOVXgOyzEX3LFYuvNsEzLkKg0WHZZ1qArJ/MnRfDs="
 services:
   - postgresql
 
@@ -13,8 +12,16 @@ before_script:
   - psql -c "CREATE DATABASE isadb;" -U postgres
   - psql -c "CREATE USER isa WITH PASSWORD 'isa';" -U postgres
 
+addons:
+  sonarcloud:
+    organization: "schnabelorg"
+    token:
+      secure: "3gZ8gnn5Gaa9kqzvY7/1uV+qUD2lk+W7pWb5IE2z7mzy6pDaDgm2jFLTfZKKD9HpcaNTPCOPrOjp2E7bRQhusr8ngzQF2BEJAJ62bMwUpvpMeGeqrJ9+oFXIXlLaycB8xoQ+S299iLGVmvrHbzw0FYNjooo1hpma6NB+lRjtXgRdhewMHj2+tSg183Jy3CqE0C1EfEJ4/                  MP0c4oF1NZ68jUW8uneaLmFyq9BIKSCExm2JHlz4uNiP9u1HW9+54FVwNuLge44JN1vtwLrON7ncPWfjSQ7RXIXzMGoN7cwAmuCKQIs0IxQ4Sip4boJX7kEXvjfrN9EYN0V/cMVFbBZqZQOcaH3R7llDPjKcQZr4hiDrHbdazLJ4c17yuwWp0DnU2hd/myxbp2Yfa/MPh8JPCQxvq3f0OUd+bLMWSH7s7jZlVES665nB9297w6X6Lhrm0398dGBZ5q6Lv3JpKIIJZK/qtjHpFlVIjQy9kj7CtYd6vmBfMMDCr9HFpBBazoSDjcM/E+uwDSnQLcH1xcfvaRcFgqC/GEYrkjEBDMYK9h5tGRuKlAII/aCMaAb1OErMDbvcp0cWvlKKyLIZKjT4A3Vcsqum5bWVhqmcDIABEfT7qWN23VcZ1UhO6rtyb8XOLeOVXgOyzEX3LFYuvNsEzLkKg0WHZZ1qArJ/MnRfDs="
+
 script:
   - ./mvnw clean install -DskipTests=false -B
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=SchnabelORG_schnabel
 
 dist: trusty
 
