@@ -4,26 +4,38 @@
         id="specialoffer-card"
         elevation="2">
             <v-card-title>Special offer</v-card-title>
-            <v-card-subtitle v-if="apiKey">
-                <b class="green--text">Special offer name:</b> {{apiKey}}
-                <div><b class="green--text">Special offer content:</b> {{}}</div>
-            </v-card-subtitle>
-            <v-card-subtitle v-else-if="failedMsg"><b class="red--text">{{failedMsg}}</b></v-card-subtitle>
             <v-card-text>
                 <v-form v-model="valid">
                     <v-text-field
                     v-model="name"
                     :rules="nameRules"
-                    label="Hospital Name"
+                    label="Name"
                     ></v-text-field>
+                <v-form v-model="valid">
+                    <v-text-field
+                    v-model="content"
+                    :rules="nameRules"
+                    label="Content"
+                    ></v-text-field>
+                </v-form>
+                <v-form>
+                    <v-text>
+                        Period
+                    </v-text>
+                </v-form>
+                <v-form>
+                    <v-date-picker v-model="dateRange"
+                                range 
+                                :min="new Date().toISOString().substr(0, 10)">
+                    </v-date-picker>
                 </v-form>
             </v-card-text>
             <v-card-actions>
                 <v-btn 
                 color="primary"
                 elevation="1"
-                @click="add"
-                :disabled="!valid"
+                @click="add" 
+                :disabled="!dateRange[0] || !dateRange[1] || !name || !content"
                 >Add</v-btn>
             </v-card-actions>
         </v-card>
@@ -36,15 +48,31 @@
             return {
                 name: '',
                 content: '',
-                failedMsg: "",
+                dateRange: "",
             }
         },
         methods: {
             add: function() {
-                if (!this.valid) return;
-                this.failedMsg = "";
-                this.apiKey = "";
             },
         },
     }
 </script>
+
+<style scoped>
+    #specialoffer-main {
+        background: linear-gradient(69deg, rgba(63,81,181,1) 5%, rgba(197,202,233,1) 100%); 
+    }
+    #specialoffer-card {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        width: 40%;
+    }
+    #specialoffer-main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100vw;
+        min-height: 100vh;
+    }
+</style>

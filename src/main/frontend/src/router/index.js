@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import PSWRegistration from '../views/PSWRegistration.vue'
 import PSWUsageReport from '../views/PSWUsageReport.vue'
+import SpecialOffer from '../views/SpecialOffer.vue'
+
 
 Vue.use(VueRouter)
 

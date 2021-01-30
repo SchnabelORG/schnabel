@@ -28,5 +28,16 @@ public class SpecialOfferService extends CrudService<SpecialOffer, Integer> impl
         return StreamSupport.stream(getAll().spliterator(), false)
             .filter(so -> so.isValidPeriod(from, until)).collect(Collectors.toList());
     }
+
+    @Override
+    public boolean add(SpecialOffer specialOffer)
+    {
+        if(get(specialOffer.getId()) == null)
+        {
+            repository.save(specialOffer);
+            return true;
+        }
+        return false;
+    }
     
 }

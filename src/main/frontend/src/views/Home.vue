@@ -12,6 +12,9 @@
           <router-link to="/pswreports" v-slot="{href, navigate}">
             <v-btn :href="href" @click="navigate" class="accent" elevation="1">View reports</v-btn>
           </router-link>
+           <router-link to="/specialoffer" v-slot="{href, navigate}">
+            <v-btn :href="href" @click="navigate" class="accent" elevation="1">Add special offer</v-btn>
+          </router-link>
         </div>
       </div>
       <div id="header-img">
