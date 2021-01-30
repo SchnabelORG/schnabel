@@ -1,4 +1,5 @@
 # Apothecary Schnabel  
+[![Build Status](https://travis-ci.com/SchnabelORG/schnabel.svg?branch=develop)](https://travis-ci.com/SchnabelORG/schnabel)
 Internet Software Architectures class project
 
 Centralized Pharmacy Information System allowing users to acquire medical supplies  
