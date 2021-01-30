@@ -1,24 +1,19 @@
 package com.schnabel.schnabel.pswusagereport.controller;
 
-import java.util.List;
-
 import com.schnabel.schnabel.pswusagereport.model.UsageReportNotification;
 import com.schnabel.schnabel.pswusagereport.service.IUsageReportNotificationService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class UsageReportNotificationController
 {
-
     private IUsageReportNotificationService notificationService;
 
     public UsageReportNotificationController(IUsageReportNotificationService notificationService)

@@ -1,7 +1,6 @@
 package com.schnabel.schnabel.specialoffer.service;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 

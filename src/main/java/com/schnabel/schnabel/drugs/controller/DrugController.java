@@ -29,7 +29,6 @@ public class DrugController
             : ResponseEntity.ok(drug);
     }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/pswapi/drugs/name/{name}")
     public ResponseEntity<String> getById(@PathVariable String name)
     {
@@ -44,7 +43,6 @@ public class DrugController
         return ResponseEntity.ok(drugService.getAll());
     }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("/pswapi/drugs/urgent")
     public ResponseEntity<String> getUrgentRequest(@RequestBody UrgentProcurementPequest urgentProcurementRequest)
     {

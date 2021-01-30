@@ -1,0 +1,31 @@
+sudo: required
+language: java
+jdk: openjdk11
+
+services:
+  - postgresql
+
+before_install:
+  - chmod +x mvnw
+
+before_script:
+  - psql -c "CREATE DATABASE isadb;" -U postgres
+  - psql -c "CREATE USER isa WITH PASSWORD 'isa';" -U postgres
+
+addons:
+  sonarcloud:
+    organization: "schnabelorg"
+    token: $SONAR_TOKEN
+
+
+script:
+  - ./mvnw clean install -DskipTests=false -B
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - ./mvnw sonar:sonar -Dsonar.projectKey=$PROJECT_KEY -Dsonar.organization=schnabelorg -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
+
+dist: trusty
+
+deploy:
+  provider: heroku
+  api_key: $HEROKU_API_KEY
+  app: schnabel
