@@ -28,6 +28,8 @@ spring:
 #    password: BHAFy2pYqDLrQxDduUD-03HH-N0ACEVW
 custom:
   port: ${SCHNABEL_PORT}
+  amazon: 
+    enabled: false
   rabbitmq:
     enabled: false # TODO(Jovan): Move to envvar?
     exchange: psw
@@ -37,8 +39,8 @@ custom:
     usageReportsKey: psw.usagereports
     
 
-amazonProperties:
-  endpointUrl: ${AWS_ENDPOINT}  
-  accessKey: ${AWS_ACCESS_KEY}  
-  secretKey: ${AWS_SECRET_KEY}  
-  bucketName: ${AWS_BUCKET_NAME} 
+# amazonProperties:
+#   endpointUrl: ${AWS_ENDPOINT}  
+#   accessKey: ${AWS_ACCESS_KEY}  
+#   secretKey: ${AWS_SECRET_KEY}  
+#   bucketName: ${AWS_BUCKET_NAME} 

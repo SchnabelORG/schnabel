@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
+@ConditionalOnProperty("${custom.amazon.enabled}")
 public class AmazonClient 
 {
     private AmazonS3 _s3Client;
