@@ -22,6 +22,11 @@ const routes = [
     name: 'PSWUsageReport',
     component: PSWUsageReport,
   },
+  {
+    path: '/specialoffer',
+    name: 'SpecialOffer',
+    component: SpecialOffer,
+  },
 ]
 
 const router = new VueRouter({
