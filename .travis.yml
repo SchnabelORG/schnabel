@@ -8,6 +8,10 @@ services:
 before_install:
   - chmod +x mvnw
 
+before_script:
+  -psql -c "CREATE DATABASE isadb;" -U postgres
+  -psql -c "CREATE USER isa WITH PASSWORD 'isa';" -U postgres
+
 script:
   - ./mvnw clean install -DskipTests=false -B
 
