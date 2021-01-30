@@ -27,7 +27,6 @@ public class RegistrationController
         this.hospitalService = hospitalService;
     }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/pswapi/{api}")
     ResponseEntity<String> getByAPIKey(@PathVariable String api)
     {
