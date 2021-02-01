@@ -12,7 +12,7 @@ CREATE TABLE drugs(id SERIAL PRIMARY KEY, "name" VARCHAR(255), description VARCH
 DROP TABLE IF EXISTS usagereportnotifications;
 CREATE TABLE usagereportnotifications("filename" VARCHAR(255) PRIMARY KEY, "endpoint" VARCHAR(255), "message" VARCHAR(255));
 
-DROP TABLE IF EXISTS pharmacies;
+DROP TABLE IF EXISTS pharmacies CASCADE;
 CREATE TABLE pharmacies(id SERIAL PRIMARY KEY, city VARCHAR(255), postcode VARCHAR(255), street VARCHAR(255), street_no INTEGER, avg_rating REAL, "name" VARCHAR(255));
 
 DROP TABLE IF EXISTS patients CASCADE;
