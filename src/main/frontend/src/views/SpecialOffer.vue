@@ -18,17 +18,61 @@
                     label="Content"
                     ></v-text-field>
                 </v-form>
-                <v-form>
-                    <v-text>
-                        Period
-                    </v-text>
-                </v-form>
-                <v-form>
-                    <v-date-picker v-model="dateRange"
-                                range 
-                                :min="new Date().toISOString().substr(0, 10)">
-                    </v-date-picker>
-                </v-form>
+                <template>
+                    <v-menu
+                        ref="menu"
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                        >
+                        <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                            v-model="dateRange[0]"
+                            label="Special offer valid from"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                        ></v-text-field>
+                        </template>
+                        <v-date-picker
+                        ref="picker"
+                        v-model="dateRange[0]"
+                        :max="dateRange[1]"
+                        :min="new Date().toISOString().substr(0, 10)"
+                        @change="save"
+                        ></v-date-picker>
+                    </v-menu>
+                    </template>
+                    <template>
+                    <v-menu
+                        ref="menuto"
+                        v-model="menuto"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                        >
+                        <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                            v-model="dateRange[1]"
+                            label="Special offer valid to"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                        ></v-text-field>
+                        </template>
+                        <v-date-picker
+                        ref="picker"
+                        v-model="dateRange[1]"
+                        :min="dateRange[0]"
+                        @change="saveto"
+                        ></v-date-picker>
+                    </v-menu>
+                    </template>
             </v-card-text>
             <v-card-actions>
                 <v-btn 
@@ -48,11 +92,27 @@
             return {
                 name: '',
                 content: '',
-                dateRange: "",
+                dateRange: [],
+                menu: false,
+                menuto: false,
             }
         },
         methods: {
             add: function() {
+                let specialoffer = { id: 5, name: this.name, content: this.content, validFrom: this.dateRange[0], validUntil: this.dateRange[1], pharmacyId: "Jankovic" };
+                this.axios.post("specialoffer", specialoffer)
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(response => {
+                    console.log(response);
+                })
+            },
+            save (date) {
+                this.$refs.menu.save(date)
+            },
+            saveto (date) {
+                this.$refs.menuto.saveto(date)
             },
         },
     }
