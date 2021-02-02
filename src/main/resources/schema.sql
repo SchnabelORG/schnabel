@@ -18,3 +18,7 @@ CREATE TABLE pharmacies(id SERIAL PRIMARY KEY, city VARCHAR(255), postcode VARCH
 DROP TABLE IF EXISTS patients CASCADE;
 CREATE TABLE patients(id SERIAL PRIMARY KEY, city VARCHAR(255), postcode VARCHAR(255), street VARCHAR(255), street_no INTEGER,
     "name" VARCHAR(255), surname VARCHAR(255), email VARCHAR(255));
+
+DROP TABLE IF EXISTS pharmacyadmins CASCADE;
+CREATE TABLE pharmacyadmins(id SERIAL PRIMARY KEY, city VARCHAR(255), postcode VARCHAR(255), street VARCHAR(255), street_no INTEGER,
+    "name" VARCHAR(255), surname VARCHAR(255), email VARCHAR(255), pharmacy_id INTEGER);
