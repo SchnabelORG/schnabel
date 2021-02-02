@@ -12,9 +12,6 @@
           <router-link to="/pswreports" v-slot="{href, navigate}">
             <v-btn :href="href" @click="navigate" class="accent" elevation="1">View reports</v-btn>
           </router-link>
-          <router-link to="/pricelist" v-slot="{href, navigate}">
-            <v-btn :href="href" @click="navigate" class="accent" elevation="1">PriceList</v-btn>
-          </router-link>
         </div>
       </div>
       <div id="header-img">

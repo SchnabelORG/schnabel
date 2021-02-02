@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import PSWRegistration from '../views/PSWRegistration.vue'
 import PSWUsageReport from '../views/PSWUsageReport.vue'
-import PriceList from '../views/PriceList.vue'
 
 Vue.use(VueRouter)
 
@@ -22,11 +21,6 @@ const routes = [
     path: '/pswreports',
     name: 'PSWUsageReport',
     component: PSWUsageReport,
-  },
-  {
-    path: '/pricelist',
-    name: 'PriceList',
-    component: PriceList,
   },
 ]
 
