@@ -1,7 +1,6 @@
 package com.schnabel.schnabel.drugreservations.service;
 
 import java.time.LocalDate;
-import java.util.logging.StreamHandler;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -10,8 +9,10 @@ import com.schnabel.schnabel.drugreservations.repository.IDrugReservationReposit
 import com.schnabel.schnabel.misc.implementations.CrudService;
 
 import org.springframework.stereotype.Service;
-import org.springframework.util.StreamUtils;
 
+/**
+ * Implementation of drug reservation service
+ */
 @Service
 public class DrugReservationService extends CrudService<DrugReservation, Integer>
     implements IDrugReservationService

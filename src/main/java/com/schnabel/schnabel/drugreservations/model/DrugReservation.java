@@ -18,6 +18,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Used for tracking drug reservations
+ * 
+ */
 @Entity
 @Table(name = "drugreservations")
 @NoArgsConstructor
@@ -41,6 +45,12 @@ public class DrugReservation implements IIdentifiable<Integer>
         return this.id;
     }
 
+    /**
+     * Checks whether the reservation is still valid
+     * compared to the date parameter
+     * @param date used for checking validity
+     * @return true if <b>date</b> is before reservation date
+     */
     public boolean isValid(LocalDate date)
     {
         return this.validUntil.compareTo(date) >= 0;
