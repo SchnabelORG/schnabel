@@ -21,3 +21,7 @@ VALUES('Novi Sad', '21000', 'Balzakova', 69, 'Jovan', 'Ivosevic', 'ivosevic.jova
 INSERT INTO patients(city, postcode, street, street_no, "name", surname, email)
 VALUES('Beograd', '11000', 'Carlija Caplina', 12, 'Petar', 'Petrovic', 'petrovic.petar@bc.ac.rs');
 
+INSERT INTO drugreservations(valid_until, drug_id, patient_id)
+VALUES('2021-02-03', 1, 1);
+INSERT INTO drugreservations(valid_until, drug_id, patient_id)
+VALUES('2021-02-01', 1, 2);

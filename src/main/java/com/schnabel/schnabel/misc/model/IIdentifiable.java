@@ -8,5 +8,9 @@ package com.schnabel.schnabel.misc.model;
 
 public interface IIdentifiable<I>
 {
+    /**
+     * 
+     * @return id
+     */
     public I getId();
 }
