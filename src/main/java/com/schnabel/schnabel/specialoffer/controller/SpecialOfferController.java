@@ -1,9 +1,7 @@
-package com.schnabel.schnabel.pswregistration.controller;
+package com.schnabel.schnabel.specialoffer.controller;
 
-import java.util.List;
-
-import com.schnabel.schnabel.pswregistration.model.SpecialOffer;
-import com.schnabel.schnabel.pswregistration.service.ISpecialOfferService;
+import com.schnabel.schnabel.specialoffer.model.SpecialOffer;
+import com.schnabel.schnabel.specialoffer.service.ISpecialOfferService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +30,6 @@ public class SpecialOfferController {
     @ExceptionHandler(RuntimeException.class)
     public final ResponseEntity<Exception> handleAllExceptions(Exception exception)
     {
-        return new ResponseEntity<Exception>(exception, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(exception, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

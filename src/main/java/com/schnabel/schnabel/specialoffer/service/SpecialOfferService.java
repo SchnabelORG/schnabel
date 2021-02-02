@@ -1,13 +1,12 @@
-package com.schnabel.schnabel.pswregistration.service;
+package com.schnabel.schnabel.specialoffer.service;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import com.schnabel.schnabel.misc.implementations.CrudService;
-import com.schnabel.schnabel.pswregistration.model.SpecialOffer;
-import com.schnabel.schnabel.pswregistration.repository.ISpecialOfferRepository;
+import com.schnabel.schnabel.specialoffer.model.SpecialOffer;
+import com.schnabel.schnabel.specialoffer.repository.ISpecialOfferRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

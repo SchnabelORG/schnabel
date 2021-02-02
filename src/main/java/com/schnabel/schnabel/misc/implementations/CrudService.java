@@ -3,15 +3,20 @@ package com.schnabel.schnabel.misc.implementations;
 import com.schnabel.schnabel.misc.interfaces.ICrudService;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 
-public class CrudService<T extends IIdentifiable<ID>, ID> implements ICrudService<T, ID>
+/**
+ * Implementation of a basic CRUD service
+ * 
+ * @param <T> Represents the type of object for which the service is used for
+ * @param <I> Represents the type with which <T> is identified
+ */
+
+public class CrudService<T extends IIdentifiable<I>, I> implements ICrudService<T, I>
 {
+    protected CrudRepository<T, I> repository;
 
-    protected CrudRepository<T, ID> repository;
-
-    public CrudService(CrudRepository<T, ID> repository)
+    public CrudService(CrudRepository<T, I> repository)
     {
         this.repository = repository;
     }
@@ -28,7 +33,7 @@ public class CrudService<T extends IIdentifiable<ID>, ID> implements ICrudServic
 	}
 
 	@Override
-    public boolean remove(ID id)
+    public boolean remove(I id)
     {
         if(repository.existsById(id))
         {
@@ -50,7 +55,7 @@ public class CrudService<T extends IIdentifiable<ID>, ID> implements ICrudServic
 	}
 
 	@Override
-    public T get(ID id)
+    public T get(I id)
     {
         return repository.findById(id).orElse(null);
 	}

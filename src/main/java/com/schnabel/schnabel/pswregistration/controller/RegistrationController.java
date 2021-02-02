@@ -6,7 +6,6 @@ import com.schnabel.schnabel.pswregistration.service.IHospitalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RegistrationController
 {
-
     private final IHospitalService hospitalService;
 
     @Autowired
@@ -27,9 +25,8 @@ public class RegistrationController
         this.hospitalService = hospitalService;
     }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/pswapi/{api}")
-    ResponseEntity<String> getByAPIKey(@PathVariable String api)
+    public ResponseEntity<String> getByAPIKey(@PathVariable String api)
     {
         Hospital hospital = hospitalService.get(api);
         return hospital == null ? 
@@ -38,7 +35,7 @@ public class RegistrationController
     }
 
     @PostMapping("/pswapi")
-    ResponseEntity<String> register(@RequestBody Hospital hospital)
+    public ResponseEntity<String> register(@RequestBody Hospital hospital)
     {
         return hospitalService.add(hospital) ?
             ResponseEntity.ok(hospital.getApiKey()) :
@@ -48,6 +45,6 @@ public class RegistrationController
     @ExceptionHandler(RuntimeException.class)
     public final ResponseEntity<Exception> handleAllExceptions(RuntimeException exception)
     {
-        return new ResponseEntity<Exception>(exception, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(exception, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
