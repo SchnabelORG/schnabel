@@ -17,6 +17,8 @@
                                 <td>{{row.item.id}}</td>
                                 <td>{{row.item.name}}</td>
                                 <td>{{row.item.price}}</td>
+                                <td>{{row.item.priceDuration.startTime}}</td>
+                                <td>{{row.item.priceDuration.endTime}}</td>
                                 <td>
                                     <v-btn class="deep-orange white--text" elevation="1" @click="modify(row.item.id)">
                                         Modify
@@ -60,8 +62,8 @@
                         </v-card-subtitle>
                     </v-form>
                     <v-form>
-                        <v-date-picker v-model="drug.periodDuration"
-                                range 
+                        <v-date-picker v-model="drug.priceDuration.startTime"
+                                
                                 :min="new Date().toISOString().substr(0, 10)">
                         </v-date-picker>
                     </v-form>
@@ -134,6 +136,8 @@
 					{ text: "Id",  value: "id"},
 					{ text: "Name",  value: "name"},
                     { text: "Price",  value: "price"},
+                    { text: "Price valid from",  value: "startTime"},
+                    { text: "Price valid to",  value: "endTime"},
                     { text: "Modify" },
                     { text: "Delete" },
                 ],
