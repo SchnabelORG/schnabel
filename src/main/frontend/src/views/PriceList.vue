@@ -56,17 +56,60 @@
                         label="Price"
                         ></v-text-field>
                     </v-form>
-                    <v-form>
-                        <v-card-subtitle>
-                            Period
-                        </v-card-subtitle>
-                    </v-form>
-                    <v-form>
-                        <v-date-picker v-model="drug.priceDuration.startTime"
-                                
-                                :min="new Date().toISOString().substr(0, 10)">
-                        </v-date-picker>
-                    </v-form>
+                    <template>
+                    <v-menu
+                        ref="menu"
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                        >
+                        <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                            v-model="drug.priceDuration.startTime"
+                            label="Price valid from"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                        ></v-text-field>
+                        </template>
+                        <v-date-picker
+                        ref="picker"
+                        v-model="drug.priceDuration.startTime"
+                        :min="drug.priceDuration.startTime"
+                        @change="save"
+                        ></v-date-picker>
+                    </v-menu>
+                    </template>
+                    <template>
+                    <v-menu
+                        ref="menuto"
+                        v-model="menuto"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                        >
+                        <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                            v-model="drug.priceDuration.endTime"
+                            label="Price valid to"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                        ></v-text-field>
+                        </template>
+                        <v-date-picker
+                        ref="picker"
+                        v-model="drug.priceDuration.endTime"
+                        :min="drug.priceDuration.startTime"
+                        @change="saveto"
+                        ></v-date-picker>
+                    </v-menu>
+                    </template>
                     <v-btn class="deep-orange white--text" elevation="0" @click="update" :disabled="!drug.price">
                             Save
                     </v-btn>
@@ -100,19 +143,65 @@
                         label="Price"
                         ></v-text-field>
                    </v-form>
-                    <v-form>
-                        <v-card-subtitle>
-                            Period
-                        </v-card-subtitle>
-                    </v-form>
-                    <v-form>
-                        <v-date-picker v-model="addperiodDuration"
-                            range 
-                            :min="new Date().toISOString().substr(0, 10)">
-                        </v-date-picker>
-                    </v-form>
-                    <v-btn class="deep-orange white--text" elevation="0" @click="save" :disabled="!addperiodDuration[0] || !addperiodDuration[1] || !addname || !adddescription || !addprice">
+                    <template>
+                    <v-menu
+                        ref="menuadd"
+                        v-model="menuadd"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                        >
+                        <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                            v-model="addperiodDuration[0]"
+                            label="Price valid from"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                        ></v-text-field>
+                        </template>
+                        <v-date-picker
+                        ref="picker"
+                        v-model="addperiodDuration[0]"
+                        :min="new Date().toISOString().substr(0, 10)"
+                        @change="saveadd"
+                        ></v-date-picker>
+                    </v-menu>
+                    </template>
+                    <template>
+                    <v-menu
+                        ref="menuaddto"
+                        v-model="menuaddto"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                        >
+                        <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                            v-model="addperiodDuration[1]"
+                            label="Price valid to"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                        ></v-text-field>
+                        </template>
+                        <v-date-picker
+                        ref="picker"
+                        v-model="addperiodDuration[1]"
+                        :min="addperiodDuration[0]"
+                        @change="saveaddto"
+                        ></v-date-picker>
+                    </v-menu>
+                    </template>
+                    <v-btn class="deep-orange white--text" elevation="0" @click="savedrug" :disabled="!addperiodDuration[0] || !addperiodDuration[1] || !addname || !adddescription || !addprice">
                             Save
+                    </v-btn>
+                    <v-btn class="deep-orange white--text" elevation="0" @click="back">
+                            Back
                     </v-btn>
                 </div>
             </v-card>
@@ -129,9 +218,13 @@
                 show: true,
                 showadd: false,
                 addname: '',
-                adddescription: '',
+                adaddescription: '',
                 addprice: '',
-                addperiodDuration: '',
+                addperiodDuration: [],
+                menu: false,
+                menuto: false,
+                menuadd: false,
+                menuaddto: false,
                 headers: [
 					{ text: "Id",  value: "id"},
 					{ text: "Name",  value: "name"},
@@ -182,13 +275,37 @@
                 this.showadd = !this.showadd;
                 this.getDrugs();
 
-
-
             },
-            save: function() {
+            savedrug: function() {
                 this.showadd = !this.showadd;
                 this.getDrugs();
-            }
+                if(typeof this.addprice === 'number')
+                {
+                    let adddrug = {name: this.addname, description: this.adddescription, price: this.addprice, priceDuration: this.addperiodDuration }
+                    alert(adddrug.name);
+                }
+
+                this.addname = '';
+                this.adddescription = '';
+                this.addprice = '';
+                this.addperiodDuration = [];
+            },
+            back: function() {
+                this.showadd = !this.showadd;
+                this.getDrugs();
+            },
+            save (date) {
+                this.$refs.menu.save(date)
+            },
+            saveto (date) {
+                this.$refs.menuto.saveto(date)
+            },
+            saveadd (date) {
+                this.$refs.menuadd.saveadd(date)
+            },
+            saveaddto (date) {
+                this.$refs.menuaddto.saveaddto(date)
+            },
         },
         mounted() {
 			this.getDrugs();
