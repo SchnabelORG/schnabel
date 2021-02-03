@@ -1,12 +1,12 @@
 <template>
-    <div id="markeorder-main">
+    <div id="makeorder-main">
         <v-card
         id="makeorder-card"
         elevation="2">
             <v-card-title>Make order</v-card-title>
             <v-card-text id="drug-card">
                 <v-form id="tenders-add">
-                    <v-combobox v-model="drugs"
+                    <v-combobox v-model="drugItem"
                                 :items="drugs"
                                 return-object="true"
                                 label="Drug"
@@ -31,7 +31,7 @@
                                     :items="orderItems">
                         <template v-slot:item="row">
                             <tr>
-                                <td>{{row.item.drug.id}}</td>
+                                <td>{{row.item.drug.name}}</td>
                                 <td>{{row.item.quantity}}</td>
                             </tr>
                         </template>
@@ -69,8 +69,8 @@
                 ></v-date-picker>
             </v-menu>
             </template>
-            <v-btn id="add-btn" class="deep-orange white--text" elevation="0" @click="add" :disabled="!deadline">
-                Add
+            <v-btn id="add-btn" class="deep-orange white--text" elevation="0" @click="makeOrder" :disabled="!deadline || !description || !orderItems">
+                Make offer
             </v-btn>
         </v-card>
     </div>
@@ -85,6 +85,7 @@
                 description: '',
                 menu: false,
                 drugs: [],
+                drugItem: '',
                 orderItems: [],
                 drugHeaders: [
                     { text: "Name"}, 
@@ -115,7 +116,26 @@
 					})
             },
             add: function() {
+                this.orderItems.push({ drug: this.drugItem, quantity : this.quantity });
+                this.drugItem = '';
+                this.quantity = '';
+            },
+            makeOrder: function() {
                 
+                let order = { 
+
+
+
+                };
+                this.axios.post("/order", order)
+					.then(response => {
+						console.log(response);
+					})
+					.catch(response => {
+						console.log(response);
+					})
+					.finally(function(){
+					})
             },
             save (date) {
                 this.$refs.menu.save(date)

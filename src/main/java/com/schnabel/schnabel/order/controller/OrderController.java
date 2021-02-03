@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+/**
+ * Order REST controller
+ */
 @RestController
 public class OrderController 
 {
@@ -32,6 +35,20 @@ public class OrderController
     public ResponseEntity<Iterable<Order>> getAll()
     {
         return ResponseEntity.ok(orderService.getAll());
+    }
+
+    @GetMapping("/expiredorders")
+    public ResponseEntity<Iterable<Order>> getAllExpired()
+    {
+        return ResponseEntity.ok(orderService.getExpiredOrders());
+    }
+
+    @PostMapping("/order")
+    public ResponseEntity<Order> add(@RequestBody Order order)
+    {
+        return orderService.add(order) ?
+            ResponseEntity.ok(order) :
+            new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 }
