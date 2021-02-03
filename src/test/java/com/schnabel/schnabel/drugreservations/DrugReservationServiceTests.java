@@ -52,7 +52,7 @@ public class DrugReservationServiceTests
         Patient p1 = new Patient(1, "Jovan", "Ivosevic", "ivosevic.jovan@uns.ac.rs", a1);
         Patient p2 = new Patient(2, "Petar", "Petrovic", "petrovic.petar@bg.ac.rs", a2);
         Period p = new Period(LocalDate.of(2020, 7, 1), LocalDate.of(2021, 7, 1));
-        Drug d1 = new Drug(1, "Ciklopentanoperhidrofenantren", "Arnold Schwarzenegger approves!", 100.0, p);
+        Drug d1 = new Drug(1, "Ciklopentanoperhidrofenantren", "Arnold Schwarzenegger approves!", 1, 100.0, p);
         DrugReservation dr1 = new DrugReservation(1, p1, d1, LocalDate.of(2021, 02, 03));
         DrugReservation dr2 = new DrugReservation(2, p2, d1, LocalDate.of(2020, 02, 03));
         DrugReservation dr3 = new DrugReservation(3, p1, d1, LocalDate.of(2021, 03, 01));

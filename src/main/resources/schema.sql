@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS specialoffers;
 CREATE TABLE specialoffers(id SERIAL PRIMARY KEY, "name" VARCHAR(255), content VARCHAR(255), valid_from DATE, valid_until DATE, pharmacy_id VARCHAR(255));
 
 DROP TABLE IF EXISTS drugs CASCADE;
-CREATE TABLE drugs(id SERIAL PRIMARY KEY, "name" VARCHAR(255), description VARCHAR(255), price REAL, start_time DATE, end_time DATE);
+CREATE TABLE drugs(id SERIAL PRIMARY KEY, "name" VARCHAR(255), description VARCHAR(255), quantity INTEGER, price REAL, start_time DATE, end_time DATE);
 
 DROP TABLE IF EXISTS usagereportnotifications;
 CREATE TABLE usagereportnotifications("filename" VARCHAR(255) PRIMARY KEY, "endpoint" VARCHAR(255), "message" VARCHAR(255));
@@ -25,6 +25,3 @@ CREATE TABLE drugreservations(id SERIAL PRIMARY KEY, valid_until DATE, drug_id I
 DROP TABLE IF EXISTS pharmacyadmins CASCADE;
 CREATE TABLE pharmacyadmins(id SERIAL PRIMARY KEY, city VARCHAR(255), postcode VARCHAR(255), street VARCHAR(255), street_no INTEGER,
     "name" VARCHAR(255), surname VARCHAR(255), email VARCHAR(255), pharmacy_id INTEGER);
-
-DROP TABLE IF EXISTS orders;
-CREATE TABLE orders(id SERIAL PRIMARY KEY, ,description VARCHAR(255), deadline DATE);

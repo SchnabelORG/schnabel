@@ -27,6 +27,7 @@ public class Drug implements IIdentifiable<Integer>
     private int id; 
     private String name; 
     private String description;
+    private int quantity;
     private double price;
     @Embedded
     private Period priceDuration;
