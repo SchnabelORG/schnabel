@@ -50,3 +50,14 @@ VALUES ('2021-02-12 19:00', '2020-12-22 19:30', 1, 2, NULL);
 INSERT INTO term(term_beginning, term_end, pharmacy_id, employee_id, patient_id)
 VALUES ('2021-02-12 19:30', '2020-12-22 20:00', 1, 2, NULL);
 
+INSERT INTO orders("description", deadline)
+VALUES ('Ordering drugs', '2021-02-20');
+INSERT INTO orders("description", deadline)
+VALUES ('Ordering brufen', '2021-03-20');
+
+INSERT INTO orderitems(order_id, drug_id, quantity)
+VALUES (1, 1, 2);
+INSERT INTO orderitems(order_id, drug_id, quantity)
+VALUES (1, 2, 3);
+INSERT INTO orderitems(order_id, drug_id, quantity)
+VALUES (2, 3, 1);

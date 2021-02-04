@@ -22,7 +22,7 @@ public class OrderController
         this.orderService = orderService;
     }
 
-    @GetMapping("/order/{id}")
+    @GetMapping("/api/order/{id}")
     public ResponseEntity<Order> getById(@PathVariable int id)
     {
         Order order = orderService.get(id);
@@ -31,22 +31,22 @@ public class OrderController
             : ResponseEntity.ok(order);
     }
 
-    @GetMapping("/orders")
+    @GetMapping("/api/orders")
     public ResponseEntity<Iterable<Order>> getAll()
     {
         return ResponseEntity.ok(orderService.getAll());
     }
 
-    @GetMapping("/expiredorders")
+    @GetMapping("/api/expiredorders")
     public ResponseEntity<Iterable<Order>> getAllExpired()
     {
         return ResponseEntity.ok(orderService.getExpiredOrders());
     }
 
-    @PostMapping("/order")
+    @PostMapping("/api/order")
     public ResponseEntity<Order> add(@RequestBody Order order)
     {
-        return orderService.add(order) ?
+        return orderService.add(order) != null ?
             ResponseEntity.ok(order) :
             new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

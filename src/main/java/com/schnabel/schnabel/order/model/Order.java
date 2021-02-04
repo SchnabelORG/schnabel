@@ -1,16 +1,13 @@
 package com.schnabel.schnabel.order.model;
 
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -32,13 +29,12 @@ import com.schnabel.schnabel.misc.model.IIdentifiable;
 public class Order implements IIdentifiable<Integer> 
 {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     private String description;
-
-    @OneToMany(mappedBy = "order")
-    private final Set<OrderItem> orderItems = new HashSet<OrderItem>();
-
-    private LocalDate deadline;
+    private LocalDate deadline;    
+    @OneToMany
+    private final List<OrderItem> orderItems = new ArrayList<OrderItem>();
 
     @Override
     public Integer getId()
@@ -48,7 +44,7 @@ public class Order implements IIdentifiable<Integer>
 
     public void addOrderItem(OrderItem item)
     {
-        orderItems.add(item);
+        this.orderItems.add(item);
     }
 
 }

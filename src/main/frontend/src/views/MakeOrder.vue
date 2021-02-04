@@ -87,6 +87,7 @@
                 drugs: [],
                 drugItem: '',
                 orderItems: [],
+                order: '',
                 drugHeaders: [
                     { text: "Name"}, 
                     { text: "Quantity" },
@@ -116,9 +117,14 @@
 					})
             },
             add: function() {
+                
                 this.orderItems.push({ drug: this.drugItem, quantity : this.quantity });
+                
+                
+                
                 this.drugItem = '';
                 this.quantity = '';
+
             },
             makeOrder: function() {
                 
@@ -127,7 +133,7 @@
 
 
                 };
-                this.axios.post("/order", order)
+                this.axios.post("/api/order", order)
 					.then(response => {
 						console.log(response);
 					})

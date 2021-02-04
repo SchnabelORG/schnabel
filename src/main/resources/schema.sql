@@ -37,4 +37,6 @@ DROP TABLE IF EXISTS term CASCADE;
 CREATE TABLE term (id SERIAL PRIMARY KEY, term_beginning TIMESTAMP , term_end TIMESTAMP , pharmacy_id INTEGER, employee_id INTEGER, patient_id INTEGER);
 
 DROP TABLE IF EXISTS orders CASCADE;
-DROP TABLE IF EXISTS order_item CASCADE;
+CREATE TABLE orders(id SERIAL PRIMARY KEY, "description" VARCHAR(255), deadline DATE);
+DROP TABLE IF EXISTS orderitems CASCADE;
+CREATE TABLE orderitems(id SERIAL PRIMARY KEY, order_id INTEGER, drug_id INTEGER, quantity INTEGER);

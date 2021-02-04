@@ -1,14 +1,14 @@
 package com.schnabel.schnabel.order.model;
 
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
+import javax.persistence.Table;
 
 import com.schnabel.schnabel.drugs.model.Drug;
-
-import org.hibernate.annotations.ManyToAny;
+import com.schnabel.schnabel.misc.model.IIdentifiable;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -17,32 +17,34 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@Table(name = "orderitems")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class OrderItem 
+public class OrderItem implements IIdentifiable<Integer>
 {
-    @EmbeddedId
-    private OrderItemPK id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private int id;
 
     @ManyToOne
-    @MapsId("drugId")
-    @JoinColumn(name = "drug_id", insertable = false, updatable = false)
-    private Drug drug;
-
-    @ManyToOne
-    @MapsId("orderId")
-    @JoinColumn(name = "order_id", insertable = false, updatable = false)
     private Order order;
-
+    @ManyToOne
+    private Drug drug;
     private int quantity;
-
+    
     public OrderItem(Drug drug, Order order, int quantity)
     {
         this.drug = drug;
         this.order = order;
         this.quantity = quantity;
+    }
+
+    @Override
+    public Integer getId()
+    {
+        return this.id;
     }
 }

@@ -1,16 +1,14 @@
 package com.schnabel.schnabel.drugs.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.schnabel.schnabel.misc.model.Period;
-import com.schnabel.schnabel.order.model.OrderItem;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
 
 import lombok.AllArgsConstructor;
@@ -29,17 +27,18 @@ import lombok.Setter;
 public class Drug implements IIdentifiable<Integer>
 {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id; 
-    private String name; 
+    @Column(nullable = false)
+    private String name;
+    @Column(nullable = false) 
     private String description;
+    @Column(nullable = false)
     private int quantity;
+    @Column(nullable = false)
     private double price;
     @Embedded
     private Period priceDuration;
-
-    // TODO(Kris): Use initialized final field for bypassing lombok AllArgsConstructor?
-    @OneToMany(mappedBy = "drug")
-    private final Set<OrderItem> orderItems = new HashSet<OrderItem>();
 
     @Override
     public Integer getId()
