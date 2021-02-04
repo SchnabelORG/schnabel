@@ -2,6 +2,7 @@ package com.schnabel.schnabel.misc.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import lombok.EqualsAndHashCode;
@@ -14,7 +15,9 @@ import lombok.Setter;
 @EqualsAndHashCode
 public class Period 
 {
+    @Column(name = "start_time", nullable = false)
     private LocalDate startTime;
+    @Column(name = "end_time", nullable = false)
     private LocalDate endTime;
 
     public Period()

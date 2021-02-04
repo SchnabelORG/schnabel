@@ -21,7 +21,7 @@ public class DrugController
     }
 
     @GetMapping("/pswapi/drugs/{id}")
-    public ResponseEntity<Drug> getById(@PathVariable int id)
+    public ResponseEntity<Drug> getById(@PathVariable long id)
     {
         Drug drug = drugService.get(id);
         return drug == null ?

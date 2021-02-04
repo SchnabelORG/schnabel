@@ -1,7 +1,9 @@
 package com.schnabel.schnabel.drugs.model;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -21,19 +23,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Drug implements IIdentifiable<Integer>
+public class Drug implements IIdentifiable<Long>
 {
     @Id
-    private int id; 
+    @GeneratedValue
+    private Long id;
+    @Column(nullable = false)
     private String name; 
+    @Column(nullable = false)
     private String description;
+    @Column(nullable = false)
     private double price;
     @Embedded
     private Period priceDuration;
 
-    @Override
-    public Integer getId()
-    {
-        return this.id;
-    }
 }
