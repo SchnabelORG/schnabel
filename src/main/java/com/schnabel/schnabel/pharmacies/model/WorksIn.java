@@ -1,11 +1,8 @@
 package com.schnabel.schnabel.pharmacies.model;
 
-
-import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
 import lombok.*;
 
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
