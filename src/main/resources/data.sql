@@ -1,4 +1,4 @@
--- TODO(Jovan): Move to separate .sql files
+-- -- TODO(Jovan): Move to separate .sql files
 
 INSERT INTO hospitals("name", api_key) VALUES('sacred_heart_hospital', 'apishh1234');
 INSERT INTO hospitals("name", api_key) VALUES('princeton_plainsboro', 'apipp1234');
