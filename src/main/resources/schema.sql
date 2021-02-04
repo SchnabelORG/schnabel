@@ -24,3 +24,13 @@ CREATE TABLE drugreservations(id SERIAL PRIMARY KEY, valid_until DATE, drug_id I
 DROP TABLE IF EXISTS pharmacyadmins CASCADE;
 CREATE TABLE pharmacyadmins(id SERIAL PRIMARY KEY, city VARCHAR(255), postcode VARCHAR(255), street VARCHAR(255), street_no INTEGER,
     "name" VARCHAR(255), surname VARCHAR(255), email VARCHAR(255), pharmacy_id INTEGER);
+
+DROP TABLE IF EXISTS employeduser CASCADE;
+CREATE TABLE employeduser (id SERIAL PRIMARY KEY, city VARCHAR(255), postcode VARCHAR(255), street VARCHAR(255), street_no INTEGER,
+                      "name" VARCHAR(255), surname VARCHAR(255), email VARCHAR(255), password VARCHAR(255), user_type VARCHAR(255));
+
+DROP TABLE IF EXISTS worksin CASCADE;
+CREATE TABLE worksin (id SERIAL PRIMARY KEY, pharmacy_id INTEGER, employee_id INTEGER, start_of_shift TIME, end_of_shift TIME);
+
+DROP TABLE IF EXISTS term CASCADE;
+CREATE TABLE term (id SERIAL PRIMARY KEY, term_beginning TIMESTAMP , term_end TIMESTAMP , pharmacy_id INTEGER, employee_id INTEGER, patient_id INTEGER);
