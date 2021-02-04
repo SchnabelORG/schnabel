@@ -1,8 +1,11 @@
 package com.schnabel.schnabel.pharmacies.service;
 
+import com.schnabel.schnabel.misc.exceptions.PharmacyAlreadyExistsException;
 import com.schnabel.schnabel.misc.interfaces.ICrudService;
+import com.schnabel.schnabel.pharmacies.DTO.PharmacyDTO;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 
 public interface IPharmacyService extends ICrudService<Pharmacy, Integer>
 {
+    Pharmacy registerNewPharmacy(PharmacyDTO pharmacyDTO) throws PharmacyAlreadyExistsException;
 }
