@@ -4,35 +4,37 @@ import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
 import lombok.*;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "employeduser")
+@Table(name = "employedusers")
 @Getter
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployedUser implements IIdentifiable<Integer>{
+public class EmployedUser implements IIdentifiable<Long>{
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String surname;
+    @Column(nullable = false)
     @Setter(AccessLevel.PROTECTED)
     private String email;
+    @Column(nullable = false)
     private String password;
     @Embedded
     private Address address;
+    @Column(name = "user_type", nullable = false)
     private EmployedUserType userType;
-
-    @Override
-    public Integer getId()
-        {
-            return this.id;
-        }
-
 
 }

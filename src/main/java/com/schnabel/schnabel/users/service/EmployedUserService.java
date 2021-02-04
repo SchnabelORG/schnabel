@@ -6,7 +6,7 @@ import com.schnabel.schnabel.users.repository.IEmployedUserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EmployedUserService extends CrudService<EmployedUser, Integer> implements IEmployedUserService
+public class EmployedUserService extends CrudService<EmployedUser, Long> implements IEmployedUserService
 {
 
     public EmployedUserService(IEmployedUserRepository employedUserRepository)

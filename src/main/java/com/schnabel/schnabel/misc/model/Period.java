@@ -15,9 +15,9 @@ import lombok.Setter;
 @EqualsAndHashCode
 public class Period 
 {
-    @Column(name = "start_time", nullable = false)
+    @Column(name = "start_time")
     private LocalDate startTime;
-    @Column(name = "end_time", nullable = false)
+    @Column(name = "end_time")
     private LocalDate endTime;
 
     public Period()
