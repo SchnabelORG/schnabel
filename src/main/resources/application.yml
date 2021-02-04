@@ -26,5 +26,13 @@ spring:
 #    port: 5672
 #    username: vmaqngrm
 #    password: BHAFy2pYqDLrQxDduUD-03HH-N0ACEVW
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: schnabelpharmacy
+    password: 24WiSKVFDnAQDRC
+    properties.mail.smtp.auth: true
+    properties.mail.smtp.starttls.enable: true
+
 custom:
   port: ${SCHNABEL_PORT}

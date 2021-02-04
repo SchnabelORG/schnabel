@@ -17,10 +17,13 @@ CREATE TABLE pharmacies(id SERIAL PRIMARY KEY, city VARCHAR(255), postcode VARCH
 
 DROP TABLE IF EXISTS patients CASCADE;
 CREATE TABLE patients(id SERIAL PRIMARY KEY, city VARCHAR(255), postcode VARCHAR(255), street VARCHAR(255), street_no INTEGER,
-    "name" VARCHAR(255), surname VARCHAR(255), email VARCHAR(255));
+    "name" VARCHAR(255), surname VARCHAR(255), email VARCHAR(255), enabled BOOLEAN, password VARCHAR(50));
 
 DROP TABLE IF EXISTS drugreservations;
 CREATE TABLE drugreservations(id SERIAL PRIMARY KEY, valid_until DATE, drug_id INTEGER, patient_id INTEGER);
 DROP TABLE IF EXISTS pharmacyadmins CASCADE;
 CREATE TABLE pharmacyadmins(id SERIAL PRIMARY KEY, city VARCHAR(255), postcode VARCHAR(255), street VARCHAR(255), street_no INTEGER,
     "name" VARCHAR(255), surname VARCHAR(255), email VARCHAR(255), pharmacy_id INTEGER);
+
+DROP TABLE IF EXISTS verificationtoken;
+CREATE TABLE verificationtoken(id SERIAL PRIMARY KEY, patient_id INTEGER, token VARCHAR(255), expiry_date DATE);

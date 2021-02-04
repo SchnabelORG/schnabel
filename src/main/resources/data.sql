@@ -16,10 +16,10 @@ INSERT INTO drugs(id, "name", description, price, start_time, end_time) VALUES(3
 INSERT INTO pharmacies(city, postcode, street, street_no, avg_rating, "name")
 VALUES('Novi Sad', '21000', 'Balzakova', 44, 4.5, 'Cvjetkovic');
 
-INSERT INTO patients(city, postcode, street, street_no, "name", surname, email)
-VALUES('Novi Sad', '21000', 'Balzakova', 69, 'Jovan', 'Ivosevic', 'ivosevic.jovan@uns.ac.rs');
-INSERT INTO patients(city, postcode, street, street_no, "name", surname, email)
-VALUES('Beograd', '11000', 'Carlija Caplina', 12, 'Petar', 'Petrovic', 'petrovic.petar@bc.ac.rs');
+INSERT INTO patients(city, postcode, street, street_no, "name", surname, email, enabled, password)
+VALUES('Novi Sad', '21000', 'Balzakova', 69, 'Jovan', 'Ivosevic', 'ivosevic.jovan@uns.ac.rs', true, 'ivosevicjovan');
+INSERT INTO patients(city, postcode, street, street_no, "name", surname, email, enabled, password)
+VALUES('Beograd', '11000', 'Carlija Caplina', 12, 'Petar', 'Petrovic', 'petrovic.petar@bc.ac.rs',  true, 'petrovicpetar');
 
 INSERT INTO drugreservations(valid_until, drug_id, patient_id)
 VALUES('2021-02-03', 1, 1);

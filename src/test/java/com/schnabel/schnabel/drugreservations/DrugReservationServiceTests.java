@@ -15,6 +15,7 @@ import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.misc.model.Period;
 import com.schnabel.schnabel.users.model.Patient;
 
+import org.hibernate.type.TrueFalseType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -49,8 +50,8 @@ public class DrugReservationServiceTests
         IDrugReservationRepository stubRepository = Mockito.mock(IDrugReservationRepository.class);
         Address a1 = new Address("21000", "Novi Sad", "Balzakova", 69);
         Address a2 = new Address("11000", "Beograd", "Balzakova", 64);
-        Patient p1 = new Patient(1, "Jovan", "Ivosevic", "ivosevic.jovan@uns.ac.rs", a1);
-        Patient p2 = new Patient(2, "Petar", "Petrovic", "petrovic.petar@bg.ac.rs", a2);
+        Patient p1 = new Patient(1, "Jovan", "Ivosevic", "ivosevic.jovan@uns.ac.rs", a1, true, "ivosevicjovan" );
+        Patient p2 = new Patient(2, "Petar", "Petrovic", "petrovic.petar@bg.ac.rs", a2, true, "petrovicpetar" );
         Period p = new Period(LocalDate.of(2020, 7, 1), LocalDate.of(2021, 7, 1));
         Drug d1 = new Drug(1, "Ciklopentanoperhidrofenantren", "Arnold Schwarzenegger approves!", 100.0, p);
         DrugReservation dr1 = new DrugReservation(1, p1, d1, LocalDate.of(2021, 02, 03));

@@ -32,4 +32,12 @@ public class Address
         this.street = street;
         this.streetNo = streetNo;
     }
+
+    public Address(Address address)
+    {
+        this.postcode = address.getPostcode();
+        this.city = address.getCity();
+        this.street = address.getStreet();
+        this.streetNo = address.getStreetNo();
+    }
 }
