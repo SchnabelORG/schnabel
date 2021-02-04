@@ -22,7 +22,7 @@ public class PharmacyController
     }
 
     @GetMapping("/api/pharmacy/{id}")
-    public ResponseEntity<Pharmacy> getById(@PathVariable int id)
+    public ResponseEntity<Pharmacy> getById(@PathVariable long id)
     {
         Pharmacy pharmacy = pharmacyService.get(id);
         return pharmacy == null ?

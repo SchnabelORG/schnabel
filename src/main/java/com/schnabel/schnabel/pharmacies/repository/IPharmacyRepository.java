@@ -4,7 +4,7 @@ import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface IPharmacyRepository extends CrudRepository<Pharmacy, Integer>
+public interface IPharmacyRepository extends CrudRepository<Pharmacy, Long>
 {
     
 }

@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PharmacyService extends CrudService<Pharmacy, Integer> implements IPharmacyService
+public class PharmacyService extends CrudService<Pharmacy, Long> implements IPharmacyService
 {
     @Autowired
     public PharmacyService(IPharmacyRepository pharmacyRepository)
     {
-		super(pharmacyRepository);
+		  super(pharmacyRepository);
     }
 }

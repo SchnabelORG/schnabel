@@ -1,7 +1,9 @@
 package com.schnabel.schnabel.pharmacies.model;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -21,14 +23,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Pharmacy implements IIdentifiable<Integer>
+public class Pharmacy implements IIdentifiable<Long>
 {
     @Id
-    private int id;
+    @GeneratedValue
+    private Long id;
+    @Column(nullable = false)
     private String name;
     @Embedded
     private Address address;
     // TODO(Jovan): Use wrapper class?
+    @Column(name = "avg_rating", nullable = false)
     private double avgRating;
     // TODO(Jovan): Dermatologist list
     // TODO(Jovan): Available dermatologist appointments list
@@ -40,11 +45,5 @@ public class Pharmacy implements IIdentifiable<Integer>
         this.name = name;
         this.address = address;
         this.avgRating = 0.0;
-    }
-
-    @Override
-    public Integer getId()
-    {
-        return this.id;
     }
 }
