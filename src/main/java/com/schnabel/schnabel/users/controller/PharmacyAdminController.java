@@ -36,4 +36,6 @@ public class PharmacyAdminController
         return ResponseEntity.ok(pharmacyAdminService.getAll());
     }
 
+
+
 }

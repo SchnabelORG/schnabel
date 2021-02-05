@@ -25,3 +25,7 @@ INSERT INTO drugreservations(valid_until, drug_id, patient_id)
 VALUES('2021-02-03', 1, 1);
 INSERT INTO drugreservations(valid_until, drug_id, patient_id)
 VALUES('2021-02-01', 1, 2);
+
+INSERT INTO systemadmins(city, postcode, street, street_no, "name", surname, email)
+VALUES('Beograd', '11000', 'Carlija Caplina', 12, 'admin', 'admin', 'schnabelpharmacy@gmail.com');
+

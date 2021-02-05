@@ -24,3 +24,7 @@ CREATE TABLE drugreservations(id SERIAL PRIMARY KEY, valid_until DATE, drug_id I
 DROP TABLE IF EXISTS pharmacyadmins CASCADE;
 CREATE TABLE pharmacyadmins(id SERIAL PRIMARY KEY, city VARCHAR(255), postcode VARCHAR(255), street VARCHAR(255), street_no INTEGER,
     "name" VARCHAR(255), surname VARCHAR(255), email VARCHAR(255), pharmacy_id INTEGER);
+
+DROP TABLE IF EXISTS systemadmins CASCADE;
+CREATE TABLE systemadmins(id SERIAL PRIMARY KEY, city VARCHAR(255), postcode VARCHAR(255), street VARCHAR(255), street_no INTEGER,
+    "name" VARCHAR(255), surname VARCHAR(255), email VARCHAR(255));

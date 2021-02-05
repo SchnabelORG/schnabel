@@ -8,10 +8,7 @@ import com.schnabel.schnabel.pharmacies.service.IPharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class PharmacyController
@@ -40,7 +37,7 @@ public class PharmacyController
     }
 
     @PostMapping("/api/pharmacy/register")
-    public ResponseEntity<String> register(PharmacyDTO pharmacyDTO) {
+    public ResponseEntity<String> register( @RequestBody PharmacyDTO pharmacyDTO) {
         try {
             Pharmacy pharmacy = pharmacyService.registerNewPharmacy(pharmacyDTO);
         } catch (PharmacyAlreadyExistsException aex) {
