@@ -6,20 +6,17 @@ import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "employedusers")
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployedUser implements IIdentifiable<Long>{
+@EqualsAndHashCode
+public abstract class EmployedUser implements IIdentifiable<Long>
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,7 +31,14 @@ public class EmployedUser implements IIdentifiable<Long>{
     private String password;
     @Embedded
     private Address address;
-    @Column(name = "user_type", nullable = false)
-    private EmployedUserType userType;
+
+    public EmployedUser(String name, String surname, String email, String password, Address address)
+    {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+    }
 
 }

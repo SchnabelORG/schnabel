@@ -36,7 +36,7 @@ import lombok.Setter;
 public class DrugReservation implements IIdentifiable<Long>
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")

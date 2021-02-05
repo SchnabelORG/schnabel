@@ -29,20 +29,14 @@ INSERT INTO drugreservations(valid_until, drug_id, patient_id)
 VALUES('2021-02-01', 1, 2);
 
 
-INSERT INTO employeduser(city, postcode, street, street_no, "name", surname, email, password, user_type)
-VALUES('Novi Sad', '21000', 'Slobodana Bajica', 17, 'Radovan', 'Zupunski', 'radovan.zupunski@uns.ac.rs', '123456789', 'DERMATOLOGIST');
-INSERT INTO employeduser(city, postcode, street, street_no, "name", surname, email, password, user_type)
-VALUES('Beograd', '11000', 'Slobodana Bajica', 2, 'Pera', 'Peric', 'pera@gmail.com', '987654321', 'DERMATOLOGIST');
-INSERT INTO employeduser(city, postcode, street, street_no, "name", surname, email, password, user_type)
-VALUES('Novi Sad', '21000', 'Slobodana Bajica', 17, 'Mika', 'Mikic', 'mika@uns.ac.rs', 'mikamika123', 'PHARMACIST');
-INSERT INTO employeduser(city, postcode, street, street_no, "name", surname, email, password, user_type)
-VALUES('Beograd', '11000', 'Slobodana Bajica', 2, 'Pera', 'Peric', 'pera@gmail.com', '987654321', 'PHARMACIST');
-
-INSERT INTO worksin(pharmacy_id, employee_id, start_of_shift, end_of_shift)
-VALUES (1, 1, '08:00', '13:00');
-INSERT INTO worksin(pharmacy_id, employee_id, start_of_shift, end_of_shift)
-VALUES (1, 2, '13:00','19:00');
-
+-- INSERT INTO employedusers(city, postcode, street, street_no, "name", surname, email, password, user_type)
+-- VALUES('Novi Sad', '21000', 'Slobodana Bajica', 17, 'Radovan', 'Zupunski', 'radovan.zupunski@uns.ac.rs', '123456789', 'DERMATOLOGIST');
+-- INSERT INTO employedusers(city, postcode, street, street_no, "name", surname, email, password, user_type)
+-- VALUES('Beograd', '11000', 'Slobodana Bajica', 2, 'Pera', 'Peric', 'pera@gmail.com', '987654321', 'DERMATOLOGIST');
+-- INSERT INTO employedusers(city, postcode, street, street_no, "name", surname, email, password, user_type)
+-- VALUES('Novi Sad', '21000', 'Slobodana Bajica', 17, 'Mika', 'Mikic', 'mika@uns.ac.rs', 'mikamika123', 'PHARMACIST');
+-- INSERT INTO employedusers(city, postcode, street, street_no, "name", surname, email, password, user_type)
+-- VALUES('Beograd', '11000', 'Slobodana Bajica', 2, 'Pera', 'Peric', 'pera@gmail.com', '987654321', 'PHARMACIST');
 
 INSERT INTO term(term_beginning, term_end, pharmacy_id, employee_id, patient_id)
 VALUES ('2020-12-22 09:10', '2020-12-22 09:40', 1, 1, 1);

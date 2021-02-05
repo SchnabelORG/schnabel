@@ -1,15 +1,24 @@
 package com.schnabel.schnabel.pharmacies.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
+import com.schnabel.schnabel.users.model.Dermatologist;
+import com.schnabel.schnabel.users.model.Pharmacist;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -36,9 +45,17 @@ public class Pharmacy implements IIdentifiable<Long>
     // TODO(Jovan): Use wrapper class?
     @Column(name = "avg_rating", nullable = false)
     private double avgRating;
-    // TODO(Jovan): Dermatologist list
+    @ManyToMany
+    @JoinTable
+    (
+        name = "dermatologist_pharmacy",
+        joinColumns = @JoinColumn(name = "pharmacy_id"),
+        inverseJoinColumns = @JoinColumn(name = "dermatologist_id")
+    )
+    private final Set<Dermatologist> dermatologists = new HashSet<Dermatologist>();
     // TODO(Jovan): Available dermatologist appointments list
-    // TODO(Jovan): Pharmacist list
+    @OneToMany(mappedBy = "pharmacy")
+    private final Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
     // TODO(Jovan): Available drug list
 
     public Pharmacy(String name, Address address)
