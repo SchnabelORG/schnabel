@@ -7,7 +7,7 @@ import com.schnabel.schnabel.order.repository.IOrderItemRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OrderItemService extends CrudService<OrderItem, Integer>
+public class OrderItemService extends CrudService<OrderItem, Long>
 implements IOrderItemService
 {
     public OrderItemService(IOrderItemRepository repository) {

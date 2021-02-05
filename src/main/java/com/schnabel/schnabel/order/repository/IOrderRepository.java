@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 /**
  * Making order repository interface
  */
-public interface IOrderRepository extends CrudRepository<Order, Integer>
+public interface IOrderRepository extends CrudRepository<Order, Long>
 {
     
 }

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -27,21 +28,17 @@ import com.schnabel.schnabel.misc.model.IIdentifiable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Order implements IIdentifiable<Integer> 
+public class Order implements IIdentifiable<Long> 
 {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+    private Long id;
+    @Column(nullable = false)
     private String description;
+    @Column(nullable = false)
     private LocalDate deadline;    
     @OneToMany(fetch = FetchType.EAGER)
     private final List<OrderItem> orderItems = new ArrayList<OrderItem>();
-
-    @Override
-    public Integer getId()
-    {
-        return this.id;
-    }
 
     public void addOrderItem(OrderItem item)
     {

@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.order.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,16 +24,17 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class OrderItem implements IIdentifiable<Integer>
+public class OrderItem implements IIdentifiable<Long>
 {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+    private Long id;
 
     @ManyToOne
     private Order order;
     @ManyToOne
     private Drug drug;
+    @Column(nullable = false)
     private int quantity;
     
     public OrderItem(Drug drug, Order order, int quantity)
@@ -40,11 +42,5 @@ public class OrderItem implements IIdentifiable<Integer>
         this.drug = drug;
         this.order = order;
         this.quantity = quantity;
-    }
-
-    @Override
-    public Integer getId()
-    {
-        return this.id;
     }
 }

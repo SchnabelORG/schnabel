@@ -7,7 +7,7 @@ import com.schnabel.schnabel.order.model.OrderItem;
 /**
  * Making order service interface
  */
-public interface IOrderService extends ICrudService<Order, Integer>
+public interface IOrderService extends ICrudService<Order, Long>
 {
     public Iterable<Order> getExpiredOrders();
     public void addOrderItem(Order order, OrderItem orderItem);

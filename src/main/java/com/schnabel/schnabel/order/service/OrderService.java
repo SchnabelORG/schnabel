@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * Implementation of making order service
  */
 @Service
-public class OrderService extends CrudService<Order, Integer> implements IOrderService {
+public class OrderService extends CrudService<Order, Long> implements IOrderService {
     
     private final IOrderItemService orderItemService;
     

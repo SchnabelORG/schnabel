@@ -23,7 +23,7 @@ public class OrderController
     }
 
     @GetMapping("/api/order/{id}")
-    public ResponseEntity<Order> getById(@PathVariable int id)
+    public ResponseEntity<Order> getById(@PathVariable long id)
     {
         Order order = orderService.get(id);
         return order == null ?

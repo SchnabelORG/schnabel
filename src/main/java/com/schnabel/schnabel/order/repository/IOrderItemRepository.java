@@ -4,7 +4,7 @@ import com.schnabel.schnabel.order.model.OrderItem;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface IOrderItemRepository extends CrudRepository<OrderItem, Integer>
+public interface IOrderItemRepository extends CrudRepository<OrderItem, Long>
 {
     
 }
