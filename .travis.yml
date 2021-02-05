@@ -2,6 +2,10 @@ sudo: required
 language: java
 jdk: openjdk11
 
+# NOTE(Jovan): Disable email spamming
+notifications:
+  email: false
+
 services:
   - postgresql
 
@@ -22,6 +26,18 @@ script:
   - ./mvnw clean install -DskipTests=false -B
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
   - ./mvnw sonar:sonar -Dsonar.projectKey=$PROJECT_KEY -Dsonar.organization=schnabelorg -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
+
+    
+# NOTE(Jovan): Send success/failure messages to Discord server
+after_success:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh success $WEBHOOK_URL
+
+after_failure:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh failure $WEBHOOK_URL
 
 dist: trusty
 
