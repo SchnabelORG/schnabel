@@ -1,12 +1,12 @@
--- TODO(Jovan): Move to separate .sql files
+-- -- TODO(Jovan): Move to separate .sql files
 
 INSERT INTO hospitals("name", api_key) VALUES('sacred_heart_hospital', 'apishh1234');
 INSERT INTO hospitals("name", api_key) VALUES('princeton_plainsboro', 'apipp1234');
 INSERT INTO hospitals("name", api_key) VALUES('limanska_ambulanta', 'apila1234');
 
-INSERT INTO drugs( "name", description, price, start_time, end_time) VALUES( 'Brufen 600mg', 'Analgetik Brufen 600mg film tableta', 250.0, '2020-07-01', '2021-07-01');
-INSERT INTO drugs( "name", description, price, start_time, end_time) VALUES( 'Vitamin C 1000mg', 'Vitaminski suplement 1000mg film tableta', 55.0, '2020-07-01', '2021-08-01');
-INSERT INTO drugs( "name", description, price, start_time, end_time) VALUES( 'B12 1000mcg', 'Vitaminski supleent 1000mcg B12, cijankobalamin', 99.0, '2020-07-01', '2021-09-01');
+INSERT INTO drugs( "name", description, quantity, price, start_time, end_time) VALUES( 'Brufen 600mg', 'Analgetik Brufen 600mg film tableta', 1, 250.0, '2020-07-01', '2021-07-01');
+INSERT INTO drugs( "name", description, quantity, price, start_time, end_time) VALUES( 'Vitamin C 1000mg', 'Vitaminski suplement 1000mg film tableta', 2, 55.0, '2020-07-01', '2021-08-01');
+INSERT INTO drugs( "name", description, quantity, price, start_time, end_time) VALUES( 'B12 1000mcg', 'Vitaminski supleent 1000mcg B12, cijankobalamin', 5, 99.0, '2020-07-01', '2021-09-01');
 INSERT INTO pharmacies(city, postcode, street, street_no, avg_rating, "name")
 VALUES('Novi Sad', '21000', 'Balzakova', 44, 4.5, 'Cvjetkovic');
 
@@ -52,3 +52,15 @@ INSERT INTO term(term_beginning, term_end, pharmacy_id, employee_id, patient_id)
 VALUES ('2021-02-12 19:00', '2020-12-22 19:30', 1, 2, NULL);
 INSERT INTO term(term_beginning, term_end, pharmacy_id, employee_id, patient_id)
 VALUES ('2021-02-12 19:30', '2020-12-22 20:00', 1, 2, NULL);
+
+INSERT INTO orders("description", deadline)
+VALUES ('Ordering drugs', '2021-02-20');
+INSERT INTO orders("description", deadline)
+VALUES ('Ordering brufen', '2021-03-20');
+
+INSERT INTO orderitems(order_id, drug_id, quantity)
+VALUES (1, 1, 2);
+INSERT INTO orderitems(order_id, drug_id, quantity)
+VALUES (1, 2, 3);
+INSERT INTO orderitems(order_id, drug_id, quantity)
+VALUES (2, 3, 1);
