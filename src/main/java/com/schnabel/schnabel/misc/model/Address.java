@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.misc.model;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import lombok.EqualsAndHashCode;
@@ -12,9 +13,13 @@ import lombok.Setter;
 @EqualsAndHashCode
 public class Address
 {
+    @Column(nullable = false)
     private String postcode;
+    @Column(nullable = false)
     private String city;
+    @Column(nullable = false)
     private String street;
+    @Column(name = "street_no", nullable = false)
     private int streetNo;
 
     public Address()
