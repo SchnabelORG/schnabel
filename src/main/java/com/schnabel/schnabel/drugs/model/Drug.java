@@ -30,7 +30,7 @@ import lombok.Setter;
 public class Drug implements IIdentifiable<Long>
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; 
     @Column(nullable = false)
     private String name;

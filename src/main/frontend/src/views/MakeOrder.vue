@@ -87,6 +87,7 @@
                 drugs: [],
                 drugItem: '',
                 orderItems: [],
+                addedOrderItems: [],
                 neworder: '',
                 drugHeaders: [
                     { text: "Name"}, 
@@ -118,55 +119,57 @@
             },
             add: function() {
                 
-                this.orderItems.push({ order: '', drug: this.drugItem, quantity : this.quantity });
+                this.orderItems.push({ id: '', order: '', drug: this.drugItem, quantity : this.quantity });
                 
                 this.drugItem = '';
                 this.quantity = '';
 
             },
             makeOrder: function() {
-                let addorder = { description: this.description, deadline: this.deadline, orderItems: [] };
+                let addorder = { id: '', description: this.description, deadline: this.deadline };
 
                 this.axios.post("/api/order", addorder)
 					.then(response => {
                         this.neworder = response.data;
 						console.log(response);
+
+                        for (var i in this.orderItems) 
+                        {
+                            this.orderItems[i].order = this.neworder;
+                        }
+
+                        this.axios.post("/api/orderitem", this.orderItems)
+                            .then(response => {
+                                console.log(response);
+                                this.addedOrderItems = response.data;
+                                this.neworder.orderItems = [...this.addedOrderItems];
+                               
+                                this.axios.post("/api/addorder", this.neworder)
+                                .then(response => {
+                                    console.log(response);
+                                    this.order = '';
+                                    this.orderItems = [];
+                                    this.description = '';
+                                    this.deadline = '';
+                                })
+                                .catch(response => {
+                                    console.log(response);
+                                })
+                                .finally(function(){
+                                });
+                            })
+                            .catch(response => {
+                                console.log(response);
+                            })
+                            .finally(function(){
+                            });
+
 					})
 					.catch(response => {
 						console.log(response);
 					})
 					.finally(function(){
 					});
-
-                for (var i in this.orderItems) 
-                {
-                    this.orderItems[i].order = this.neworder;
-                }
-
-                this.axios.post("/api/orderitem", this.orderItems)
-					.then(response => {
-						console.log(response);
-					})
-					.catch(response => {
-						console.log(response);
-					})
-					.finally(function(){
-					});
-
-                this.neworder.orderItems = this.orderItems;
-
-                this.axios.post("/api/addorder", this.neworder)
-					.then(response => {
-						console.log(response);
-					})
-					.catch(response => {
-						console.log(response);
-					})
-					.finally(function(){
-					});
-
-                this.order = '';
-                this.orderItems = [];
 
             },
             save (date) {

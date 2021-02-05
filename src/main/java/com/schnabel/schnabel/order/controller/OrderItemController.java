@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.order.controller;
 
+import com.google.common.collect.Iterables;
 import com.schnabel.schnabel.order.model.OrderItem;
 import com.schnabel.schnabel.order.service.IOrderItemService;
 
@@ -23,10 +24,11 @@ public class OrderItemController
     }
 
     @PostMapping("/api/orderitem")
-    public ResponseEntity<String> add(@RequestBody Iterable<OrderItem> orderItems)
+    public ResponseEntity<Iterable<OrderItem>> add(@RequestBody Iterable<OrderItem> orderItems)
     {
-        return orderItemService.addOrderItems(orderItems) ?
-            ResponseEntity.ok("Successfully added") :
+        Iterable<OrderItem> oi = orderItemService.addOrderItems(orderItems);
+        return Iterables.size(oi) != 0 ?
+            ResponseEntity.ok(oi) :
             new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 

@@ -31,7 +31,7 @@ import com.schnabel.schnabel.misc.model.IIdentifiable;
 public class Order implements IIdentifiable<Long> 
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
     private String description;

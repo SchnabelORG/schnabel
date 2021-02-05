@@ -24,11 +24,12 @@ public class CrudService<T extends IIdentifiable<I>, I> implements ICrudService<
 	@Override
     public T add(T object)
     {
-        if(!repository.existsById(object.getId()))
+        
+        if(object.getId() == null || !repository.existsById(object.getId()) )
         {
             repository.save(object);
         }
-        return repository.findById(object.getId()).orElse(null);
+        return get(object.getId());
 	}
 
 	@Override

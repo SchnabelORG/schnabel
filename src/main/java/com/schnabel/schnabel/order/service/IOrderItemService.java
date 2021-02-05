@@ -5,5 +5,5 @@ import com.schnabel.schnabel.order.model.OrderItem;
 
 public interface IOrderItemService extends ICrudService<OrderItem, Long>
 {
-    public boolean addOrderItems(Iterable<OrderItem> orderItems);
+    public Iterable<OrderItem> addOrderItems(Iterable<OrderItem> orderItems);
 }

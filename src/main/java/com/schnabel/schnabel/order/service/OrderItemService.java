@@ -1,5 +1,8 @@
 package com.schnabel.schnabel.order.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.schnabel.schnabel.misc.implementations.CrudService;
 import com.schnabel.schnabel.order.model.OrderItem;
 import com.schnabel.schnabel.order.repository.IOrderItemRepository;
@@ -15,15 +18,14 @@ implements IOrderItemService
     }
 
     @Override
-    public boolean addOrderItems(Iterable<OrderItem> orderItems) {
+    public Iterable<OrderItem> addOrderItems(Iterable<OrderItem> orderItems) {
+        
+        List<OrderItem> ret = new ArrayList<>();
         for (OrderItem orderItem : orderItems) 
         {
-            if (add(orderItem) == null)
-            {
-                return false;
-            }
-
+            OrderItem oi = add(orderItem);
+            ret.add(oi);
         }
-        return true;
+        return ret;
     }
 }
