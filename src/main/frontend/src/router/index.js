@@ -7,6 +7,7 @@ import PharmacistPanel from '../views/PharmacistPanel.vue'
 import Account from '../views/Account.vue'
 import PharmacistHome from '../views/PharmacistHome.vue'
 import PharmacistCalendar from '../views/PharmacistCalendar.vue'
+import ConsultationReport from '../views/ConsultationReport.vue'
 
 Vue.use(VueRouter)
 
@@ -45,6 +46,11 @@ const routes = [
         path: 'calendar',
         name: 'PharmacistCalendar',
         component: PharmacistCalendar,
+      },
+      {
+        path: 'consultationReport',
+        name: 'ConsultationReport',
+        component: ConsultationReport,
       },
     ],
   }

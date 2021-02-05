@@ -4,6 +4,7 @@
             <li><router-link to="/pharmacist/">Home</router-link></li>
             <li><router-link to="/pharmacist/account">My account</router-link></li>
             <li><router-link to="/pharmacist/calendar">My Calendar</router-link></li>
+            <li><router-link to="/pharmacist/consultationReport">New consultation</router-link></li>
         </sidebar>
         <div id="main-content">
             <router-view/>

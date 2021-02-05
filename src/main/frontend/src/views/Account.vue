@@ -29,6 +29,30 @@
                     v-model="email"
                     :rules="[rules.required]"
                     label="Email"
+                    :disabled="true"
+                    ></v-text-field>
+                    <v-text-field
+                    v-model="city"
+                    :rules="[rules.required]"
+                    label="City"
+                    :disabled="!editMode"
+                    ></v-text-field>
+                    <v-text-field
+                    v-model="postcode"
+                    :rules="[rules.required]"
+                    label="Postcode"
+                    :disabled="!editMode"
+                    ></v-text-field>
+                    <v-text-field
+                    v-model="street"
+                    :rules="[rules.required]"
+                    label="Street"
+                    :disabled="!editMode"
+                    ></v-text-field>
+                     <v-text-field
+                    v-model="number"
+                    :rules="[rules.required, rules.isNmb]"
+                    label="Street number"
                     :disabled="!editMode"
                     ></v-text-field>
                     <v-text-field
@@ -70,6 +94,10 @@
                 password: 'blablabla',
                 name: 'Petar',
                 surname: 'Petrovic',
+                city: 'Novi Sad',
+                postcode: '21000',
+                street: 'Slobodana Bajica',
+                number: 17,
                 email: 'pera@gmail.com',
                 confirmPassword: '',
                 show1: false,
@@ -78,7 +106,7 @@
                 rules: {
                     required: value => !!value || 'Required.',
                     min: v => v.length >= 8 || 'Min 8 characters',
-                    confirm: this.password !== this.confirmPassword || 'Passwords doesn\'t match',
+                    isNmb: v => /^\d+$/.test(v) || 'Must be a number',
                 },
             }
         },
