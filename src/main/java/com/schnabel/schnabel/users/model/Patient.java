@@ -1,7 +1,10 @@
 package com.schnabel.schnabel.users.model;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -22,21 +25,20 @@ import lombok.Setter;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class Patient implements IIdentifiable<Integer>
+public class Patient implements IIdentifiable<Long>
 {
     // TODO(Jovan): Use UUID?
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String surname;
+    @Column(nullable = false)
     @Setter(AccessLevel.PROTECTED)
     private String email;
     @Embedded
     private Address address;
 
-    @Override
-    public Integer getId()
-    {
-        return this.id;
-    }
 }
