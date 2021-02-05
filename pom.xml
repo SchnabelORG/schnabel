@@ -16,10 +16,10 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<sonar.exclusions>
+			**/model/*.java
+		</sonar.exclusions>
 	</properties>
-    <properties>
-        <sonar.coverage.exclusions>**/*/model/*.java</sonar.coverage.exclusions>
-    </properties>
 
 
 	<dependencies>
