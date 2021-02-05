@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import PSWRegistration from '../views/PSWRegistration.vue'
 import PSWUsageReport from '../views/PSWUsageReport.vue'
+import CreateFreeTerms from '../views/CreateFreeTerms.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
     path: '/pswreports',
     name: 'PSWUsageReport',
     component: PSWUsageReport,
+  },
+  {
+    path: '/createfreeterms',
+    name: 'CreateFreeTerms',
+    component: CreateFreeTerms,
   },
 ]
 

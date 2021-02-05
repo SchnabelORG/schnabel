@@ -9,5 +9,5 @@ import com.schnabel.schnabel.users.model.Dermatologist;
 public interface IDermatologistService
     extends ICrudService<Dermatologist, Long>
 {
-    
+    public Iterable<Dermatologist> getAllSpecificPharmacy(long id);
 }

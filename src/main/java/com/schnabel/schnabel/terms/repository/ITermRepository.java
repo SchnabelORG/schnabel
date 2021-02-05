@@ -1,6 +1,7 @@
-package com.schnabel.schnabel.pharmacies.repository;
+package com.schnabel.schnabel.terms.repository;
 
-import com.schnabel.schnabel.pharmacies.model.Term;
+import com.schnabel.schnabel.terms.model.Term;
+
 import org.springframework.data.repository.CrudRepository;
 
 /**

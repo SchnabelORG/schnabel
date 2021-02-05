@@ -37,6 +37,12 @@ VALUES('2021-02-01', 1, 2);
 -- VALUES('Novi Sad', '21000', 'Slobodana Bajica', 17, 'Mika', 'Mikic', 'mika@uns.ac.rs', 'mikamika123', 'PHARMACIST');
 -- INSERT INTO employedusers(city, postcode, street, street_no, "name", surname, email, password, user_type)
 -- VALUES('Beograd', '11000', 'Slobodana Bajica', 2, 'Pera', 'Peric', 'pera@gmail.com', '987654321', 'PHARMACIST');
+-- dtype | id | city | postcode | street | street_no | email | name | password | surname | pharmacy_id 
+INSERT INTO employed_users(dtype, city, postcode, street, street_no, email, "name", "password", surname)
+VALUES('Dermatologist', 'Novi Sad', '21000', 'Balzakova', 69, 'ivosevic.jovan@uns.ac.rs', 'Jovan', 'mojasifralol', 'Ivosevic');
+
+INSERT INTO dermatologist_pharmacy(dermatologist_id, pharmacy_id)
+VALUES(1, 1);
 
 INSERT INTO term(term_beginning, term_end, pharmacy_id, employee_id, patient_id)
 VALUES ('2020-12-22 09:10', '2020-12-22 09:40', 1, 1, 1);
