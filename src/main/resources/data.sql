@@ -64,3 +64,6 @@ INSERT INTO orderitems(order_id, drug_id, quantity)
 VALUES (1, 2, 3);
 INSERT INTO orderitems(order_id, drug_id, quantity)
 VALUES (2, 3, 1);
+
+INSERT INTO shifts(employed_user_id, pharmacy_id, start_time, end_time)
+VALUES (1, 1, '08:00', '14:00');

@@ -22,6 +22,7 @@ import com.schnabel.schnabel.misc.model.IIdentifiable;
 import com.schnabel.schnabel.terms.model.Term;
 import com.schnabel.schnabel.users.model.Dermatologist;
 import com.schnabel.schnabel.users.model.Pharmacist;
+import com.schnabel.schnabel.users.model.Shift;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

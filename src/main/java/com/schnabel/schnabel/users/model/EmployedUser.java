@@ -47,6 +47,8 @@ public class EmployedUser implements IIdentifiable<Long>
     protected Address address;
     @OneToMany(mappedBy = "employedUser", fetch = FetchType.EAGER)
     protected final Set<Term> terms = new HashSet<Term>();
+    @OneToMany(mappedBy = "employedUser", fetch = FetchType.EAGER)
+    protected final Set<Shift> shifts = new HashSet<Shift>();
 
     public EmployedUser(String name, String surname, String email, String password, Address address)
     {

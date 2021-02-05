@@ -77,7 +77,7 @@
                 dermatologists: [],
                 dermatologist: '',
                 date: '',
-                duratioin: '',
+                duration: '',
                 price: '',
                 menu: false,
                 durations: [15, 30],
@@ -88,10 +88,12 @@
         },
         methods: {
             create: function() {
-
+                let term = { id: "", duration: this.duration, price: this.price, employedUser: this.dermatologist };
+                // DODATI JOS VREME DATUM I PHARMACY
+            
             },
             getDermatologists: function() {
-                this.axios.get("/api/dermatologists")
+                this.axios.get("/api/dermatologists/")
                 .then(response => {
                     this.dermatologists = response.data;
                     console.log(response);

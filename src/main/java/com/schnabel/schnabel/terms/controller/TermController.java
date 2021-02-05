@@ -38,9 +38,12 @@ public class TermController
     @PostMapping("/api/term")
     public ResponseEntity<Term> add(@RequestBody Term term)
     {
-        return termService.add(term) ?
+        return termService.add(term) != null ?
             ResponseEntity.ok(term) : 
             new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    
+
 
 }
