@@ -3,6 +3,7 @@ package com.schnabel.schnabel.users.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -15,7 +16,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "dermatologists")
+@DiscriminatorValue("Dermatologist")
 @Getter
 @Setter
 @EqualsAndHashCode

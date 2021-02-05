@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -53,10 +54,10 @@ public class Pharmacy implements IIdentifiable<Long>
         inverseJoinColumns = @JoinColumn(name = "dermatologist_id")
     )
     private final Set<Dermatologist> dermatologists = new HashSet<Dermatologist>();
-    @OneToMany(mappedBy = "pharmacy")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacy")
     private final Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
     // TODO(Jovan): Available drug list
-    @OneToMany(mappedBy = "pharmacy")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacy")
     private final Set<Term> terms = new HashSet<Term>();
 
 
@@ -65,5 +66,12 @@ public class Pharmacy implements IIdentifiable<Long>
         this.name = name;
         this.address = address;
         this.avgRating = 0.0;
+    }
+
+    public Pharmacy(Long id, String name, Address address)
+    {
+        this.id = id;
+        this.address = address;
+        this.name = name;
     }
 }
