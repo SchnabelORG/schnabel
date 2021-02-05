@@ -1,6 +1,7 @@
 package com.schnabel.schnabel.pswregistration.controller;
 
 import com.schnabel.schnabel.pswregistration.model.Hospital;
+import com.schnabel.schnabel.pswregistration.model.HospitalDTO;
 import com.schnabel.schnabel.pswregistration.service.IHospitalService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +36,9 @@ public class RegistrationController
     }
 
     @PostMapping("/pswapi")
-    public ResponseEntity<String> register(@RequestBody Hospital hospital)
+    public ResponseEntity<String> register(@RequestBody HospitalDTO hospital)
     {
-        return hospitalService.add(hospital) ?
+        return hospitalService.add(new Hospital(hospital.getName(), hospital.getApiKey())) ?
             ResponseEntity.ok(hospital.getApiKey()) :
             new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
