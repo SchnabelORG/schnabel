@@ -8,7 +8,7 @@ import com.schnabel.schnabel.misc.interfaces.ICrudService;
 /**
  * Drug reservation service interface
  */
-public interface IDrugReservationService extends ICrudService<DrugReservation, Integer>
+public interface IDrugReservationService extends ICrudService<DrugReservation, Long>
 {
     /**
      * Get drug reservations valid for <b>date</b>

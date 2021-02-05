@@ -2,12 +2,18 @@ package com.schnabel.schnabel.pharmacies.service;
 
 import com.schnabel.schnabel.misc.implementations.CrudService;
 import com.schnabel.schnabel.pharmacies.model.Term;
-import org.springframework.data.repository.CrudRepository;
+import com.schnabel.schnabel.pharmacies.repository.ITermRepository;
+
 import org.springframework.stereotype.Service;
 
+/**
+ * Term service implementation
+ */
 @Service
-public class TermService extends CrudService<Term, Integer> implements ITermService {
-    public TermService(CrudRepository<Term, Integer> repository) {
+public class TermService extends CrudService<Term, Long> implements ITermService
+{
+    public TermService(ITermRepository repository)
+    {
         super(repository);
     }
 }
