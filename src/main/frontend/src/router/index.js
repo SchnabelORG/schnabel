@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import PSWRegistration from '../views/PSWRegistration.vue'
 import PSWUsageReport from '../views/PSWUsageReport.vue'
-import Pharmacists from '../views/Pharmacists.vue'
+import MakeOrder from '../views/MakeOrder.vue'
 
 Vue.use(VueRouter)
 
@@ -25,8 +25,8 @@ const routes = [
   },
   {
     path: '/makeOrder',
-    name: 'Pharmacists',
-    component: Pharmacists,
+    name: 'MakeOrder',
+    component: MakeOrder,
   },
 ]
 

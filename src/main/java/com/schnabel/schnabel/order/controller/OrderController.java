@@ -46,7 +46,16 @@ public class OrderController
     @PostMapping("/api/order")
     public ResponseEntity<Order> add(@RequestBody Order order)
     {
-        return orderService.add(order) != null ?
+        Order o = orderService.add(order);
+        return o != null ?
+            ResponseEntity.ok(o) :
+            new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/api/addorder")
+    public ResponseEntity<Order> addOrder(@RequestBody Order order)
+    {
+        return orderService.update(order) ?
             ResponseEntity.ok(order) :
             new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

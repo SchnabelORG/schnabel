@@ -13,4 +13,17 @@ implements IOrderItemService
     public OrderItemService(IOrderItemRepository repository) {
         super(repository);
     }
+
+    @Override
+    public boolean addOrderItems(Iterable<OrderItem> orderItems) {
+        for (OrderItem orderItem : orderItems) 
+        {
+            if (add(orderItem) == null)
+            {
+                return false;
+            }
+
+        }
+        return true;
+    }
 }

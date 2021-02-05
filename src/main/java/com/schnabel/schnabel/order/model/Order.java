@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,7 +34,7 @@ public class Order implements IIdentifiable<Integer>
     private int id;
     private String description;
     private LocalDate deadline;    
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private final List<OrderItem> orderItems = new ArrayList<OrderItem>();
 
     @Override
