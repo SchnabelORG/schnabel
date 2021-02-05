@@ -2,14 +2,22 @@ package com.schnabel.schnabel.users.model;
 
 import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
+import com.schnabel.schnabel.pharmacies.model.Term;
+
 import lombok.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 
+@MappedSuperclass
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,18 +27,20 @@ public abstract class EmployedUser implements IIdentifiable<Long>
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
     @Column(nullable = false)
-    private String name;
+    protected String name;
     @Column(nullable = false)
-    private String surname;
+    protected String surname;
     @Column(nullable = false)
     @Setter(AccessLevel.PROTECTED)
-    private String email;
+    protected String email;
     @Column(nullable = false)
-    private String password;
+    protected String password;
     @Embedded
-    private Address address;
+    protected Address address;
+    @OneToMany(mappedBy = "employedUser")
+    protected final Set<Term> terms = new HashSet<Term>();
 
     public EmployedUser(String name, String surname, String email, String password, Address address)
     {

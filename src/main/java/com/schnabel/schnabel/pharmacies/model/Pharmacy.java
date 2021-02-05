@@ -53,10 +53,12 @@ public class Pharmacy implements IIdentifiable<Long>
         inverseJoinColumns = @JoinColumn(name = "dermatologist_id")
     )
     private final Set<Dermatologist> dermatologists = new HashSet<Dermatologist>();
-    // TODO(Jovan): Available dermatologist appointments list
     @OneToMany(mappedBy = "pharmacy")
     private final Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
     // TODO(Jovan): Available drug list
+    @OneToMany(mappedBy = "pharmacy")
+    private final Set<Term> terms = new HashSet<Term>();
+
 
     public Pharmacy(String name, Address address)
     {
