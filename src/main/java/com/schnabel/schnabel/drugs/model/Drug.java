@@ -17,6 +17,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Medical drug
+ */
 @Entity
 @Table(name = "drugs")
 @Getter

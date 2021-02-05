@@ -6,6 +6,9 @@ import com.schnabel.schnabel.pharmacies.repository.ITermRepository;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * Term service implementation
+ */
 @Service
 public class TermService extends CrudService<Term, Long> implements ITermService
 {

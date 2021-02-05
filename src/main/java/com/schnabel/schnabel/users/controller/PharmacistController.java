@@ -1,8 +1,5 @@
 package com.schnabel.schnabel.users.controller;
 
-import com.amazonaws.Response;
-import com.schnabel.schnabel.misc.model.Address;
-import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.users.model.Pharmacist;
 import com.schnabel.schnabel.users.service.IPharmacistService;
 
@@ -11,6 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Pharmacist REST controller
+ */
 @RestController
 public class PharmacistController
 {
@@ -21,13 +21,13 @@ public class PharmacistController
         this.pharmacistService = pharmacistService;
     }
 
+    /**
+     * Get all pharmacists
+     * @return Iterable of Pharmacist
+     */
     @GetMapping("/api/pharmacist")
-    public ResponseEntity<String> test()
+    public ResponseEntity<Iterable<Pharmacist>> getAll()
     {
-        Address addr = new Address("2100", "Novi Sad", "Balzakova", 69);
-        Pharmacy pharmacy = new Pharmacy(1L, "Jankovic", addr);
-        Pharmacist pharmacist = new Pharmacist(2L, "Farmac", "Farmacevic", "farmac@gmail.com", "farm1234", addr, pharmacy);
-        this.pharmacistService.add(pharmacist);
-        return ResponseEntity.ok("");
+        return ResponseEntity.ok(pharmacistService.getAll());
     }
 }

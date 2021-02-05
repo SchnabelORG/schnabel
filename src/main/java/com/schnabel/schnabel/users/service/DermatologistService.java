@@ -6,6 +6,9 @@ import com.schnabel.schnabel.users.repository.IDermatologistRepository;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * Dermatologist service implementation
+ */
 @Service
 public class DermatologistService
     extends CrudService<Dermatologist, Long>

@@ -9,6 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Drug REST controller
+ */
+// TODO(Jovan): Remove pswapi
 @RestController
 public class DrugController
 {
@@ -20,6 +24,13 @@ public class DrugController
         this.drugService = drugService;
     }
 
+    /**
+     * Get drug with <b>id</b>
+     * @param id ID of queried Drug
+     * @return 
+     * OK with Drug body if exists
+     * else BAD_REQUEST
+     */
     @GetMapping("/pswapi/drugs/{id}")
     public ResponseEntity<Drug> getById(@PathVariable long id)
     {
@@ -29,6 +40,13 @@ public class DrugController
             : ResponseEntity.ok(drug);
     }
 
+    /**
+     * Check if drug with <b>name</b> exists
+     * @param name Name of queried drug
+     * @return
+     * OK if exists
+     * else BAD_REQUEST
+     */
     @GetMapping("/pswapi/drugs/name/{name}")
     public ResponseEntity<String> getById(@PathVariable String name)
     {
@@ -37,12 +55,21 @@ public class DrugController
             : ResponseEntity.ok("We don't have that medication!");
     }
 
+    /**
+     * Get all drugs
+     * @return Iterable of Drug
+     */
     @GetMapping("/pswapi/drugs")
     public ResponseEntity<Iterable<Drug>> getAll()
     {
         return ResponseEntity.ok(drugService.getAll());
     }
 
+    /**
+     * Create urgent procurement request for a drug
+     * @param urgentProcurementRequest Request to be created
+     * @return OK
+     */
     @PostMapping("/pswapi/drugs/urgent")
     public ResponseEntity<String> getUrgentRequest(@RequestBody UrgentProcurementPequest urgentProcurementRequest)
     {

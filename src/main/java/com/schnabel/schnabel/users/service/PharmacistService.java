@@ -7,6 +7,9 @@ import com.schnabel.schnabel.users.repository.IPharmacistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Pharmacist service implementation
+ */
 @Service
 public class PharmacistService
     extends CrudService<Pharmacist, Long>

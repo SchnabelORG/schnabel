@@ -27,6 +27,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Pharmacy
+ */
 @Entity
 @Table(name = "pharmacies")
 @Getter

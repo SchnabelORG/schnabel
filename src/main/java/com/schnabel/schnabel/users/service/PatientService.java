@@ -6,6 +6,9 @@ import com.schnabel.schnabel.users.repository.IPatientRepository;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * Patient service implementation
+ */
 @Service
 public class PatientService extends CrudService<Patient, Long> implements IPatientService
 {
