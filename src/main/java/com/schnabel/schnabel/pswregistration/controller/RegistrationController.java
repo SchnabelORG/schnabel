@@ -38,7 +38,7 @@ public class RegistrationController
     @PostMapping("/pswapi")
     public ResponseEntity<String> register(@RequestBody HospitalDTO hospital)
     {
-        return hospitalService.add(new Hospital(hospital.getName(), hospital.getApiKey())) ?
+        return hospitalService.add(new Hospital(hospital.getName(), hospital.getApiKey())) != null ?
             ResponseEntity.ok(hospital.getApiKey()) :
             new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

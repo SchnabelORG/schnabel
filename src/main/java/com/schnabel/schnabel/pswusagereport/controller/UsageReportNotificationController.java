@@ -25,9 +25,7 @@ public class UsageReportNotificationController
     @PostMapping("/pswapi/usagereportnotifications")
     public ResponseEntity<String> add(@RequestBody NotificationDTO notification)
     {
-
-        boolean success = notificationService.add(new UsageReportNotification(notification.getFilename(), notification.getEndpoint(), notification.getMessage()));
-        return success ?
+        return notificationService.add(new UsageReportNotification(notification.getFilename(), notification.getEndpoint(), notification.getMessage())) != null ?
             ResponseEntity.ok("Added")
             : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
