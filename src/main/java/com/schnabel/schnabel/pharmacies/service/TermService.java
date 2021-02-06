@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class TermService extends CrudService<Term, Long> implements ITermService
 {
+
     public TermService(ITermRepository repository)
     {
         super(repository);
     }
+
 }

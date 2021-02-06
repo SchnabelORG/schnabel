@@ -49,7 +49,6 @@ public class ConsultationService implements IConsultationService
         }
 
         // TODO(Jovan): Check if schedule is free
-        // TODO(Jovan): Use constant time period for consultation?
         // TODO(Jovan): Move logic of getting free 'terms' to termService
         long consultDurationMinutes = 30;
         Term term = new Term(new Period(dto.getStartSchedule(), dto.getStartSchedule().plusMinutes(consultDurationMinutes)),

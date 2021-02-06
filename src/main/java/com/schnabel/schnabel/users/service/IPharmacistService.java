@@ -1,6 +1,7 @@
 package com.schnabel.schnabel.users.service;
 
 import com.schnabel.schnabel.misc.interfaces.ICrudService;
+import com.schnabel.schnabel.misc.model.Period;
 import com.schnabel.schnabel.pharmacies.model.Term;
 import com.schnabel.schnabel.users.model.Pharmacist;
 
@@ -23,4 +24,11 @@ public interface IPharmacistService extends ICrudService<Pharmacist, Long>
      * @return true if removed else false
      */
     boolean removeTerm(Pharmacist pharmacist, Term term);
+    /**
+     * 
+     * @param id
+     * @param period
+     * @return
+     */
+    boolean checkIfFree(Long id, Period period);
 }
