@@ -40,7 +40,7 @@
                         <v-date-picker
                         ref="picker"
                         v-model="date"
-                        :min="new Date().toISOString().substr(0, 10)"
+                        :min="new Date().toISOString()"
                         @change="save"
                         ></v-date-picker>
                     </v-menu>
@@ -88,16 +88,17 @@
         },
         methods: {
             create: function() {
-                let term = { id: "", duration: this.duration, price: this.price, employedUser: this.dermatologist };
-                // DODATI JOS VREME DATUM I PHARMACY
-            
+                let term = { startTime: this.date.format(''), duration: this.duration, price: this.price, pharmacyId: 1, startemployedUser: this.dermatologist.id };
+                this.axios.post("/api/term/", term)
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(response => {
+                    console.log(response);
+                })
+                .finally(function(){
+                })
             },
-
-
-
-
-
-
             getDermatologists: function() {
                 this.axios.get("/api/dermatologists/")
                 .then(response => {

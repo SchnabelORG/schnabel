@@ -32,18 +32,6 @@ public class DermatologistController
     @GetMapping("/api/dermatologists")
     public ResponseEntity<Iterable<Dermatologist>> getAll()
     {
-        LocalTime startTime = LocalTime.of(8,0);
-        LocalTime endTime = LocalTime.of(12,0);
-
-        LocalTime currentTime = startTime;
-
-        while(currentTime.plusMinutes(30).compareTo(endTime) <= 0)
-        {
-            System.out.println(currentTime + " " + currentTime.plusMinutes(30));
-            currentTime = currentTime.plusMinutes(30);
-        }
-
-
         Iterable<Dermatologist> dermatologists = dermatologistService.getAll();
         return ResponseEntity.ok(dermatologists);
     }

@@ -1,7 +1,6 @@
 package com.schnabel.schnabel.terms.service;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +12,7 @@ import com.schnabel.schnabel.terms.dto.TermDTO;
 import com.schnabel.schnabel.terms.model.Term;
 import com.schnabel.schnabel.terms.repository.ITermRepository;
 import com.schnabel.schnabel.users.model.Dermatologist;
-import com.schnabel.schnabel.users.model.EmployedUser;
 import com.schnabel.schnabel.users.model.Shift;
-import com.schnabel.schnabel.users.service.DermatologistService;
 import com.schnabel.schnabel.users.service.IDermatologistService;
 import com.schnabel.schnabel.users.service.IShiftService;
 
@@ -53,18 +50,38 @@ public class TermService extends CrudService<Term, Long> implements ITermService
         Pharmacy pharmacy = pharmacyService.get(termDTO.getPharmacyId());
         Shift shiftForPharmacy = shiftService.getDermatologistShift(termDTO.getEmployedId(), termDTO.getPharmacyId());
         //List<Shift> allShifts = (List<Shift>) shiftService.getDermatologistAllShifts(termDTO.getEmployedId());
-
+        boolean invalid = false;
         LocalDateTime currentTime = termDTO.getStartTime();
 
         while((currentTime.plusMinutes(termDTO.getDuration()).toLocalTime()).compareTo(shiftForPharmacy.getEndTime()) <= 0)
         {
             Term term = new Term(new Period(currentTime, currentTime.plusMinutes(termDTO.getDuration())), termDTO.getDuration(), termDTO.getPrice(), pharmacy, dermatologist);
-            terms.add(term);
-            add(term);
+            for(Shift shift : dermatologist.getShifts())
+            {
+                if(currentTime.toLocalTime().isBefore(shift.getStartTime()) || currentTime.plusMinutes(termDTO.getDuration()).toLocalTime().isAfter(shift.getEndTime()))
+                {
+                    invalid = true;
+                    break;
+                }
+            }
+            if(!invalid)
+            {
+                terms.add(term);
+                add(term);
+            }
             currentTime = currentTime.plusMinutes(termDTO.getDuration());
         }
         return terms;
     }
+
+    ///
+    public Term createNewTerm(TermDTO termDTO)
+    {
+
+        return null;
+    }
+
+    ///
 
 
 }

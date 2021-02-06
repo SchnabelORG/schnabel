@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.terms.controller;
 
+import com.schnabel.schnabel.terms.dto.TermDTO;
 import com.schnabel.schnabel.terms.model.Term;
 import com.schnabel.schnabel.terms.service.ITermService;
 
@@ -36,11 +37,9 @@ public class TermController
      * Define term
      */
     @PostMapping("/api/term")
-    public ResponseEntity<Term> add(@RequestBody Term term)
+    public ResponseEntity<Iterable<Term>> add(@RequestBody TermDTO termDTO)
     {
-        return termService.add(term) != null ?
-            ResponseEntity.ok(term) : 
-            new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return ResponseEntity.ok(termService.createTerm(termDTO));
     }
 
     
