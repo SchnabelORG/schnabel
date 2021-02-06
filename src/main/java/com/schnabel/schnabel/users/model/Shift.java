@@ -37,11 +37,9 @@ public class Shift implements IIdentifiable<Long>
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
     private EmployedUser employedUser;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Pharmacy pharmacy;
-    @Column(nullable = false)
     private LocalTime startTime;
-    @Column(nullable = false)
     private LocalTime endTime;
 
     public Shift(EmployedUser employedUser, Pharmacy pharmacy, LocalTime startTime, LocalTime endTime)
