@@ -2,8 +2,6 @@ package com.schnabel.schnabel.users.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import com.schnabel.schnabel.misc.implementations.CrudService;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
@@ -25,6 +23,10 @@ public class DermatologistService
 		super(repository);
 	}
 
+    /**
+     * Get all dermatologists of specific pharmacy
+     * @return Iterable of Dermatologist
+     */
     @Override
     public Iterable<Dermatologist> getAllSpecificPharmacy(long id) 
     {

@@ -43,4 +43,13 @@ public class Shift implements IIdentifiable<Long>
     private LocalTime startTime;
     @Column(nullable = false)
     private LocalTime endTime;
+
+    public Shift(EmployedUser employedUser, Pharmacy pharmacy, LocalTime startTime, LocalTime endTime)
+    {
+        this.employedUser = employedUser;
+        this.pharmacy = pharmacy;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
 }

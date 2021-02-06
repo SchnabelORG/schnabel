@@ -1,13 +1,23 @@
 package com.schnabel.schnabel.terms.service;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.schnabel.schnabel.misc.implementations.CrudService;
+import com.schnabel.schnabel.misc.model.Period;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
+import com.schnabel.schnabel.pharmacies.service.IPharmacyService;
+import com.schnabel.schnabel.terms.dto.TermDTO;
 import com.schnabel.schnabel.terms.model.Term;
 import com.schnabel.schnabel.terms.repository.ITermRepository;
+import com.schnabel.schnabel.users.model.Dermatologist;
 import com.schnabel.schnabel.users.model.EmployedUser;
+import com.schnabel.schnabel.users.model.Shift;
+import com.schnabel.schnabel.users.service.DermatologistService;
+import com.schnabel.schnabel.users.service.IDermatologistService;
+import com.schnabel.schnabel.users.service.IShiftService;
 
 import org.springframework.stereotype.Service;
 
@@ -17,32 +27,43 @@ import org.springframework.stereotype.Service;
 @Service
 public class TermService extends CrudService<Term, Long> implements ITermService
 {
-    public TermService(ITermRepository repository)
+
+    private final IDermatologistService dermatologistService;
+    private final IShiftService shiftService;
+    private final IPharmacyService pharmacyService;
+
+    public TermService(ITermRepository repository, IDermatologistService dermatologistService, IShiftService shiftService, IPharmacyService pharmacyService)
     {
         super(repository);
+        this.dermatologistService = dermatologistService;
+        this.shiftService = shiftService;
+        this.pharmacyService = pharmacyService;
     }
 
-    public boolean createTerm(int duration, EmployedUser employedUser, double price, Pharmacy pharmacy)
+    /**
+     * Creating free term for dermatologist
+     * @return Iterable of Terms
+     */
+    @Override
+    public Iterable<Term> createTerm(TermDTO termDTO)
     {
-        /*List<Term> terms = new ArrayList<>();
+        List<Term> terms = new ArrayList<>();
 
+        Dermatologist dermatologist = dermatologistService.get(termDTO.getEmployedId());
+        Pharmacy pharmacy = pharmacyService.get(termDTO.getPharmacyId());
+        Shift shiftForPharmacy = shiftService.getDermatologistShift(termDTO.getEmployedId(), termDTO.getPharmacyId());
+        //List<Shift> allShifts = (List<Shift>) shiftService.getDermatologistAllShifts(termDTO.getEmployedId());
 
-        int startTime = doctorWorkDays.StartTime;
-        int endTime = doctorWorkDays.EndTime;
-        
-        DateTime appointmentStart = new DateTime(date.Year, date.Month, date.Day, startTime, 0, 0);
+        LocalDateTime currentTime = termDTO.getStartTime();
 
-        for (int i = 0; i < (endTime - startTime)*2; i++)
+        while((currentTime.plusMinutes(termDTO.getDuration()).toLocalTime()).compareTo(shiftForPharmacy.getEndTime()) <= 0)
         {
-            Appointment appointment = new Appointment
-            {
-                DoctorId = doctorId,
-                Doctor = doctorWorkDays.Doctor,
-                Period = new Period(appointmentStart.AddMinutes(appointmentDuration * i), appointmentStart.AddMinutes(appointmentDuration * (i + 1)))
-            };
-            appointments.Add(appointment);
-        }*/
-        return true;
+            Term term = new Term(new Period(currentTime, currentTime.plusMinutes(termDTO.getDuration())), termDTO.getDuration(), termDTO.getPrice(), pharmacy, dermatologist);
+            terms.add(term);
+            add(term);
+            currentTime = currentTime.plusMinutes(termDTO.getDuration());
+        }
+        return terms;
     }
 
 

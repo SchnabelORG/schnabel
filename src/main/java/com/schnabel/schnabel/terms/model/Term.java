@@ -1,15 +1,15 @@
 package com.schnabel.schnabel.terms.model;
 
 import com.schnabel.schnabel.misc.model.IIdentifiable;
+import com.schnabel.schnabel.misc.model.Period;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.users.model.EmployedUser;
 import com.schnabel.schnabel.users.model.Patient;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,8 +33,8 @@ public class Term implements IIdentifiable<Long>
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
-    private LocalDateTime start;
+    @Embedded
+    private Period period;
     @Column(nullable = false)
     private int duration;
     @Column(nullable = false)
@@ -50,4 +50,12 @@ public class Term implements IIdentifiable<Long>
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
 
+    public Term(Period period, int duration, double price, Pharmacy pharmacy, EmployedUser employedUser)
+    {
+        this.period = period;
+        this.duration = duration;
+        this.price = price;
+        this.pharmacy = pharmacy;
+        this.employedUser = employedUser;
+    }
 }

@@ -92,6 +92,12 @@
                 // DODATI JOS VREME DATUM I PHARMACY
             
             },
+
+
+
+
+
+
             getDermatologists: function() {
                 this.axios.get("/api/dermatologists/")
                 .then(response => {
