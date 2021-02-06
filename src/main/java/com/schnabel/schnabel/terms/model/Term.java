@@ -35,19 +35,19 @@ public class Term implements IIdentifiable<Long>
     private Long id;
     @Embedded
     private Period period;
-    @Column(nullable = false)
+    @Column
     private int duration;
-    @Column(nullable = false)
+    @Column
     private double price;
 
     @ManyToOne
-    @JoinColumn(name = "pharmacy_id", nullable = false)
+    @JoinColumn(name = "pharmacy_id")
     private Pharmacy pharmacy;
     @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false)
+    @JoinColumn(name = "employee_id")
     private EmployedUser employedUser;
     @ManyToOne
-    @JoinColumn(name = "patient_id", nullable = false)
+    @JoinColumn(name = "patient_id")
     private Patient patient;
 
     public Term(Period period, int duration, double price, Pharmacy pharmacy, EmployedUser employedUser)

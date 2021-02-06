@@ -88,7 +88,7 @@
         },
         methods: {
             create: function() {
-                let term = { id: "", duration: this.duration, price: this.price, employedUser: this.dermatologist };
+                // let term = { id: "", duration: this.duration, price: this.price, employedUser: this.dermatologist };
                 // DODATI JOS VREME DATUM I PHARMACY
             
             },
