@@ -1,6 +1,7 @@
 package com.schnabel.schnabel.users.service;
 
 import com.schnabel.schnabel.misc.implementations.CrudService;
+import com.schnabel.schnabel.pharmacies.model.Term;
 import com.schnabel.schnabel.users.model.Pharmacist;
 import com.schnabel.schnabel.users.repository.IPharmacistRepository;
 
@@ -20,4 +21,18 @@ public class PharmacistService
     {
         super(repository);
     }
+
+	@Override
+    public boolean addTerm(Pharmacist pharmacist, Term term)
+    {
+        return pharmacist.addTerm(term)
+            && update(pharmacist);
+	}
+
+	@Override
+    public boolean removeTerm(Pharmacist pharmacist, Term term)
+    {
+        return pharmacist.removeTerm(term)
+            && update(pharmacist);
+	}
 }

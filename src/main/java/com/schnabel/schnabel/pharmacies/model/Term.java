@@ -43,4 +43,12 @@ public class Term implements IIdentifiable<Long>
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
+
+    public Term(Period period, Pharmacy pharmacy, EmployedUser employedUser, Patient patient)
+    {
+        this.period = period;
+        this.pharmacy = pharmacy;
+        this.employedUser = employedUser;
+        this.patient = patient;
+    }
 }

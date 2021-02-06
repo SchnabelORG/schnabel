@@ -26,7 +26,7 @@ public class SpecialOfferService extends CrudService<SpecialOffer, Long> impleme
     {
         // TODO(Jovan): Compatible with iterable?
         return StreamSupport.stream(getAll().spliterator(), false)
-            .filter(so -> so.isValidPeriod(period.getStartTime(), period.getEndTime())).collect(Collectors.toList());
+            .filter(so -> so.isValidPeriod(period)).collect(Collectors.toList());
     }
     
 }

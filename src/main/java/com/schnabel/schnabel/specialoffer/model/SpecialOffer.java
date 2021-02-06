@@ -1,7 +1,5 @@
 package com.schnabel.schnabel.specialoffer.model;
 
-import java.time.LocalDate;
-
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -44,10 +42,10 @@ public class SpecialOffer implements IIdentifiable<Long>
     @OneToOne(fetch = FetchType.LAZY)
     private Pharmacy pharmacy;
 
-    public boolean isValidPeriod(LocalDate from, LocalDate until)
+    public boolean isValidPeriod(Period period)
     {
-        return this.validPeriod.getStartTime().compareTo(from) >= 0
-            || this.validPeriod.getEndTime().compareTo(until) <= 0;
+        return this.validPeriod.getStartTime().compareTo(period.getStartTime()) >= 0
+            || this.validPeriod.getEndTime().compareTo(period.getEndTime()) <= 0;
     }
 
     @Override

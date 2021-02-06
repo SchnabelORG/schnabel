@@ -66,4 +66,25 @@ public class EmployedUser implements IIdentifiable<Long>
         this.address = address;
     }
 
+    
+    /**
+     * Add term
+     * @param term Term to be added
+     * @return true if added else false
+     */
+    public boolean addTerm(Term term)
+    {
+        return this.terms.add(term);
+    }
+
+    /**
+     * Remove term
+     * @param term Term to be removed
+     * @return true if removed else false
+     */
+    public boolean removeTerm(Term term)
+    {
+        return this.terms.remove(term);
+    }
+
 }
