@@ -46,6 +46,7 @@ public class Pharmacy implements IIdentifiable<Long>
     private String name;
     @Embedded
     private Address address;
+    // TODO(Marko): Add email?
     // TODO(Jovan): Use wrapper class?
     @Column(name = "avg_rating", nullable = false)
     private double avgRating;

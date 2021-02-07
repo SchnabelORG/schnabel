@@ -32,11 +32,9 @@ VALUES('2021-02-03', 1, 1);
 INSERT INTO drugreservations(valid_until, drug_id, patient_id)
 VALUES('2021-02-01', 1, 2);
 
-<<<<<<< HEAD
 INSERT INTO systemadmins(city, postcode, street, street_no, "name", surname, email)
 VALUES('Beograd', '11000', 'Carlija Caplina', 12, 'admin', 'admin', 'schnabelpharmacy@gmail.com');
 
-=======
 
 -- INSERT INTO employedusers(city, postcode, street, street_no, "name", surname, email, password, user_type)
 -- VALUES('Novi Sad', '21000', 'Slobodana Bajica', 17, 'Radovan', 'Zupunski', 'radovan.zupunski@uns.ac.rs', '123456789', 'DERMATOLOGIST');
@@ -67,4 +65,4 @@ INSERT INTO orderitems(order_id, drug_id, quantity)
 VALUES (1, 2, 3);
 INSERT INTO orderitems(order_id, drug_id, quantity)
 VALUES (2, 3, 1);
->>>>>>> develop
+
