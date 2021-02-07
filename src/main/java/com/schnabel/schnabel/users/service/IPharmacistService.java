@@ -25,10 +25,10 @@ public interface IPharmacistService extends ICrudService<Pharmacist, Long>
      */
     boolean removeTerm(Pharmacist pharmacist, Term term);
     /**
-     * 
-     * @param id
-     * @param period
-     * @return
+     * Check if Pharmacist contains a term conflicting with <b>period</b>
+     * @param id Pharmacist ID
+     * @param period Period for term checking
+     * @return true if free else false
      */
     boolean checkIfFree(Long id, Period period);
 }

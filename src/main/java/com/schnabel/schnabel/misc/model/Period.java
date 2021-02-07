@@ -32,4 +32,26 @@ public class Period
     {
         return this.endTime.isAfter(this.startTime);
     }
+
+    /**
+     * Checks whether <b>time</b> falls in Period
+     * @param time Time to check
+     * @return true if it's between else false
+     */
+    public boolean isBetween(LocalDateTime time)
+    {
+        return time.isAfter(this.startTime)
+            && time.isBefore(this.endTime);
+    }
+
+    /**
+     * Checks whether the <b>period</b> overlaps
+     * @param period Period to check
+     * @return true if it overlaps else false
+     */
+    public boolean isOverlapping(Period period)
+    {
+        return isBetween(period.getStartTime())
+            || isBetween(period.getEndTime());
+    }
 }

@@ -1,6 +1,7 @@
 package com.schnabel.schnabel.users.service;
 
 import com.schnabel.schnabel.misc.implementations.CrudService;
+import com.schnabel.schnabel.misc.model.Period;
 import com.schnabel.schnabel.pharmacies.model.Term;
 import com.schnabel.schnabel.users.model.Pharmacist;
 import com.schnabel.schnabel.users.repository.IPharmacistRepository;
@@ -34,5 +35,23 @@ public class PharmacistService
     {
         return pharmacist.removeTerm(term)
             && update(pharmacist);
+	}
+
+	@Override
+    public boolean checkIfFree(Long id, Period period)
+    {
+        Pharmacist pharmacist = get(id);
+        if(pharmacist == null)
+        {
+            return false;
+        }
+        for (Term term : pharmacist.getTerms())
+        {
+            if(period.isOverlapping(term.getPeriod()))
+            {
+                return false;
+            }
+        }
+        return true;
 	}
 }
