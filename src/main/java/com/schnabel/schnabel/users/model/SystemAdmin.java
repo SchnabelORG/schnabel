@@ -14,19 +14,26 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class SystemAdmin implements IIdentifiable<Integer> {
-
+public class SystemAdmin implements IIdentifiable<Long>
+{
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     private String surname;
     @Setter(AccessLevel.PROTECTED)
+    @Column(nullable = false)
+    private String username;
+    @Setter(AccessLevel.PROTECTED)
+    @Column(nullable = false)
     private String email;
+    @Column(nullable = false)
+    private String password;
     @Embedded
     private Address address;
 
     @Override
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 }

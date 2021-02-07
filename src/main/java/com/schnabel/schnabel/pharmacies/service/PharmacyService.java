@@ -27,11 +27,8 @@ public class PharmacyService extends CrudService<Pharmacy, Long> implements IPha
             throw new PharmacyAlreadyExistsException("There is already a pharmacy with that name");
 
         Pharmacy pharmacy = new Pharmacy(pharmacyDTO.getName(), pharmacyDTO.getAddress());
-        boolean successful = this.add(pharmacy);
-        if(successful)
-            return pharmacy;
-        else
-            return null;
+        return this.add(pharmacy);
+
     }
 
     private boolean nameExists(String name) {
