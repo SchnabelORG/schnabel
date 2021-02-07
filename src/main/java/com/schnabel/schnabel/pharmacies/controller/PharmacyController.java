@@ -50,6 +50,12 @@ public class PharmacyController
         return ResponseEntity.ok(pharmacyService.getAll());
     }
 
+    /**
+     *
+     * Register new pharmacy
+     * @param pharmacyDTO
+     * @return Status of successful pharmacy registration
+     */
     @PostMapping("/api/pharmacy/register")
     public ResponseEntity<String> register( @RequestBody PharmacyDTO pharmacyDTO) {
         try {
@@ -57,6 +63,7 @@ public class PharmacyController
         } catch (PharmacyAlreadyExistsException aex) {
             return new ResponseEntity<>(aex.toString(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
+            System.out.println(e);
             return new ResponseEntity<>("Something went wrong!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>("Pharamcy registered!", HttpStatus.OK);

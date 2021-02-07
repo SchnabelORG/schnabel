@@ -6,5 +6,4 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface IPharmacyAdminRepository extends CrudRepository<PharmacyAdmin, Long>
 {
-    
 }

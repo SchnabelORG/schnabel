@@ -13,4 +13,5 @@ import lombok.Setter;
 public class PharmacyDTO {
     private String name;
     private Address address;
+    private Long adminId;
 }
