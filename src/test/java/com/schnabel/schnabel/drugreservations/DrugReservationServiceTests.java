@@ -12,6 +12,7 @@ import com.schnabel.schnabel.drugreservations.repository.IDrugReservationReposit
 import com.schnabel.schnabel.drugreservations.service.DrugReservationService;
 import com.schnabel.schnabel.drugs.model.Drug;
 import com.schnabel.schnabel.misc.model.Address;
+import com.schnabel.schnabel.misc.model.Period;
 import com.schnabel.schnabel.users.model.Patient;
 
 import org.junit.jupiter.params.ParameterizedTest;
@@ -48,12 +49,13 @@ public class DrugReservationServiceTests
         IDrugReservationRepository stubRepository = Mockito.mock(IDrugReservationRepository.class);
         Address a1 = new Address("21000", "Novi Sad", "Balzakova", 69);
         Address a2 = new Address("11000", "Beograd", "Balzakova", 64);
-        Patient p1 = new Patient(1, "Jovan", "Ivosevic", "ivosevic.jovan@uns.ac.rs", a1);
-        Patient p2 = new Patient(2, "Petar", "Petrovic", "petrovic.petar@bg.ac.rs", a2);
-        Drug d1 = new Drug(1, "Ciklopentanoperhidrofenantren", "Arnold Schwarzenegger approves!");
-        DrugReservation dr1 = new DrugReservation(1, p1, d1, LocalDate.of(2021, 02, 03));
-        DrugReservation dr2 = new DrugReservation(2, p2, d1, LocalDate.of(2020, 02, 03));
-        DrugReservation dr3 = new DrugReservation(3, p1, d1, LocalDate.of(2021, 03, 01));
+        Patient p1 = new Patient(1L, "Jovan", "Ivosevic", "ivosevic.jovan@uns.ac.rs", a1);
+        Patient p2 = new Patient(2L, "Petar", "Petrovic", "petrovic.petar@bg.ac.rs", a2);
+        Period p = new Period(LocalDate.of(2020, 7, 1), LocalDate.of(2021, 7, 1));
+        Drug d1 = new Drug(1L, "Ciklopentanoperhidrofenantren", "Arnold Schwarzenegger approves!", 1, 100.0, p);
+        DrugReservation dr1 = new DrugReservation(1L, p1, d1, LocalDate.of(2021, 02, 03));
+        DrugReservation dr2 = new DrugReservation(2L, p2, d1, LocalDate.of(2020, 02, 03));
+        DrugReservation dr3 = new DrugReservation(3L, p1, d1, LocalDate.of(2021, 03, 01));
         ArrayList<DrugReservation> reservations = new ArrayList<DrugReservation>();
         reservations.add(dr1);
         reservations.add(dr2);

@@ -17,14 +17,13 @@ public class HospitalService extends CrudService<Hospital, String> implements IH
     }
 
     @Override
-    public boolean add(Hospital hospital)
+    public Hospital add(Hospital hospital)
     {
         if(get(hospital.getApiKey()) == null)
         {
             hospital.setApiKey(("api" + hospital.getName() + "1234").replace(' ', '_'));
             repository.save(hospital);
-            return true;
         }
-        return false;
+        return repository.findById(hospital.getId()).orElse(null);
     }
 }
