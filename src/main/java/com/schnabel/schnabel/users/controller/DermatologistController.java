@@ -1,12 +1,9 @@
 package com.schnabel.schnabel.users.controller;
 
-import java.time.LocalTime;
-
 import com.schnabel.schnabel.users.model.Dermatologist;
 import com.schnabel.schnabel.users.service.IDermatologistService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -1,8 +1,6 @@
 package com.schnabel.schnabel.users.model;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -14,7 +12,6 @@ import javax.persistence.ManyToMany;
 import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
