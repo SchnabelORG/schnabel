@@ -28,7 +28,7 @@ import lombok.Setter;
 public class OrderItem implements IIdentifiable<Long>
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)

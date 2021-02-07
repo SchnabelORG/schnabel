@@ -10,15 +10,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
-import com.schnabel.schnabel.users.model.Dermatologist;
+import com.schnabel.schnabel.terms.model.Term;
 import com.schnabel.schnabel.users.model.Pharmacist;
 
 import lombok.AllArgsConstructor;
@@ -50,18 +47,18 @@ public class Pharmacy implements IIdentifiable<Long>
     // TODO(Jovan): Use wrapper class?
     @Column(name = "avg_rating", nullable = false)
     private double avgRating;
-    @ManyToMany
+    /*@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable
     (
         name = "dermatologist_pharmacy",
         joinColumns = @JoinColumn(name = "pharmacy_id"),
         inverseJoinColumns = @JoinColumn(name = "dermatologist_id")
     )
-    private final Set<Dermatologist> dermatologists = new HashSet<Dermatologist>();
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacy")
+    private List<Dermatologist> dermatologists;*/
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pharmacy")
     private final Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
     // TODO(Jovan): Available drug list
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacy")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pharmacy")
     private final Set<Term> terms = new HashSet<Term>();
 
 

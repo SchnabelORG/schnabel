@@ -18,11 +18,14 @@
 		<java.version>11</java.version>
 		<sonar.exclusions>
 			**/model/*.java,
+			**/controller/*.java,
+			**/service/*.java,
+			**/repository/*.java,
+			**/dto/*.java,
+			**/misc/*.java,
 			**/SchnabelApplication.java,
 			**/CrudService.java,
 			**/VueRoutePathFilter.java,
-			**/UsageReportNotificationController.java,
-			**/RegistrationController.java
 		</sonar.exclusions>
 	</properties>
 

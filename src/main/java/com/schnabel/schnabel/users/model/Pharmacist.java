@@ -28,7 +28,7 @@ import lombok.Setter;
 public class Pharmacist extends EmployedUser
 {
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pharmacy_id", nullable = false)
+    @JoinColumn(name = "pharmacy_id")
     private Pharmacy pharmacy;
 
     public Pharmacist(String name, String surname, String email, String password, Address address, Pharmacy pharmacy)
