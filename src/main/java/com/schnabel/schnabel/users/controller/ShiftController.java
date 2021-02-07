@@ -1,11 +1,6 @@
 package com.schnabel.schnabel.users.controller;
 
-import java.time.LocalTime;
-
-import com.schnabel.schnabel.pharmacies.service.IPharmacyService;
 import com.schnabel.schnabel.users.model.Shift;
-import com.schnabel.schnabel.users.repository.IDermatologistRepository;
-import com.schnabel.schnabel.users.service.IDermatologistService;
 import com.schnabel.schnabel.users.service.IShiftService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class ShiftController 
 {
     private final IShiftService shiftService;
-    private final IPharmacyService pharmacyService;
-    private final IDermatologistService dermatologistService;
     @Autowired
-    public ShiftController(IShiftService shiftService, IPharmacyService pharmacyService, IDermatologistService dermatologistService)
+    public ShiftController(IShiftService shiftService)
     {
         this.shiftService = shiftService;
-        this.pharmacyService = pharmacyService;
-        this.dermatologistService = dermatologistService;
     }    
 
     /**

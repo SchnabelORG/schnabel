@@ -88,7 +88,7 @@
         },
         methods: {
             create: function() {
-                let term = { startTime: this.date.format(''), duration: this.duration, price: this.price, pharmacyId: 1, startemployedUser: this.dermatologist.id };
+                let term = { startTime: this.date, duration: this.duration, price: this.price, pharmacyId: 1, startemployedUser: this.dermatologist.id };
                 this.axios.post("/api/term/", term)
                 .then(response => {
                     console.log(response);
@@ -114,9 +114,21 @@
             save (date) {
                 this.$refs.menu.save(date)
             },  
+            createTerms: function() {
+                this.axios.post("/api/term/")
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(response => {
+                    console.log(response);
+                })
+                .finally(function(){
+                })
+            },
         },
         mounted() {
             this.getDermatologists();
+            this.createTerms();
         },
     }
 </script>

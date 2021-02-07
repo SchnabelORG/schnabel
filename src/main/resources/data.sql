@@ -26,10 +26,13 @@ VALUES('Dermatologist', 'Novi Sad', '21000', 'Balzakova', 69, 'ivosevic.jovan@un
 INSERT INTO dermatologist_pharmacy(dermatologist_id, pharmacy_id)
 VALUES(1, 1);
 
-INSERT INTO terms(start_time, end_time, pharmacy_id, employee_id, patient_id)
-VALUES ('2020-12-22 09:10:00', '2020-12-22 09:40:00', 1, 1, 1);
-INSERT INTO terms(start_time, end_time, pharmacy_id, employee_id, patient_id)
-VALUES ('2020-12-23 10:00:00', '2020-12-23 10:20:00', 1, 1, 2);
+INSERT INTO shifts(employed_user_id, pharmacy_id, start_time, end_time)
+VALUES (1, 1, '08:00:00', '12:00:00');
+
+--INSERT INTO terms(start_time, end_time, pharmacy_id, employee_id, patient_id)
+--VALUES ('2020-12-22 09:10:00', '2020-12-22 09:40:00', 1, 1, 1);
+--INSERT INTO terms(start_time, end_time, pharmacy_id, employee_id, patient_id)
+--VALUES ('2020-12-23 10:00:00', '2020-12-23 10:20:00', 1, 1, 2);
 
 INSERT INTO orders("description", deadline)
 VALUES ('Ordering drugs', '2021-02-20');
@@ -42,6 +45,3 @@ INSERT INTO orderitems(order_id, drug_id, quantity)
 VALUES (1, 2, 3);
 INSERT INTO orderitems(order_id, drug_id, quantity)
 VALUES (2, 3, 1);
-
-INSERT INTO shifts(employed_user_id, pharmacy_id, start_time, end_time)
-VALUES (1, 1, '10:00:00', '10:30:00');

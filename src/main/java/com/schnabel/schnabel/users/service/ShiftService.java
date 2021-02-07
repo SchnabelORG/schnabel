@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.users.service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -40,7 +41,8 @@ public class ShiftService extends CrudService<Shift, Long> implements IShiftServ
     @Override
     public Shift getDermatologistShift(Long employedId, Long pharmacyId)
     {
-        for(Shift shift : getAll())
+        List<Shift> shifts = (List<Shift>) getAll();
+        for(Shift shift : shifts)
         {
             if(shift.getEmployedUser().getId().equals(employedId) && shift.getPharmacy().getId().equals(pharmacyId))
             {

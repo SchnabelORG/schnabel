@@ -45,17 +45,19 @@ public class TermService extends CrudService<Term, Long> implements ITermService
     public Iterable<Term> createTerm(TermDTO termDTO)
     {
         List<Term> terms = new ArrayList<>();
+        System.out.println("stigao");
 
         Dermatologist dermatologist = dermatologistService.get(termDTO.getEmployedId());
         Pharmacy pharmacy = pharmacyService.get(termDTO.getPharmacyId());
         Shift shiftForPharmacy = shiftService.getDermatologistShift(termDTO.getEmployedId(), termDTO.getPharmacyId());
-        //List<Shift> allShifts = (List<Shift>) shiftService.getDermatologistAllShifts(termDTO.getEmployedId());
+            System.out.println("shift" + shiftForPharmacy.getId());
         boolean invalid = false;
         LocalDateTime currentTime = termDTO.getStartTime();
+            System.out.println("startTime" + currentTime);
 
         while((currentTime.plusMinutes(termDTO.getDuration()).toLocalTime()).compareTo(shiftForPharmacy.getEndTime()) <= 0)
         {
-            Term term = new Term(new Period(currentTime, currentTime.plusMinutes(termDTO.getDuration())), termDTO.getDuration(), termDTO.getPrice(), pharmacy, dermatologist);
+            Term term = new Term(new Period(currentTime, currentTime.plusMinutes(termDTO.getDuration())), termDTO.getDuration(), termDTO.getPrice(), true, pharmacy, dermatologist, null);
             for(Shift shift : dermatologist.getShifts())
             {
                 if(currentTime.toLocalTime().isBefore(shift.getStartTime()) || currentTime.plusMinutes(termDTO.getDuration()).toLocalTime().isAfter(shift.getEndTime()))
@@ -68,20 +70,16 @@ public class TermService extends CrudService<Term, Long> implements ITermService
             {
                 terms.add(term);
                 add(term);
+                System.out.println("dodao");
+                /*dermatologist.getTerms().add(term);
+                dermatologistService.update(dermatologist);
+                pharmacy.getTerms().add(term);
+                pharmacyService.update(pharmacy);*/
             }
             currentTime = currentTime.plusMinutes(termDTO.getDuration());
         }
         return terms;
     }
-
-    ///
-    public Term createNewTerm(TermDTO termDTO)
-    {
-
-        return null;
-    }
-
-    ///
 
 
 }

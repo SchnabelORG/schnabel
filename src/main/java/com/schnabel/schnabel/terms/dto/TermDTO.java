@@ -9,11 +9,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * DTO for consultation scheduling
+ * DTO for scheduling
  */
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 public class TermDTO 
@@ -23,4 +22,13 @@ public class TermDTO
     private double price;
     private Long pharmacyId;
     private Long employedId;
+
+    public TermDTO(LocalDateTime startTime, int duration, double price, Long pharmacyId, Long employedId) 
+    {
+        this.startTime = startTime;
+        this.duration = duration;
+        this.price = price;
+        this.pharmacyId = pharmacyId;
+        this.employedId = employedId;
+    }
 }
