@@ -31,14 +31,7 @@
                 step="4">
                 New consultation
                 </v-stepper-step>
-        
-                <v-divider></v-divider>
-
-                <v-stepper-step
-                :complete="e1 > 5"
-                step="5">
-                Finish
-                </v-stepper-step>
+    
             </v-stepper-header>
         
             <v-stepper-items>
@@ -123,6 +116,8 @@
                         <v-row>
                             <div id="select-medication">
                                 <v-select
+                                    ref="med"
+                                    v-model="choosenMedication"
                                     :items="medications"
                                     label="Medication name"
                                     :rules="[rules.required]"
@@ -135,7 +130,7 @@
                                     </template>
                                 </v-select>
                             </div>
-                            <v-btn id="add-med-btn" elevation="2" @click="addMedication" class="deep-orange white--text">
+                            <v-btn id="add-med-btn" :disabled="choosenMedication === ''" elevation="2" @click="addMedication" class="deep-orange white--text">
                                 Add
                             </v-btn>
                         </v-row>
@@ -143,19 +138,61 @@
                         <v-data-table :items="prescripedMedication"
                                         :hide-default-footer="true"
                                         :hide-default-header="true">
-                            <template v-slot:item="row">
+                            <template v-slot:item="row"> 
                                 <tr>
-                                    <td>{{row.item.medicationName}}</td>
-                                    <td>{{row.item.medicationDosage}}</td>
-                                    <td>x{{row.item.medicationQuantity}}</td>
+                                    <td>{{row.item.name}}</td>
+                                    <td>{{row.item.dosage}}</td>
+                                    <td> 
+                                        <v-text-field
+                                            class="mt-0 pt-0"
+                                            hide-details
+                                            :value="1"
+                                            :min="1"
+                                            :max="12"
+                                            single-line
+                                            type="number"
+                                            style="width: 60px"
+                                            @change="$set(range, 1, $event)"
+                                        ></v-text-field>
+                                        times per day 
+                                    </td>
+                                    <td> 
+                                        <v-text-field
+                                            class="mt-0 pt-0"
+                                            :value="1"
+                                            hide-details
+                                            :min="1"
+                                            :max="10"
+                                            single-line
+                                            type="number"
+                                            style="width: 60px"
+                                            @change="$set(range, 1, $event)"
+                                        ></v-text-field>
+                                        quantity
+                                    </td>
+                                    <td>
+                                         <v-btn elevation="2" @click="checkForMedication" class="deep-orange white--text">
+                                            Check
+                                        </v-btn>
+                                    </td>
                                 </tr>
                             </template>
                         </v-data-table>
+                        <v-alert
+                            id="alert-for-med"
+                            dense
+                            v-if="haveMedication !== ''"
+                            :type="haveMedication">
+                                <div v-if="haveMedication === 'success'">We <strong>have medication</strong> in stock</div>
+                                <div v-else>We <strong>dont have medication</strong> in stock</div>
+                            
+                        </v-alert>
                     </v-card>
             
                     <v-row>
                         <v-col class="text-left">
                             <v-btn
+                                :disabled="haveMedication !== 'success'"
                                 color="primary"
                                 @click="e1 = 4">
                                 Continue
@@ -178,37 +215,43 @@
                 <v-stepper-content step="4">
                     <v-card
                         class="mb-12"
-                        color="grey lighten-1"
-                        height="200px"></v-card>
+                        height="450px">
+                        <v-row>
+                            <v-col>
+                                <v-date-picker
+                                    v-model="date"
+                                    :allowed-dates="getAllowedDates"
+                                ></v-date-picker>
+                            </v-col>
+                            <v-col>
+                                <v-radio-group
+                                    v-model="time"
+                                    column>
+                                    <v-radio
+                                        v-for="n in 6"
+                                        :key="n"
+                                        :label="n"
+                                        color="primary"
+                                        :value="n"
+                                    ></v-radio>
 
-                    <v-row>
-                        <v-col class="text-left">
-                            <v-btn
-                                color="primary"
-                                @click="e1 = 5">
-                                Continue
-                            </v-btn>
-                    
-                            <v-btn text
-                                @click="e1 = 3">
-                                Back
-                            </v-btn>
-                        </v-col>
-                        <v-col class="text-right">
-                            <v-btn text
-                                @click="e1 = 1">
-                                Cancel
-                            </v-btn>
-                        </v-col>
-                    </v-row>   
-                </v-stepper-content>
+                                </v-radio-group>
+                            </v-col>
+                        </v-row>
 
-                <v-stepper-content step="5">
-                    <v-card
-                        class="mb-12"
-                        color="grey lighten-1"
-                        height="200px"></v-card>
-                    
+                        <v-alert
+                            dense
+                            v-if="(time != null) && (date != null)"
+                            type="info">
+                            Choosen term is 20.03.2021 at 12:30
+                        </v-alert>
+
+                        <v-btn :disabled="(time == null) || (date == null)" id="sumbit-btn" elevation="2" @click="makeNewConsultation" class="deep-orange white--text">
+                            Submit
+                        </v-btn>
+
+                    </v-card>
+
                     <v-row>
                         <v-col class="text-left">
                             <v-btn
@@ -218,7 +261,7 @@
                             </v-btn>
                     
                             <v-btn text
-                                @click="e1 = 4">
+                                @click="e1 = 3">
                                 Back
                             </v-btn>
                         </v-col>
@@ -244,11 +287,15 @@
                 medicationName: '',
                 medications: [],
                 prescripedMedication: [],
+                choosenMedication: '',
+                haveMedication: '',
                 rules: {
                     required: value => !!value || 'Required.',
-                    min: v => v.length >= 8 || 'Min 8 characters',
-                    isNmb: v => /^\d+$/.test(v) || 'Must be a number',
                 },
+                range: [1, 12],
+                date: null,
+                time: null,
+                allowedDates: ["2021-02-03", "2021-02-05", "2021-03-05"],
 
             }
         },
@@ -269,7 +316,25 @@
                 else
                     return false;
 
-            }
+            },
+            addMedication: function(){
+                this.prescripedMedication = [];
+                this.prescripedMedication.push(this.choosenMedication);
+                this.haveMedication = '';
+                this.$refs["med"].reset();
+
+            },
+            checkForMedication: function(){
+                this.haveMedication = 'error';
+                this.haveMedication = 'success';
+            },
+            getAllowedDates: function(val){
+                if (this.allowedDates.indexOf(val) !== -1) {
+                    return true
+                } else {
+                    return false
+                }
+            },
         },
         mounted(){
             this.getAllPatients();
@@ -284,6 +349,8 @@
         grid-template-columns:auto;
         place-items: center;
         min-height: 100%;
+        background: rgb(50,74,94);
+        background: linear-gradient(90deg, rgba(63,81,181,1) 5%, rgba(197,202,233,1) 100%); 
     }
     #add-med-btn{
         margin: 0;
@@ -293,5 +360,11 @@
     #select-medication{
         margin-left: 2%;
         width: 85%;
+    }
+    #alert-for-med{
+        margin-top: 3%;
+    }
+    #sumbit-btn{
+        width: 100%;
     }
 </style>

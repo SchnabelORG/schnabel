@@ -125,6 +125,8 @@
         grid-template-columns:auto;
         place-items: center;
         min-height: 100%;
+        background: rgb(50,74,94);
+        background: linear-gradient(90deg, rgba(63,81,181,1) 5%, rgba(197,202,233,1) 100%); 
     }
     #save-btn{
         margin-top: 5%;
