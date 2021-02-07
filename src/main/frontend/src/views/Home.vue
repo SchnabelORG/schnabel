@@ -5,7 +5,7 @@
       <div id="header-text">
         <div id="header-title">
           <h1 id="title">Schnabel</h1>
-          <p id="header-desc">Centralized pharmaceutical information system</p>
+          <p id="header-desc">Centralized pharmacies information system</p>
           <router-link to="/pswreg" v-slot="{href, navigate}">
             <v-btn :href="href" @click="navigate" class="accent" elevation="1">Get your API key</v-btn>
           </router-link>
