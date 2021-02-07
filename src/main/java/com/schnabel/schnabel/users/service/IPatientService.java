@@ -6,7 +6,10 @@ import com.schnabel.schnabel.misc.exceptions.PatientAlreadyExistsException;
 import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.model.VerificationToken;
 
-public interface IPatientService extends ICrudService<Patient, Integer>
+/**
+ * Patient service interface
+ */
+public interface IPatientService extends ICrudService<Patient, Long>
 {
     Patient registerNewAccount(UserDTO userDTO) throws PatientAlreadyExistsException;
 

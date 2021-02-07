@@ -11,8 +11,11 @@ import com.schnabel.schnabel.users.repository.IVerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Patient service implementation
+ */
 @Service
-public class PatientService extends CrudService<Patient, Integer> implements IPatientService
+public class PatientService extends CrudService<Patient, Long> implements IPatientService
 {
     @Autowired
     private final IVerificationTokenRepository verificationTokenRepository;

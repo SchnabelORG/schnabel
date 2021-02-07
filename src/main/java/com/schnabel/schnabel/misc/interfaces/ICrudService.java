@@ -9,7 +9,7 @@ package com.schnabel.schnabel.misc.interfaces;
 
 public interface ICrudService<T, I>
 {
-    boolean add(T object);
+    T add(T object);
     boolean remove(I id);
     boolean update(T object);
     T get(I id);

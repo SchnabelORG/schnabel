@@ -37,7 +37,7 @@ public class PatientController
     }
 
     @GetMapping("/api/patient/{id}")
-    public ResponseEntity<Patient> get(@PathVariable int id)
+    public ResponseEntity<Patient> get(@PathVariable long id)
     {
         Patient patient = patientService.get(id);
         return patient == null ?
