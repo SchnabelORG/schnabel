@@ -21,6 +21,7 @@
 			**/controller/*.java,
 			**/service/*.java,
 			**/repository/*.java,
+			**/dto/*.java,
 			**/misc/*.java,
 			**/SchnabelApplication.java,
 			**/CrudService.java,
