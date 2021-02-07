@@ -1,6 +1,7 @@
 package com.schnabel.schnabel.terms.service;
 
 import com.schnabel.schnabel.misc.interfaces.ICrudService;
+import com.schnabel.schnabel.terms.dto.TermDTO;
 import com.schnabel.schnabel.terms.model.Term;
 
 /**
@@ -8,5 +9,6 @@ import com.schnabel.schnabel.terms.model.Term;
  */
 public interface ITermService extends ICrudService<Term, Long>
 {
-    
+    public Iterable<Term> createTerm(TermDTO termDTO);
+    public boolean addTerms(Iterable<Term> terms);
 }
