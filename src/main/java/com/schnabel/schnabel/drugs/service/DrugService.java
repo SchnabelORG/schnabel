@@ -9,8 +9,11 @@ import com.schnabel.schnabel.misc.implementations.CrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Drug service implementation
+ */
 @Service
-public class DrugService extends CrudService<Drug, Integer> implements IDrugService
+public class DrugService extends CrudService<Drug, Long> implements IDrugService
 {
 
     @Autowired

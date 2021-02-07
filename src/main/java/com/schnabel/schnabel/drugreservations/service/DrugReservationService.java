@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * Implementation of drug reservation service
  */
 @Service
-public class DrugReservationService extends CrudService<DrugReservation, Integer>
+public class DrugReservationService extends CrudService<DrugReservation, Long>
     implements IDrugReservationService
 {
 
