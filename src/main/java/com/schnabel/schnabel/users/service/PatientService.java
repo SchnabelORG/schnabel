@@ -37,11 +37,8 @@ public class PatientService extends CrudService<Patient, Long> implements IPatie
 
         Patient patient = new Patient(userDTO);
         System.out.println(patient.toString());
-        boolean successful = this.add(patient);
-        if(successful)
-            return patient;
-        else
-            return null;
+        return this.add(patient);
+
     }
 
     private boolean emailExits(String email) {

@@ -48,6 +48,9 @@ public class Patient implements IIdentifiable<Long>
     private Address address;
     private boolean enabled;
     private String password;
+    @OneToMany(mappedBy = "patient")
+    private final Set<Term> terms = new HashSet<Term>();
+
 
     public Patient(UserDTO userDTO) {
         super();
@@ -58,7 +61,5 @@ public class Patient implements IIdentifiable<Long>
         this.password = userDTO.getPassword();
         this.enabled = false;
     }
-    @OneToMany(mappedBy = "patient")
-    private final Set<Term> terms = new HashSet<Term>();
 
 }

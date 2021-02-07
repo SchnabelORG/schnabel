@@ -76,7 +76,7 @@ public class PatientController
             return new ResponseEntity<>("Invalid activation link", HttpStatus.BAD_REQUEST);
         }
 
-        Patient patient = verificationToken.getPatient().getId();
+        Patient patient = verificationToken.getPatient();
         Calendar cal = Calendar.getInstance();
         if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
             return new ResponseEntity<>("Invalid activation link", HttpStatus.BAD_REQUEST);
