@@ -20,4 +20,23 @@ public class PharmacistService
     {
         super(repository);
     }
+
+    /**
+     * Get all pharmacists for specific pharmacy
+     * @return Iterable of Pharmacist
+     */
+    @Override
+    public Iterable<Pharmacist> getAllSpecificPharmacy(long id) 
+    {
+        List<Pharmacist> pharmacists = new ArrayList<>();
+        for(Pharmacist pharmacist : getAll())
+        {
+           if(pharmacist.getPharmacy().getId().equals(id))
+            {
+                pharmacists.add(pharmacist);
+                break;
+            }
+        }
+        return pharmacists;
+    }
 }

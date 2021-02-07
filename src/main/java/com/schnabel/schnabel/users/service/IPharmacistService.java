@@ -8,5 +8,5 @@ import com.schnabel.schnabel.users.model.Pharmacist;
  */
 public interface IPharmacistService extends ICrudService<Pharmacist, Long>
 {
-    
+    public Iterable<Pharmacist> getAllSpecificPharmacy(long id);
 }
