@@ -9,5 +9,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface IPharmacyRepository extends CrudRepository<Pharmacy, Long>
 {
-    
+    Pharmacy findByName(String name);
 }

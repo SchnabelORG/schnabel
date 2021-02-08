@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.OneToOne;
 import javax.persistence.Column;
 
+import com.schnabel.schnabel.users.DTO.PAdminDTO;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -38,7 +39,7 @@ public class PharmacyAdmin implements IIdentifiable<Long>
     private String name;
     @Column(nullable = false)
     private String surname;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @Setter(AccessLevel.PROTECTED)
     private String email;
     @Embedded
@@ -46,4 +47,13 @@ public class PharmacyAdmin implements IIdentifiable<Long>
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pharmacy_id")
     private Pharmacy pharmacy;
+
+    public PharmacyAdmin(PAdminDTO pAdminDTO)
+    {
+        this.name = pAdminDTO.getName();
+        this.surname = pAdminDTO.getSurname();
+        this.email = pAdminDTO.getEmail();
+        this.address = pAdminDTO.getAddress();
+        this.pharmacy = null;
+    }
 }

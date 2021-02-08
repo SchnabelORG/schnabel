@@ -16,12 +16,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class PharmacyService extends CrudService<Pharmacy, Long> implements IPharmacyService
 {
-    private IPharmacyAdminService iPharmacyAdminService;
+    private final IPharmacyRepository pharmacyRepository;
     @Autowired
-    public PharmacyService(IPharmacyRepository pharmacyRepository, IPharmacyAdminService iPharmacyAdminService)
+    public PharmacyService(IPharmacyRepository pharmacyRepository)
     {
         super(pharmacyRepository);
-        this.iPharmacyAdminService = iPharmacyAdminService;
+        this.pharmacyRepository = pharmacyRepository;
     }
 
     /**
@@ -32,27 +32,15 @@ public class PharmacyService extends CrudService<Pharmacy, Long> implements IPha
      */
     @Override
     public Pharmacy registerNewPharmacy(PharmacyDTO pharmacyDTO) throws PharmacyAlreadyExistsException {
-        if(nameExists(pharmacyDTO.getName()))
+        Pharmacy pharmacy = this.pharmacyRepository.findByName(pharmacyDTO.getName());
+        if(pharmacy != null)
             throw new PharmacyAlreadyExistsException("There is already a pharmacy with that name");
-        Pharmacy pharmacy = new Pharmacy(pharmacyDTO.getName(), pharmacyDTO.getAddress());
-        // TODO(Marko): Should this method be called from PharmacyAdmin controller?
-        Pharmacy p = this.add(pharmacy);
-        if(!this.iPharmacyAdminService.SetAdminToPharmacy(pharmacyDTO.getAdminId(), p))
-            return null;
-        return p;
+        Pharmacy newPharmacy = new Pharmacy(pharmacyDTO.getName(), pharmacyDTO.getAddress());
+        return this.add(newPharmacy);
     }
 
-
-    /**
-     * Check if pharmacy with that name already exists
-     * @param name
-     * @return
-     */
-    private boolean nameExists(String name) {
-        for(Pharmacy pharmacy : this.getAll()) {
-            if(pharmacy.getName().equals(name))
-                return true;
-        }
-        return false;
+    @Override
+    public Pharmacy findByName(String name) {
+        return pharmacyRepository.findByName(name);
     }
 }

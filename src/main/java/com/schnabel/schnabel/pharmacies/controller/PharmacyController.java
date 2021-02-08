@@ -2,9 +2,12 @@ package com.schnabel.schnabel.pharmacies.controller;
 
 import com.schnabel.schnabel.misc.exceptions.PharmacyAlreadyExistsException;
 import com.schnabel.schnabel.pharmacies.DTO.PharmacyDTO;
+import com.schnabel.schnabel.pharmacies.DTO.PharmacyToAdminDTO;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.pharmacies.service.IPharmacyService;
 
+import com.schnabel.schnabel.users.model.PharmacyAdmin;
+import com.schnabel.schnabel.users.service.IPharmacyAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +20,13 @@ import org.springframework.web.bind.annotation.*;
 public class PharmacyController
 {
     private final IPharmacyService pharmacyService;
+    private final IPharmacyAdminService pharmacyAdminService;
 
     @Autowired
-    public PharmacyController(IPharmacyService pharmacyService)
+    public PharmacyController(IPharmacyService pharmacyService, IPharmacyAdminService pharmacyAdminService)
     {
         this.pharmacyService = pharmacyService;
+        this.pharmacyAdminService = pharmacyAdminService;
     }
 
     /**
@@ -59,13 +64,24 @@ public class PharmacyController
     @PostMapping("/api/pharmacy/register")
     public ResponseEntity<String> register( @RequestBody PharmacyDTO pharmacyDTO) {
         try {
-            Pharmacy pharmacy = pharmacyService.registerNewPharmacy(pharmacyDTO);
+            pharmacyService.registerNewPharmacy(pharmacyDTO);
         } catch (PharmacyAlreadyExistsException aex) {
             return new ResponseEntity<>(aex.toString(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            System.out.println(e);
             return new ResponseEntity<>("Something went wrong!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>("Pharamcy registered!", HttpStatus.OK);
+    }
+
+    @PostMapping("/api/pharmacy/admin")
+    public ResponseEntity<String> assign(@RequestBody PharmacyToAdminDTO  pharmacyToAdminDTO)
+    {
+        Pharmacy pharmacy = pharmacyService.findByName(pharmacyToAdminDTO.getPharamcyName());
+        if(pharmacy == null)
+            return new ResponseEntity<>("Pharmacy not found!", HttpStatus.BAD_REQUEST);
+        PharmacyAdmin pharmacyAdmin = pharmacyAdminService.SetAdminToPharmacy(pharmacyToAdminDTO.getPharmacyAdminEmail(), pharmacy);
+        if(pharmacyAdmin == null)
+            return new ResponseEntity<>("Pharmacy admin not found!", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Admin assigned to pharmacy!", HttpStatus.OK);
     }
 }

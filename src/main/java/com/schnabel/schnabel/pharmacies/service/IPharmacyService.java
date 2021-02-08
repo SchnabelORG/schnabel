@@ -11,4 +11,5 @@ import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 public interface IPharmacyService extends ICrudService<Pharmacy, Long>
 {
     Pharmacy registerNewPharmacy(PharmacyDTO pharmacyDTO) throws PharmacyAlreadyExistsException;
+    Pharmacy findByName(String email);
 }
