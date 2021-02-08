@@ -76,7 +76,7 @@ public class PharmacyController
     @PostMapping("/api/pharmacy/admin")
     public ResponseEntity<String> assign(@RequestBody PharmacyToAdminDTO  pharmacyToAdminDTO)
     {
-        Pharmacy pharmacy = pharmacyService.findByName(pharmacyToAdminDTO.getPharamcyName());
+        Pharmacy pharmacy = pharmacyService.findByName(pharmacyToAdminDTO.getPharmacyName());
         if(pharmacy == null)
             return new ResponseEntity<>("Pharmacy not found!", HttpStatus.BAD_REQUEST);
         PharmacyAdmin pharmacyAdmin = pharmacyAdminService.SetAdminToPharmacy(pharmacyToAdminDTO.getPharmacyAdminEmail(), pharmacy);
