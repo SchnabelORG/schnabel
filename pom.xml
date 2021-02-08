@@ -16,7 +16,19 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<sonar.exclusions>
+			**/model/*.java,
+			**/controller/*.java,
+			**/service/*.java,
+			**/repository/*.java,
+			**/dto/*.java,
+			**/misc/*.java,
+			**/SchnabelApplication.java,
+			**/CrudService.java,
+			**/VueRoutePathFilter.java,
+		</sonar.exclusions>
 	</properties>
+
 
 	<dependencies>
 
@@ -113,6 +125,16 @@
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk</artifactId>
 			<version>1.11.133</version>
+		</dependency>
+		<!-- Guava -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>19.0</version>
 		</dependency>
 	</dependencies>
 

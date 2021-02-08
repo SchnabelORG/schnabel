@@ -1,10 +1,10 @@
 package com.schnabel.schnabel.specialoffer.service;
 
-import java.time.LocalDate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import com.schnabel.schnabel.misc.implementations.CrudService;
+import com.schnabel.schnabel.misc.model.Period;
 import com.schnabel.schnabel.specialoffer.model.SpecialOffer;
 import com.schnabel.schnabel.specialoffer.repository.ISpecialOfferRepository;
 
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SpecialOfferService extends CrudService<SpecialOffer, Integer> implements ISpecialOfferService 
+public class SpecialOfferService extends CrudService<SpecialOffer, Long> implements ISpecialOfferService 
 {
 
     @Autowired
@@ -22,11 +22,11 @@ public class SpecialOfferService extends CrudService<SpecialOffer, Integer> impl
     }
 
     @Override
-    public Iterable<SpecialOffer> getOffersForTimePeriod(LocalDate from, LocalDate until)
+    public Iterable<SpecialOffer> getOffersForTimePeriod(Period period)
     {
         // TODO(Jovan): Compatible with iterable?
         return StreamSupport.stream(getAll().spliterator(), false)
-            .filter(so -> so.isValidPeriod(from, until)).collect(Collectors.toList());
+            .filter(so -> so.isValidPeriod(period)).collect(Collectors.toList());
     }
     
 }

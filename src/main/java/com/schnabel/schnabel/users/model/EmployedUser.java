@@ -2,37 +2,71 @@ package com.schnabel.schnabel.users.model;
 
 import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
+import com.schnabel.schnabel.terms.model.Term;
+
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+/**
+ * Registered employed user
+ */
 @Entity
-@Table(name = "employeduser")
+@Table(name = "employed_users")
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployedUser implements IIdentifiable<Integer>{
+@EqualsAndHashCode
+public class EmployedUser implements IIdentifiable<Long>
+{
     @Id
-    private int id;
-    private String name;
-    private String surname;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Long id;
+    @Column(nullable = false)
+    protected String name;
+    @Column(nullable = false)
+    protected String surname;
+    @Column(nullable = false)
     @Setter(AccessLevel.PROTECTED)
-    private String email;
-    private String password;
+    protected String email;
+    @Column(nullable = false)
+    protected String password;
     @Embedded
-    private Address address;
-    private EmployedUserType userType;
+    protected Address address;
+    @OneToMany(mappedBy = "employedUser", fetch = FetchType.EAGER)
+    protected final Set<Term> terms = new HashSet<Term>();
+    @OneToMany(mappedBy = "employedUser", fetch = FetchType.EAGER)
+    protected final Set<Shift> shifts = new HashSet<Shift>();
 
-    @Override
-    public Integer getId()
-        {
-            return this.id;
-        }
+    public EmployedUser(String name, String surname, String email, String password, Address address)
+    {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+    }
 
+    public EmployedUser(long id, String name, String surname, String email, String password, Address address)
+    {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+    }
 
 }

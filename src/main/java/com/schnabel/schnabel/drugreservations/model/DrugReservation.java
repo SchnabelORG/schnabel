@@ -2,9 +2,13 @@ package com.schnabel.schnabel.drugreservations.model;
 
 import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -29,21 +33,19 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class DrugReservation implements IIdentifiable<Integer>
+public class DrugReservation implements IIdentifiable<Long>
 {
     @Id
-    private int id;
-    @OneToOne(cascade = CascadeType.ALL)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id")
     private Patient patient;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "drug_id")
     private Drug drug;
+    @Column(name = "valid_until")
     private LocalDate validUntil;
-
-    @Override
-    public Integer getId()
-    {
-        return this.id;
-    }
 
     /**
      * Checks whether the reservation is still valid

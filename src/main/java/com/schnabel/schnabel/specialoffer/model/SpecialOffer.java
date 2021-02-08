@@ -2,11 +2,19 @@ package com.schnabel.schnabel.specialoffer.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.schnabel.schnabel.misc.model.IIdentifiable;
+import com.schnabel.schnabel.misc.model.Period;
+import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -22,26 +30,24 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class SpecialOffer implements IIdentifiable<Integer>
+public class SpecialOffer implements IIdentifiable<Long>
 {
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String content;
-    private LocalDate validFrom;
-    private LocalDate validUntil;
-    private String pharmacyId;
+    @Embedded
+    private Period validPeriod;
+    @OneToOne(fetch = FetchType.LAZY)
+    private Pharmacy pharmacy;
 
-    public boolean isValidPeriod(LocalDate from, LocalDate until)
+    public boolean isValidPeriod(Period period)
     {
-        return this.validFrom.compareTo(from) >= 0
-            || this.validUntil.compareTo(until) <= 0;
-    }
-
-    @Override
-    public Integer getId()
-    {
-        return this.id;
+        return this.validPeriod.getStartTime().compareTo(period.getStartTime()) >= 0
+            || this.validPeriod.getEndTime().compareTo(period.getEndTime()) <= 0;
     }
 
     @Override
@@ -49,7 +55,7 @@ public class SpecialOffer implements IIdentifiable<Integer>
     {
         return this.name + " " + this.content 
             + " valid from: " 
-            + this.validFrom.toString() 
-            + " to: " + this.validUntil.toString();
+            + this.validPeriod.getStartTime().toString() 
+            + " to: " + this.validPeriod.getEndTime().toString();
     }
 }

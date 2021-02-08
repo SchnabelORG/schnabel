@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 /**
  * Drug reservation repository interface
  */
-public interface IDrugReservationRepository extends CrudRepository<DrugReservation, Integer>
+public interface IDrugReservationRepository extends CrudRepository<DrugReservation, Long>
 {
     
 }
