@@ -36,10 +36,10 @@ public class Shift implements IIdentifiable<Long>
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "employee_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id", nullable = true)
     private EmployedUser employedUser;
     @ManyToOne
-    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = true)
     private Pharmacy pharmacy;
     @Column(name = "start_time")
     private LocalTime startTime;

@@ -19,6 +19,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
 
 @Entity
@@ -28,6 +30,9 @@ import com.schnabel.schnabel.misc.model.IIdentifiable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "id",
+    scope = Long.class)
 public class Order implements IIdentifiable<Long> 
 {
     @Id
@@ -37,12 +42,12 @@ public class Order implements IIdentifiable<Long>
     private String description;
     @Column(nullable = false)
     private LocalDate deadline;    
-    @OneToMany(fetch = FetchType.EAGER)
-    private final List<OrderItem> orderItems = new ArrayList<OrderItem>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "order")
+    // NOTE(Jovan): Set not working with JsonIdentityInfo
+    private final List<OrderItem> orderItems = new ArrayList<>();
 
     public void addOrderItem(OrderItem item)
     {
         this.orderItems.add(item);
     }
-
 }

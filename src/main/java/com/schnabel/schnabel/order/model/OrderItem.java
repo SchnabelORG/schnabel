@@ -2,10 +2,10 @@ package com.schnabel.schnabel.order.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -31,9 +31,11 @@ public class OrderItem implements IIdentifiable<Long>
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
+    @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)
     private Order order;
     @ManyToOne
+    @JoinColumn(name = "drug_id", referencedColumnName = "id", nullable = false)
     private Drug drug;
     @Column(nullable = false)
     private int quantity;

@@ -4,12 +4,11 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.schnabel.schnabel.drugs.model.Drug;
@@ -38,11 +37,11 @@ public class DrugReservation implements IIdentifiable<Long>
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id")
+    @ManyToOne
+    @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false)
     private Patient patient;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "drug_id")
+    @ManyToOne
+    @JoinColumn(name = "drug_id", referencedColumnName = "id", nullable = false)
     private Drug drug;
     @Column(name = "valid_until")
     private LocalDate validUntil;

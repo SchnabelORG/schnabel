@@ -1,7 +1,7 @@
 package com.schnabel.schnabel.pharmacies.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,7 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
 import com.schnabel.schnabel.users.model.Pharmacist;
@@ -35,6 +36,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "id",
+    scope = Long.class)
 public class Pharmacy implements IIdentifiable<Long>
 {
     @Id
@@ -47,9 +51,11 @@ public class Pharmacy implements IIdentifiable<Long>
     // TODO(Jovan): Use wrapper class?
     @Column(name = "avg_rating", nullable = false)
     private double avgRating;
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="pharmacy")
-    @JsonIgnore
-    private final Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy="pharmacy")
+    private final List<Pharmacist> pharmacists = new ArrayList<Pharmacist>();
+    // TODO(Jovan): When lazy loading is fixed
+    // @OneToMany
+    // private final List<SpecialOffer> specialOffers = new ArrayList<SpecialOffer>();
     // TODO(Jovan): Available drug list
 
 

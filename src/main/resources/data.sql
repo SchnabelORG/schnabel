@@ -29,7 +29,7 @@ VALUES('Pharmacist', 'Novi Sad', '21000', '1300 Kaplara', 11, 'petar.petrovic@un
 INSERT INTO dermatologist_pharmacy(dermatologist_id, pharmacy_id)
 VALUES(1, 1);
 
-INSERT INTO shifts(employed_user_id, pharmacy_id, start_time, end_time)
+INSERT INTO shifts(employee_id, pharmacy_id, start_time, end_time)
 VALUES (1, 1, '08:00:00', '12:00:00');
 
 --INSERT INTO terms(start_time, end_time, pharmacy_id, employee_id, patient_id)
