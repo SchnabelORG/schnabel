@@ -1,6 +1,5 @@
 package com.schnabel.schnabel.specialoffer.model;
 
-import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;

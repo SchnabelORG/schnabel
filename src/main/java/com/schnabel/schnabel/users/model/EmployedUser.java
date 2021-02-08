@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.users.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
 import com.schnabel.schnabel.terms.model.Term;
@@ -9,6 +10,7 @@ import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -38,16 +40,18 @@ public class EmployedUser implements IIdentifiable<Long>
     protected String name;
     @Column(nullable = false)
     protected String surname;
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     @Setter(AccessLevel.PROTECTED)
     protected String email;
     @Column(nullable = false)
     protected String password;
     @Embedded
     protected Address address;
-    @OneToMany(mappedBy = "employedUser", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "employedUser")
+    @JsonIgnore
     protected final Set<Term> terms = new HashSet<Term>();
-    @OneToMany(mappedBy = "employedUser", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "employedUser")
+    @JsonIgnore
     protected final Set<Shift> shifts = new HashSet<Shift>();
 
     public EmployedUser(String name, String surname, String email, String password, Address address)

@@ -23,6 +23,9 @@ VALUES('2021-02-01', 1, 2);
 INSERT INTO employed_users(dtype, city, postcode, street, street_no, email, "name", "password", surname)
 VALUES('Dermatologist', 'Novi Sad', '21000', 'Balzakova', 69, 'ivosevic.jovan@uns.ac.rs', 'Jovan', 'mojasifralol', 'Ivosevic');
 
+INSERT INTO employed_users(dtype, city, postcode, street, street_no, email, "name", "password", surname)
+VALUES('Pharmacist', 'Novi Sad', '21000', '1300 Kaplara', 11, 'petar.petrovic@uns.ac.rs', 'Petar', '1234', 'Petrovic');
+
 INSERT INTO dermatologist_pharmacy(dermatologist_id, pharmacy_id)
 VALUES(1, 1);
 
