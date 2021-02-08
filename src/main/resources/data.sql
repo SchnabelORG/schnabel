@@ -23,14 +23,14 @@ VALUES('2021-02-01', 1, 2);
 INSERT INTO employed_users(dtype, city, postcode, street, street_no, email, "name", "password", surname)
 VALUES('Dermatologist', 'Novi Sad', '21000', 'Balzakova', 69, 'ivosevic.jovan@uns.ac.rs', 'Jovan', 'mojasifralol', 'Ivosevic');
 
-INSERT INTO employed_users(dtype, city, postcode, street, street_no, email, "name", "password", surname)
-VALUES('Pharmacist', 'Novi Sad', '21000', '1300 Kaplara', 11, 'petar.petrovic@uns.ac.rs', 'Petar', '1234', 'Petrovic');
+INSERT INTO employed_users(dtype, city, postcode, street, street_no, email, "name", "password", surname, pharmacy_id)
+VALUES('Pharmacist', 'Novi Sad', '21000', '1300 Kaplara', 11, 'petar.petrovic@uns.ac.rs', 'Petar', '1234', 'Petrovic', 1);
 
 INSERT INTO dermatologist_pharmacy(dermatologist_id, pharmacy_id)
 VALUES(1, 1);
 
 INSERT INTO shifts(employee_id, pharmacy_id, start_time, end_time)
-VALUES (1, 1, '08:00:00', '12:00:00');
+VALUES (2, 1, '08:00:00', '12:00:00');
 
 --INSERT INTO terms(start_time, end_time, pharmacy_id, employee_id, patient_id)
 --VALUES ('2020-12-22 09:10:00', '2020-12-22 09:40:00', 1, 1, 1);

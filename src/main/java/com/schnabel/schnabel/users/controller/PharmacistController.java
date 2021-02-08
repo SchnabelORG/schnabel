@@ -1,6 +1,8 @@
 package com.schnabel.schnabel.users.controller;
 
+import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.users.model.Pharmacist;
+import com.schnabel.schnabel.users.model.Shift;
 import com.schnabel.schnabel.users.service.IPharmacistService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +28,9 @@ public class PharmacistController
      * @return Iterable of Pharmacist
      */
     @GetMapping("/api/pharmacist")
-    public ResponseEntity<Iterable<Pharmacist>> getAll()
+    public ResponseEntity<String> getAll()
     {
-        return ResponseEntity.ok(pharmacistService.getAll());
+        Shift shift = pharmacistService.get(2L).getShifts().stream().filter(s -> s.getId().equals(1L)).findFirst().orElse(null);
+        return ResponseEntity.ok(shift.getId().toString());
     }
 }

@@ -1,6 +1,5 @@
 package com.schnabel.schnabel.users.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
 import com.schnabel.schnabel.terms.model.Term;
@@ -48,10 +47,8 @@ public class EmployedUser implements IIdentifiable<Long>
     @Embedded
     protected Address address;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "employedUser")
-    @JsonIgnore
     protected final Set<Term> terms = new HashSet<Term>();
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "employedUser")
-    @JsonIgnore
     protected final Set<Shift> shifts = new HashSet<Shift>();
 
     public EmployedUser(String name, String surname, String email, String password, Address address)
