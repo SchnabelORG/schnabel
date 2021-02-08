@@ -26,6 +26,9 @@ VALUES('Dermatologist', 'Novi Sad', '21000', 'Balzakova', 69, 'ivosevic.jovan@un
 INSERT INTO dermatologist_pharmacy(dermatologist_id, pharmacy_id)
 VALUES(1, 1);
 
+INSERT INTO suppliers(city, postcode, street, street_no, email, "name", "password")
+VALUES('Dermatologist', 'Novi Sad', '21000', 'Balzakova', 69, 'jovo.expres@ex.pres.com', 'JovoExpres', 'mojasifralol');
+
 INSERT INTO shifts(employed_user_id, pharmacy_id, start_time, end_time)
 VALUES (1, 1, '08:00:00', '12:00:00');
 

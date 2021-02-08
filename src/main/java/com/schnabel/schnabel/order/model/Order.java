@@ -2,7 +2,9 @@ package com.schnabel.schnabel.order.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,7 +40,7 @@ public class Order implements IIdentifiable<Long>
     @Column(nullable = false)
     private LocalDate deadline;    
     @OneToMany(fetch = FetchType.EAGER)
-    private final List<OrderItem> orderItems = new ArrayList<OrderItem>();
+    private final Set<OrderItem> orderItems = new HashSet<OrderItem>();
 
     public void addOrderItem(OrderItem item)
     {
