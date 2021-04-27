@@ -28,7 +28,7 @@ public class ShiftController
      * Get all shifts
      * @return Iterable of Shift
      */
-    @GetMapping("/api/shifts")
+    @GetMapping("/api/shift")
     public ResponseEntity<Iterable<Shift>> getAll()
     {
         Iterable<Shift> shifts = shiftService.getAll();

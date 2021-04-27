@@ -26,7 +26,7 @@ public class DermatologistController
      * Get all dermatologists
      * @return Iterable of Dermatologist
      */
-    @GetMapping("/api/dermatologists")
+    @GetMapping("/api/dermatologist")
     public ResponseEntity<Iterable<Dermatologist>> getAll()
     {
         Iterable<Dermatologist> dermatologists = dermatologistService.getAll();
@@ -37,7 +37,7 @@ public class DermatologistController
      * Get all dermatologists for specific pharmacy
      * @return Iterable of Dermatologist
      */
-    @GetMapping("/api/dermatologists/{id}")
+    @GetMapping("/api/dermatologist/{id}")
     public ResponseEntity<Iterable<Dermatologist>> getAllSpecificPharmacy(@PathVariable long id)
     {
         return ResponseEntity.ok(dermatologistService.getAllSpecificPharmacy(id));
