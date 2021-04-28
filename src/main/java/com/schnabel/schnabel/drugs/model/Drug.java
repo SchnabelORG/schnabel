@@ -36,11 +36,5 @@ public class Drug implements IIdentifiable<Long>
     private String name;
     @Column(nullable = false) 
     private String description;
-    @Column(nullable = false)
-    private int quantity; 
-    @Column(nullable = false)
-    private double price;
-    @Embedded
-    private Period priceDuration;
 
 }

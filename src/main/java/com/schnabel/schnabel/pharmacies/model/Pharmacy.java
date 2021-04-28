@@ -3,20 +3,11 @@ package com.schnabel.schnabel.pharmacies.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
-import com.schnabel.schnabel.terms.model.Term;
-import com.schnabel.schnabel.users.model.Pharmacist;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -43,9 +34,13 @@ public class Pharmacy implements IIdentifiable<Long>
     private String name;
     @Embedded
     private Address address;
+
+    @OneToOne(fetch = FetchType.EAGER ,mappedBy = "pharmacy")
+    @JsonManagedReference
+    private WareHouse wareHouse;
     // TODO(Jovan): Use wrapper class?
-    @Column(name = "avg_rating", nullable = false)
-    private double avgRating;
+    // @Column(name = "avg_rating", nullable = false)
+    // private double avgRating;
     /*@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable
     (
@@ -54,19 +49,19 @@ public class Pharmacy implements IIdentifiable<Long>
         inverseJoinColumns = @JoinColumn(name = "dermatologist_id")
     )
     private List<Dermatologist> dermatologists;*/
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pharmacy")
-    private final Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
-    // TODO(Jovan): Available drug list
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pharmacy")
-    private final Set<Term> terms = new HashSet<Term>();
+    // @OneToMany(fetch = FetchType.EAGER, mappedBy = "pharmacy")
+    // private final Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
+    // // TODO(Jovan): Available drug list
+    // @OneToMany(fetch = FetchType.EAGER, mappedBy = "pharmacy")
+    // private final Set<Term> terms = new HashSet<Term>();
 
 
-    public Pharmacy(String name, Address address)
-    {
-        this.name = name;
-        this.address = address;
-        this.avgRating = 0.0;
-    }
+//    public Pharmacy(String name, Address address)
+//    {
+//        this.name = name;
+//        this.address = address;
+//        this.avgRating = 0.0;
+//    }
 
     public Pharmacy(Long id, String name, Address address)
     {
