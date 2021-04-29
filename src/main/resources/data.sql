@@ -30,7 +30,7 @@ insert into warehouseitem values(5, 20, 10, 5, 1);
 
 
 
-
+insert into patients values(1, 'Petar', 'Petrovic', '2000-06-01', 'petar@gmail.com', '123', '21000', 'Novi Sad', 'Bulevar', 1);
 
 
 
