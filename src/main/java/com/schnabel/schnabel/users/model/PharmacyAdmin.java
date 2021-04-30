@@ -16,23 +16,23 @@ import java.time.LocalDate;
 @DiscriminatorValue("PharmacyAdmin")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+//@NoArgsConstructor
+//@AllArgsConstructor
 @EqualsAndHashCode
 public class PharmacyAdmin extends User
 {
     //TODO():
-    private Pharmacy pharmacy;
+    //private Pharmacy pharmacy;
 
     public PharmacyAdmin(String name, String surname, LocalDate dateOfBirth, String email, String password, Address address, Pharmacy pharmacy)
     {
         super(name, surname, dateOfBirth, email, password, address);
-        this.pharmacy = pharmacy;
+        //this.pharmacy = pharmacy;
     }
 
     public PharmacyAdmin(long id, String name, String surname, LocalDate dateOfBirth, String email, String password, Address address, Pharmacy pharmacy)
     {
         super(id, name, surname, dateOfBirth, email, password, address);
-        this.pharmacy = pharmacy;
+        //this.pharmacy = pharmacy;
     }
 }
