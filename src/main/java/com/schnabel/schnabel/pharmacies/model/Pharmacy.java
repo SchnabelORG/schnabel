@@ -35,8 +35,7 @@ public class Pharmacy implements IIdentifiable<Long>
     @Embedded
     private Address address;
 
-    @OneToOne(fetch = FetchType.EAGER ,mappedBy = "pharmacy")
-    @JsonManagedReference
+    @OneToOne(mappedBy = "pharmacy")
     private WareHouse wareHouse;
     // TODO(Jovan): Use wrapper class?
     // @Column(name = "avg_rating", nullable = false)
@@ -51,7 +50,7 @@ public class Pharmacy implements IIdentifiable<Long>
     private List<Dermatologist> dermatologists;*/
     // @OneToMany(fetch = FetchType.EAGER, mappedBy = "pharmacy")
     // private final Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
-    // // TODO(Jovan): Available drug list
+    // TODO(Jovan): Available drug list
     // @OneToMany(fetch = FetchType.EAGER, mappedBy = "pharmacy")
     // private final Set<Term> terms = new HashSet<Term>();
 

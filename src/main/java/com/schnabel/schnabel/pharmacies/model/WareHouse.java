@@ -23,7 +23,7 @@ public class WareHouse implements IIdentifiable<Long> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "warehouse_id", referencedColumnName = "id", nullable = false)
     private List<WareHouseItem> wareHouseItems;
 

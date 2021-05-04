@@ -24,7 +24,7 @@ public class WareHouseItem {
     private int available;
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "drug_id")
     private DrugPrice drugPrice;
 }

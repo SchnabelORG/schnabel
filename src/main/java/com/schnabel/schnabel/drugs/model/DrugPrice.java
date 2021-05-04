@@ -26,7 +26,7 @@ public class DrugPrice {
     @Column(name = "price_end_date", nullable = true)
     private LocalDateTime priceEndDate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "drug_id")
     private Drug drug;
 }
