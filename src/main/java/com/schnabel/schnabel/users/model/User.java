@@ -11,48 +11,47 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.Inheritance;
+import javax.persistence.SequenceGenerator;
+
+import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class User implements IIdentifiable<Long>
+@Inheritance(strategy=TABLE_PER_CLASS)
+public abstract class User implements IIdentifiable<Long>
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    @SequenceGenerator(name = "seqGen", sequenceName = "seq", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqGen")
+    private Long id;
+    
     @Column(nullable = false)
-    protected String name;
+    private String name;
+    
     @Column(nullable = false)
-    protected String surname;
+    private String surname;
+    
     @Column(nullable = false)
-    protected LocalDate dateOfBirth;
+    private LocalDate dateOfBirth;
+    
     @Column(nullable = false)
-    protected String email;
+    private String email;
+    
     @Column(nullable = false)
-    protected String password;
+    private String password;
+    
     @Embedded
-    protected Address address;
+    private Address address;
 
     public User(String name, String surname, LocalDate dateOfBirth, String email, String password, Address address)
     {
-        this.name = name;
-        this.surname = surname;
-        this.dateOfBirth = dateOfBirth;
-        this.email = email;
-        this.password = password;
-        this.address = address;
-    }
-
-    public User(long id, String name, String surname, LocalDate dateOfBirth, String email, String password, Address address)
-    {
-        this.id = id;
         this.name = name;
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;

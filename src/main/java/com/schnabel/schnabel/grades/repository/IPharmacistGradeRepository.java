@@ -2,11 +2,13 @@ package com.schnabel.schnabel.grades.repository;
 
 import com.schnabel.schnabel.grades.model.PharmacistGrade;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
- * PharmacistGrade CRUD repository interface
+ * PharmacistGrade Jpa repository interface
  */
-public interface IPharmacistGradeRepository extends CrudRepository<PharmacistGrade, Long>
+@RepositoryRestResource(collectionResourceRel = "pharmacistgrades", path = "pharmacistgrade")
+public interface IPharmacistGradeRepository extends JpaRepository<PharmacistGrade, Long>
 {    
 }

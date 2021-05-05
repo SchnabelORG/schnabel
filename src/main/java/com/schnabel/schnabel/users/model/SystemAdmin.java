@@ -1,7 +1,7 @@
 package com.schnabel.schnabel.users.model;
 
 import javax.persistence.Entity;
-import javax.persistence.DiscriminatorValue;
+import javax.persistence.Table;
 
 import lombok.*;
 
@@ -9,7 +9,7 @@ import lombok.*;
  * System admin user
  */
 @Entity
-@DiscriminatorValue("SystemAdmin")
+@Table(name = "systemadmins")
 @Getter
 @Setter
 @EqualsAndHashCode

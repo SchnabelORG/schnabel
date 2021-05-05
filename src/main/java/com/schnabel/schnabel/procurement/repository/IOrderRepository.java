@@ -2,11 +2,13 @@ package com.schnabel.schnabel.procurement.repository;
 
 import com.schnabel.schnabel.procurement.model.Order;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
- * Order CRUD repository interface
+ * Order Jpa repository interface
  */
-public interface IOrderRepository extends CrudRepository<Order, Long>
+@RepositoryRestResource(collectionResourceRel = "orders", path = "order")
+public interface IOrderRepository extends JpaRepository<Order, Long>
 {
 }

@@ -2,11 +2,13 @@ package com.schnabel.schnabel.grades.repository;
 
 import com.schnabel.schnabel.grades.model.DermatologistGrade;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
- * DermatologistGrade CRUD repository interface
+ * DermatologistGrade Jpa repository interface
  */
-public interface IDermatologistGradeRepository extends CrudRepository<DermatologistGrade, Long>
+@RepositoryRestResource(collectionResourceRel = "dermatologistgrades", path = "dermatologistgrade")
+public interface IDermatologistGradeRepository extends JpaRepository<DermatologistGrade, Long>
 {    
 }

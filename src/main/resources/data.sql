@@ -1,11 +1,8 @@
 -- -- TODO(Jovan): Move to separate .sql files
 
-
-
 insert into pharmacies values(1,'aaa', '12321', 'aaa', 6, 'aaaa');
 
 insert into warehouse values(1,1);
-
 
 insert into drugs values(1, 'anestetik', 'lidokain');
 insert into drugs values(2, 'anestetik', 'prokain');
@@ -13,14 +10,11 @@ insert into drugs values(3, 'anestetik', 'tetrakain');
 insert into drugs values(4, 'sedativ', 'bensedin');
 insert into drugs values(5, 'sedativ', 'xanax');
 
-
-
 insert into drugprice values(1, 100, '2022-06-01', '2020-01-01', 1);
 insert into drugprice values(2, 100, '2022-06-01', '2020-01-01', 2);
 insert into drugprice values(3, 100, '2022-06-01', '2020-01-01', 3);
 insert into drugprice values(4, 100, '2022-06-01', '2020-01-01', 4);
 insert into drugprice values(5, 100, '2022-06-01', '2020-01-01', 5);
-
 
 insert into warehouseitem values(1, 20, 10, 1, 1);
 insert into warehouseitem values(2, 20, 10, 2, 1);
@@ -28,17 +22,23 @@ insert into warehouseitem values(3, 20, 10, 3, 1);
 insert into warehouseitem values(4, 20, 10, 4, 1);
 insert into warehouseitem values(5, 20, 10, 5, 1);
 
+insert into patients(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no) values (1, 'Petar', 'Petrovic', '2000-06-01', 'petar@gmail.com', '123', '21000', 'Novi Sad', 'Bulevar', 1);
 
+insert into dermatologists(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no) values (1, 'Mamma', 'Mia', '2000-06-01', 'mamma@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1);
 
---insert into patients values(1, 'Petar', 'Petrovic', '2000-06-01', 'petar@gmail.com', '123', '21000', 'Novi Sad', 'Bulevar', 1);
+insert into suppliers(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no, firm) values (1, 'Zoki', 'Zokic', '2000-06-01', 'zokidoo@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1, 'Dobavljac Zoki');
 
+insert into pharmacyadmins(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no, pharmacy_id) values (1, 'Mika', 'Mikic', '2000-06-01', 'miki@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1, 1);
 
+insert into pharmacists(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no, pharmacy_id) values (1, 'Ana', 'Anic', '2000-06-01', 'ana@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1, 1);
 
+insert into orders(id, deadline, "description", pharmacyadmin_id) values (1, '2021-05-10', 'My order', 1);
 
+insert into orderitems(id, quantity, drug_id, order_id) values (1, 1, 1, 1);
 
+insert into offers(id, price, date_of_delivery, order_id, supplier_id) values (1, 500, '2021-05-05', 1, 1);
 
-
-
+insert into dermatologist_pharmacy(pharmacy_id, dermatologist_id) values (1, 1);
 
 -- INSERT INTO hospitals("name", api_key) VALUES('sacred_heart_hospital', 'apishh1234');
 -- INSERT INTO hospitals("name", api_key) VALUES('princeton_plainsboro', 'apipp1234');

@@ -11,6 +11,8 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
@@ -21,18 +23,23 @@ import javax.persistence.Table;
 @Table(name = "dermatologistgrades")
 @Getter
 @Setter
-//@NoArgsConstructor
-//@AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 public class DermatologistGrade implements IIdentifiable<Long>
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     @Column(nullable = false)
     private int value;
 
-    //TODO():
-    //private Dermatologist dermatologist;
-    //private Patient patient;
+    @ManyToOne
+    @JoinColumn(name = "dermatologist_id")
+    private Dermatologist dermatologist;
+    
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
 }

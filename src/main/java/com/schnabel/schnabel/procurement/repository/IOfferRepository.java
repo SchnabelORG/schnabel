@@ -2,11 +2,13 @@ package com.schnabel.schnabel.procurement.repository;
 
 import com.schnabel.schnabel.procurement.model.Offer;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
- * Offer CRUD repository interface
+ * Offer Jpa repository interface
  */
-public interface IOfferRepository extends CrudRepository<Offer, Long>
+@RepositoryRestResource(collectionResourceRel = "offers", path = "offer")
+public interface IOfferRepository extends JpaRepository<Offer, Long>
 {
 }

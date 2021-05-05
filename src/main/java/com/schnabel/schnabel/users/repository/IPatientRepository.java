@@ -2,11 +2,13 @@ package com.schnabel.schnabel.users.repository;
 
 import com.schnabel.schnabel.users.model.Patient;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
- * Patient CRUD repository interface
+ * Patient Jpa repository interface
  */
-public interface IPatientRepository extends CrudRepository<Patient, Long>
+@RepositoryRestResource(collectionResourceRel = "patients", path = "patient")
+public interface IPatientRepository extends JpaRepository<Patient, Long>
 {
 }

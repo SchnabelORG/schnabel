@@ -1,6 +1,7 @@
 package com.schnabel.schnabel.procurement.model;
 
 import com.schnabel.schnabel.misc.model.IIdentifiable;
+import com.schnabel.schnabel.users.model.Supplier;
 
 import lombok.*;
 
@@ -12,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name = "offers")
@@ -24,12 +27,19 @@ public class Offer implements IIdentifiable<Long>
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    private Long id;
+    
     @Column(nullable = false)
     private int price;
+    
     @Column(nullable = false)
-    private LocalDate deliveryDate;
-    //TODO():
-    //private Order order;
-    //private Supplier supplier;
+    private LocalDate dateOfDelivery;
+    
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+    
+    @ManyToOne
+    @JoinColumn(name = "supplier_id")
+    private Supplier supplier;
 }

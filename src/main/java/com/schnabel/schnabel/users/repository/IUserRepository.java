@@ -2,12 +2,14 @@ package com.schnabel.schnabel.users.repository;
 
 import com.schnabel.schnabel.users.model.User;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
- * User CRUD repository interface
+ * User Jpa repository interface
  */
-public interface IUserRepository extends CrudRepository<User, Long>
+@RepositoryRestResource(collectionResourceRel = "users", path = "user")
+public interface IUserRepository extends JpaRepository<User, Long>
 {
 
 }

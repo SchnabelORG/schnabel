@@ -2,33 +2,28 @@ package com.schnabel.schnabel.users.model;
 
 import java.util.List;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
-import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 
 import lombok.*;
-
-import java.time.LocalDate;
 
 /**
  * Dermatologist user
  */
 @Entity
-@DiscriminatorValue("Dermatologist")
+@Table(name = "dermatologists")
 @Getter
 @Setter
-//@NoArgsConstructor
-//@AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 public class Dermatologist extends User
 {
-    //TODO(): 
-    //private List<Pharmacy> pharmacies;
-
-    public Dermatologist(String name, String surname, LocalDate dateOfBirth, String email, String password, Address address)
-    {
-        super(name, surname, dateOfBirth, email, password, address);
-    }
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "dermatologist_pharmacy",
+        joinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "dermatologist_id",
+        referencedColumnName = "id")) 
+    private List<Pharmacy> pharmacies;
 }

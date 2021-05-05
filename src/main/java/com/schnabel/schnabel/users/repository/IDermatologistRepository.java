@@ -2,12 +2,14 @@ package com.schnabel.schnabel.users.repository;
 
 import com.schnabel.schnabel.users.model.Dermatologist;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
 
 /**
- * Dermatologist CRUD repository interface
+ * Dermatologist Jpa repository interface
  */
-public interface IDermatologistRepository extends CrudRepository<Dermatologist, Long>
+@RepositoryRestResource(collectionResourceRel = "dermatologists", path = "dermatologist")
+public interface IDermatologistRepository extends JpaRepository<Dermatologist, Long>
 {
-
 }

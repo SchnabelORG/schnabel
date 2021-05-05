@@ -1,6 +1,7 @@
 package com.schnabel.schnabel.pharmacies.model;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -8,6 +9,8 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
+import com.schnabel.schnabel.users.model.Dermatologist;
+import com.schnabel.schnabel.users.model.Pharmacist;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -30,13 +33,22 @@ public class Pharmacy implements IIdentifiable<Long>
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     @Column(nullable = false)
     private String name;
+    
     @Embedded
     private Address address;
 
     @OneToOne(mappedBy = "pharmacy")
     private WareHouse wareHouse;
+
+    @ManyToMany(mappedBy = "pharmacies")
+    private List<Dermatologist> dermatologists;
+
+    @OneToMany(mappedBy = "pharmacy")
+    private List<Pharmacist> pharmacists;
+
     // TODO(Jovan): Use wrapper class?
     // @Column(name = "avg_rating", nullable = false)
     // private double avgRating;

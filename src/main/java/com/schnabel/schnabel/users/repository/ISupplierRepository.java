@@ -2,11 +2,13 @@ package com.schnabel.schnabel.users.repository;
 
 import com.schnabel.schnabel.users.model.Supplier;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
- * Supplier CRUD repository interface
+ * Supplier Jpa repository interface
  */
-public interface ISupplierRepository extends CrudRepository<Supplier, Long>
+@RepositoryRestResource(collectionResourceRel = "suppliers", path = "supplier")
+public interface ISupplierRepository extends JpaRepository<Supplier, Long>
 {
 }
