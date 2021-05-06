@@ -1,6 +1,6 @@
 -- -- TODO(Jovan): Move to separate .sql files
 
-insert into pharmacies values(1,'aaa', '12321', 'aaa', 6, 'aaaa');
+insert into pharmacies(id, "name", city, postcode, street, street_no) values(1, 'aaa', 'ababa', '12222', 'aaaa', 6);
 
 insert into warehouse values(1,1);
 
@@ -24,21 +24,25 @@ insert into warehouseitem values(5, 20, 10, 5, 1);
 
 insert into patients(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no) values (1, 'Petar', 'Petrovic', '2000-06-01', 'petar@gmail.com', '123', '21000', 'Novi Sad', 'Bulevar', 1);
 
-insert into dermatologists(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no) values (1, 'Mamma', 'Mia', '2000-06-01', 'mamma@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1);
+insert into dermatologists(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no) values (2, 'Mamma', 'Mia', '2000-06-01', 'mamma@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1);
 
-insert into suppliers(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no, firm) values (1, 'Zoki', 'Zokic', '2000-06-01', 'zokidoo@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1, 'Dobavljac Zoki');
+insert into suppliers(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no, firm) values (3, 'Zoki', 'Zokic', '2000-06-01', 'zokidoo@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1, 'Dobavljac Zoki');
 
-insert into pharmacyadmins(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no, pharmacy_id) values (1, 'Mika', 'Mikic', '2000-06-01', 'miki@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1, 1);
+insert into pharmacyadmins(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no, pharmacy_id) values (4, 'Mika', 'Mikic', '2000-06-01', 'miki@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1, 1);
 
-insert into pharmacists(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no, pharmacy_id) values (1, 'Ana', 'Anic', '2000-06-01', 'ana@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1, 1);
+insert into pharmacists(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no, pharmacy_id) values (5, 'Ana', 'Anic', '2000-06-01', 'ana@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1, 1);
 
-insert into orders(id, deadline, "description", pharmacyadmin_id) values (1, '2021-05-10', 'My order', 1);
+insert into orders(id, deadline, "description", pharmacyadmin_id) values (1, '2021-05-10', 'My order', 4);
 
 insert into orderitems(id, quantity, drug_id, order_id) values (1, 1, 1, 1);
 
-insert into offers(id, price, date_of_delivery, order_id, supplier_id) values (1, 500, '2021-05-05', 1, 1);
+insert into offers(id, price, date_of_delivery, order_id, supplier_id) values (1, 500, '2021-05-05', 1, 3);
 
-insert into dermatologist_pharmacy(pharmacy_id, dermatologist_id) values (1, 1);
+insert into dermatologist_pharmacy(dermatologist_id, pharmacy_id) values (2, 1);
+
+insert into promotions(id, "description", start_time, end_time, pharmacy_id) values (1, 'New promotion!!!', '2021-05-04','2021-06-04', 1);
+
+insert into vacations(id, start_time, end_time, pharmacy_id, medical_employee_id) values (1, '2021-06-01', '2021-06-11', 1, 5);
 
 -- INSERT INTO hospitals("name", api_key) VALUES('sacred_heart_hospital', 'apishh1234');
 -- INSERT INTO hospitals("name", api_key) VALUES('princeton_plainsboro', 'apipp1234');
