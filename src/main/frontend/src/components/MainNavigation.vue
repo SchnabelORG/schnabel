@@ -7,7 +7,9 @@
 					<div class="navbar-item logo">
 						schnabel
 					</div>
-					
+					<div id="nav-links">
+						<slot></slot>
+					</div>
 				</div>
 			</div>
 		</nav>
@@ -42,26 +44,31 @@
 		},
         mounted()
         {
-            window.document.onscroll = () =>
-            {
-                let navapp = document.getElementById("navapp");
-                if(!navapp)
-                {
-                    return;
-                }
-                if(window.scrollY > navapp.offsetTop)
-                {
-                    this.active = true;
-                }
-                else
-                {
-                    this.active = false;
-                }
-            };
+            // window.document.onscroll = () =>
+            // {
+            //     let navapp = document.getElementById("navapp");
+            //     if(!navapp)
+            //     {
+            //         return;
+            //     }
+            //     if(window.scrollY > navapp.offsetTop)
+            //     {
+            //         this.active = true;
+            //     }
+            //     else
+            //     {
+            //         this.active = false;
+            //     }
+            // };
         },
 	}
 </script>
 <style scoped>
+	#navapp {
+		--h: 8vh;
+		background-color: #fff;
+	}
+
 	.navbar {
 		transition: 100ms;
 		padding: 0px 25px 0px 25px;
@@ -74,10 +81,10 @@
 
 	#nav {
 		transition: 150ms;
-		height: 10vh;
+		height: var(--h);
 		width: 100%;
 		/*background-color: #fff;*/
-		position: fixed;
+		/* position: fixed; */
 		top: 0;
 		z-index: 3;
 	}
@@ -86,10 +93,6 @@
 		transition: 150ms;
 		background-color: #fff;
 		box-shadow: 0px 1px 10px #999;
-	}
-
-	.navbar-list, .header-list, .footer-list {
-		list-style-type: none;
 	}
 
 	.nav-container {
@@ -105,40 +108,36 @@
 	}
 
 	.nav-container > * {
-		min-height: 10vh;
+		min-height: var(--h);
 		flex-basis: 50%;
 	}
 
-	.navbar-list {
-		display: none;
-		float: right;
-		position: absolute;
-		text-align: center;
-		min-width: 160px;
-		background: #fff;
-		box-shadow: 0px 8px 16px 0px rgb(0, 0, 0, 0.2);
-		z-index: 1;
-		overflow: auto;
-	}
 
 	.navbar-dropdown:hover .navbar-list {
 		display: block;
 		top: 7vh;
 	}
 
-	.navbar-list a {
-		float: none;
-		color: black;
+	#nav-links {
+		display: flex;
+		flex-direction: row;
+		align-content: center;
+		justify-content: flex-end;
+	}
+
+	#nav-links a {
+		display: grid;
+		place-items: center;
+		color: #311403;
 		text-decoration: none;
-		display: block;
 		text-align: center;
-		border: none;
-		font-size: 1.5rem;
-		border: none;
-		text-transform: capitalize;
+		font-size: 1rem;
 		font-weight: 400;
-		color: #000;
 		padding: 5px;
+	}
+
+	#nav-links a:hover {
+		color: #e12454;
 	}
 
 	.navbar-item {
@@ -157,48 +156,18 @@
 	}
 
 	.nav-container {
-		max-width: 80vw;
+		max-width: 64vw;
 		margin: auto;
-	}
-
-	.navbar-dropdown {
-		max-width: 8rem;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	#nav > .nav-container > .navbar-dropdown > .navdropbtn {
-		font-size: 1.8rem;
-		border: none;
-		color: #fff;
-		text-transform: capitalize;
-		font-weight: 600;
-	}
-
-	#nav.sticky > .nav-container > .navbar-dropdown > .navdropbtn {
-		font-size: 1.8rem;
-		border: none;
-		text-transform: capitalize;
-		font-weight: 400;
-		color: #000;
 	}
 
 	#nav > .nav-container > .logo {
 		font-family: "Poppins";
 		font-size: 1.5rem;
 		border: none;
-		color: #fff;
+		color: #311403;
 		text-transform: uppercase;
 		font-weight: 600;
 	}
-
-	.navbar-list a {
-	}
-
-		.navbar-list a:hover {
-			color: #ff5722;
-		}
 
 	.navbar-list hr {
 		padding: 0px;
@@ -208,7 +177,7 @@
 	#nav.sticky > .nav-container > .logo{
 		font-size: 1.8rem;
 		border: none;
-		color: #ff5722;
+		color: #e12454;
 		text-transform: uppercase;
 		font-weight: 600;
 	}

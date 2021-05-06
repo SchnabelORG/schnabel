@@ -1,16 +1,20 @@
 import Vue from 'vue';
-import Vuetify, { colors } from 'vuetify/lib';
+import Vuetify from 'vuetify/lib/framework';
 
 Vue.use(Vuetify);
 
 export default new Vuetify({
-    theme: {
-        themes: {
-            light: {
-                primary: colors.indigo.base,
-                secondary: colors.indigo.lighten4,
-                accent: colors.deepOrange.base,
-            },
-        },
-    },
+  theme: {
+      themes: {
+          light: {
+              primary: "#fbecdd",
+              secondary: "#223a66",
+              accent: "#e12454",
+              info: "#8692a8",
+          },
+      },
+  },
+  icons: {
+    iconfont: 'fa4',
+  },
 });

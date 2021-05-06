@@ -1,21 +1,119 @@
 <template>
-  <div id="home">
-    <main-navigation />
-    <div id="header">
-      <div id="header-text">
-        <div id="header-title">
-          <h1 id="title">Schnabel</h1>
-          <p id="header-desc">Centralized pharmacies information system</p>
-          <router-link to="/pswreg" v-slot="{href, navigate}">
-            <v-btn :href="href" @click="navigate" class="accent" elevation="1">Get your API key</v-btn>
-          </router-link>
+  <div id="main-home">
+    <main-navigation>
+      <router-link to="/">Home</router-link>
+      <router-link to="/About">About</router-link>
+    </main-navigation>
+    <div id="cover-home">
+      <div id="cover-text">
+        <h2 id="cover-header">Centralized pharmacies information system</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur facilis facere aut expedita delectus ducimus natus, obcaecati nihil sapiente!</p>
+        <div>
           <router-link to="/pswreports" v-slot="{href, navigate}">
-            <v-btn :href="href" @click="navigate" class="accent" elevation="1">View reports</v-btn>
+            <v-btn color="accent" :href="href" @click="navigate" elevation="1">View reports</v-btn>
           </router-link>
         </div>
       </div>
-      <div id="header-img">
-        <img src="img/flask.svg" alt="Header image">
+      <img src="../assets/plaguedoctorcovid.png">
+    </div>
+
+    <div id="cards-home">
+      <div id="cards-container">
+        <div class="card">
+          <div class="card-header secondary--text">
+            <i class="card-icon fa fa-user-md" aria-hidden="true"></i>
+            <p class="info--text">24 Hour Service</p>
+            <h3 class="secondary--text">Online appointment</h3>
+          </div>
+          <div class="card-body">
+            <p class="info--text">Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
+          </div>
+          <div class="card-footer">
+            <v-btn class='secondary'>Make appointment</v-btn>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header secondary--text">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            <p class="info--text">Timing schedule</p>
+            <h3 class="secondary--text">Working hours</h3>
+          </div>
+          <div class="card-body">
+            <ul class="w-hours unstyled-list info--text">
+              <li>
+                Sun - Wed:
+                <span>8:00 - 17:00</span>
+              </li>
+              <li>
+                Thu - Fri:
+                <span>9:00 - 17:00</span>
+              </li>
+              <li>
+                Sat - Sun:
+                <span>10:00 - 17:00</span>
+              </li>
+            </ul>
+          </div>
+          <div class="card-footer">
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header secondary--text">
+            <i class="fa fa-phone" aria-hidden="true"></i>
+            <p class="info--text">Emergency cases</p>
+            <h3 class="secondary--text">1-800-700-6200</h3>
+          </div>
+          <div class="card-body">
+            <p class="info--text">Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
+          </div>
+          <div class="card-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="footer-home">
+      <div id="footer-container">
+
+        <div id="footer-main">
+          <div id="footer-title">
+            <h3 class="secondary--text">Schnabel</h3>
+            <p class="info--text">Ipsum animi fugiat ab suscipit quidem obcaecati, repellendus ipsa alias, deserunt deleniti voluptas dicta distinctio dolore recusandae rem dignissimos laudantium perferendis. Sunt!</p>
+          </div>
+        </div>
+
+        <div id="footer-columns">
+          <div class="footer-column">
+            <h4 class="secondary--text">Dermatology</h4>
+            <div class="footer-divider"></div>
+            <ul class="footer-column-list unstyled-list">
+              <li><a href="">Consulting</a></li>
+              <li><a href="">Skin care</a></li>
+              <li><a href="">About</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4 class="secondary--text">Pharmacology</h4>
+            <div class="footer-divider"></div>
+            <ul class="footer-column-list unstyled-list">
+              <li><a href="">Consulting</a></li>
+              <li><a href="">Drug repository</a></li>
+              <li><a href="">About</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4 class="secondary--text">General info</h4>
+            <div class="footer-divider"></div>
+            <div id="contact-info">
+              <div class="space-between info--text">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                <span>Support Available 24/7</span>
+              </div>
+              <a href="">support@email.com</a>
+            </div>
+          </div>
+        </div>
+        
       </div>
     </div>
   </div>
@@ -24,53 +122,192 @@
 <script>
 
 export default {
-  data() {
-    return {
-    }
+  name: 'Home',
+  components: {
   }
 }
 </script>
 
 <style scoped>
-  #header {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-
-    height: 100vh;
-    background: none;
-    /*background-color: #324A5E;*/
-    background: rgb(50,74,94);
-    background: linear-gradient(69deg, rgba(63,81,181,1) 5%, rgba(197,202,233,1) 100%); 
+  #main-home {
+    background-color: #fafafa;
   }
 
-  #header-text {
+  #cover-home {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    width: 100vw;
+    height: 50vh;
+    background-color: #fbecdd;
+    padding: 0 10rem;
+  }
+
+  #cover-text {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-left: 10vw;
+    padding-right: 30rem;
   }
 
-  #title {
-    font-weight: 500;
-    font-size: 3.5rem;
-    color: #fff;
+  #cover-header {
+    font-family: "Poppins", sans-serif;
+    color: #311403;
+    font-weight: 600;
+    font-size: 3rem;
   }
 
-  #header-desc {
+  #cover-home img {
+    height: 100%;
+    /* padding-right: 20vw; */
+    /* padding-top: 10rem; */
+  }
+
+  #cards-home {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: flex-end;
+    max-width: 100vw;
+    margin: auto;
+    height: 60vh;
+    background: #fff;
+  }
+
+  #cards-container {
+    margin-top: -2rem;
+    --w: 1000px;
+    --n: 3;
+    width: 60vw;
+    display: grid;
+    background: none;
+    grid-template-columns: repeat(auto-fit, minmax(clamp(100% / (var(--n) + 1) + 0.1%, (var(--w) - 100vw) * 1000, 100%), 1fr));
+  }
+
+  .card{
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0px;
+    flex-direction: column;
+    justify-content: space-around;
+    max-width: 20vw;
+    border-radius: 15px 15px 15px 15px;
+    box-shadow: 0px 0px 30px 0px rgba(0, 42, 106, 0.1);
+    padding: 2rem;
+    margin: 0rem 1rem;
+    background-color: #fff;
+    height: 400px;
+  }
+
+  .card-header h3 {
     font-size: 1.5rem;
-    color: #fff;
+    font-weight: 600;
   }
 
-  #header-img {
-    margin-left: auto;
-    height: 100%;
-    width: 50%;
+  .card-header p {
+    margin: 0;
+    margin-top: 2rem;
   }
 
-  #header-img img {
-    width: 100%;
-    height: 100%;
+  .card-header i {
+    font-size: 3.5rem;
   }
-  
+
+  .unstyled-list {
+    padding: 0;
+    list-style: none;
+  }
+
+  .w-hours li {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 8px;
+  }
+
+  #footer-home {
+    display: grid;
+    place-items: center;
+    background: #f4f9fc;
+    height: 40vh;
+  }
+
+  #footer-main {
+    width: 40%;
+    margin: 2rem;
+  }
+
+  #footer-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 80vw;
+    margin: auto;
+  }
+
+  #footer-main h3 {
+    font-size: 3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  #footer-columns {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .footer-column {
+    margin: 2rem;
+  }
+
+  .footer-column h4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .footer-divider {
+    height: 3px;
+    background: #e12454;
+    width: 40px;
+    margin-bottom: 2rem;
+  }
+
+  .footer-column-list li {
+    padding: 6px 0px;
+  }
+
+  .footer-column-list > li > a  {
+    color: #8692a8;
+  }
+
+  .footer-column-list > li > a:hover  {
+    transition: 400ms;
+    color: #e12454;
+  }
+
+  #contact-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #contact-info a {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #000;
+    text-decoration: underline;
+  }
+
+  #contact-info a:hover {
+    transition: 400ms;
+    color: #e12454;
+    text-decoration: none;
+  }
+
+  .space-between {
+    display: flex;
+    justify-content: space-between;
+  }
 </style>
