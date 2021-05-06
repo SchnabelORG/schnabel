@@ -19,7 +19,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Pharmacist extends User
+public class Pharmacist extends MedicalEmployee
 {
     @ManyToOne
     @JoinColumn(name = "pharmacy_id")
