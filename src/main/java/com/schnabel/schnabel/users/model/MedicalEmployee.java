@@ -12,4 +12,7 @@ public class MedicalEmployee extends User
 {
     @OneToMany(mappedBy = "medicalEmployee")
     private List<Vacation> vacations;
+
+    @OneToMany(mappedBy = "medicalEmployee")
+    private List<Shift> shifts;
 }
