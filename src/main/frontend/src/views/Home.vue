@@ -20,23 +20,23 @@
     <div id="cards-home">
       <div id="cards-container">
         <div class="card">
-          <div class="card-header secondary--text">
+          <div class="card-header primary--text">
             <i class="card-icon fa fa-user-md" aria-hidden="true"></i>
             <p class="info--text">24 Hour Service</p>
-            <h3 class="secondary--text">Online appointment</h3>
+            <h3 class="primary--text">Online appointment</h3>
           </div>
           <div class="card-body">
             <p class="info--text">Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
           </div>
           <div class="card-footer">
-            <v-btn class='secondary'>Make appointment</v-btn>
+            <v-btn class='primary'>Make appointment</v-btn>
           </div>
         </div>
         <div class="card">
-          <div class="card-header secondary--text">
+          <div class="card-header primary--text">
             <i class="fa fa-clock-o" aria-hidden="true"></i>
             <p class="info--text">Timing schedule</p>
-            <h3 class="secondary--text">Working hours</h3>
+            <h3 class="primary--text">Working hours</h3>
           </div>
           <div class="card-body">
             <ul class="w-hours unstyled-list info--text">
@@ -58,10 +58,10 @@
           </div>
         </div>
         <div class="card">
-          <div class="card-header secondary--text">
+          <div class="card-header primary--text">
             <i class="fa fa-phone" aria-hidden="true"></i>
             <p class="info--text">Emergency cases</p>
-            <h3 class="secondary--text">1-800-700-6200</h3>
+            <h3 class="primary--text">1-800-700-6200</h3>
           </div>
           <div class="card-body">
             <p class="info--text">Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
@@ -77,14 +77,14 @@
 
         <div id="footer-main">
           <div id="footer-title">
-            <h3 class="secondary--text">Schnabel</h3>
+            <h3 class="primary--text">Schnabel</h3>
             <p class="info--text">Ipsum animi fugiat ab suscipit quidem obcaecati, repellendus ipsa alias, deserunt deleniti voluptas dicta distinctio dolore recusandae rem dignissimos laudantium perferendis. Sunt!</p>
           </div>
         </div>
 
         <div id="footer-columns">
           <div class="footer-column">
-            <h4 class="secondary--text">Dermatology</h4>
+            <h4 class="primary--text">Dermatology</h4>
             <div class="footer-divider"></div>
             <ul class="footer-column-list unstyled-list">
               <li><a href="">Consulting</a></li>
@@ -93,7 +93,7 @@
             </ul>
           </div>
           <div class="footer-column">
-            <h4 class="secondary--text">Pharmacology</h4>
+            <h4 class="primary--text">Pharmacology</h4>
             <div class="footer-divider"></div>
             <ul class="footer-column-list unstyled-list">
               <li><a href="">Consulting</a></li>
@@ -102,7 +102,7 @@
             </ul>
           </div>
           <div class="footer-column">
-            <h4 class="secondary--text">General info</h4>
+            <h4 class="primary--text">General info</h4>
             <div class="footer-divider"></div>
             <div id="contact-info">
               <div class="space-between info--text">

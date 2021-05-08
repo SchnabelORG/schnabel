@@ -1,14 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import PSWRegistration from '../views/PSWRegistration.vue'
-import PSWUsageReport from '../views/PSWUsageReport.vue'
-import PharmacistPanel from '../views/PharmacistPanel.vue'
-import Account from '../views/Account.vue'
-import PharmacistHome from '../views/PharmacistHome.vue'
-import PharmacistCalendar from '../views/PharmacistCalendar.vue'
-import ConsultationReport from '../views/ConsultationReport.vue'
-import MedicationReservations from '../views/MedicationReservations.vue'
 
 Vue.use(VueRouter)
 
@@ -18,48 +10,59 @@ const routes = [
     name: 'Home',
     component: Home
   },
+
+  // User
+  {
+    path: '/user/about',
+    name: 'UserAbout',
+    component: () => import(/* webpackChunkName: "user" */ '../views/UserAbout.vue'),
+  },
+
+  // PSW
   {
     path: '/pswreg',
     name: 'PSWRegistration',
-    component: PSWRegistration,
+    component: () => import( /* webpackChunkName: "psw" */ '../views/PSWRegistration.vue'),
   },
   {
     path: '/pswreports',
     name: 'PSWUsageReport',
-    component: PSWUsageReport,
+    component: () => import(/* webpackChunkName: "psw" */ '../views/PSWUsageReport.vue'),
   },
+
+  // Pharmacist
   {
     path: "/pharmacist",
     name: 'PharmacistPanel',
-    component: PharmacistPanel,
+    component: () => import(/* webpackChunkName: "pharmacist" */ '../views/PharmacistPanel.vue'),
     children:[
       {
         path: '',
         name: 'PharmacistHome',
-        component: PharmacistHome,
+        component: () => import(/* webpackChunkName: "pharmacist" */ '../views/PharmacistHome.vue'),
       },
       {
         path: 'account',
         name: 'Account',
-        component: Account,
+        component: () => import(/* webpackChunkName: "pharmacist" */ '../views/Account.vue'),
       },
       {
         path: 'calendar',
         name: 'PharmacistCalendar',
-        component: PharmacistCalendar,
+        component: () => import(/* webpackChunkName: "pharmacist" */ '../views/PharmacistCalendar.vue'),
       },
       {
         path: 'consultationReport',
         name: 'ConsultationReport',
-        component: ConsultationReport,
+        component: () => import(/* webpackChunkName: "pharmacist" */ '../views/ConsultationReport.vue'),
       },
       {
         path: 'medicationReservations',
         name: 'MedicationReservations',
-        component: MedicationReservations,
+        component: () => import(/* webpackChunkName: "pharmacist" */ '../views/MedicationReservations.vue'),
       },
     ],
-  }
+  },
 ]
 
 const router = new VueRouter({
