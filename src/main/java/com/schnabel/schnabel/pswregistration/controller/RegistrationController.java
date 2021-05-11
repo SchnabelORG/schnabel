@@ -1,5 +1,7 @@
 package com.schnabel.schnabel.pswregistration.controller;
 
+import java.util.Optional;
+
 import com.schnabel.schnabel.pswregistration.model.Hospital;
 import com.schnabel.schnabel.pswregistration.model.HospitalDTO;
 import com.schnabel.schnabel.pswregistration.service.IHospitalService;
@@ -29,10 +31,10 @@ public class RegistrationController
     @GetMapping("/pswapi/{api}")
     public ResponseEntity<String> getByAPIKey(@PathVariable String api)
     {
-        Hospital hospital = hospitalService.get(api);
-        return hospital == null ? 
-            new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-            ResponseEntity.ok(hospital.getName());
+        Optional<Hospital> hospital = hospitalService.get(api);
+        return hospital.isPresent() ? 
+            ResponseEntity.ok(hospital.get().getName())
+            : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/pswapi")

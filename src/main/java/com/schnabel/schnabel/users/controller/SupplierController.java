@@ -1,5 +1,7 @@
 package com.schnabel.schnabel.users.controller;
 
+import java.util.Optional;
+
 import com.schnabel.schnabel.users.model.Supplier;
 import com.schnabel.schnabel.users.service.ISupplierService;
 
@@ -30,10 +32,10 @@ public class SupplierController
     @GetMapping("/api/supplier/{id}")
     public ResponseEntity<Supplier> get(@PathVariable long id)
     {
-        Supplier supplier = supplierService.get(id);
-        return supplier == null ?
-            new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-            : ResponseEntity.ok(supplier);
+        Optional<Supplier> supplier = supplierService.get(id);
+        return supplier.isPresent() ?
+            ResponseEntity.ok(supplier.get())
+            : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
      /**

@@ -1,14 +1,12 @@
 package com.schnabel.schnabel.drugs.model;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.schnabel.schnabel.misc.model.Period;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
 
 import lombok.AllArgsConstructor;

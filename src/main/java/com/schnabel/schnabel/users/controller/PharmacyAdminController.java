@@ -1,5 +1,7 @@
 package com.schnabel.schnabel.users.controller;
 
+import java.util.Optional;
+
 import com.schnabel.schnabel.users.model.PharmacyAdmin;
 import com.schnabel.schnabel.users.service.IPharmacyAdminService;
 
@@ -31,10 +33,10 @@ public class PharmacyAdminController
     @GetMapping("/api/pharmacyAdmin/{id}")
     public ResponseEntity<PharmacyAdmin> get(@PathVariable long id)
     {
-        PharmacyAdmin pharmacyAdmin = pharmacyAdminService.get(id);
-        return pharmacyAdmin == null ?
-            new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-            : ResponseEntity.ok(pharmacyAdmin);
+        Optional<PharmacyAdmin> pharmacyAdmin = pharmacyAdminService.get(id);
+        return pharmacyAdmin.isPresent() ?
+            ResponseEntity.ok(pharmacyAdmin.get())
+            : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     /**

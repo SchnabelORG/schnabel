@@ -1,5 +1,7 @@
 package com.schnabel.schnabel.users.controller;
 
+import java.util.Optional;
+
 import com.schnabel.schnabel.users.model.SystemAdmin;
 import com.schnabel.schnabel.users.service.ISystemAdminService;
 
@@ -31,10 +33,10 @@ public class SystemAdminController
     @GetMapping("/api/systemAdmin/{id}")
     public ResponseEntity<SystemAdmin> get(@PathVariable long id)
     {
-        SystemAdmin systemAdmin = systemAdminService.get(id);
-        return systemAdmin == null ?
-            new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-            : ResponseEntity.ok(systemAdmin);
+        Optional<SystemAdmin> systemAdmin = systemAdminService.get(id);
+        return systemAdmin.isPresent() ?
+            ResponseEntity.ok(systemAdmin.get())
+            : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     /**

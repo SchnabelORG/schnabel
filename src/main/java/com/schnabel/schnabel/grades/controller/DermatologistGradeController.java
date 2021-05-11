@@ -1,5 +1,7 @@
 package com.schnabel.schnabel.grades.controller;
 
+import java.util.Optional;
+
 import com.schnabel.schnabel.grades.model.DermatologistGrade;
 import com.schnabel.schnabel.grades.service.IDermatologistGradeService;
 
@@ -41,9 +43,9 @@ public class DermatologistGradeController
     @GetMapping("/api/dermatologistgrade/{id}")
     public ResponseEntity<DermatologistGrade> get(@PathVariable long id)
     {
-        DermatologistGrade dermatologistGrade = dermatologistGradeService.get(id);
-        return dermatologistGrade == null ?
-            new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-            : ResponseEntity.ok(dermatologistGrade);
+        Optional<DermatologistGrade> dermatologistGrade = dermatologistGradeService.get(id);
+        return dermatologistGrade.isPresent() ?
+            ResponseEntity.ok(dermatologistGrade.get())
+            : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

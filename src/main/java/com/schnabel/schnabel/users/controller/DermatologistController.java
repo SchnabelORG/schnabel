@@ -1,5 +1,7 @@
 package com.schnabel.schnabel.users.controller;
 
+import java.util.Optional;
+
 import com.schnabel.schnabel.users.model.Dermatologist;
 import com.schnabel.schnabel.users.service.IDermatologistService;
 
@@ -41,9 +43,9 @@ public class DermatologistController
     @GetMapping("/api/dermatologist/{id}")
     public ResponseEntity<Dermatologist> get(@PathVariable long id)
     {
-        Dermatologist dermatologist = dermatologistService.get(id);
-        return dermatologist == null ?
-            new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-            : ResponseEntity.ok(dermatologist);
+        Optional<Dermatologist> dermatologist = dermatologistService.get(id);
+        return dermatologist.isPresent() ?
+            ResponseEntity.ok(dermatologist.get())
+            : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

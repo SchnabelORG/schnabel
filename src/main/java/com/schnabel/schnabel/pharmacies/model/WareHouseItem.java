@@ -7,7 +7,6 @@ import com.schnabel.schnabel.misc.model.IIdentifiable;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "warehouseitem")

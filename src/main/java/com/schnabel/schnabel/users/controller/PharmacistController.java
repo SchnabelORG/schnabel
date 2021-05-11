@@ -1,10 +1,11 @@
 package com.schnabel.schnabel.users.controller;
 
+import java.util.Optional;
+
 import com.schnabel.schnabel.users.model.Pharmacist;
 import com.schnabel.schnabel.users.service.IPharmacistService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,9 +41,9 @@ public class PharmacistController
     @GetMapping("/api/pharmacist/{id}")
     public ResponseEntity<Pharmacist> get(@PathVariable long id)
     {
-        Pharmacist pharmacist= pharmacistService.get(id);
-        return pharmacist == null ?
-            new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-            : ResponseEntity.ok(pharmacist);
+        Optional<Pharmacist> pharmacist = pharmacistService.get(id);
+        return pharmacist.isPresent() ?
+            ResponseEntity.ok(pharmacist.get())
+            : ResponseEntity.notFound().build();
     }
 }

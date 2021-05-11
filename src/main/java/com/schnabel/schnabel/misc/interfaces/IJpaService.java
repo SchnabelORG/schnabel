@@ -1,5 +1,10 @@
 package com.schnabel.schnabel.misc.interfaces;
 
+import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 /**
  * Interface of a basic CRUD service
  * 
@@ -7,11 +12,12 @@ package com.schnabel.schnabel.misc.interfaces;
  * @param <I> Represents the type with which <T> is identified
  */
 
-public interface ICrudService<T, I>
+public interface IJpaService<T, I>
 {
     T add(T object);
     boolean remove(I id);
     boolean update(T object);
-    T get(I id);
+    Optional<T> get(I id);
     Iterable<T> getAll();
+    Page<T> getAll(Pageable pageable);
 }

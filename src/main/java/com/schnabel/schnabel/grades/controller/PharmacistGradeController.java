@@ -1,5 +1,7 @@
 package com.schnabel.schnabel.grades.controller;
 
+import java.util.Optional;
+
 import com.schnabel.schnabel.grades.model.PharmacistGrade;
 import com.schnabel.schnabel.grades.service.IPharmacistGradeService;
 
@@ -41,9 +43,9 @@ public class PharmacistGradeController
     @GetMapping("/api/pharmacistgrade/{id}")
     public ResponseEntity<PharmacistGrade> get(@PathVariable long id)
     {
-        PharmacistGrade pharmacistGrade = pharmacistGradeService.get(id);
-        return pharmacistGrade == null ?
-            new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-            : ResponseEntity.ok(pharmacistGrade);
+        Optional<PharmacistGrade> pharmacistGrade = pharmacistGradeService.get(id);
+        return pharmacistGrade.isPresent() ?
+            ResponseEntity.ok(pharmacistGrade.get())
+            : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

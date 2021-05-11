@@ -1,9 +1,13 @@
 package com.schnabel.schnabel.misc.implementations;
 
-import com.schnabel.schnabel.misc.interfaces.ICrudService;
+import java.util.Optional;
+
+import com.schnabel.schnabel.misc.interfaces.IJpaService;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * Implementation of a basic CRUD service
@@ -12,11 +16,11 @@ import org.springframework.data.repository.CrudRepository;
  * @param <I> Represents the type with which <T> is identified
  */
 
-public class CrudService<T extends IIdentifiable<I>, I> implements ICrudService<T, I>
+public class JpaService<T extends IIdentifiable<I>, I> implements IJpaService<T, I>
 {
-    protected CrudRepository<T, I> repository;
+    protected JpaRepository<T, I> repository;
 
-    public CrudService(CrudRepository<T, I> repository)
+    public JpaService(JpaRepository<T, I> repository)
     {
         this.repository = repository;
     }
@@ -29,15 +33,16 @@ public class CrudService<T extends IIdentifiable<I>, I> implements ICrudService<
         {
             repository.save(object);
         }
-        return get(object.getId());
+        return get(object.getId()).get();
 	}
 
 	@Override
     public boolean remove(I id)
     {
-        if(repository.existsById(id))
+        Optional<T> entity = repository.findById(id);
+        if(entity.isPresent())
         {
-            repository.delete(get(id));
+            repository.delete(entity.get());
             return true;
         }
 		return false;
@@ -55,9 +60,9 @@ public class CrudService<T extends IIdentifiable<I>, I> implements ICrudService<
 	}
 
 	@Override
-    public T get(I id)
+    public Optional<T> get(I id)
     {
-        return repository.findById(id).orElse(null);
+        return repository.findById(id);
 	}
 
 	@Override
@@ -66,5 +71,8 @@ public class CrudService<T extends IIdentifiable<I>, I> implements ICrudService<
         return repository.findAll();
 	}
 
-    
+    @Override
+    public Page<T> getAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
 }

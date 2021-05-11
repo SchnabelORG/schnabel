@@ -1,5 +1,7 @@
 package com.schnabel.schnabel.procurement.controller;
 
+import java.util.Optional;
+
 import com.schnabel.schnabel.procurement.model.Order;
 import com.schnabel.schnabel.procurement.service.IOrderService;
 
@@ -41,9 +43,9 @@ public class OrderController
     @GetMapping("/api/order/{id}")
     public ResponseEntity<Order> get(@PathVariable long id)
     {
-        Order order = orderService.get(id);
-        return order == null ?
-            new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-            : ResponseEntity.ok(order);
+        Optional<Order> order = orderService.get(id);
+        return order.isPresent() ?
+            ResponseEntity.ok(order.get())
+            : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
