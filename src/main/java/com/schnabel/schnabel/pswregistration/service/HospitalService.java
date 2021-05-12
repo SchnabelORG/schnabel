@@ -8,7 +8,7 @@ import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.pswregistration.model.Hospital;
 
 @Service
-public class HospitalService extends JpaService<Hospital, String> implements IHospitalService
+public class HospitalService extends JpaService<Hospital, String, IHospitalRepository> implements IHospitalService
 {
     @Autowired
     public HospitalService(IHospitalRepository repository)

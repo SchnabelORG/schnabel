@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UsageReportNotificationService extends JpaService<UsageReportNotification, String>
+public class UsageReportNotificationService extends JpaService<UsageReportNotification, String, IUsageReportNotificationRepository>
     implements IUsageReportNotificationService
 {
     @Autowired

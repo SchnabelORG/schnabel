@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
  * Pharmacist service implementation
  */
 @Service
-public class PharmacistService extends JpaService<Pharmacist, Long> implements IPharmacistService
+public class PharmacistService extends JpaService<Pharmacist, Long, IPharmacistRepository> implements IPharmacistService
 {
     @Autowired
     public PharmacistService(IPharmacistRepository repository)

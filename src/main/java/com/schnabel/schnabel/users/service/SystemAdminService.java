@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
  * SystemAdmin service implementation
  */
 @Service
-public class SystemAdminService extends JpaService<SystemAdmin, Long> implements ISystemAdminService
+public class SystemAdminService extends JpaService<SystemAdmin, Long, ISystemAdminRepository> implements ISystemAdminService
 {
     @Autowired
     public SystemAdminService(ISystemAdminRepository repository)

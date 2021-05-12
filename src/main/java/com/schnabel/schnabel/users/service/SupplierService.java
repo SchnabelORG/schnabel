@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
  * Supplier service implementation
  */
 @Service
-public class SupplierService extends JpaService<Supplier, Long> implements ISupplierService
+public class SupplierService extends JpaService<Supplier, Long, ISupplierRepository> implements ISupplierService
 {
     @Autowired
     public SupplierService(ISupplierRepository repository)

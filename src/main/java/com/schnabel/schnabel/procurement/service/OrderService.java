@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
  * Order service implementation
  */
 @Service
-public class OrderService extends JpaService<Order, Long> implements IOrderService
+public class OrderService extends JpaService<Order, Long, IOrderRepository> implements IOrderService
 {
     public OrderService(IOrderRepository repository)
     {

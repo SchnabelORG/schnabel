@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
  * Offer service implementation
  */
 @Service
-public class OfferService extends JpaService<Offer, Long> implements IOfferService
+public class OfferService extends JpaService<Offer, Long, IOfferRepository> implements IOfferService
 {
     public OfferService(IOfferRepository repository)
     {

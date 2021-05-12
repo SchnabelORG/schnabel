@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
  * Dermatologist service implementation
  */
 @Service
-public class DermatologistService extends JpaService<Dermatologist, Long> implements IDermatologistService
+public class DermatologistService extends JpaService<Dermatologist, Long, IDermatologistRepository> implements IDermatologistService
 {
     public DermatologistService(IDermatologistRepository repository)
     {

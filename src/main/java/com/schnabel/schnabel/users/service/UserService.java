@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
  * User service implementation
  */
 @Service
-public class UserService extends JpaService<User, Long> implements IUserService
+public class UserService extends JpaService<User, Long, IUserRepository> implements IUserService
 {
     @Autowired
     public UserService(IUserRepository repository)

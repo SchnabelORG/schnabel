@@ -7,7 +7,7 @@ import com.schnabel.schnabel.users.repository.IPharmacyAdminRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PharmacyAdminService extends JpaService<PharmacyAdmin, Long> implements IPharmacyAdminService
+public class PharmacyAdminService extends JpaService<PharmacyAdmin, Long, IPharmacyAdminRepository> implements IPharmacyAdminService
 {
     public PharmacyAdminService(IPharmacyAdminRepository pharmacyAdminRepository)
     {

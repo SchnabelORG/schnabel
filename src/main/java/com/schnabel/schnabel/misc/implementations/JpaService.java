@@ -16,11 +16,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @param <I> Represents the type with which <T> is identified
  */
 
-public class JpaService<T extends IIdentifiable<I>, I> implements IJpaService<T, I>
+public class JpaService<T extends IIdentifiable<I>, I, R extends JpaRepository<T, I>> implements IJpaService<T, I>
 {
-    protected JpaRepository<T, I> repository;
+    protected R repository;
 
-    public JpaService(JpaRepository<T, I> repository)
+    public JpaService(R repository)
     {
         this.repository = repository;
     }
