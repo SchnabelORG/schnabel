@@ -1,9 +1,12 @@
 package com.schnabel.schnabel.users.controller;
 
+import java.util.Optional;
+
 import com.schnabel.schnabel.users.model.Dermatologist;
 import com.schnabel.schnabel.users.service.IDermatologistService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +29,7 @@ public class DermatologistController
      * Get all dermatologists
      * @return Iterable of Dermatologist
      */
-    @GetMapping("/api/dermatologists")
+    @GetMapping("/api/dermatologist")
     public ResponseEntity<Iterable<Dermatologist>> getAll()
     {
         Iterable<Dermatologist> dermatologists = dermatologistService.getAll();
@@ -34,12 +37,15 @@ public class DermatologistController
     }
 
     /**
-     * Get all dermatologists for specific pharmacy
-     * @return Iterable of Dermatologist
+     * Get dermatologist by id
+     * @return Dermatologist
      */
-    @GetMapping("/api/dermatologists/{id}")
-    public ResponseEntity<Iterable<Dermatologist>> getAllSpecificPharmacy(@PathVariable long id)
+    @GetMapping("/api/dermatologist/{id}")
+    public ResponseEntity<Dermatologist> get(@PathVariable long id)
     {
-        return ResponseEntity.ok(dermatologistService.getAllSpecificPharmacy(id));
+        Optional<Dermatologist> dermatologist = dermatologistService.get(id);
+        return dermatologist.isPresent() ?
+            ResponseEntity.ok(dermatologist.get())
+            : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

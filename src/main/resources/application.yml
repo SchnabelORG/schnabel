@@ -27,4 +27,4 @@ spring:
 #    username: vmaqngrm
 #    password: BHAFy2pYqDLrQxDduUD-03HH-N0ACEVW
 custom:
-  port: ${SCHNABEL_PORT}
+  port: ${SCHNABEL_BACKEND_PORT}

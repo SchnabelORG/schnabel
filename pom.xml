@@ -43,9 +43,26 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
+		</dependency>
+
 		<!-- Postgres| DB -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -167,9 +184,15 @@
 					<folders>
 						<folder>${project.build.directory}/frontend</folder>
 					</folders>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
-            <plugin>
+            <!-- <plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
 				<version>1.7.5</version>
@@ -207,12 +230,12 @@
 				<workingDirectory>${project.basedir}/src/main/frontend</workingDirectory>
 				<installDirectory>${project.build.directory}/node</installDirectory>
 				</configuration>
-			</plugin>
+			</plugin> -->
 		</plugins>
 		<resources>
-			<resource>
+			<!-- <resource>
 				<directory>${project.build.directory}/frontend</directory>
-			</resource>
+			</resource> -->
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
