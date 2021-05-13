@@ -8,6 +8,10 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * Pharmacy Warehouse
+ */
+
 @Entity
 @Table(name = "warehouse")
 @Getter
@@ -26,7 +30,6 @@ public class WareHouse implements IIdentifiable<Long> {
 
     @OneToOne
     @JoinColumn(name="pharmacy_id")
-    @JsonBackReference
     private Pharmacy pharmacy;
 
 }
