@@ -11,5 +11,4 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(collectionResourceRel = "warehouse", path = "warehouse")
 public interface IWareHouseRepository  extends JpaRepository<WareHouse, Long>{
 
-
 }
