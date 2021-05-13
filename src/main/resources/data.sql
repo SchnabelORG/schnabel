@@ -64,6 +64,11 @@ insert into complaints values(2, 'Nema se novaca. Srdacno, Mika Mikic', 'Zasto i
 insert into recipes values(1, 1, 1, 5);
 insert into recipe_items values(1, 2, 1, 1);
 insert into recipe_items values(2, 5, 5, 1);
+
+
+insert into availability_request values(1, 10, 1, 5, 1);
+insert into availability_request values(2, 5, 2, 5, 1);
+insert into availability_request values(3, 7, 3, 5, 1);
 -- INSERT INTO hospitals("name", api_key) VALUES('sacred_heart_hospital', 'apishh1234');
 -- INSERT INTO hospitals("name", api_key) VALUES('princeton_plainsboro', 'apipp1234');
 -- INSERT INTO hospitals("name", api_key) VALUES('limanska_ambulanta', 'apila1234');
