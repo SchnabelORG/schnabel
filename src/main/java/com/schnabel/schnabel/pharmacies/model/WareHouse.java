@@ -26,7 +26,6 @@ public class WareHouse implements IIdentifiable<Long> {
 
     @OneToOne
     @JoinColumn(name="pharmacy_id")
-    @JsonBackReference
     private Pharmacy pharmacy;
 
 }

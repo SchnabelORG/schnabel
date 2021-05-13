@@ -40,8 +40,10 @@ public class Appointment implements IIdentifiable<Long>
     @JoinColumn(name = "pharmacy_id")
     private Pharmacy pharmacy;
 
-    // TODO(): or inheritance -> examination (dermatologist), counseling(pharmacist) then without this medicalEmployee!
     @ManyToOne
     @JoinColumn(name = "medical_employee_id")
     private MedicalEmployee medicalEmployee;
+
+    @OneToOne(mappedBy = "appointment")
+    private AppointmentReport report;
 }
