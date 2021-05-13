@@ -56,6 +56,8 @@ insert into recommended_meds values(2, 30, 3, 4, 1);
 insert into recommended_meds values(3, 7, 1, 1, 2);
 
 
+insert into allergies values(1, 'Sta god', 4, 1);
+
 insert into complaints values(1, null, 'Ana Anic neljubazna full', 1);
 insert into complaints values(2, 'Nema se novaca. Srdacno, Mika Mikic', 'Zasto imate samo jednu apoteku pobogu?', 1);
 

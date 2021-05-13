@@ -1,11 +1,14 @@
 package com.schnabel.schnabel.users.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import com.schnabel.schnabel.misc.model.Address;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,10 +21,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name = "patients")
 @NoArgsConstructor
+@AllArgsConstructor
 public class Patient extends User
 {
-    public Patient(String name, String surname, LocalDate dateOfBirth, String email, String password, Address address)
-    {
-        super(name, surname, dateOfBirth, email, password, address);
-    }
+    @OneToMany(mappedBy = "patient")
+    private List<Allergy> allergies;
+
 }
