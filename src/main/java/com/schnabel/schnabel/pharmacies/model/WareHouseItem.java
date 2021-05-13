@@ -29,7 +29,6 @@ public class WareHouseItem implements IIdentifiable<Long>
     @Column
     private int available;
 
-
     @ManyToOne
     @JoinColumn(name = "drug_id")
     private DrugPrice drugPrice;

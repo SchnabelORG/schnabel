@@ -65,6 +65,8 @@ insert into recipes values(1, 1, 1, 5);
 insert into recipe_items values(1, 2, 1, 1);
 insert into recipe_items values(2, 5, 5, 1);
 
+insert into drugs_reservations values(1, '2021-05-20', 2, '2021-05-04', 1, 1, 1);
+
 
 insert into availability_request values(1, 10, 1, 5, 1);
 insert into availability_request values(2, 5, 2, 5, 1);
