@@ -12,6 +12,10 @@ import javax.persistence.*;
 import java.util.List;
 
 
+/**
+ * eRecipe
+ */
+
 @Entity
 @Table(name = "recipes")
 @Getter

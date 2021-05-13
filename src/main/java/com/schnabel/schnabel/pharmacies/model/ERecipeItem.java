@@ -8,6 +8,10 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * eRecipe item
+ */
+
 @Entity
 @Table(name = "recipe_items")
 @Getter

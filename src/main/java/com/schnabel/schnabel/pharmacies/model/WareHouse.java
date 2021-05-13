@@ -8,6 +8,10 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * Pharmacy Warehouse
+ */
+
 @Entity
 @Table(name = "warehouse")
 @Getter

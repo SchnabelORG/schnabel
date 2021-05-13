@@ -8,6 +8,10 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * Recommended medication in appointment report
+ */
+
 @Entity
 @Table(name = "recommended_meds")
 @Getter

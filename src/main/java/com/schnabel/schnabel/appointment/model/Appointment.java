@@ -10,6 +10,10 @@ import javax.persistence.*;
 
 import lombok.*;
 
+/**
+ * Appointment
+ */
+
 @Entity
 @Table(name = "appointments")
 @Getter
