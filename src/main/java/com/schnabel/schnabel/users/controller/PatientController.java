@@ -1,17 +1,14 @@
 package com.schnabel.schnabel.users.controller;
 
-<<<<<<< HEAD
 import com.schnabel.schnabel.misc.exceptions.PatientAlreadyExistsException;
-import com.schnabel.schnabel.users.DTO.UserDTO;
-=======
+import com.schnabel.schnabel.registration.dto.UserDTO;
 import com.schnabel.schnabel.users.dto.PatientDTO;
 import com.schnabel.schnabel.users.dto.PatientDTOAssembler;
->>>>>>> develop
 import com.schnabel.schnabel.users.model.Patient;
-import com.schnabel.schnabel.users.model.VerificationToken;
+import com.schnabel.schnabel.registration.model.VerificationToken;
 import com.schnabel.schnabel.users.service.IPatientService;
 
-import com.schnabel.schnabel.util.OnRegistrationCompleteEvent;
+import com.schnabel.schnabel.registration.util.OnRegistrationCompleteEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -19,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.Calendar;
@@ -27,8 +23,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -81,7 +75,7 @@ public class PatientController
         return new ResponseEntity<>(collModel, HttpStatus.OK);
     }
 
-    @PostMapping("/api/patient/registration")
+    @PostMapping("registration")
     public ResponseEntity<String> registerPatientAccount(@RequestBody UserDTO userDTO) {
         try {
             Patient registered = patientService.registerNewAccount(userDTO);
@@ -99,7 +93,7 @@ public class PatientController
         return new ResponseEntity<>("Successful Registration", HttpStatus.OK);
     }
 
-    @GetMapping("api/patient/registrationConfirm/{token}")
+    @GetMapping("registrationConfirm/{token}")
     public ResponseEntity<String> confirmRegistration(@PathVariable String token) {
         VerificationToken verificationToken = patientService.getVerificationToken(token);
         if (verificationToken == null) {
@@ -117,7 +111,7 @@ public class PatientController
         return new ResponseEntity<>("Successful registration", HttpStatus.OK);
     }
     
-    @GetMapping("api/patient/mail")
+    @GetMapping("mail")
     public ResponseEntity<String> sendMail(){
         SimpleMailMessage email = new SimpleMailMessage();
         email.setFrom("${mail.username}");

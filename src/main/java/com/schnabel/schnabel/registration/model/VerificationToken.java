@@ -1,6 +1,7 @@
-package com.schnabel.schnabel.users.model;
+package com.schnabel.schnabel.registration.model;
 
 import com.schnabel.schnabel.misc.model.IIdentifiable;
+import com.schnabel.schnabel.users.model.Patient;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class VerificationToken implements IIdentifiable<Long> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column
     private String token;
 
     @OneToOne(targetEntity = Patient.class, fetch = FetchType.EAGER)

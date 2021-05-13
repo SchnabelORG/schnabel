@@ -1,4 +1,4 @@
-package com.schnabel.schnabel.util;
+package com.schnabel.schnabel.registration.util;
 
 import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.service.IPatientService;

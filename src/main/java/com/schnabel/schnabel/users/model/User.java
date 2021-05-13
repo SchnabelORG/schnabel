@@ -28,7 +28,7 @@ import java.time.LocalDate;
 public abstract class User implements IIdentifiable<Long>
 {
     @Id
-    @SequenceGenerator(name = "seqGen", sequenceName = "seq", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "seqGen", sequenceName = "seq", initialValue = 2, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqGen")
     private Long id;
     
@@ -49,6 +49,7 @@ public abstract class User implements IIdentifiable<Long>
     
     @Embedded
     private Address address;
+
 
     public User(String name, String surname, LocalDate dateOfBirth, String email, String password, Address address)
     {

@@ -22,7 +22,7 @@ insert into warehouseitem values(3, 20, 10, 3, 1);
 insert into warehouseitem values(4, 20, 10, 4, 1);
 insert into warehouseitem values(5, 20, 10, 5, 1);
 
-insert into patients(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no) values (1, 'Petar', 'Petrovic', '2000-06-01', 'petar@gmail.com', '123', '21000', 'Novi Sad', 'Bulevar', 1);
+insert into patients(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no, is_enabled) values (1, 'Petar', 'Petrovic', '2000-06-01', 'petar@gmail.com', '123', '21000', 'Novi Sad', 'Bulevar', 1, TRUE);
 
 insert into dermatologists(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no) values (2, 'Mamma', 'Mia', '2000-06-01', 'mamma@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1);
 

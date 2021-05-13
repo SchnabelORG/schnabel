@@ -1,16 +1,15 @@
 package com.schnabel.schnabel.users.service;
 
-import com.schnabel.schnabel.misc.implementations.CrudService;
-import com.schnabel.schnabel.users.DTO.UserDTO;
+import com.schnabel.schnabel.registration.dto.UserDTO;
 import com.schnabel.schnabel.misc.exceptions.PatientAlreadyExistsException;
 import java.util.Optional;
 
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.users.model.Patient;
-import com.schnabel.schnabel.users.model.VerificationToken;
+import com.schnabel.schnabel.registration.model.VerificationToken;
 import com.schnabel.schnabel.users.repository.IPatientRepository;
 
-import com.schnabel.schnabel.users.repository.IVerificationTokenRepository;
+import com.schnabel.schnabel.registration.repository.IVerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
