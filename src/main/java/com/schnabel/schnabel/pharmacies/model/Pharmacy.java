@@ -1,20 +1,8 @@
 package com.schnabel.schnabel.pharmacies.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
@@ -42,34 +30,21 @@ public class Pharmacy implements IIdentifiable<Long>
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     @Column(nullable = false)
     private String name;
+    
     @Embedded
     private Address address;
-    // TODO(Jovan): Use wrapper class?
-    @Column(name = "avg_rating", nullable = false)
-    private double avgRating;
-    @ManyToMany
-    @JoinTable
-    (
-        name = "dermatologist_pharmacy",
-        joinColumns = @JoinColumn(name = "pharmacy_id"),
-        inverseJoinColumns = @JoinColumn(name = "dermatologist_id")
-    )
-    private final Set<Dermatologist> dermatologists = new HashSet<Dermatologist>();
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacy")
-    private final Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
-    // TODO(Jovan): Available drug list
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacy")
-    private final Set<Term> terms = new HashSet<Term>();
 
+    @OneToOne(mappedBy = "pharmacy")
+    private WareHouse wareHouse;
 
-    public Pharmacy(String name, Address address)
-    {
-        this.name = name;
-        this.address = address;
-        this.avgRating = 0.0;
-    }
+    @ManyToMany(mappedBy = "pharmacies")
+    private List<Dermatologist> dermatologists;
+
+    @OneToMany(mappedBy = "pharmacy")
+    private List<Pharmacist> pharmacists;
 
     public Pharmacy(Long id, String name, Address address)
     {

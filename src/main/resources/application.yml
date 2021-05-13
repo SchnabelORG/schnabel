@@ -35,4 +35,4 @@ spring:
     properties.mail.smtp.starttls.enable: true
 
 custom:
-  port: ${SCHNABEL_PORT}
+  port: ${SCHNABEL_BACKEND_PORT}

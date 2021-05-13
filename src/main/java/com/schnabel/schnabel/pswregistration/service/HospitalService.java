@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.schnabel.schnabel.pswregistration.repository.IHospitalRepository;
-import com.schnabel.schnabel.misc.implementations.CrudService;
+import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.pswregistration.model.Hospital;
 
 @Service
-public class HospitalService extends CrudService<Hospital, String> implements IHospitalService
+public class HospitalService extends JpaService<Hospital, String, IHospitalRepository> implements IHospitalService
 {
     @Autowired
     public HospitalService(IHospitalRepository repository)

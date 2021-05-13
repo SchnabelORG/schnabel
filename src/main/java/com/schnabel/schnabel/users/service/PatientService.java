@@ -3,6 +3,9 @@ package com.schnabel.schnabel.users.service;
 import com.schnabel.schnabel.misc.implementations.CrudService;
 import com.schnabel.schnabel.users.DTO.UserDTO;
 import com.schnabel.schnabel.misc.exceptions.PatientAlreadyExistsException;
+import java.util.Optional;
+
+import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.model.VerificationToken;
 import com.schnabel.schnabel.users.repository.IPatientRepository;
@@ -15,7 +18,7 @@ import org.springframework.stereotype.Service;
  * Patient service implementation
  */
 @Service
-public class PatientService extends CrudService<Patient, Long> implements IPatientService
+public class PatientService extends JpaService<Patient, Long, IPatientRepository> implements IPatientService
 {
     @Autowired
     private final IVerificationTokenRepository verificationTokenRepository;
@@ -77,5 +80,10 @@ public class PatientService extends CrudService<Patient, Long> implements IPatie
                 return token;
         }
         return null;
+    }
+
+    @Override
+    public Optional<Patient> findByEmail(String email) {
+        return repository.findByEmail(email);
     }
 }

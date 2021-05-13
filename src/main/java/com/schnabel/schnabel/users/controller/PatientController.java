@@ -1,7 +1,12 @@
 package com.schnabel.schnabel.users.controller;
 
+<<<<<<< HEAD
 import com.schnabel.schnabel.misc.exceptions.PatientAlreadyExistsException;
 import com.schnabel.schnabel.users.DTO.UserDTO;
+=======
+import com.schnabel.schnabel.users.dto.PatientDTO;
+import com.schnabel.schnabel.users.dto.PatientDTOAssembler;
+>>>>>>> develop
 import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.model.VerificationToken;
 import com.schnabel.schnabel.users.service.IPatientService;
@@ -18,11 +23,27 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.Calendar;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Patient REST controller
+ */
 @RestController
+@RequestMapping("api/patient")
 public class PatientController
 {
     private final IPatientService patientService;
+    private final PatientDTOAssembler patientDTOAsm;
+    private final PagedResourcesAssembler<Patient> patientPageAsm;
 
     @Autowired
     ApplicationEventPublisher eventPublisher;
@@ -31,24 +52,33 @@ public class PatientController
     private JavaMailSender mailSender;
 
     @Autowired
-    public PatientController(IPatientService patientService)
+    public PatientController(IPatientService patientService, PatientDTOAssembler patientDTOAsm, PagedResourcesAssembler<Patient> patientPageAsm)
     {
         this.patientService = patientService;
+        this.patientDTOAsm = patientDTOAsm;
+        this.patientPageAsm = patientPageAsm;
     }
 
-    @GetMapping("/api/patient/{id}")
-    public ResponseEntity<Patient> get(@PathVariable long id)
+    /**
+     * Get patient by id
+     * @return Patient
+     */
+    @GetMapping("{id}")
+    public ResponseEntity<PatientDTO> get(@PathVariable long id)
     {
-        Patient patient = patientService.get(id);
-        return patient == null ?
-            new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-            : ResponseEntity.ok(patient);
+        return patientService.get(id).map(patientDTOAsm::toModel).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/api/patient")
-    public ResponseEntity<Iterable<Patient>> getAll()
+    /**
+     * Get all patients
+     * @return Iterable of Patients
+     */
+    @GetMapping
+    public ResponseEntity<PagedModel<PatientDTO>> getAll(Pageable pageable)
     {
-        return ResponseEntity.ok(patientService.getAll());
+        Page<Patient> patients = patientService.getAll(pageable);
+        PagedModel<PatientDTO> collModel = patientPageAsm.toModel(patients, patientDTOAsm);
+        return new ResponseEntity<>(collModel, HttpStatus.OK);
     }
 
     @PostMapping("/api/patient/registration")

@@ -1,34 +1,29 @@
 package com.schnabel.schnabel.users.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 
-import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * Dermatologist user
  */
 @Entity
-@DiscriminatorValue("Dermatologist")
+@Table(name = "dermatologists")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
-public class Dermatologist extends EmployedUser
+public class Dermatologist extends MedicalEmployee
 {
-    @ManyToMany(mappedBy = "dermatologists")
-    private final Set<Pharmacy> pharmacies = new HashSet<Pharmacy>();
-
-    public Dermatologist(String name, String surname, String email, String password, Address address)
-    {
-        super(name, surname, email, password, address);
-    }
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "dermatologist_pharmacy",
+        joinColumns = @JoinColumn(name = "dermatologist_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "pharmacy_id",
+        referencedColumnName = "id")) 
+    private List<Pharmacy> pharmacies;
 }

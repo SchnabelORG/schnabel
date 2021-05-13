@@ -2,9 +2,14 @@ package com.schnabel.schnabel.users.repository;
 
 import com.schnabel.schnabel.users.model.PharmacyAdmin;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-public interface IPharmacyAdminRepository extends CrudRepository<PharmacyAdmin, Long>
+/**
+ * PharmacyAdmin Jpa repository interface
+ */
+@RepositoryRestResource(collectionResourceRel = "pharmacyadmins", path = "pharmacyadmin")
+public interface IPharmacyAdminRepository extends JpaRepository<PharmacyAdmin, Long>
 {
-    
 }
+
