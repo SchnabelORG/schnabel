@@ -22,6 +22,7 @@ insert into warehouseitem values(3, 20, 10, 3, 1);
 insert into warehouseitem values(4, 20, 10, 4, 1);
 insert into warehouseitem values(5, 20, 10, 5, 1);
 
+
 insert into patients(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no) values (1, 'Petar', 'Petrovic', '2000-06-01', 'petar@gmail.com', '123', '21000', 'Novi Sad', 'Bulevar', 1);
 
 insert into dermatologists(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no) values (2, 'Mamma', 'Mia', '2000-06-01', 'mamma@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1);
@@ -44,6 +45,10 @@ insert into promotions(id, "description", start_time, end_time, pharmacy_id) val
 
 insert into vacations(id, start_time, end_time, pharmacy_id, medical_employee_id) values (1, '2021-06-01', '2021-06-11', 1, 5);
 
+
+insert into recipes values(1, 1, 1, 5);
+insert into recipe_items values(1, 2, 1, 1);
+insert into recipe_items values(2, 5, 5, 1);
 -- INSERT INTO hospitals("name", api_key) VALUES('sacred_heart_hospital', 'apishh1234');
 -- INSERT INTO hospitals("name", api_key) VALUES('princeton_plainsboro', 'apipp1234');
 -- INSERT INTO hospitals("name", api_key) VALUES('limanska_ambulanta', 'apila1234');
