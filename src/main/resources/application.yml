@@ -28,3 +28,5 @@ spring:
 #    password: BHAFy2pYqDLrQxDduUD-03HH-N0ACEVW
 custom:
   port: ${SCHNABEL_BACKEND_PORT}
+  jwtSecret: ${SCHNABEL_JWT_SECRET}
+  jwtExpMs: 60000
