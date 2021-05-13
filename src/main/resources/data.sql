@@ -45,6 +45,8 @@ insert into promotions(id, "description", start_time, end_time, pharmacy_id) val
 
 insert into vacations(id, start_time, end_time, pharmacy_id, medical_employee_id) values (1, '2021-06-01', '2021-06-11', 1, 5);
 
+insert into appointments values (1, false, '2020-12-20 12:30:00', '2020-12-20 12:15:00', 3000, 5, 1, 1);
+insert into appointments values (2, false, '2020-11-20 08:45:00', '2020-11-20 08:15:00', 5000, 2, 1, 1);
 
 insert into recipes values(1, 1, 1, 5);
 insert into recipe_items values(1, 2, 1, 1);
