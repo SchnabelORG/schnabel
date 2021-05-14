@@ -20,6 +20,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+/**
+ * Authentication filter (middleware)
+ */
 public class AuthTokenFilter extends OncePerRequestFilter {
 
     @Autowired

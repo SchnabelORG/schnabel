@@ -13,6 +13,9 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+/**
+ * JWT utility class
+ */
 @Component
 public class JwtUtils {
     

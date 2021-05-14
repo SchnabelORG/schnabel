@@ -23,6 +23,8 @@ Vue.component('sidebar', Sidebar, {
 	props: ["title", "user"],
 })
 
+axios.defaults.baseURL = process.env.VUE_APP_API_ENDPOINT;
+
 new Vue({
   router: router,
   store: store,

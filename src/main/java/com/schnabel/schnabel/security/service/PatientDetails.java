@@ -15,6 +15,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Patient implementation of Spring Security's UserDetails
+ */
 @Data
 @AllArgsConstructor
 @EqualsAndHashCode
