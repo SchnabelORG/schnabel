@@ -13,7 +13,7 @@
                         label="Reservation number"
                     
                     ></v-text-field>
-                    <v-btn id="search-reservation-btn" elevation="2" @click="addMedication" class="deep-orange white--text">
+                    <v-btn id="search-reservation-btn" elevation="2" @click="addMedication" class="accent white--text">
                         <v-icon left>
                             mdi-database-search
                         </v-icon>
@@ -52,7 +52,7 @@
                 </table>     
             </v-card-text>
             <v-card-actions>
-                <v-btn id="dispensing-medication" elevation="2" @click="dispensing" class="deep-orange white--text">
+                <v-btn id="dispensing-medication" elevation="2" @click="dispensing" class="accent white--text">
                         <v-icon left>
                             mdi-hand-heart
                         </v-icon>
@@ -79,9 +79,8 @@
         display:grid;
         grid-template-columns:auto;
         place-items: center;
-        min-height: 100%;
-        background: rgb(50,74,94);
-        background: linear-gradient(90deg, rgba(63,81,181,1) 5%, rgba(197,202,233,1) 100%); 
+        min-height: 92vh;
+        background-color: #fbecdd;
     }
     #search-reservation-btn{
         margin: 0;
