@@ -11,10 +11,10 @@
                                     :items-per-page="5"
                                     class="elevation-3">
                         <template v-slot:top>
-                            <v-toolbar flat>
-                            <v-spacer></v-spacer>
-                            <v-toolbar-title>All your patients</v-toolbar-title>
-                            <v-spacer></v-spacer>
+                            <v-toolbar flat class="pharm-home-table-toolbar info">
+                                <v-spacer></v-spacer>
+                                <v-toolbar-title class="primary--text"><b>All your patients</b></v-toolbar-title>
+                                <v-spacer></v-spacer>
                             </v-toolbar>
                             <v-text-field v-model="search"
 									label="Search your patients"
@@ -34,18 +34,18 @@
                 </v-row>
                 <v-row>
                     <v-card
-                        class="pharm-home-graph primary secondary--text"
+                        class="pharm-home-graph info primary--text"
                         dark>
                         <v-card-title class="justify-center">
-                            <div class="display-1 font-weight-thin">
+                            <div class="display-1">
                             Last 7 days appointment
                             </div>
                         </v-card-title>
                         <v-card-text>
-                            <v-sheet color="rgba(0, 0, 0, .12)">
+                            <v-sheet color="#f4f9fc">
                             <v-sparkline
                                 :value="value"
-                                color="rgba(255, 255, 255, .7)"
+                                color="primary"
                                 height="100"
                                 padding="24"
                                 stroke-linecap="round"
@@ -70,18 +70,18 @@
                     :key="n"
                     >
                     <v-card v-if="n == 1 || n == 6">
-                        <v-card-title class="justify-center deep-orange white--text">
+                        <v-card-title class="justify-center accent white--text">
                             <div v-if="n == 1">Todays consultation</div>
                             <div v-else>Previous working day</div>
                         </v-card-title>
                     </v-card>
                     <v-card v-else>
-                        <v-card-title class="primary secondary--text">
-                        Consultation at {{n}}:00pm
+                        <v-card-title class="info primary--text">
+                        <b>Consultation at {{n}}:00pm</b>
                         </v-card-title>
                         <v-card-text>
-                            <h4>Radovan Zupunski</h4>
-                            <h4>Brufen</h4>
+                            <h3>Radovan Zupunski</h3>
+                            <h3>Brufen</h3>
                         </v-card-text>
                     </v-card>
                     </v-timeline-item>
@@ -124,8 +124,7 @@
 
 <style scoped>
     #pharm-home-main{
-        background: rgb(50,74,94);
-        background: linear-gradient(90deg, rgba(63,81,181,1) 5%, rgba(197,202,233,1) 100%); 
+        background-color: #fbecdd;
     }
     #container{
         margin: 5%;
