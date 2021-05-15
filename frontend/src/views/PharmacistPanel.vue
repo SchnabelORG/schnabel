@@ -9,7 +9,7 @@
             <v-divider vertical></v-divider>
             <router-link to="/pharmacist/medicationReservations">Reservations</router-link>
             <v-divider vertical></v-divider>
-            <router-link to="/pharmacist/account">Account</router-link>
+            <router-link to="/pharmacist/pharmacistacc">Account</router-link>
         </main-navigation>
         <div id="main-content">
             <router-view/>

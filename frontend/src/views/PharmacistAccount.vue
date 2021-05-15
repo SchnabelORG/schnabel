@@ -13,49 +13,49 @@
             <v-card-text>
                 <v-form id="ph-add" v-model="valid">
                     <v-text-field
-                    v-model="name"
+                    v-model="pharmacist.name"
                     :rules="[rules.required]"
                     label="Name"
                     :disabled="!editMode"
                     ></v-text-field>
                     <v-text-field
-                    v-model="surname"
+                    v-model="pharmacist.surname"
                     :rules="[rules.required]"
                     label="Surname"
                     :disabled="!editMode"
                     ></v-text-field>
                     <v-text-field
-                    v-model="email"
+                    v-model="pharmacist.email"
                     :rules="[rules.required]"
                     label="Email"
                     :disabled="true"
                     ></v-text-field>
                     <v-text-field
-                    v-model="city"
+                    v-model="pharmacist.address.city"
                     :rules="[rules.required]"
                     label="City"
                     :disabled="!editMode"
                     ></v-text-field>
                     <v-text-field
-                    v-model="postcode"
+                    v-model="pharmacist.address.postcode"
                     :rules="[rules.required]"
                     label="Postcode"
                     :disabled="!editMode"
                     ></v-text-field>
                     <v-text-field
-                    v-model="street"
+                    v-model="pharmacist.address.street"
                     :rules="[rules.required]"
                     label="Street"
                     :disabled="!editMode"
                     ></v-text-field>
                      <v-text-field
-                    v-model="number"
+                    v-model="pharmacist.address.streetNo"
                     :rules="[rules.required, rules.isNmb]"
                     label="Street number"
                     :disabled="!editMode"
                     ></v-text-field>
                     <v-text-field
-                    v-model="password"
+                    v-model="pharmacist.password"
                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                     :rules="[rules.required, rules.min]"
                     :type="show1 ? 'text' : 'password'"
@@ -90,6 +90,8 @@
         data() {
             return {
                 editMode: false,
+                pharmacist: {},
+                pharmacistCopy: {},
                 password: 'blablabla',
                 name: 'Petar',
                 surname: 'Petrovic',
@@ -113,6 +115,24 @@
             passwordConfirmationRule: function() {
                 return () => (this.password === this.confirmPassword) || 'Password must match'
             },
+        },
+         methods: {
+              getPhrmacist: function(){
+                this.axios.get("http://localhost:8082/pharmacist/5")
+                    .then(response =>
+                    {
+                        this.pharmacist = response.data;
+                        this.pharmacistCopy = response.data;
+                    })
+                    .catch(response =>
+                    {
+                        console.log(response.data);
+                    });
+                
+            },
+        },
+        mounted(){
+            this.getPhrmacist();
         }
     }
 
