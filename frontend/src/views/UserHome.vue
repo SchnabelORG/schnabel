@@ -44,7 +44,11 @@
                     </v-card>
                     <v-card tile>
                         <v-card-title>Active appointments</v-card-title>
-                        <v-card-text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum illo debitis sunt quos recusandae, culpa ducimus magnam qui dicta voluptatibus aperiam similique amet impedit, nostrum consequatur molestias ea reprehenderit sed!</v-card-text>
+                        <v-card-text>
+                            <div id="active-app-container">
+                                
+                            </div>
+                        </v-card-text>
                     </v-card>
                     <v-card tile>
                         <v-card-title>Pharmacist consult history</v-card-title>
