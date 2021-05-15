@@ -45,9 +45,6 @@ public abstract class User implements IIdentifiable<Long>
     private String surname;
     
     @Column(nullable = false)
-    private LocalDate dateOfBirth;
-    
-    @Column(nullable = false)
     private String email;
     
     @Column(nullable = false)
@@ -62,11 +59,10 @@ public abstract class User implements IIdentifiable<Long>
                 inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<Role>();
 
-    public User(String name, String surname, LocalDate dateOfBirth, String email, String password, Address address)
+    public User(String name, String surname, String email, String password, Address address)
     {
         this.name = name;
         this.surname = surname;
-        this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.password = password;
         this.address = address;

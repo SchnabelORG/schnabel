@@ -20,17 +20,17 @@ public class Address
     @Column(nullable = false)
     private String street;
     @Column(name = "street_no", nullable = false)
-    private int streetNo;
+    private String streetNo;
 
     public Address()
     {
         this.postcode = "Placeholderpostcode";
         this.city = "Placeholdercity";
         this.street = "Placeholderstreet";
-        this.streetNo = 1;
+        this.streetNo = "1";
     }
 
-    public Address(String postcode, String city, String street, int streetNo)
+    public Address(String postcode, String city, String street, String streetNo)
     {
         this.postcode = postcode;
         this.city = city;

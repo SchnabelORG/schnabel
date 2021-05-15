@@ -1,11 +1,10 @@
 package com.schnabel.schnabel.users.model;
 
-import java.time.LocalDate;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import com.schnabel.schnabel.misc.model.Address;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,11 +16,16 @@ import lombok.NoArgsConstructor;
 @Entity
 @Builder
 @Table(name = "patients")
+@AllArgsConstructor
 @NoArgsConstructor
 public class Patient extends User
 {
-    public Patient(String name, String surname, LocalDate dateOfBirth, String email, String password, Address address)
+    private boolean isActivated;
+    private String phoneNo;
+    public Patient(String name, String surname, String email, String password, Address address, boolean isActivated, String phoneNo)
     {
-        super(name, surname, dateOfBirth, email, password, address);
+        super(name, surname, email, password, address);
+        this.isActivated = isActivated;
+        this.phoneNo = phoneNo;
     }
 }

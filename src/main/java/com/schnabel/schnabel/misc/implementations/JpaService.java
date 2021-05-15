@@ -26,14 +26,14 @@ public class JpaService<T extends IIdentifiable<I>, I, R extends JpaRepository<T
     }
 
 	@Override
-    public T add(T object)
+    public Optional<T> add(T object)
     {
         
         if(object.getId() == null || !repository.existsById(object.getId()) )
         {
             repository.save(object);
         }
-        return get(object.getId()).get();
+        return get(object.getId());
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package com.schnabel.schnabel.users.controller;
 
 import com.schnabel.schnabel.users.dto.PatientDTO;
 import com.schnabel.schnabel.users.dto.PatientDTOAssembler;
+import com.schnabel.schnabel.users.dto.RegisterRequest;
 import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.service.IPatientService;
 
@@ -14,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -56,5 +59,14 @@ public class PatientController
         Page<Patient> patients = patientService.getAll(pageable);
         PagedModel<PatientDTO> collModel = patientPageAsm.toModel(patients, patientDTOAsm);
         return new ResponseEntity<>(collModel, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<String> registerPatient(@RequestBody RegisterRequest req) {
+        return patientService.add(new Patient(req.getFName(), req.getLName(), req.getEmail(), req.getPassword(), req.getAddress(), false, req.getPhoneNo()))
+            .isPresent() ?
+                ResponseEntity.ok("Registered")
+                : ResponseEntity.badRequest().build();
+
     }
 }
