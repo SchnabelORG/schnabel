@@ -63,10 +63,9 @@ public class PatientController
 
     @PostMapping
     public ResponseEntity<String> registerPatient(@RequestBody RegisterRequest req) {
-        return patientService.add(new Patient(req.getFName(), req.getLName(), req.getEmail(), req.getPassword(), req.getAddress(), false, req.getPhoneNo()))
-            .isPresent() ?
-                ResponseEntity.ok("Registered")
-                : ResponseEntity.badRequest().build();
+        return patientService.registerPatient(req.getName(), req.getSurname(), req.getEmail(), req.getPassword(), req.getAddress(), req.getPhoneNo()) ?
+            ResponseEntity.ok("Registered")
+            : ResponseEntity.badRequest().build();
 
     }
 }

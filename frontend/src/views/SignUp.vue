@@ -3,7 +3,11 @@
         <div id="register-container">
             <p>Join Schnabel</p>
             <h2>Create your account</h2>
-            <v-stepper v-model="regSteps" id="register-form">
+            <div v-if="isRequestSent" id="register-form">
+                <p id="email-icon"><i class="fa fa-envelope-o"></i></p>
+                <p>Your activation email has been sent!</p>
+            </div>
+            <v-stepper v-else v-model="regSteps" id="register-form">
                 <v-stepper-header>
                     <v-stepper-step
                     :complete="regSteps > 1"
@@ -33,13 +37,18 @@
                         :rules="[rules.required, rules.email]"
                         required/>
                         <v-text-field
-                        v-model="fName"
+                        v-model="name"
                         label="First name"
                         :rules="[rules.required]"
                         required/>
                         <v-text-field
-                        v-model="lName"
+                        v-model="surname"
                         label="Last name"
+                        :rules="[rules.required]"
+                        required/>
+                        <v-text-field
+                        v-model="phoneNo"
+                        label="Phone No."
                         :rules="[rules.required]"
                         required/>
                         <v-text-field
@@ -103,20 +112,29 @@
                     </v-stepper-content>
                     <v-stepper-content
                     step="3">
-                    <div id="preview">
+                    <div v-if="processing" id="preview" class="processing">
+                        <v-progress-circular
+                        indeterminate
+                        color="primary"/>
+                    </div>
+                    <div v-else id="preview">
                         <div id="account-info" class="preview-field">
                             <h3 class="info--text">Account info</h3>
                             <v-text-field
-                            v-model="fName"
+                            v-model="name"
                             label="First name"
                             readonly/>
                             <v-text-field
-                            v-model="lName"
+                            v-model="surname"
                             label="Last name"
                             readonly/>
                             <v-text-field
                             v-model="email"
                             label="Email"
+                            readonly/>
+                            <v-text-field
+                            v-model="phoneNo"
+                            label="Phone No."
                             readonly/>
                         </div>
                         <div id="address" class="preview-field">
@@ -146,7 +164,7 @@
                             label="State"
                             readonly/>
                         </div>
-                        <v-btn color="accent">Sign up</v-btn>
+                        <v-btn color="accent" @click="register">Sign up</v-btn>
                         <v-btn @click="regSteps--">Back</v-btn>
                     </div>
                     </v-stepper-content>
@@ -160,18 +178,21 @@
 export default {
     data() {
         return {
-            fName: 'Petar',
-            lName: 'Petrovic',
-            email: 'petar.petrovic@gmail.com',
+            processing: false,
+            isRequestSent: false,
+            name: '',
+            surname: '',
+            email: '',
+            phoneNo: '',
             password1: '',
             password2: '',
             showPassword1: false,
             showPassword2: false,
-            street: 'Balzakova',
-            streetNo: '69',
-            city: 'Novi Sad',
-            zipCode: '21000',
-            state: 'Serbia',
+            street: '',
+            streetNo: '',
+            city: '',
+            zipCode: '',
+            state: '',
             regSteps: 1,
             rules: {
                 required: v => !!v || "Required",
@@ -184,7 +205,36 @@ export default {
             },
         }
     },
-
+    methods: {
+        register: function() {
+            this.isRequestSent = false;
+            this.processing = true;
+            let request = {
+                email: this.email,
+                name: this.name,
+                surname: this.surname,
+                password: this.password1,
+                phoneNo: this.phoneNo,
+                address: {
+                    postcode: this.zipCode,
+                    city: this.city,
+                    street: this.street,
+                    streetNo: this.streetNo,
+                },
+            };
+            this.axios.post("api/patient", request)
+                .then(r => {
+                    console.log(r);
+                    this.isRequestSent = true;
+                })
+                .catch(r => {
+                    console.log(r);
+                })
+                .finally(() => {
+                    this.processing = false;
+                });
+        },
+    },
     computed: {
         match: function() {
             return this.password1 == this.password2 || "Passwords must match";
@@ -194,6 +244,9 @@ export default {
 </script>
 
 <style scoped>
+    #email-icon {
+        font-size: 3rem;
+    }
     #register-main {
         display: grid;
         place-items: center;
@@ -261,6 +314,12 @@ export default {
         width: 70%;
         background-color: #eee;
         left: 0.5rem;
+    }
+
+    #preview.processing {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
     }
 
 </style>

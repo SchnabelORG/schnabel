@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class RegisterRequest {
-    private String fName;
-    private String lName;
+    private String name;
+    private String surname;
     private String password;
     private String phoneNo;
     private String email;

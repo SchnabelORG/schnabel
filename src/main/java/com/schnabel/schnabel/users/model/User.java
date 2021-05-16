@@ -20,7 +20,6 @@ import javax.persistence.SequenceGenerator;
 
 import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,7 +33,7 @@ import java.util.Set;
 public abstract class User implements IIdentifiable<Long>
 {
     @Id
-    @SequenceGenerator(name = "seqGen", sequenceName = "seq", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "seqGen", sequenceName = "seq", initialValue = 100, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqGen")
     private Long id;
     
