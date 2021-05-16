@@ -44,6 +44,32 @@ insert into promotions(id, "description", start_time, end_time, pharmacy_id) val
 
 insert into vacations(id, start_time, end_time, pharmacy_id, medical_employee_id) values (1, '2021-06-01', '2021-06-11', 1, 5);
 
+insert into appointments values (1, false, '2020-12-20 12:30:00', '2020-12-20 12:15:00', 3000, 5, 1, 1);
+insert into appointments values (2, false, '2020-11-20 08:45:00', '2020-11-20 08:15:00', 5000, 2, 1, 1);
+
+insert into app_report values(1, 'BO', 1);
+insert into app_report values(2, 'BO', 2);
+
+insert into recommended_meds values(1, 20, 2, 5, 1);
+insert into recommended_meds values(2, 30, 3, 4, 1);
+insert into recommended_meds values(3, 7, 1, 1, 2);
+
+
+insert into allergies values(1, 'Sta god', 4, 1);
+
+insert into complaints values(1, null, 'Ana Anic neljubazna full', 1);
+insert into complaints values(2, 'Nema se novaca. Srdacno, Mika Mikic', 'Zasto imate samo jednu apoteku pobogu?', 1);
+
+insert into recipes values(1, 1, 1, 5);
+insert into recipe_items values(1, 2, 1, 1);
+insert into recipe_items values(2, 5, 5, 1);
+
+insert into drugs_reservations values(1, '2021-05-20', 2, '2021-05-04', 1, 1, 1);
+
+
+insert into availability_request values(1, 10, 1, 5, 1);
+insert into availability_request values(2, 5, 2, 5, 1);
+insert into availability_request values(3, 7, 3, 5, 1);
 -- INSERT INTO hospitals("name", api_key) VALUES('sacred_heart_hospital', 'apishh1234');
 -- INSERT INTO hospitals("name", api_key) VALUES('princeton_plainsboro', 'apipp1234');
 -- INSERT INTO hospitals("name", api_key) VALUES('limanska_ambulanta', 'apila1234');

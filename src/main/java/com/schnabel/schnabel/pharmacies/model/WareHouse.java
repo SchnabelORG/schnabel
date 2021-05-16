@@ -1,12 +1,14 @@
 package com.schnabel.schnabel.pharmacies.model;
 
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+
+/**
+ * Pharmacy Warehouse
+ */
 
 @Entity
 @Table(name = "warehouse")
@@ -26,7 +28,6 @@ public class WareHouse implements IIdentifiable<Long> {
 
     @OneToOne
     @JoinColumn(name="pharmacy_id")
-    @JsonBackReference
     private Pharmacy pharmacy;
 
 }

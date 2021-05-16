@@ -1,6 +1,9 @@
 package com.schnabel.schnabel.users.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import com.schnabel.schnabel.misc.model.Address;
 
@@ -22,6 +25,8 @@ public class Patient extends User
 {
     private boolean isActivated;
     private String phoneNo;
+    @OneToMany(mappedBy = "patient")
+    private List<Allergy> allergies;
     public Patient(String name, String surname, String email, String password, Address address, boolean isActivated, String phoneNo)
     {
         super(name, surname, email, password, address);

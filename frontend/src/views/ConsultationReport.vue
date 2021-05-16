@@ -130,7 +130,7 @@
                                     </template>
                                 </v-select>
                             </div>
-                            <v-btn id="add-med-btn" :disabled="choosenMedication === ''" elevation="2" @click="addMedication" class="deep-orange white--text">
+                            <v-btn id="add-med-btn" :disabled="choosenMedication === ''" elevation="2" @click="addMedication" class="accent white--text">
                                 Add
                             </v-btn>
                         </v-row>
@@ -171,7 +171,7 @@
                                         quantity
                                     </td>
                                     <td>
-                                         <v-btn elevation="2" @click="checkForMedication" class="deep-orange white--text">
+                                         <v-btn elevation="2" @click="checkForMedication" class="accent white--text">
                                             Check
                                         </v-btn>
                                     </td>
@@ -246,7 +246,7 @@
                             Choosen term is 20.03.2021 at 12:30
                         </v-alert>
 
-                        <v-btn :disabled="(time == null) || (date == null)" id="sumbit-btn" elevation="2" @click="makeNewConsultation" class="deep-orange white--text">
+                        <v-btn :disabled="(time == null) || (date == null)" id="sumbit-btn" elevation="2" @click="makeNewConsultation" class="accent white--text">
                             Submit
                         </v-btn>
 
@@ -348,9 +348,8 @@
         display:grid;
         grid-template-columns:auto;
         place-items: center;
-        min-height: 100%;
-        background: rgb(50,74,94);
-        background: linear-gradient(90deg, rgba(63,81,181,1) 5%, rgba(197,202,233,1) 100%); 
+        min-height: 92vh;
+        background-color: #fbecdd;
     }
     #add-med-btn{
         margin: 0;

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
- * Drug repository interface
+ * Drug Jpa repository interface
  */
 @RepositoryRestResource(collectionResourceRel = "drugs", path = "drug")
 public interface IDrugRepository extends JpaRepository<Drug, Long>

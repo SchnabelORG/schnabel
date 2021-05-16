@@ -2,13 +2,12 @@
     <div id="account-main">
         <v-card 
         min-width="50%">
-            <v-card-title class="primary secondary--text">
-                Your information
+            <v-card-title class="info primary--text">
+                <b>Your information</b>
                 <v-spacer></v-spacer>
-					<v-btn class="deep-orange white--text" dark @click="editMode = !editMode">
-                        <div v-if="!editMode"><v-icon left>mdi-pencil</v-icon>Edit</div>
-                        <div v-else><v-icon left>mdi-cancel</v-icon>Cancel</div>
-                        
+					<v-btn class="accent white--text" dark @click="editMode = !editMode">
+                        <div v-if="!editMode"><i class="fa fa-pencil fa-fw" aria-hidden="true"></i> Edit</div>
+                        <div v-else><i class="fa fa-ban fa-fw"></i>Cancel</div>
                    </v-btn>
             </v-card-title>
             <v-card-text>
@@ -77,7 +76,7 @@
                     counter
                     @click:append="show2 = !show2"
                     ></v-text-field>
-                    <v-btn :disabled="!valid" id="save-btn"  v-if="editMode" class="deep-orange white--text" @click="save">
+                    <v-btn :disabled="!valid" id="save-btn"  v-if="editMode" class="accent white--text" @click="save">
                         Save changes
                     </v-btn>
                 </v-form>
@@ -124,9 +123,8 @@
         display:grid;
         grid-template-columns:auto;
         place-items: center;
-        min-height: 100%;
-        background: rgb(50,74,94);
-        background: linear-gradient(90deg, rgba(63,81,181,1) 5%, rgba(197,202,233,1) 100%); 
+        min-height: 92vh;
+        background-color: #fbecdd;
     }
     #save-btn{
         margin-top: 5%;
