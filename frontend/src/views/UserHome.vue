@@ -102,9 +102,42 @@ export default {
 
     methods: {
 
+        refreshToken: async function() {
+            let jws = this.$store.state.jws;
+            if(!jws) {
+                this.$router.push("/");
+            }
+            return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + jws}});
+        },
+
         getProfileImg: function() {
             return require('../assets/placeholder-profile-sq.jpg')
         },
+
+        getUser: function() {
+            console.log("Getting user");
+            let jws = this.$store.state.jws;
+            this.axios.get("api/patient", {headers:{"Authorization": "Bearer " + jws}})
+                .then(r => {
+                    console.log(r.data);
+                })
+                .catch(r => {
+                    console.log("Failed to get patient", r.data);
+                    this.refreshToken()
+                        .then(r => {
+                            this.$store.state.jws = r.data;
+                            this.$router.go();
+                        })
+                        .catch(r => {
+                            console.log(r.data);
+                            this.$router.push("/");
+                        });
+                });
+        }
+    },
+
+    mounted() {
+        this.getUser();
     },
 }
 </script>

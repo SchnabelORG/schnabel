@@ -34,4 +34,5 @@ public class RefreshToken implements IIdentifiable<Long> {
         this.email = email;
         this.token = token;
     }
+
 }

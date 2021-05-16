@@ -26,6 +26,7 @@ public class SchnabelApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
+				.allowCredentials(true)
 				.allowedOrigins("http://localhost:8080")
 				.allowedMethods("GET", "PUT", "POST", "DELETE", "OPTIONS");
 			}

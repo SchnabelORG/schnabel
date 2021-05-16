@@ -1,6 +1,13 @@
 package com.schnabel.schnabel.auth.controller;
 
+import java.util.Optional;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import com.schnabel.schnabel.auth.dto.LoginRequest;
+import com.schnabel.schnabel.auth.model.RefreshToken;
+import com.schnabel.schnabel.auth.service.IRefreshTokenService;
 import com.schnabel.schnabel.security.util.JwtUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +16,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,26 +33,46 @@ public class AuthController {
     
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
+    private final IRefreshTokenService refreshTokenService;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
+    public AuthController(AuthenticationManager authenticationManager, JwtUtils jwtUtils, IRefreshTokenService refreshTokenService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
+        this.refreshTokenService = refreshTokenService;
+    }
+
+    @GetMapping("refresh")
+    public ResponseEntity<String> refresh(@CookieValue(value = "email", required = true, defaultValue = "") String token, @RequestHeader("Authorization") String oldJws) {
+        if (token.isBlank() || !refreshTokenService.validate(token)) {
+            return ResponseEntity.badRequest().build();
+        }
+        
+        String newJws = jwtUtils.generateJws(jwtUtils.getUPAT(oldJws));
+        return ResponseEntity.ok(newJws);
     }
 
     @PostMapping("login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest dto) {
+    public ResponseEntity<String> login(@RequestBody LoginRequest dto, HttpServletResponse response) {
         Authentication auth = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(auth);
         String jws = jwtUtils.generateJws(auth);
 
-        // PatientDetails patientDetails = (PatientDetails) auth.getPrincipal();
-        // List<String> roles = patientDetails.getAuthorities().stream()
-        //     .map(item -> item.getAuthority())
-        //     .collect(Collectors.toList());
+        Optional<RefreshToken> refreshToken = refreshTokenService.findByEmail(dto.getEmail());
+        if (!refreshToken.isPresent() || !refreshTokenService.validate(refreshToken.get().getToken())) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Cookie cookie = new Cookie("email", refreshToken.get().getToken());
+        cookie.setSecure(true);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        response.addCookie(cookie);
 
         return ResponseEntity.ok(jws);
     }
+
+
 }

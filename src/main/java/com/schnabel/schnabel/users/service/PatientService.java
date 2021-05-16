@@ -2,6 +2,7 @@ package com.schnabel.schnabel.users.service;
 
 import java.util.Optional;
 
+import com.schnabel.schnabel.auth.service.IRefreshTokenService;
 import com.schnabel.schnabel.email.service.IMailService;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.misc.model.Address;
@@ -21,13 +22,15 @@ public class PatientService extends JpaService<Patient, Long, IPatientRepository
 {
     private final IMailService mailService;
     private final PasswordEncoder passwordEncoder;
+    private final IRefreshTokenService refreshTokenService;
 
     @Autowired
-    public PatientService(IPatientRepository patientRepository, IMailService mailService)
+    public PatientService(IPatientRepository patientRepository, IMailService mailService, IRefreshTokenService refreshTokenService)
     {
         super(patientRepository);
         this.mailService = mailService;
         this.passwordEncoder = new BCryptPasswordEncoder();
+        this.refreshTokenService = refreshTokenService;
     }
 
     @Override
@@ -63,7 +66,8 @@ public class PatientService extends JpaService<Patient, Long, IPatientRepository
             return false;
         }
         patient.get().setActivated(true);
-        return update(patient.get());
+        return update(patient.get())
+            && refreshTokenService.generate(email).isPresent();
     }
 
 }

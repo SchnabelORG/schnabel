@@ -24,7 +24,7 @@
             </v-form>
             <div id="register-container">
                 New?
-                <router-link to="/register">Create an account.</router-link>
+                <router-link to="/signup">Create an account.</router-link>
             </div>
         </div>
     </div>
@@ -56,6 +56,7 @@ export default {
                 .then(r => {
                     console.log(r);
                     this.$store.state.jws = r.data;
+                    this.$router.push("user");
                 })
                 .catch(r => {
                     console.log(r);
