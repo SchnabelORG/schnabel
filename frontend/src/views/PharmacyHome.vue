@@ -1,18 +1,9 @@
 <template>
   <div id="main-home">
-    <main-navigation>
-      <router-link to="/pharmacy">Home</router-link>
-      <router-link to="/About">About</router-link>
-    </main-navigation>
     <div id="cover-home">
       <div id="cover-text">
-        <h2 id="cover-header">Centralized pharmacies information system</h2>
+        <h2 id="cover-header">Pharmacy {{this.pharmacyName}}</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur facilis facere aut expedita delectus ducimus natus, obcaecati nihil sapiente!</p>
-        <div>
-          <router-link to="/pswreports" v-slot="{href, navigate}">
-            <v-btn color="accent" :href="href" @click="navigate" elevation="1">View reports</v-btn>
-          </router-link>
-        </div>
       </div>
       <img src="../assets/plaguedoctorcovid.png">
     </div>
@@ -21,15 +12,28 @@
       <div id="cards-container">
         <div class="card">
           <div class="card-header primary--text">
-            <i class="card-icon fa fa-user-md" aria-hidden="true"></i>
-            <p class="info--text">24 Hour Service</p>
-            <h3 class="primary--text">Online appointment</h3>
+            <i class="card-icon fa fa-bullhorn" aria-hidden="true"></i>
+            <p class="info--text">Subscription</p>
+            <h3 class="primary--text">Subscribe and save!</h3>
           </div>
           <div class="card-body">
-            <p class="info--text">Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
+            <p class="info--text">Subscribe and be one of the first to know about our promotions and discounts.</p>
           </div>
           <div class="card-footer">
-            <v-btn class='primary'>Make appointment</v-btn>
+            <v-btn class='primary'>Subscribe</v-btn>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header primary--text">
+            <i class="card-icon fa fa-qrcode" aria-hidden="true"></i>
+            <p class="info--text">Drug availability</p>
+            <h3 class="primary--text">Check availability via ePrescription!</h3>
+          </div>
+          <div class="card-body">
+            <p class="info--text">Check drug availability very easy via your ePrescription.</p>
+          </div>
+          <div class="card-footer">
+            <v-btn class='primary'>Check</v-btn>
           </div>
         </div>
         <div class="card">
@@ -57,18 +61,6 @@
           <div class="card-footer">
           </div>
         </div>
-        <div class="card">
-          <div class="card-header primary--text">
-            <i class="fa fa-phone" aria-hidden="true"></i>
-            <p class="info--text">Emergency cases</p>
-            <h3 class="primary--text">1-800-700-6200</h3>
-          </div>
-          <div class="card-body">
-            <p class="info--text">Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
-          </div>
-          <div class="card-footer">
-          </div>
-        </div>
       </div>
     </div>
 
@@ -84,48 +76,64 @@
 
         <div id="footer-columns">
           <div class="footer-column">
+            <h4 class="primary--text">Drug</h4>
+            <div class="footer-divider"></div>
+            <ul class="footer-column-list unstyled-list">
+              <li><a href="">Reserve drug</a></li>
+              <li><a href="">Our drugs</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
             <h4 class="primary--text">Dermatology</h4>
             <div class="footer-divider"></div>
             <ul class="footer-column-list unstyled-list">
-              <li><a href="">Consulting</a></li>
-              <li><a href="">Skin care</a></li>
-              <li><a href="">About</a></li>
+              <li><a href="">Make examination</a></li>
+              <li><a href="">Our dermatologists</a></li>
             </ul>
           </div>
           <div class="footer-column">
             <h4 class="primary--text">Pharmacology</h4>
             <div class="footer-divider"></div>
             <ul class="footer-column-list unstyled-list">
-              <li><a href="">Consulting</a></li>
-              <li><a href="">Drug repository</a></li>
-              <li><a href="">About</a></li>
+              <li><a href="">Make consulting</a></li>
+              <li><a href="">Our pharmacists</a></li>
             </ul>
           </div>
           <div class="footer-column">
             <h4 class="primary--text">General info</h4>
             <div class="footer-divider"></div>
             <div id="contact-info">
-              <div class="space-between info--text">
-                <i class="fa fa-envelope" aria-hidden="true"></i>
-                <span>Support Available 24/7</span>
-              </div>
+                <div class="space-between info--text">
+                    <i class="fa fa-diamond" aria-hidden="true"></i>
+                    <span>Avarage grade: {{this.avarageGrade}}</span>
+                </div>
+                <div class="space-between info--text">
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    <span>{{this.address}}</span>
+                </div>
+                <div class="space-between info--text">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span>Support Available 24/7</span>
+                </div>
               <a href="">support@email.com</a>
             </div>
           </div>
         </div>
-        
       </div>
     </div>
   </div>
 </template>
 
 <script>
-
-export default {
-  name: 'Home',
-  components: {
-  }
-}
+    export default {
+        data() {
+            return {
+                address: 'Balzakova 48, Novi Sad',
+                avarageGrade: '4.5',
+                pharmacyName: 'Schnabel',
+            }
+        },
+    }
 </script>
 
 <style scoped>
