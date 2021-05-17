@@ -1,7 +1,5 @@
 package com.schnabel.schnabel.pharmacies.model;
 
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
 import lombok.*;
 

@@ -14,7 +14,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface IJpaService<T, I>
 {
-    T add(T object);
+    Optional<T> add(T object);
     boolean remove(I id);
     boolean update(T object);
     Optional<T> get(I id);

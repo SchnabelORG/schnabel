@@ -124,7 +124,13 @@
 export default {
   name: 'Home',
   components: {
-  }
+  },
+
+  methods: {
+  },
+
+  mounted() {
+  },
 }
 </script>
 

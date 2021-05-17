@@ -27,7 +27,6 @@ public class PatientDTOAssembler extends RepresentationModelAssemblerSupport<Pat
         dto.setName(entity.getName());
         dto.setSurname(entity.getSurname());
         dto.setEmail(entity.getEmail());
-        dto.setDateOfBirth(entity.getDateOfBirth());
         dto.setAddress(entity.getAddress());
 
         return dto;

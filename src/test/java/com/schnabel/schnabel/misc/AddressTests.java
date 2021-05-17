@@ -24,10 +24,10 @@ class AddressTests
     {
         return Stream.of
         (
-            Arguments.of(new Address("21000", "Novi Sad", "Balzakova", 69), new Address("21000", "Novi Sad", "Balzakova", 44), false),
-            Arguments.of(new Address("2100", "Novi Sad", "Balzakova", 44), new Address("21000", "Novi Sad", "Balzakova", 44), false),
-            Arguments.of(new Address("21000", "Novi Sad", "Balzakova", 69), new Address("21000", "Novi Sad", "Balzakova", 69), true),
-            Arguments.of(new Address("21000", "Novi Sad", "Balzakova", 69), new Address("21000", "Novi Sad", "Balzakova", 44), false)
+            Arguments.of(new Address("21000", "Novi Sad", "Balzakova", "69"), new Address("21000", "Novi Sad", "Balzakova", "44"), false),
+            Arguments.of(new Address("2100", "Novi Sad", "Balzakova", "44"), new Address("21000", "Novi Sad", "Balzakova", "44"), false),
+            Arguments.of(new Address("21000", "Novi Sad", "Balzakova", "69"), new Address("21000", "Novi Sad", "Balzakova", "69"), true),
+            Arguments.of(new Address("21000", "Novi Sad", "Balzakova", "69"), new Address("21000", "Novi Sad", "Balzakova", "44"), false)
         );
     }
 }
