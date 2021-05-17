@@ -11,4 +11,5 @@ import com.schnabel.schnabel.users.model.Patient;
 public interface IPatientService extends IJpaService<Patient, Long>
 {
     Optional<Patient> findByEmail(String email);
+    boolean scheduleAppointment(Long apptId, String email);
 }

@@ -12,4 +12,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(collectionResourceRel = "appointments", path = "appointment")
 public interface IAppointmentRepository extends JpaRepository<Appointment, Long>
 {
+    Iterable<Appointment> findByFree(boolean isFree);
 }
