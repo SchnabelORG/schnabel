@@ -6,7 +6,7 @@
                 <h2>Log in to Schnabel</h2>
             </div>
             <v-form id="login-form" v-model="isFormValid">
-                <b class="error">{{err}}</b>
+                <b class="err">{{err}}</b>
                 <v-text-field 
                 v-model="email"
                 label="Email"
@@ -24,7 +24,7 @@
             </v-form>
             <div id="register-container">
                 New?
-                <router-link to="/register">Create an account.</router-link>
+                <router-link to="/signup">Create an account.</router-link>
             </div>
         </div>
     </div>
@@ -52,12 +52,15 @@ export default {
                 email: this.email,
                 password: this.password,
             };
-            this.axios.post("http://localhost:8081/api/login", dto)
+            this.axios.post("api/auth/login", dto)
                 .then(r => {
                     console.log(r);
+                    this.$store.state.jws = r.data;
+                    this.$router.push("user");
                 })
                 .catch(r => {
-                    console.log(r)
+                    console.log(r);
+                    this.error = "Bad credentials";
                 });
         },
     },
@@ -109,6 +112,11 @@ export default {
         border: 1px solid #eee;
         padding: 15px;
         border-radius: 5px;
+    }
+
+    .err {
+        color: #f00;
+        font-weight: 500;
     }
 
 </style>
