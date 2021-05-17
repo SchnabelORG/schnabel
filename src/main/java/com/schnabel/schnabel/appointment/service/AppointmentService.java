@@ -27,13 +27,26 @@ public class AppointmentService extends JpaService<Appointment, Long, IAppointme
 
     @Override
     public boolean scheduleAppointment(Long id, Patient patient) {
-        Optional<Appointment> appointment = repository.findById(id);
+        Optional<Appointment> appointment = get(id);
         if(!appointment.isPresent() || !appointment.get().isFree()) {
             return false;
         }
 
         appointment.get().setPatient(patient);
         appointment.get().setFree(false);
+        return update(appointment.get());
+    }
+
+    @Override
+    public boolean cancelAppointment(Long id, Long patientId) {
+        
+        Optional<Appointment> appointment = get(id);
+        if (!appointment.isPresent() || !appointment.get().getPatient().getId().equals(patientId)) {
+            return false;
+        }
+
+        appointment.get().setPatient(null);
+        appointment.get().setFree(true);
         return update(appointment.get());
     }
 

@@ -49,6 +49,17 @@ public class PatientService extends JpaService<Patient, Long, IPatientRepository
         }
         return appointmentService.scheduleAppointment(apptId, patient.get());
     }
+
+    @Override
+    public boolean cancelAppointment(Long apptId, String email) {
+        Optional<Patient> patient = findByEmail(email);
+        if (!patient.isPresent()) {
+            return false;
+        }
+
+        return appointmentService.cancelAppointment(apptId, patient.get().getId());
+    }
+
     public boolean registerPatient(String name, String surname, String email, String password, Address address,
             String phoneNo) {
         String encodedPassword = passwordEncoder.encode(password);

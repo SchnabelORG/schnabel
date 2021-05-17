@@ -10,4 +10,5 @@ import com.schnabel.schnabel.users.model.Patient;
 public interface IAppointmentService extends IJpaService<Appointment, Long> {
     Iterable<Appointment> findByFree(boolean isFree);
     boolean scheduleAppointment(Long id, Patient patient);
+    boolean cancelAppointment(Long id, Long patientId);
 }
