@@ -11,7 +11,7 @@
                             <img :src="getProfileImg()" alt="Profile img">
                         </v-avatar>
                         <div id="profile-info">
-                            <h3 class="primary--text">{{user.name}} {{user.surname}}</h3>
+                            <h3 class="primary--text">{{patient.name}} {{patient.surname}}</h3>
                             <span class="info--text">Membership: <b class="accent--text">{{user.membershipType}}</b></span>
                             <span class="info--text">Penalties: <b class="accent--text">{{user.penalties}}</b></span>
                             <router-link to="/user/about">Profile info</router-link>
@@ -84,6 +84,7 @@
 export default {
     data() {
         return {
+            patient: {},
             pharmacySearch: '',
             pharmacyHeaders: [
                 { text: 'Name', value: 'name' },
@@ -119,7 +120,7 @@ export default {
             let jws = this.$store.state.jws;
             this.axios.get("api/patient", {headers:{"Authorization": "Bearer " + jws}})
                 .then(r => {
-                    console.log(r.data);
+                    this.patient = r.data;
                 })
                 .catch(r => {
                     console.log("Failed to get patient", r.data);

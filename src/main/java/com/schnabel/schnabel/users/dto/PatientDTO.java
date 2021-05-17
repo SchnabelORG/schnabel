@@ -1,7 +1,5 @@
 package com.schnabel.schnabel.users.dto;
 
-import java.time.LocalDate;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -31,7 +29,6 @@ public class PatientDTO extends RepresentationModel<PatientDTO> {
     private Long id;
     private String name;
     private String surname;
-    private LocalDate dateOfBirth;
     private String email;
     private Address address;
 }
