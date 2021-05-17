@@ -23,14 +23,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Patient extends User
 {
-    private boolean isActivated;
     private String phoneNo;
     @OneToMany(mappedBy = "patient")
     private List<Allergy> allergies;
     public Patient(String name, String surname, String email, String password, Address address, boolean isActivated, String phoneNo)
     {
-        super(name, surname, email, password, address);
-        this.isActivated = isActivated;
+        super(name, surname, email, password, address, isActivated);
         this.phoneNo = phoneNo;
     }
 }

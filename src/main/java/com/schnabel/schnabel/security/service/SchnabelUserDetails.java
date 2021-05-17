@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.schnabel.schnabel.users.model.Patient;
+import com.schnabel.schnabel.users.model.User;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,12 +16,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * Patient implementation of Spring Security's UserDetails
+ * User implementation of Spring Security's UserDetails
  */
 @Data
 @AllArgsConstructor
 @EqualsAndHashCode
-public class PatientDetails implements UserDetails {
+public class SchnabelUserDetails implements UserDetails {
 
     private Long id;
     @JsonIgnore
@@ -29,12 +29,12 @@ public class PatientDetails implements UserDetails {
     private String email;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public static PatientDetails build(Patient patient) {
-        List<GrantedAuthority> authorities = patient.getRoles().stream()
+    public static SchnabelUserDetails build(User user) {
+        List<GrantedAuthority> authorities = user.getRoles().stream()
             .map(role -> new SimpleGrantedAuthority(role.getName().name()))
             .collect(Collectors.toList());
 
-        return new PatientDetails(patient.getId(), patient.getPassword(), patient.getEmail(), authorities);
+        return new SchnabelUserDetails(user.getId(), user.getPassword(), user.getEmail(), authorities);
     }
 
     @Override

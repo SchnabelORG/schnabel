@@ -4,8 +4,8 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import com.schnabel.schnabel.users.model.Patient;
-import com.schnabel.schnabel.users.repository.IPatientRepository;
+import com.schnabel.schnabel.users.model.User;
+import com.schnabel.schnabel.users.repository.IUserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,27 +13,27 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
- * PatientDetails service layer
+ * SchnabelUserDetails service layer
  */
 @Service
-public class PatientDetailsService implements IPatientDetailsService {
+public class SchnabelUserDetailsService implements ISchnabelUserDetailsService {
     
-    private final IPatientRepository repository;
+    private final IUserRepository repository;
 
     @Autowired
-    public PatientDetailsService(IPatientRepository repository) {
+    public SchnabelUserDetailsService(IUserRepository repository) {
         this.repository = repository;
     }
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<Patient> patient = repository.findByEmail(email);
-        if (!patient.isPresent() || !patient.get().isActivated()) {
+        Optional<User> user = repository.findByEmail(email);
+        if (!user.isPresent() || !user.get().isActivated()) {
             throw new UsernameNotFoundException("User not found with username: " + email);
         }
 
-        return PatientDetails.build(patient.get());
+        return SchnabelUserDetails.build(user.get());
     }
 
     
