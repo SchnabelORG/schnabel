@@ -80,7 +80,7 @@
             <div class="footer-divider"></div>
             <ul class="footer-column-list unstyled-list">
               <li><a href="">Reserve drug</a></li>
-              <li><a href="">Our drugs</a></li>
+              <li><a href="/pharmacy/drug">Our drugs</a></li>
             </ul>
           </div>
           <div class="footer-column">
@@ -88,7 +88,7 @@
             <div class="footer-divider"></div>
             <ul class="footer-column-list unstyled-list">
               <li><a href="">Make examination</a></li>
-              <li><a href="">Our dermatologists</a></li>
+              <li><a href="/pharmacy/dermatologist">Our dermatologists</a></li>
             </ul>
           </div>
           <div class="footer-column">
@@ -96,7 +96,7 @@
             <div class="footer-divider"></div>
             <ul class="footer-column-list unstyled-list">
               <li><a href="">Make consulting</a></li>
-              <li><a href="">Our pharmacists</a></li>
+              <li><a href="/pharmacy/pharmacist">Our pharmacists</a></li>
             </ul>
           </div>
           <div class="footer-column">
