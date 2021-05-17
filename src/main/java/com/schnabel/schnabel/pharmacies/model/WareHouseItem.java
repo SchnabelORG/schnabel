@@ -1,6 +1,5 @@
 package com.schnabel.schnabel.pharmacies.model;
 
-
 import com.schnabel.schnabel.drugs.model.DrugPrice;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
 

@@ -5,7 +5,7 @@
         </main-navigation>
         <div id="user-container">
             <div id="user-basic">
-                <img :src="getProfileImg()" alt="">
+                <img :src="getProfileImg()" alt="Profile img">
                 <div id="user-info">
                     <h2 class="primary--text">{{user.name}} {{user.surname}}</h2>
                     <b class="info--text">{{user.email}}</b>

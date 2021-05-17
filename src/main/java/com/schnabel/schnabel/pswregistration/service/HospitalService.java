@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.schnabel.schnabel.pswregistration.repository.IHospitalRepository;
+
+import java.util.Optional;
+
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.pswregistration.model.Hospital;
 
@@ -17,13 +20,13 @@ public class HospitalService extends JpaService<Hospital, String, IHospitalRepos
     }
 
     @Override
-    public Hospital add(Hospital hospital)
+    public Optional<Hospital> add(Hospital hospital)
     {
         if(get(hospital.getApiKey()) == null)
         {
             hospital.setApiKey(("api" + hospital.getName() + "1234").replace(' ', '_'));
             repository.save(hospital);
         }
-        return repository.findById(hospital.getId()).orElse(null);
+        return repository.findById(hospital.getId());
     }
 }
