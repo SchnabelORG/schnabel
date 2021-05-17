@@ -3,7 +3,7 @@ package com.schnabel.schnabel.security.util;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.schnabel.schnabel.security.service.PatientDetails;
+import com.schnabel.schnabel.security.service.SchnabelUserDetails;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +31,12 @@ public class JwtUtils {
     private int jwtExpMin;
 
     public String generateJws(Authentication authentication) {
-        PatientDetails patientPrincipal = (PatientDetails) authentication.getPrincipal();
+        SchnabelUserDetails userPrincipal = (SchnabelUserDetails) authentication.getPrincipal();
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, jwtExpMin);
         return Jwts.builder()
-            .setSubject(patientPrincipal.getEmail())
-            .claim("password", patientPrincipal.getPassword())
+            .setSubject(userPrincipal.getEmail())
+            .claim("password", userPrincipal.getPassword())
             .setIssuedAt(new Date())
             .setExpiration(calendar.getTime())
             .signWith(SignatureAlgorithm.HS512, jwtSecret)

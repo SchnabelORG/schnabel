@@ -58,12 +58,15 @@ public abstract class User implements IIdentifiable<Long>
                 inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<Role>();
 
-    public User(String name, String surname, String email, String password, Address address)
+    private boolean isActivated;
+
+    public User(String name, String surname, String email, String password, Address address, boolean isActivated)
     {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
         this.address = address;
+        this.isActivated = isActivated;
     }
 }

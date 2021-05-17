@@ -1,7 +1,7 @@
 package com.schnabel.schnabel.security;
 
 import com.schnabel.schnabel.security.filter.AuthTokenFilter;
-import com.schnabel.schnabel.security.service.IPatientDetailsService;
+import com.schnabel.schnabel.security.service.ISchnabelUserDetailsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Autowired
-    IPatientDetailsService patientDetailsService;
+    ISchnabelUserDetailsService userDetailsService;
     @Autowired
     AuthEntryPointJwt unauthorizedHandler;
 
@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder.userDetailsService(patientDetailsService).passwordEncoder(passwordEncoder());
+        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Bean
