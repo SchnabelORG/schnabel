@@ -2,7 +2,7 @@
   <div id="main-home">
     <main-navigation>
       <router-link to="/">Home</router-link>
-      <router-link to="/About">About</router-link>
+      <router-link to="/login">Login</router-link>
     </main-navigation>
     <div id="cover-home">
       <div id="cover-text">
