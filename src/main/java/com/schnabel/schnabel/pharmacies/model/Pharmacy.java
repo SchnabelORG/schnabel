@@ -52,4 +52,10 @@ public class Pharmacy implements IIdentifiable<Long>
         this.address = address;
         this.name = name;
     }
+
+    public Pharmacy(String name, Address address)
+    {
+        this.address = address;
+        this.name = name;
+    }
 }

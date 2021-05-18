@@ -7,6 +7,8 @@ import com.schnabel.schnabel.pswregistration.repository.IHospitalRepository;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.pswregistration.model.Hospital;
 
+import java.util.Optional;
+
 @Service
 public class HospitalService extends JpaService<Hospital, String, IHospitalRepository> implements IHospitalService
 {
@@ -17,13 +19,13 @@ public class HospitalService extends JpaService<Hospital, String, IHospitalRepos
     }
 
     @Override
-    public Hospital add(Hospital hospital)
+    public Optional<Hospital> add(Hospital hospital)
     {
         if(get(hospital.getApiKey()) == null)
         {
             hospital.setApiKey(("api" + hospital.getName() + "1234").replace(' ', '_'));
             repository.save(hospital);
         }
-        return repository.findById(hospital.getId()).orElse(null);
+        return repository.findById(hospital.getId());
     }
 }

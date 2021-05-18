@@ -30,6 +30,7 @@ insert into dermatologists(id, "name", surname, date_of_birth, email, "password"
 insert into suppliers(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no, firm) values (3, 'Zoki', 'Zokic', '2000-06-01', 'zokidoo@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1, 'Dobavljac Zoki');
 
 insert into pharmacyadmins(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no, pharmacy_id) values (4, 'Mika', 'Mikic', '2000-06-01', 'miki@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1, 1);
+insert into pharmacyadmins(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no) values (41, 'Mika', 'Mikic', '2000-06-01', 'miki@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1);
 
 insert into pharmacists(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no, pharmacy_id) values (5, 'Ana', 'Anic', '2000-06-01', 'ana@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1, 1);
 
