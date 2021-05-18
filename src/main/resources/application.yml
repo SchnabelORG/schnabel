@@ -26,5 +26,25 @@ spring:
 #    port: 5672
 #    username: vmaqngrm
 #    password: BHAFy2pYqDLrQxDduUD-03HH-N0ACEVW
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: schnabel.isaproj@gmail.com
+    password: RadiIzPrveMolimTe
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+mail:
+  smtp:
+    debug: true
 custom:
+  addr: ${SCHNABEL_FRONTEND_ADDR}
+  fport: ${SCHNABEL_FRONTEND_PORT}
   port: ${SCHNABEL_BACKEND_PORT}
+  jwtSecret: ${SCHNABEL_JWT_SECRET}
+  jwtExpMin: 1
+  refSecret: ${SCHNABEL_REF_SECRET}
+  refExpMonth: 6

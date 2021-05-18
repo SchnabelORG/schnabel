@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import axios from 'axios'
 
 Vue.use(VueRouter)
 
@@ -15,7 +16,28 @@ const routes = [
     name: 'Login',
     component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue'),
   },
+  {
+    path: '/signup',
+    name: 'SignUp',
+    component: () => import(/* webpackChunkName: "signup" */ '../views/SignUp.vue'),
+  },
+  // Email
+  {
+    path: '/email/activate/:token',
+    beforeEnter: (to, from, next) => {
+      let token = to.params["token"]
+      axios.put("api/email/activate/" + token)
+        .finally(function(){
+          next({ name: "Home"});
+        });
+    },
+  },
   // User
+  {
+    path: '/user',
+    name: 'UserHome',
+    component: () => import(/* webpackChunkName: "user" */ '../views/UserHome.vue'),
+  },
   {
     path: '/user/about',
     name: 'UserAbout',
