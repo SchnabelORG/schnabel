@@ -11,11 +11,13 @@ const routes = [
     name: 'Home',
     component: Home
   },
+
   {
     path: '/login',
     name: 'Login',
     component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue'),
   },
+  
   {
     path: '/signup',
     name: 'SignUp',
@@ -32,6 +34,36 @@ const routes = [
         });
     },
   },
+
+  //Pharmacy
+  {
+    path: '/pharmacy',
+    name: 'PharmacyPanel',
+    component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacyPanel.vue'),
+    children:[
+      {
+        path: '',
+        name: 'PharmacyHome',
+        component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacyHome.vue'),
+      },
+      {
+        path: 'dermatologist',
+        name: 'PharmacyDermatologists',
+        component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacyDermatologists.vue'),
+      },
+      {
+        path: 'pharmacist',
+        name: 'PharmacyPharmacists',
+        component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacyPharmacists.vue'),
+      },
+      {
+        path: 'drug',
+        name: 'PharmacyDrugs',
+        component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacyDrugs.vue'),
+      },
+    ],
+  },
+
   // User
   {
     path: '/user',
