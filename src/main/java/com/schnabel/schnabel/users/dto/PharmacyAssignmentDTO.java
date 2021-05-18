@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class PharmacyAssigmentDTO {
+public class PharmacyAssignmentDTO {
     private long pharmacyAdminId;
     private long pharmacyId;
 }

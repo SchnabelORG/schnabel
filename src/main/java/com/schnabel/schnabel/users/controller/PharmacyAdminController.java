@@ -1,12 +1,8 @@
 package com.schnabel.schnabel.users.controller;
 
-import java.util.Optional;
-
-import com.schnabel.schnabel.users.dto.PatientDTO;
 import com.schnabel.schnabel.users.dto.PharmacyAdminDTO;
 import com.schnabel.schnabel.users.dto.PharmacyAdminDTOAssembler;
-import com.schnabel.schnabel.users.dto.PharmacyAssigmentDTO;
-import com.schnabel.schnabel.users.model.Patient;
+import com.schnabel.schnabel.users.dto.PharmacyAssignmentDTO;
 import com.schnabel.schnabel.users.model.PharmacyAdmin;
 import com.schnabel.schnabel.users.service.IPharmacyAdminService;
 
@@ -92,14 +88,14 @@ public class PharmacyAdminController
 
     /**
      * Assigning Pharmacy to PharmacyAdmin
-     * @param assigmentDTO
+     * @param assignmentDTO
      * @return Updated PharmacyAdmin
      */
     @PostMapping("addpharmacy")
-    public ResponseEntity<String> AssignPharmacy(@RequestBody PharmacyAssigmentDTO assigmentDTO)
+    public ResponseEntity<String> AssignPharmacy(@RequestBody PharmacyAssignmentDTO assignmentDTO)
     {
-        return pharmacyAdminService.assignPharmacyAdmin(assigmentDTO.getPharmacyAdminId(), assigmentDTO.getPharmacyId()) ?
-                ResponseEntity.ok("Registered")
+        return pharmacyAdminService.assignPharmacyAdmin(assignmentDTO.getPharmacyAdminId(), assignmentDTO.getPharmacyId()) ?
+                ResponseEntity.ok("Pharmacy admin assigned")
                 : ResponseEntity.badRequest().build();
     }
 }

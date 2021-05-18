@@ -35,12 +35,16 @@ public class PharmacyAdminService extends JpaService<PharmacyAdmin, Long, IPharm
 
     @Override
     public boolean assignPharmacyAdmin(Long pharmacyAdminId, Long pharmacyId) {
-        PharmacyAdmin padmin = repository.findById(pharmacyAdminId).get();
-        Pharmacy pharmacy = pharmacyRepository.findById(pharmacyId).get();
-        if(padmin!=null && pharmacy!=null)
+        try {
+            PharmacyAdmin padmin = repository.findById(pharmacyAdminId).get();
+            Pharmacy pharmacy = pharmacyRepository.findById(pharmacyId).get();
+            if (padmin != null && pharmacy != null) {
+                padmin.setPharmacy(pharmacy);
+                return update(padmin);
+            }
+        } catch (Exception e)
         {
-            padmin.setPharmacy(pharmacy);
-            return update(padmin);
+            return false;
         }
         return false;
     }
