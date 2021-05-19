@@ -1,6 +1,5 @@
 package com.schnabel.schnabel.users.model;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -20,11 +19,16 @@ import lombok.NoArgsConstructor;
 @Entity
 @Builder
 @Table(name = "patients")
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Patient extends User
 {
+    private String phoneNo;
     @OneToMany(mappedBy = "patient")
     private List<Allergy> allergies;
-
+    public Patient(String name, String surname, String email, String password, Address address, boolean isActivated, String phoneNo)
+    {
+        super(name, surname, email, password, address, isActivated);
+        this.phoneNo = phoneNo;
+    }
 }

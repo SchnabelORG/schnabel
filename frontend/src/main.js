@@ -24,6 +24,7 @@ Vue.component('sidebar', Sidebar, {
 })
 
 
+axios.defaults.withCredentials = true;
 axios.defaults.baseURL = process.env.VUE_APP_API_ENDPOINT;
 
 new Vue({

@@ -1,7 +1,7 @@
 <template>
   <div id="main-home">
     <main-navigation>
-      <router-link to="/">Home</router-link>
+      <router-link to="/pharmacy">Home</router-link>
       <router-link to="/About">About</router-link>
     </main-navigation>
     <div id="cover-home">
@@ -124,7 +124,13 @@
 export default {
   name: 'Home',
   components: {
-  }
+  },
+
+  methods: {
+  },
+
+  mounted() {
+  },
 }
 </script>
 

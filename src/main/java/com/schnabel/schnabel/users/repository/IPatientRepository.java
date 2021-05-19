@@ -14,6 +14,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(collectionResourceRel = "patients", path = "patient")
 public interface IPatientRepository extends JpaRepository<Patient, Long>
 {
-    @Query("SELECT p FROM patients p WHERE p.email = ?1")
     Optional<Patient> findByEmail(String email);
 }
