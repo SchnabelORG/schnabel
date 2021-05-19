@@ -110,7 +110,7 @@
         },
          methods: {
             getPharmacist: function(){
-                this.axios.get("/pharmacist/5")
+                this.axios.get("api/pharmacist/5")
                     .then(response =>
                     {
                         this.pharmacist = response.data;
@@ -130,7 +130,7 @@
 
             },
             save: function(){
-                this.axios.put("/pharmacist/5", this.pharmacist)
+                this.axios.put("/pharmacist", this.pharmacist)
                     .then(response =>
                     {
                         this.pharmacistCopy = response.data;

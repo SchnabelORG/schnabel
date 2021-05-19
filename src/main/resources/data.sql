@@ -4,11 +4,11 @@ insert into pharmacies(id, "name", city, postcode, street, street_no) values(1, 
 
 insert into warehouse values(1,1);
 
-insert into drugs values(1, 'anestetik', 'lidokain');
-insert into drugs values(2, 'anestetik', 'prokain');
-insert into drugs values(3, 'anestetik', 'tetrakain');
-insert into drugs values(4, 'sedativ', 'bensedin');
-insert into drugs values(5, 'sedativ', 'xanax');
+insert into drugs values(1, 'anestetik', 'lidokain 50mg');
+insert into drugs values(2, 'anestetik', 'prokain 100mg');
+insert into drugs values(3, 'anestetik', 'tetrakain 100mg');
+insert into drugs values(4, 'sedativ', 'bensedin 100mg');
+insert into drugs values(5, 'sedativ', 'xanax 100mg');
 
 insert into drugprice values(1, 100, '2022-06-01', '2020-01-01', 1);
 insert into drugprice values(2, 100, '2022-06-01', '2020-01-01', 2);
@@ -70,7 +70,9 @@ insert into recipes values(1, 1, 1, 5);
 insert into recipe_items values(1, 2, 1, 1);
 insert into recipe_items values(2, 5, 5, 1);
 
-insert into drugs_reservations values(1, '2021-05-20', 2, '2021-05-04', 1, 1, 1);
+insert into drugs_reservations values(1, '2021-05-20', 2, '2021-05-04', true, 1, 1, 1);
+insert into drugs_reservations values(2, '2020-05-20', 2, '2020-05-04', false, 1, 1, 1);
+insert into drugs_reservations values(3, '2021-07-20', 2, '2021-05-04', false, 1, 1, 1);
 
 
 insert into availability_request values(1, 10, 1, 5, 1);
