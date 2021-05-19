@@ -5,7 +5,7 @@
             <v-card-title class="info primary--text">
                 <b>Your information</b>
                 <v-spacer></v-spacer>
-					<v-btn class="accent white--text" dark @click="editMode = !editMode">
+					<v-btn class="accent white--text" dark @click="editModeChange()">
                         <div v-if="!editMode"><i class="fa fa-pencil fa-fw" aria-hidden="true"></i> Edit</div>
                         <div v-else><i class="fa fa-ban fa-fw"></i>Cancel</div>
                    </v-btn>
@@ -56,7 +56,7 @@
                     ></v-text-field>
                     <v-text-field
                     v-model="pharmacist.password"
-                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                    :append-icon="show1 ? 'fa-eye' : 'fa-eye-slash'"
                     :rules="[rules.required, rules.min]"
                     :type="show1 ? 'text' : 'password'"
                     label="Password"
@@ -68,7 +68,7 @@
                     <v-text-field
                     v-if="editMode"
                     v-model="confirmPassword"
-                    :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                    :append-icon="show2 ? 'fa-eye' : 'fa-eye-slash'"
                     :rules="[rules.required, rules.min, passwordConfirmationRule]"
                     :type="show2 ? 'text' : 'password'"
                     label="Confirm Password"
@@ -76,7 +76,7 @@
                     counter
                     @click:append="show2 = !show2"
                     ></v-text-field>
-                    <v-btn :disabled="!valid" id="save-btn"  v-if="editMode" class="accent white--text" @click="save">
+                    <v-btn :disabled="!valid" id="save-btn"  v-if="editMode" class="accent white--text" @click="save()">
                         Save changes
                     </v-btn>
                 </v-form>
@@ -92,14 +92,6 @@
                 editMode: false,
                 pharmacist: {},
                 pharmacistCopy: {},
-                password: 'blablabla',
-                name: 'Petar',
-                surname: 'Petrovic',
-                city: 'Novi Sad',
-                postcode: '21000',
-                street: 'Slobodana Bajica',
-                number: 17,
-                email: 'pera@gmail.com',
                 confirmPassword: '',
                 show1: false,
                 show2: false,
@@ -107,22 +99,23 @@
                 rules: {
                     required: value => !!value || 'Required.',
                     min: v => v.length >= 8 || 'Min 8 characters',
-                    isNmb: v => /^\d+$/.test(v) || 'Must be a number',
+                    isNmb: v => /^\d+$/.test(v) || 'Must be a number'
                 },
             }
         },
         computed:{
             passwordConfirmationRule: function() {
-                return () => (this.password === this.confirmPassword) || 'Password must match'
+                return () => (this.pharmacist.password === this.confirmPassword) || 'Password must match'
             },
         },
          methods: {
-              getPhrmacist: function(){
-                this.axios.get("http://localhost:8082/pharmacist/5")
+            getPharmacist: function(){
+                this.axios.get("/pharmacist/5")
                     .then(response =>
                     {
                         this.pharmacist = response.data;
-                        this.pharmacistCopy = response.data;
+                        this.pharmacistCopy = JSON.parse(JSON.stringify(response.data));
+                        this.confirmPassword = this.pharmacistCopy.password;
                     })
                     .catch(response =>
                     {
@@ -130,9 +123,28 @@
                     });
                 
             },
+            editModeChange: function(){
+                this.editMode = !this.editMode;
+                this.confirmPassword = this.pharmacistCopy.password;
+                this.pharmacist = JSON.parse(JSON.stringify(this.pharmacistCopy));
+
+            },
+            save: function(){
+                this.axios.put("/pharmacist/5", this.pharmacist)
+                    .then(response =>
+                    {
+                        this.pharmacistCopy = response.data;
+                        this.editModeChange();
+
+                    })
+                    .catch(response =>
+                    {
+                        console.log(response.data);
+                    });
+            }
         },
         mounted(){
-            this.getPhrmacist();
+            this.getPharmacist();
         }
     }
 
