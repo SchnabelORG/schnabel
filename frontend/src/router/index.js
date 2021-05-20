@@ -100,9 +100,9 @@ const routes = [
         component: () => import(/* webpackChunkName: "pharmacist" */ '../views/PharmacistHome.vue'),
       },
       {
-        path: 'account',
-        name: 'Account',
-        component: () => import(/* webpackChunkName: "pharmacist" */ '../views/Account.vue'),
+        path: 'pharmacistacc',
+        name: 'PharmacistAccount',
+        component: () => import(/* webpackChunkName: "pharmacist" */ '../views/PharmacistAccount.vue'),
       },
       {
         path: 'calendar',

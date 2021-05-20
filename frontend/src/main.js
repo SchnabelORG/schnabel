@@ -23,6 +23,7 @@ Vue.component('sidebar', Sidebar, {
 	props: ["title", "user"],
 })
 
+
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = process.env.VUE_APP_API_ENDPOINT;
 
