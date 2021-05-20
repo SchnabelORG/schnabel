@@ -95,7 +95,7 @@
     export default {
         data() {
             return {
-                value: [5, 10, 10, 11, 12, 20, 17],
+                value: [5, 10, 0, 11, 12, 20, 17],
                 patients: [],
                 search: "",
                 headers: [

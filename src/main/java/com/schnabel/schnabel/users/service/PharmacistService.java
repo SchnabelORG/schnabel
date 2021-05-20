@@ -18,4 +18,6 @@ public class PharmacistService extends JpaService<Pharmacist, Long, IPharmacistR
     {
         super(repository);
     }
+
+
 }
