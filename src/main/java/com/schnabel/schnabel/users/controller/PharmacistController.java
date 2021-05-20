@@ -1,16 +1,16 @@
 package com.schnabel.schnabel.users.controller;
 
-import java.util.Optional;
-
-import com.schnabel.schnabel.users.dto.PatientDTO;
 import com.schnabel.schnabel.users.dto.PharmacistDTO;
 import com.schnabel.schnabel.users.dto.PharmacistDTOAssembler;
-import com.schnabel.schnabel.users.dto.RegisterRequest;
 import com.schnabel.schnabel.users.model.Pharmacist;
 import com.schnabel.schnabel.users.service.IPharmacistService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,14 +23,14 @@ public class PharmacistController
 {
     private final IPharmacistService pharmacistService;
     private final PharmacistDTOAssembler pharmacistDTOAssembler;
-    private final PagedResourcesAssembler<Pharmacist> patientPageAsm;
+    private final PagedResourcesAssembler<Pharmacist> pharmacistPageAsm;
 
     @Autowired
-    public PharmacistController(IPharmacistService pharmacistService, PharmacistDTOAssembler pharmacistDTOAssembler, PagedResourcesAssembler<Pharmacist> patientPageAsm)
+    public PharmacistController(IPharmacistService pharmacistService, PharmacistDTOAssembler pharmacistDTOAssembler, PagedResourcesAssembler<Pharmacist> pharmacistPageAsm)
     {
         this.pharmacistService = pharmacistService;
         this.pharmacistDTOAssembler = pharmacistDTOAssembler;
-        this.patientPageAsm = patientPageAsm;
+        this.pharmacistPageAsm = pharmacistPageAsm;
     }
 
     /**
@@ -38,9 +38,11 @@ public class PharmacistController
      * @return Iterable of Pharmacist
      */
     @GetMapping
-    public ResponseEntity<Iterable<Pharmacist>> getAll()
+    public ResponseEntity<PagedModel<PharmacistDTO>> getAll(Pageable pageable)
     {
-        return ResponseEntity.ok(pharmacistService.getAll());
+        Page<Pharmacist> pharmacists = pharmacistService.getAll(pageable);
+        PagedModel<PharmacistDTO> pagedModel = pharmacistPageAsm.toModel(pharmacists, pharmacistDTOAssembler);
+        return new ResponseEntity<>(pagedModel, HttpStatus.OK);
     }
 
     /**
