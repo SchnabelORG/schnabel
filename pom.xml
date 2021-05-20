@@ -16,7 +16,19 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<sonar.exclusions>
+			**/model/*.java,
+			**/controller/*.java,
+			**/service/*.java,
+			**/repository/*.java,
+			**/dto/*.java,
+			**/misc/*.java,
+			**/SchnabelApplication.java,
+			**/CrudService.java,
+			**/VueRoutePathFilter.java,
+		</sonar.exclusions>
 	</properties>
+
 
 	<dependencies>
 
@@ -31,9 +43,44 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+			<version>2.3.4.RELEASE</version>
+		</dependency>
+
+		<!-- JWT -->
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+
 		<!-- Postgres| DB -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -114,6 +161,16 @@
 			<artifactId>aws-java-sdk</artifactId>
 			<version>1.11.133</version>
 		</dependency>
+		<!-- Guava -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>19.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -145,9 +202,15 @@
 					<folders>
 						<folder>${project.build.directory}/frontend</folder>
 					</folders>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
-            <plugin>
+            <!-- <plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
 				<version>1.7.5</version>
@@ -185,12 +248,12 @@
 				<workingDirectory>${project.basedir}/src/main/frontend</workingDirectory>
 				<installDirectory>${project.build.directory}/node</installDirectory>
 				</configuration>
-			</plugin>
+			</plugin> -->
 		</plugins>
 		<resources>
-			<resource>
+			<!-- <resource>
 				<directory>${project.build.directory}/frontend</directory>
-			</resource>
+			</resource> -->
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>

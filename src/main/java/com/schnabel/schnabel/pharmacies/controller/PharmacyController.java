@@ -1,65 +1,66 @@
 package com.schnabel.schnabel.pharmacies.controller;
 
-import com.schnabel.schnabel.pharmacies.dto.PharmacySearchDTO;
+import com.schnabel.schnabel.pharmacies.dto.PharmacyDTO;
+import com.schnabel.schnabel.pharmacies.dto.PharmacyDTOAssembler;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.pharmacies.service.IPharmacyService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Pharmacy REST controller
  */
 @RestController
+@RequestMapping("api/pharmacy")
 public class PharmacyController
 {
     private final IPharmacyService pharmacyService;
+    private final PharmacyDTOAssembler pharmacyDTOasm;
+    private final PagedResourcesAssembler<Pharmacy> pharmacyPageAsm;
 
     @Autowired
-    public PharmacyController(IPharmacyService pharmacyService)
+    public PharmacyController(IPharmacyService pharmacyService, PharmacyDTOAssembler pharmacyDTOasm, PagedResourcesAssembler<Pharmacy> pharmacyPageAsm)
     {
         this.pharmacyService = pharmacyService;
-    }
-
-    /**
-     * Search for pharmacies matching <b>dto</b> critera
-     * @param dto contains search criteria
-     * @return OK response containing all pharmacies
-     * matching <b>dto</b> search criteria
-     */
-    @PostMapping("/api/pharmacy/search/")
-    public ResponseEntity<Iterable<Pharmacy>> search(PharmacySearchDTO dto)
-    {
-        return ResponseEntity.ok(pharmacyService.search(dto));
+        this.pharmacyDTOasm = pharmacyDTOasm;
+        this.pharmacyPageAsm = pharmacyPageAsm;
     }
 
     /**
      * Get pharmacy based on <b>id</b>
      * @param id Pharmacy id
      * @return OK response with pharmacy with matching <b>id</b> if it exists
-     * else BAD_REQUEST
+     * else NOT_FOUND
      */
-    @GetMapping("/api/pharmacy/{id}")
-    public ResponseEntity<Pharmacy> getById(@PathVariable int id)
+    @GetMapping("{id}")
+    public ResponseEntity<PharmacyDTO> getById(@PathVariable Long id)
     {
-        Pharmacy pharmacy = pharmacyService.get(id);
-        return pharmacy == null ?
-            new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-            : ResponseEntity.ok(pharmacy);
+        return pharmacyService.get(id)
+            .map(pharmacyDTOasm::toModel)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
     }
 
     /**
      * Get all pharmacies
      * @return OK response containing all pharmacies
      */
-    @GetMapping("/api/pharmacy")
-    public ResponseEntity<Iterable<Pharmacy>> getAll()
+    @GetMapping
+    public ResponseEntity<PagedModel<PharmacyDTO>> getAll(Pageable pageable)
     {
-        return ResponseEntity.ok(pharmacyService.getAll());
+        Page<Pharmacy> pharmacies = pharmacyService.getAll(pageable);
+        PagedModel<PharmacyDTO> pagedModel = pharmacyPageAsm.toModel(pharmacies, pharmacyDTOasm);
+        return new ResponseEntity<>(pagedModel, HttpStatus.OK);
     }
 }

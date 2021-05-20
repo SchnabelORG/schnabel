@@ -1,5 +1,8 @@
 package com.schnabel.schnabel.pswusagereport.controller;
 
+import java.util.Optional;
+
+import com.schnabel.schnabel.pswusagereport.model.NotificationDTO;
 import com.schnabel.schnabel.pswusagereport.model.UsageReportNotification;
 import com.schnabel.schnabel.pswusagereport.service.IUsageReportNotificationService;
 
@@ -22,10 +25,9 @@ public class UsageReportNotificationController
     }
 
     @PostMapping("/pswapi/usagereportnotifications")
-    public ResponseEntity<String> add(@RequestBody UsageReportNotification notification)
+    public ResponseEntity<String> add(@RequestBody NotificationDTO notification)
     {
-        boolean success = notificationService.add(notification);
-        return success ?
+        return notificationService.add(new UsageReportNotification(notification.getFilename(), notification.getEndpoint(), notification.getMessage())) != null ?
             ResponseEntity.ok("Added")
             : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -33,10 +35,10 @@ public class UsageReportNotificationController
     @GetMapping("/pswapi/usagereportnotifications/{filename}")
     public ResponseEntity<UsageReportNotification> get(@PathVariable String filename)
     {
-        UsageReportNotification notification = notificationService.get(filename);
-        return notification == null ?
-            new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-            : ResponseEntity.ok(notification);
+        Optional<UsageReportNotification> notification = notificationService.get(filename);
+        return notification.isPresent() ?
+            ResponseEntity.ok(notification.get())
+            : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/pswapi/usagereportnotifications")

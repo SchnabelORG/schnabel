@@ -4,11 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.schnabel.schnabel.pswregistration.repository.IHospitalRepository;
-import com.schnabel.schnabel.misc.implementations.CrudService;
+
+import java.util.Optional;
+
+import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.pswregistration.model.Hospital;
 
 @Service
-public class HospitalService extends CrudService<Hospital, String> implements IHospitalService
+public class HospitalService extends JpaService<Hospital, String, IHospitalRepository> implements IHospitalService
 {
     @Autowired
     public HospitalService(IHospitalRepository repository)
@@ -17,14 +20,13 @@ public class HospitalService extends CrudService<Hospital, String> implements IH
     }
 
     @Override
-    public boolean add(Hospital hospital)
+    public Optional<Hospital> add(Hospital hospital)
     {
         if(get(hospital.getApiKey()) == null)
         {
             hospital.setApiKey(("api" + hospital.getName() + "1234").replace(' ', '_'));
             repository.save(hospital);
-            return true;
         }
-        return false;
+        return repository.findById(hospital.getId());
     }
 }

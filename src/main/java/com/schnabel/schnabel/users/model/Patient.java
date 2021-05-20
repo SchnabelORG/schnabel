@@ -1,42 +1,34 @@
 package com.schnabel.schnabel.users.model;
 
-import javax.persistence.Embedded;
+import java.util.List;
+
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import com.schnabel.schnabel.misc.model.Address;
-import com.schnabel.schnabel.misc.model.IIdentifiable;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+/**
+ * Patient user
+ */
+@Data
 @Entity
+@Builder
 @Table(name = "patients")
-@Getter
-@Setter
-@EqualsAndHashCode
-@NoArgsConstructor
 @AllArgsConstructor
-public class Patient implements IIdentifiable<Integer>
+@NoArgsConstructor
+public class Patient extends User
 {
-    // TODO(Jovan): Use UUID?
-    @Id
-    private int id;
-    private String name;
-    private String surname;
-    @Setter(AccessLevel.PROTECTED)
-    private String email;
-    @Embedded
-    private Address address;
-
-    @Override
-    public Integer getId()
+    private String phoneNo;
+    @OneToMany(mappedBy = "patient")
+    private List<Allergy> allergies;
+    public Patient(String name, String surname, String email, String password, Address address, boolean isActivated, String phoneNo)
     {
-        return this.id;
+        super(name, surname, email, password, address, isActivated);
+        this.phoneNo = phoneNo;
     }
 }
