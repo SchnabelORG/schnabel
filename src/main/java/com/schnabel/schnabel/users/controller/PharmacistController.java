@@ -55,6 +55,12 @@ public class PharmacistController
         return pharmacistService.get(id).map(pharmacistDTOAssembler::toModel).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("pharmacy/{id}")
+    public ResponseEntity<PagedModel<PharmacistDTO>> getByPharmacyId(@PathVariable("id") Long pharmacyId, Pageable pageable) {
+        Page<Pharmacist> pharmacists = pharmacistService.findByPharmacy(pharmacyId, pageable);
+        PagedModel<PharmacistDTO> pagedModel = pharmacistPageAsm.toModel(pharmacists, pharmacistDTOAssembler);
+        return new ResponseEntity<>(pagedModel, HttpStatus.OK);
+    }
 
     @PutMapping
     public ResponseEntity<PharmacistDTO> put(@RequestBody Pharmacist pharmacist)

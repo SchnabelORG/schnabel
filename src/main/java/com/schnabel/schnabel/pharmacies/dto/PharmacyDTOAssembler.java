@@ -13,6 +13,7 @@ import com.schnabel.schnabel.users.controller.PharmacistController;
 import com.schnabel.schnabel.users.dto.PharmacistDTO;
 import com.schnabel.schnabel.users.model.Pharmacist;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -34,7 +35,7 @@ public class PharmacyDTOAssembler extends RepresentationModelAssemblerSupport<Ph
         dto.setAddress(entity.getAddress());
         dto.setId(entity.getId());
         dto.setName(entity.getName());
-        dto.setPharmacists(toPharmacistModel(entity.getPharmacists()));
+        dto.add(linkTo(methodOn(PharmacistController.class).getByPharmacyId(entity.getId(), Pageable.unpaged())).withRel("pharmacies"));
         return dto;
     }
 
