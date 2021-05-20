@@ -1,9 +1,12 @@
 package com.schnabel.schnabel.pharmacies.dto;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.schnabel.schnabel.misc.model.Address;
+import com.schnabel.schnabel.users.dto.PharmacistDTO;
 
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
@@ -28,5 +31,5 @@ public class PharmacyDTO extends RepresentationModel<PharmacyDTO> {
     private Address address;
     // private WareHouse wareHouse;
     // private List<Dermatologist> dermatologists;
-    // private List<Pharmacist> pharmacists;
+    private List<PharmacistDTO> pharmacists;
 }

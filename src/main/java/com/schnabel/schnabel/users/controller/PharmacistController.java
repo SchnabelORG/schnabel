@@ -50,7 +50,7 @@ public class PharmacistController
      * @return Pharmacist
      */
     @GetMapping("{id}")
-    public ResponseEntity<PharmacistDTO> get(@PathVariable long id)
+    public ResponseEntity<PharmacistDTO> get(@PathVariable Long id)
     {
         return pharmacistService.get(id).map(pharmacistDTOAssembler::toModel).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
