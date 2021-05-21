@@ -4,14 +4,8 @@ import com.schnabel.schnabel.pharmacies.controller.PharmacyController;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.users.controller.PharmacistController;
-import com.schnabel.schnabel.users.dto.PharmacistDTO;
-import com.schnabel.schnabel.users.model.Pharmacist;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
@@ -37,26 +31,6 @@ public class PharmacyDTOAssembler extends RepresentationModelAssemblerSupport<Ph
         dto.setName(entity.getName());
         dto.add(linkTo(methodOn(PharmacistController.class).getByPharmacyId(entity.getId(), Pageable.unpaged())).withRel("pharmacies"));
         return dto;
-    }
-
-    private List<PharmacistDTO> toPharmacistModel(List<Pharmacist> pharmacists) {
-        if(pharmacists.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        return pharmacists.stream()
-            .map(p -> PharmacistDTO.builder()
-                .id(p.getId())
-                .name(p.getName())
-                .surname(p.getSurname())
-                .email(p.getEmail())
-                .address(p.getAddress())
-                .build()
-                .add(linkTo(
-                    methodOn(PharmacistController.class)
-                    .get(p.getId()))
-                .withSelfRel()))
-            .collect(Collectors.toList());
     }
     
 }

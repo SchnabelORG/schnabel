@@ -40,10 +40,10 @@ public class Pharmacy implements IIdentifiable<Long>
     @OneToOne(mappedBy = "pharmacy")
     private WareHouse wareHouse;
 
-    @ManyToMany(mappedBy = "pharmacies")
+    @ManyToMany(mappedBy = "pharmacies", fetch = FetchType.LAZY)
     private List<Dermatologist> dermatologists;
 
-    @OneToMany(mappedBy = "pharmacy")
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY)
     private List<Pharmacist> pharmacists;
 
     public Pharmacy(Long id, String name, Address address)

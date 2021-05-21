@@ -9,6 +9,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface IPharmacyRepository extends JpaRepository<Pharmacy, Long>
 {
-
-    
 }

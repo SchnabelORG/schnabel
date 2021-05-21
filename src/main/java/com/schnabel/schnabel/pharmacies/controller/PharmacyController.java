@@ -1,14 +1,10 @@
 package com.schnabel.schnabel.pharmacies.controller;
 
 import com.schnabel.schnabel.pharmacies.dto.PharmacyDTO;
-import com.schnabel.schnabel.pharmacies.dto.PharmacyDTOAssembler;
-import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.pharmacies.service.IPharmacyService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,15 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class PharmacyController
 {
     private final IPharmacyService pharmacyService;
-    private final PharmacyDTOAssembler pharmacyDTOasm;
-    private final PagedResourcesAssembler<Pharmacy> pharmacyPageAsm;
 
     @Autowired
-    public PharmacyController(IPharmacyService pharmacyService, PharmacyDTOAssembler pharmacyDTOasm, PagedResourcesAssembler<Pharmacy> pharmacyPageAsm)
+    public PharmacyController(IPharmacyService pharmacyService)
     {
         this.pharmacyService = pharmacyService;
-        this.pharmacyDTOasm = pharmacyDTOasm;
-        this.pharmacyPageAsm = pharmacyPageAsm;
     }
 
     /**
@@ -45,8 +37,7 @@ public class PharmacyController
     @GetMapping("{id}")
     public ResponseEntity<PharmacyDTO> getById(@PathVariable Long id)
     {
-        return pharmacyService.get(id)
-            .map(pharmacyDTOasm::toModel)
+        return pharmacyService.getDTO(id)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
@@ -58,8 +49,6 @@ public class PharmacyController
     @GetMapping
     public ResponseEntity<PagedModel<PharmacyDTO>> getAll(Pageable pageable)
     {
-        Page<Pharmacy> pharmacies = pharmacyService.getAll(pageable);
-        PagedModel<PharmacyDTO> pagedModel = pharmacyPageAsm.toModel(pharmacies, pharmacyDTOasm);
-        return new ResponseEntity<>(pagedModel, HttpStatus.OK);
+        return new ResponseEntity<>(pharmacyService.getAllDTO(pageable), HttpStatus.OK);
     }
 }
