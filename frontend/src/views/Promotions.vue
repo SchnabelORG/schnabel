@@ -40,7 +40,7 @@
                     no-title
                     scrollable
                     :min="new Date().toISOString().substr(0, 10)"
-                    :max="validUntil"
+                    :max="this.validUntil"
                 >
                     <v-spacer></v-spacer>
                     <v-btn
@@ -82,7 +82,7 @@
                         v-model="validUntil"
                         no-title
                         scrollable
-                        :min="validFrom"
+                        :min="this.validFrom"
                     >
                         <v-spacer></v-spacer>
                         <v-btn
@@ -121,12 +121,37 @@
             }
         },
         methods: {
-            createPromotion: function() {
-
+            refreshToken: async function() {
+                let jws = this.$store.state.jws;
+                if(!jws) {
+                    this.$router.push("/");
+                }
+                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + jws}});
             },
-        },
-        mounted() {
 
+            createPromotion: function() {
+                /*this.refreshToken().then(response => {
+                    
+                    let promotion = { description: this.description, startTime: this.validFrom, endTime: this.validUntil };
+
+                    this.axios.post("/api/promotion", promotion, {headers:{"Authorization":"Bearer " + this.$store.state.jws}})
+                        .then(response =>
+                        {
+                            console.log(response);
+                            this.description = '';
+                            this.validFrom = '';
+                            this.validUntil = '';
+                        })
+                        .catch(response =>
+                        {
+                            console.log(response.data);
+                        });
+                })
+                .catch(response => {
+                    console.log(r.data);
+                    this.$router.push("/");
+                });*/
+            },
         },
     }
 </script>
