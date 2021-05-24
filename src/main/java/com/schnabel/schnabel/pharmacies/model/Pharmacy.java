@@ -39,9 +39,6 @@ public class Pharmacy implements IIdentifiable<Long>
     @Embedded
     private Address address;
 
-    @OneToOne(mappedBy = "pharmacy")
-    private WareHouse wareHouse;
-
     @ManyToMany(mappedBy = "pharmacies", fetch = FetchType.LAZY)
     private List<Dermatologist> dermatologists;
 

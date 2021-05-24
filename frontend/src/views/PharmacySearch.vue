@@ -77,6 +77,7 @@
                 floating>
                   <v-text-field
                   placeholder="Pharmacy name"
+                  v-model="pharmacyName"
                   hide-details
                   />
                   <v-dialog max-width="600px" v-model="showFiltersDialog"
@@ -133,7 +134,7 @@
                     </v-card>
                   </v-dialog>
                   <v-divider vertical></v-divider>
-                  <v-btn icon color="accent">
+                  <v-btn icon color="accent" @click="getSearchResults()">
                     <v-icon>fa-search</v-icon>
                   </v-btn>
                 </v-toolbar>
@@ -156,18 +157,21 @@ export default {
             geolocPosition: undefined,
             //
             showFiltersDialog: false,
+            pharmacyName: '',
             filters: [
               {
                 id: 0,
                 name: 'City',
                 on: false,
                 value: '',
+                query: 'city'
               },
               {
                 id: 1,
-                name: 'Min. Price',
+                name: 'Min. Score',
                 on: false,
                 value: '',
+                query: 'score',
               },
             ],
             //
@@ -254,6 +258,37 @@ export default {
         f.on = false;
       });
     },
+
+    getSearchResults: function() {
+      let queryString = '?';
+      let first = true;
+      if(this.pharmacyName) {
+        queryString = queryString.concat('name=' + this.pharmacyName);
+        this.first = false;
+      }
+      this.filters.forEach(f => {
+        if(f.on) {
+          if(first) {
+            queryString = queryString.concat(f.query + '=' + f.value)
+            first = false;
+          }
+          queryString = queryString.concat('&' + f.query + '=' + f.value);
+        }
+      });
+
+      this.axios.get("api/pharmacy/search" + queryString)
+        .then(r => {
+          if(r.data._embedded) {
+            this.results = r.data._embedded.pharmacies;
+          } else {
+            this.results = [];
+          }
+          console.log(r.data._embedded.pharmacies);
+        })
+        .catch(r => {
+          console.log(r);
+        });
+    },
   },
 
   computed: {
@@ -265,12 +300,12 @@ export default {
     mounted() {
       console.log('loading geoloc');
       navigator.geolocation.getCurrentPosition(pos => {
-        console.log("aaaa", pos);
         this.center = [pos.coords.longitude, pos.coords.latitude]
       }, err => {
-        console.log('errr', err);
+        console.log('Err getting location:', err);
       });
-      console.log('loaded');
+
+      this.getSearchResults();
     },
 }
 </script>
@@ -304,6 +339,7 @@ export default {
     flex-direction: column;
     max-height: 100vh;
     overflow: auto;
+    width: 600px;
   }
 
   #results-header {
