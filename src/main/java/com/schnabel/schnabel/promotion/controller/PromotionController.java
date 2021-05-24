@@ -1,12 +1,8 @@
 package com.schnabel.schnabel.promotion.controller;
 
-import java.util.Optional;
-
-import com.schnabel.schnabel.misc.model.Period;
 import com.schnabel.schnabel.promotion.dto.PromotionDTO;
 import com.schnabel.schnabel.promotion.dto.PromotionDTOAssembler;
 import com.schnabel.schnabel.promotion.dto.PromotionRequest;
-import com.schnabel.schnabel.promotion.model.Promotion;
 import com.schnabel.schnabel.promotion.service.IPromotionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,14 +44,13 @@ public class PromotionController
 
      /**
      * Create new promotion
-     * @param req - Promotion registration request containing required info
+     * @param req - Creating promotion request containing required info
      * @return OK if created, else BadRequest
      */
     @PostMapping()
-    public ResponseEntity<String> createPromotion(@RequestBody PromotionRequest promotionRequest)
+    public ResponseEntity<String> createPromotion(@RequestBody PromotionRequest promotionRequest, @RequestHeader("Authorization") String authHeader)
     {
-        Optional<Promotion> promotion = promotionService.add(new Promotion(promotionRequest.getDescription(), new Period(promotionRequest.getStartTime(), promotionRequest.getEndTime())));
-        return promotion.isPresent() ? 
+        return promotionService.createPromotion(promotionRequest.getDescription(), promotionRequest.getStartTime(), promotionRequest.getEndTime(), authHeader)? 
         ResponseEntity.ok("Added")
             : ResponseEntity.badRequest().build();
     }

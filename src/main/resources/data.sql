@@ -28,7 +28,7 @@ insert into dermatologists(id, "name", surname, email, "password", city, postcod
 
 insert into suppliers(id, "name", surname, email, "password", city, postcode, street, street_no, firm, is_activated) values (3, 'Zoki', 'Zokic', 'zokidoo@gmail.com', '123', '11000', 'Beograd', 'Bulevar', '1', 'Dobavljac Zoki', true);
 
-insert into pharmacyadmins(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (4, 'Mika', 'Mikic', 'miki@gmail.com', '$2y$10$y4R0ENDjGsrlx7g81GDvce2x/NYPrV5jlNuig6T0bV9gNoblcSgHK', '11000', 'Beograd', 'Bulevar', '1', 1, true);
+insert into pharmacyadmins(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (4, 'Mika', 'Mikic', 'miki@gmail.com', '$2y$12$qLRZvbfkZHpELmqNVrHfPuT/tSQL9Vo4QajQMRCujhSo1akvz7H1a', '11000', 'Beograd', 'Bulevar', '1', 1, true);
 
 
 --insert into pharmacyadmins(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no, pharmacy_id) values (4, 'Mika', 'Mikic', '2000-06-01', 'miki@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1, 1);
