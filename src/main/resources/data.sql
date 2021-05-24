@@ -1,6 +1,6 @@
 -- -- TODO(Jovan): Move to separate .sql files
 
-insert into pharmacies(id, "name", city, postcode, street, street_no) values(1, 'aaa', 'ababa', '12222', 'aaaa', 6);
+insert into pharmacies(id, "name", city, postcode, street, street_no, score) values(1, 'aaa', 'ababa', '12222', 'aaaa', 6, 4);
 
 insert into warehouse values(1,1);
 

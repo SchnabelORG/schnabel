@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.pharmacies.service;
 
+import java.util.Map;
 import java.util.Optional;
 
 import com.schnabel.schnabel.misc.interfaces.IJpaService;
@@ -16,4 +17,5 @@ public interface IPharmacyService extends IJpaService<Pharmacy, Long>
 {
     Optional<PharmacyDTO> getDTO(Long id);
     PagedModel<PharmacyDTO> getAllDTO(Pageable pageable);
+    PagedModel<PharmacyDTO> filteredSearch(Map<String, String> params, Pageable pageable);
 }

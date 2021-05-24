@@ -1,5 +1,7 @@
 package com.schnabel.schnabel.pharmacies.controller;
 
+import java.util.Map;
+
 import com.schnabel.schnabel.pharmacies.dto.PharmacyDTO;
 import com.schnabel.schnabel.pharmacies.service.IPharmacyService;
 
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -40,6 +43,11 @@ public class PharmacyController
         return pharmacyService.getDTO(id)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("search")
+    public ResponseEntity<PagedModel<PharmacyDTO>> filteredSearch(@RequestParam Map<String, String> params, Pageable pageable) {
+        return new ResponseEntity<>(pharmacyService.filteredSearch(params, pageable), HttpStatus.OK);
     }
 
     /**
