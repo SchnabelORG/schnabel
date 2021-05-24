@@ -21,11 +21,14 @@
                     <v-text-field v-model="quantity"
                                     label="Quantity"
                                     :rules="quantityRule"
+                                    type="number"
                                     hide-details />
-                    <v-btn elevation="2" @click="add()" class="deep-orange white--text" :disabled="!quantity">
+                    <v-btn elevation="2" @click="add()" class="accent" :disabled="!quantity">
                         Add to order
                     </v-btn>
                 </v-form>
+                <v-divider></v-divider>
+                <v-card-title>Order</v-card-title>
                 <div id="drug-table">
                     <v-data-table :headers="drugHeaders"
                                     :items="orderItems">
@@ -69,7 +72,7 @@
                 ></v-date-picker>
             </v-menu>
             </template>
-            <v-btn id="add-btn" class="deep-orange white--text" elevation="0" @click="makeOrder" :disabled="!deadline || !description || !orderItems">
+            <v-btn id="add-btn" class="primary" elevation="0" @click="makeOrder" :disabled="!deadline || !description || !orderItems">
                 Make offer
             </v-btn>
         </v-card>
@@ -106,7 +109,7 @@
         },
         methods: {
             getDrugs: function () {
-				this.axios.get("/pswapi/drugs")
+				/*this.axios.get("/pswapi/drugs")
 					.then(response => {
 						this.drugs = response.data;
 						console.log(response);
@@ -115,7 +118,7 @@
 						console.log(response);
 					})
 					.finally(function(){
-					})
+					})*/
             },
             add: function() {
                 
@@ -184,7 +187,11 @@
 
 <style scoped>
     #makeorder-main {
-        background: linear-gradient(69deg, rgba(63,81,181,1) 5%, rgba(197,202,233,1) 100%); 
+        display:grid;
+        grid-template-columns:auto;
+        place-items: center;
+        min-height: 92vh;
+        background-color: #fbecdd;
     }
     #makeorder-card {
         display: flex;

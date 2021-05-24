@@ -4,11 +4,11 @@ insert into pharmacies(id, "name", city, postcode, street, street_no) values(1, 
 
 insert into warehouse values(1,1);
 
-insert into drugs values(1, 'anestetik', 'lidokain');
-insert into drugs values(2, 'anestetik', 'prokain');
-insert into drugs values(3, 'anestetik', 'tetrakain');
-insert into drugs values(4, 'sedativ', 'bensedin');
-insert into drugs values(5, 'sedativ', 'xanax');
+insert into drugs values(1, 'anestetik', 'lidokain 50mg');
+insert into drugs values(2, 'anestetik', 'prokain 100mg');
+insert into drugs values(3, 'anestetik', 'tetrakain 100mg');
+insert into drugs values(4, 'sedativ', 'bensedin 100mg');
+insert into drugs values(5, 'sedativ', 'xanax 100mg');
 
 insert into drugprice values(1, 100, '2022-06-01', '2020-01-01', 1);
 insert into drugprice values(2, 100, '2022-06-01', '2020-01-01', 2);
@@ -31,7 +31,13 @@ insert into suppliers(id, "name", surname, email, "password", city, postcode, st
 insert into pharmacyadmins(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (4, 'Mika', 'Mikic', 'miki@gmail.com', '123', '11000', 'Beograd', 'Bulevar', '1', 1, true);
 insert into pharmacyadmins(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated) values (41, 'Mika', 'Mikic', 'miki@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1, true);
 
-insert into pharmacists(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id,  is_activated) values (5, 'Ana', 'Anic', 'ana@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1, 1, true);
+
+--insert into pharmacyadmins(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no, pharmacy_id) values (4, 'Mika', 'Mikic', '2000-06-01', 'miki@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1, 1);
+
+--insert into pharmacists(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no, pharmacy_id) values (5, 'Ana', 'Anic', '2000-06-01', 'ana@gmail.com', '12345678', 'Beograd', '11000', 'Bulevar', 1, 1);
+
+insert into pharmacists(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (5, 'Ana', 'Anic', 'ana@gmail.com', '123', '11000', 'Beograd', 'Bulevar', '1', 1, true);
+
 
 insert into orders(id, deadline, "description", pharmacyadmin_id) values (1, '2021-05-10', 'My order', 4);
 
@@ -65,7 +71,9 @@ insert into recipes values(1, 1, 1, 5);
 insert into recipe_items values(1, 2, 1, 1);
 insert into recipe_items values(2, 5, 5, 1);
 
-insert into drugs_reservations values(1, '2021-05-20', 2, '2021-05-04', 1, 1, 1);
+insert into drugs_reservations values(1, '2021-05-20', 2, '2021-05-04', true, 1, 1, 1);
+insert into drugs_reservations values(2, '2020-05-20', 2, '2020-05-04', false, 1, 1, 1);
+insert into drugs_reservations values(3, '2021-07-20', 2, '2021-05-04', false, 1, 1, 1);
 
 
 insert into availability_request values(1, 10, 1, 5, 1);

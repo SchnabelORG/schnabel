@@ -27,6 +27,9 @@ public class DrugReservation implements IIdentifiable<Long> {
     @Column
     private int quantity;
 
+    @Column
+    private boolean taken;
+
     @Column(name = "reservation_date")
     private LocalDateTime reservationDate;
 
@@ -44,5 +47,7 @@ public class DrugReservation implements IIdentifiable<Long> {
     @ManyToOne
     @JoinColumn(name = "wareh_id")
     private WareHouse wareHouse;
+
+
 
 }
