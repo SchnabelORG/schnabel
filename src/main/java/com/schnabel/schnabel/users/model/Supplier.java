@@ -22,17 +22,22 @@ import lombok.*;
 public class Supplier extends User
 {
     @Column(nullable = false)
-    private String firm;
+    private String company;
 
-    public Supplier(Long id, String name, String surname, LocalDate dateOfBirth, String email, String password, Address address, String firm)
-    {
-        super();
-        this.firm = firm;
+    public Supplier(String name, String surname, String email, String password, Address address, boolean isActivated, String company) {
+        super(name, surname, email, password, address, isActivated);
+        this.company = company;
     }
 
-    public Supplier(String name, String surname, LocalDate dateOfBirth, String email, String password, Address address, String firm)
-    {
-        super();
-        this.firm = firm;
-    }
+//    public Supplier(Long id, String name, String surname, LocalDate dateOfBirth, String email, String password, Address address, String company)
+//    {
+//        super();
+//        this.company = company;
+//    }
+//
+//    public Supplier(String name, String surname, LocalDate dateOfBirth, String email, String password, Address address, String company)
+//    {
+//        super();
+//        this.company = company;
+//    }
 }
