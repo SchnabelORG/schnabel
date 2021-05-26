@@ -24,7 +24,7 @@ public class Complaint implements IIdentifiable<Long> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "complaint_patient_id")
     private Patient patient;
 
@@ -32,7 +32,7 @@ public class Complaint implements IIdentifiable<Long> {
     private String complaintText;
 
     @Column
-    private String Response;
+    private String response;
 
 
 }

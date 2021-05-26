@@ -77,8 +77,8 @@ insert into recommended_meds values(3, 7, 1, 1, 2);
 
 insert into allergies values(1, 'Sta god', 4, 1);
 
-insert into complaints values(1, null, 'Ana Anic neljubazna full', 1);
-insert into complaints values(2, 'Nema se novaca. Srdacno, Mika Mikic', 'Zasto imate samo jednu apoteku pobogu?', 1);
+insert into complaints(id, "response", "complaint_text", complaint_patient_id) values(1, null, 'Ana Anic neljubazna full', 1);
+insert into complaints(id, "response", "complaint_text", complaint_patient_id) values(2, 'Nema se novaca. Srdacno, Mika Mikic', 'Zasto imate samo jednu apoteku pobogu?', 1);
 
 insert into recipes values(1, 1, 1, 5);
 insert into recipe_items values(1, 2, 1, 1);
