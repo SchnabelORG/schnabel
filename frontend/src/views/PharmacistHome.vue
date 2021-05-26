@@ -171,7 +171,7 @@
                 yesterday.setDate(yesterday.getDate() - 1);
                 yesterday.setHours(0,0,0,0);
                 var tempI;
-                var temp = 10000000000;
+                var temp = 10000000000;//Infinity
                 for (var i = 0; i < this.allAppointments.length; i++) {
                     var appDate = new Date(this.allAppointments[i].period.startTime);
                     appDate.setHours(0,0,0,0);
