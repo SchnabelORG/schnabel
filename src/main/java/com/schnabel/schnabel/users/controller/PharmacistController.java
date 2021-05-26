@@ -10,7 +10,10 @@ import com.schnabel.schnabel.users.model.Pharmacist;
 import com.schnabel.schnabel.users.service.IPharmacistService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,15 +25,11 @@ import org.springframework.web.bind.annotation.*;
 public class PharmacistController
 {
     private final IPharmacistService pharmacistService;
-    private final PharmacistDTOAssembler pharmacistDTOAssembler;
-    private final PagedResourcesAssembler<Pharmacist> patientPageAsm;
 
     @Autowired
-    public PharmacistController(IPharmacistService pharmacistService, PharmacistDTOAssembler pharmacistDTOAssembler, PagedResourcesAssembler<Pharmacist> patientPageAsm)
+    public PharmacistController(IPharmacistService pharmacistService)
     {
         this.pharmacistService = pharmacistService;
-        this.pharmacistDTOAssembler = pharmacistDTOAssembler;
-        this.patientPageAsm = patientPageAsm;
     }
 
     /**
@@ -38,9 +37,9 @@ public class PharmacistController
      * @return Iterable of Pharmacist
      */
     @GetMapping
-    public ResponseEntity<Iterable<Pharmacist>> getAll()
+    public ResponseEntity<PagedModel<PharmacistDTO>> getAll(Pageable pageable)
     {
-        return ResponseEntity.ok(pharmacistService.getAll());
+        return new ResponseEntity<>(pharmacistService.getAllDTO(pageable), HttpStatus.OK);
     }
 
     /**
@@ -50,14 +49,14 @@ public class PharmacistController
     @GetMapping("{id}")
     public ResponseEntity<PharmacistDTO> get(@PathVariable long id)
     {
-        return pharmacistService.get(id).map(pharmacistDTOAssembler::toModel).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return pharmacistService.getDTO(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
 
-    @PutMapping
-    public ResponseEntity<PharmacistDTO> put(@RequestBody Pharmacist pharmacist)
-    {
-        pharmacistService.update(pharmacist);
-        return pharmacistService.get(pharmacist.getId()).map(pharmacistDTOAssembler::toModel).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
+//    @PutMapping
+//    public ResponseEntity<PharmacistDTO> put(@RequestBody Pharmacist pharmacist)
+//    {
+//        pharmacistService.update(pharmacist);
+//        return pharmacistService.get(pharmacist.getId()).map(pharmacistDTOAssembler::toModel).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+//    }
 }
