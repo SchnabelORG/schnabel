@@ -4,11 +4,24 @@ insert into pharmacies(id, "name", city, postcode, street, street_no) values(1, 
 
 insert into warehouse values(1,1);
 
-insert into drugs values(1, 'anestetik', 'lidokain 50mg');
-insert into drugs values(2, 'anestetik', 'prokain 100mg');
-insert into drugs values(3, 'anestetik', 'tetrakain 100mg');
-insert into drugs values(4, 'sedativ', 'bensedin 100mg');
-insert into drugs values(5, 'sedativ', 'xanax 100mg');
+insert into ingredients(id, "name") values(1, 'something');
+insert into ingredients(id, "name") values(2, 'something else');
+insert into ingredients(id, "name") values(3, 'something other');
+insert into ingredients(id, "name") values(4, 'gross stuff');
+insert into ingredients(id, "name") values(5, 'nice stuff');
+insert into ingredients(id, "name") values(6, 'height stuff');
+insert into ingredients(id, "name") values(7, 'something');
+
+insert into drugs(id, "code", "name", "description", "drug_state", "drug_type", "producer", "dosage", "issuing_type") values(1, '2125782161', 'anestetik', 'lidokain', 'PILL', 'HERBAL', 'BYER', '50mg', 'ON_PRESCRIPTION');
+insert into drugs(id, "code", "name", "description", "drug_state", "drug_type", "producer", "dosage", "issuing_type") values(2, '2125782162', 'anestetik', 'lidokain', 'PILL', 'HERBAL', 'BYER', '50mg', 'ON_PRESCRIPTION');
+insert into drugs(id, "code", "name", "description", "drug_state", "drug_type", "producer", "dosage", "issuing_type") values(3, '2125782163', 'anestetik', 'lidokain', 'PILL', 'HERBAL', 'BYER', '50mg', 'ON_PRESCRIPTION');
+insert into drugs(id, "code", "name", "description", "drug_state", "drug_type", "producer", "dosage", "issuing_type") values(4, '2125782164', 'anestetik', 'lidokain', 'PILL', 'HERBAL', 'BYER', '50mg', 'ON_PRESCRIPTION');
+insert into drugs(id, "code", "name", "description", "drug_state", "drug_type", "producer", "dosage", "issuing_type") values(5, '2125782165', 'anestetik', 'lidokain', 'PILL', 'HERBAL', 'BYER', '50mg', 'WITHOUT_PRESCRIPTION');
+
+--insert into drugs values(2, 'anestetik', 'prokain 100mg');
+--insert into drugs values(3, 'anestetik', 'tetrakain 100mg');
+--insert into drugs values(4, 'sedativ', 'bensedin 100mg');
+--insert into drugs values(5, 'sedativ', 'xanax 100mg');
 
 insert into drugprice values(1, 100, '2022-06-01', '2020-01-01', 1);
 insert into drugprice values(2, 100, '2022-06-01', '2020-01-01', 2);
