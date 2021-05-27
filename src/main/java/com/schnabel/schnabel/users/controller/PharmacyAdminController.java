@@ -23,14 +23,10 @@ import org.springframework.web.bind.annotation.*;
 public class PharmacyAdminController 
 {
     private final IPharmacyAdminService pharmacyAdminService;
-    private final PharmacyAdminDTOAssembler pharmacyAdminDTOAssembler;
-    private final PagedResourcesAssembler<PharmacyAdmin> pharmacyAdminDtoPagedResourcesAssembler;
 
     @Autowired
     public PharmacyAdminController(IPharmacyAdminService pharmacyAdminService, PharmacyAdminDTOAssembler pharmacyAdminDTOAssembler, PagedResourcesAssembler<PharmacyAdmin> pharmacyAdminDtoPagedResourcesAssembler) {
         this.pharmacyAdminService = pharmacyAdminService;
-        this.pharmacyAdminDTOAssembler = pharmacyAdminDTOAssembler;
-        this.pharmacyAdminDtoPagedResourcesAssembler = pharmacyAdminDtoPagedResourcesAssembler;
     }
 
 
@@ -41,12 +37,9 @@ public class PharmacyAdminController
     @GetMapping("{id}")
     public ResponseEntity<PharmacyAdminDTO> get(@PathVariable long id)
     {
-//        Optional<PharmacyAdmin> pharmacyAdmin = pharmacyAdminService.get(id);
-//        return pharmacyAdmin.isPresent() ?
-//            ResponseEntity.ok(pharmacyAdmin.get())
-//            : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        return pharmacyAdminService.get(id).map(pharmacyAdminDTOAssembler::toModel).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-
+        return pharmacyAdminService.getDTO(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     /**
@@ -56,10 +49,7 @@ public class PharmacyAdminController
     @GetMapping()
     public ResponseEntity<PagedModel<PharmacyAdminDTO>> getAll(Pageable pageable)
     {
-//        return ResponseEntity.ok(pharmacyAdminService.getAll());
-        Page<PharmacyAdmin> pharmacyAdmins = pharmacyAdminService.getAll(pageable);
-        PagedModel<PharmacyAdminDTO> collModel = pharmacyAdminDtoPagedResourcesAssembler.toModel(pharmacyAdmins, pharmacyAdminDTOAssembler);
-        return new ResponseEntity<>(collModel, HttpStatus.OK);
+        return new ResponseEntity<>(pharmacyAdminService.getAllDTO(pageable), HttpStatus.OK);
     }
 
     /**
@@ -69,9 +59,7 @@ public class PharmacyAdminController
     @GetMapping("bypharmacy/{id}")
     public ResponseEntity<PagedModel<PharmacyAdminDTO>> getByPharmacy(Pageable pageable, @PathVariable long id)
     {
-        Page<PharmacyAdmin> pharmacyAdmins = pharmacyAdminService.findByPharmacy(pageable, id);
-        PagedModel<PharmacyAdminDTO> collModel = pharmacyAdminDtoPagedResourcesAssembler.toModel(pharmacyAdmins, pharmacyAdminDTOAssembler);
-        return new ResponseEntity<>(collModel, HttpStatus.OK);
+        return new ResponseEntity<>(pharmacyAdminService.findByPharmacy(pageable, id), HttpStatus.OK);
     }
 
     /**
@@ -81,9 +69,7 @@ public class PharmacyAdminController
     @GetMapping("nopharmacy")
     public ResponseEntity<PagedModel<PharmacyAdminDTO>> getNoPharmacy(Pageable pageable)
     {
-        Page<PharmacyAdmin> pharmacyAdmins = pharmacyAdminService.findWithoutPharmacy(pageable);
-        PagedModel<PharmacyAdminDTO> collModel = pharmacyAdminDtoPagedResourcesAssembler.toModel(pharmacyAdmins, pharmacyAdminDTOAssembler);
-        return new ResponseEntity<>(collModel, HttpStatus.OK);
+        return new ResponseEntity<>(pharmacyAdminService.findWithoutPharmacy(pageable), HttpStatus.OK);
     }
 
     /**

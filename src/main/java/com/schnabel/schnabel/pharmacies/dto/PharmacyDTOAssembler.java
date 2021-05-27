@@ -19,7 +19,6 @@ public class PharmacyDTOAssembler extends RepresentationModelAssemblerSupport<Ph
     public PharmacyDTO toModel(Pharmacy entity) {
         PharmacyDTO dto = instantiateModel(entity);
 
-        dto.add(linkTo(methodOn(PharmacyController.class).get(entity.getId())).withSelfRel());
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setAddress(entity.getAddress());

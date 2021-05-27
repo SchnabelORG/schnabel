@@ -43,7 +43,9 @@ public class PharmacyController
     @GetMapping("{id}")
     public ResponseEntity<PharmacyDTO> get(@PathVariable long id)
     {
-        return pharmacyService.get(id).map(pharmacyDTOAssembler::toModel).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return pharmacyService.getDTO(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     /**
@@ -54,9 +56,7 @@ public class PharmacyController
     @GetMapping
     public ResponseEntity<PagedModel<PharmacyDTO>> getAll(Pageable pageable)
     {
-        Page<Pharmacy> patients = pharmacyService.getAll(pageable);
-        PagedModel<PharmacyDTO> collModel = pharmacyPagedResourcesAssembler.toModel(patients, pharmacyDTOAssembler);
-        return new ResponseEntity<>(collModel, HttpStatus.OK);
+        return new ResponseEntity<>(pharmacyService.getAllDTO(pageable), HttpStatus.OK);
     }
 
     /**
