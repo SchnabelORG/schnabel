@@ -1,10 +1,12 @@
 package com.schnabel.schnabel.users.service;
 
 import com.schnabel.schnabel.misc.implementations.JpaService;
+import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.pharmacies.repository.IPharmacyRepository;
 import com.schnabel.schnabel.users.dto.PharmacyAdminDTO;
 import com.schnabel.schnabel.users.dto.PharmacyAdminDTOAssembler;
+import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.model.PharmacyAdmin;
 import com.schnabel.schnabel.users.repository.IPharmacyAdminRepository;
 
@@ -13,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -23,6 +27,7 @@ public class PharmacyAdminService extends JpaService<PharmacyAdmin, Long, IPharm
     private final PharmacyAdminDTOAssembler pharmacyAdminDTOAssembler;
     private final PagedResourcesAssembler<PharmacyAdmin> pharmacyAdminDtoPagedResourcesAssembler;
     private final IPharmacyRepository pharmacyRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public PharmacyAdminService(IPharmacyAdminRepository pharmacyAdminRepository, PharmacyAdminDTOAssembler pharmacyAdminDTOAssembler, PagedResourcesAssembler<PharmacyAdmin> pharmacyAdminDtoPagedResourcesAssembler, IPharmacyRepository pharmacyRepository)
@@ -31,6 +36,7 @@ public class PharmacyAdminService extends JpaService<PharmacyAdmin, Long, IPharm
         this.pharmacyAdminDTOAssembler = pharmacyAdminDTOAssembler;
         this.pharmacyAdminDtoPagedResourcesAssembler = pharmacyAdminDtoPagedResourcesAssembler;
         this.pharmacyRepository = pharmacyRepository;
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     @Override
@@ -70,6 +76,16 @@ public class PharmacyAdminService extends JpaService<PharmacyAdmin, Long, IPharm
         {
             return false;
         }
+    }
+
+    @Override
+    public boolean registerPharmacyAdmin(String name, String surname, String email, String password, Address address) {
+        String encodedPassword = passwordEncoder.encode(password);
+        PharmacyAdmin newPharmacyAdmin = new PharmacyAdmin(name, surname, email, encodedPassword, address, false);
+        Optional<PharmacyAdmin> pharmacyAdmin = add(newPharmacyAdmin);
+        if(pharmacyAdmin.isPresent())
+            return true;
+        return false;
     }
 
 }

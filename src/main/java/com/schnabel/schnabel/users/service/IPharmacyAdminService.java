@@ -1,6 +1,7 @@
 package com.schnabel.schnabel.users.service;
 
 import com.schnabel.schnabel.misc.interfaces.IJpaService;
+import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.users.dto.PharmacyAdminDTO;
 import com.schnabel.schnabel.users.model.PharmacyAdmin;
 import org.springframework.data.domain.Page;
@@ -19,4 +20,5 @@ public interface IPharmacyAdminService extends IJpaService<PharmacyAdmin, Long>
     PagedModel<PharmacyAdminDTO> findByPharmacy(Pageable pageable, Long pharmacyId);
     PagedModel<PharmacyAdminDTO> findWithoutPharmacy(Pageable pageable);
     boolean assignPharmacyAdmin(Long pharmacyAdminId, Long pharmacyId);
+    boolean registerPharmacyAdmin(String name, String surname, String email, String password, Address address);
 }

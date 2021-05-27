@@ -1,9 +1,6 @@
 package com.schnabel.schnabel.users.controller;
 
-import java.util.Optional;
-
 import com.schnabel.schnabel.users.dto.*;
-import com.schnabel.schnabel.users.model.PharmacyAdmin;
 import com.schnabel.schnabel.users.model.Supplier;
 import com.schnabel.schnabel.users.service.ISupplierService;
 
@@ -67,7 +64,7 @@ public class SupplierController
      * @return OK if registered, else BadRequest
      */
     @PostMapping
-    public ResponseEntity<String> registerSupplier(@RequestBody RegiserSupplierRequest req)
+    public ResponseEntity<String> registerSupplier(@RequestBody RegisterSupplierRequest req)
     {
         return supplierService.registerSupplier(req.getName(), req.getSurname(), req.getEmail(), req.getPassword(), req.getAddress(), req.getCompany()) ?
                 ResponseEntity.ok("Registered")

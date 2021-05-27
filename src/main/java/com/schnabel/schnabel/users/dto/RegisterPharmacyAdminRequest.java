@@ -1,6 +1,5 @@
 package com.schnabel.schnabel.users.dto;
 
-
 import com.schnabel.schnabel.misc.model.Address;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,11 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class RegiserSupplierRequest {
+public class RegisterPharmacyAdminRequest {
     private String name;
     private String surname;
     private String password;
     private String email;
     private Address address;
-    private String company;
 }

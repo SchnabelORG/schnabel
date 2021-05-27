@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.users.model;
 
+import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 
 import javax.persistence.Entity;
@@ -25,4 +26,7 @@ public class PharmacyAdmin extends User
     @JoinColumn(name = "pharmacy_id")
     private Pharmacy pharmacy;
 
+    public PharmacyAdmin(String name, String surname, String email, String password, Address address, boolean b) {
+        super(name, surname, email, password, address, b);
+    }
 }

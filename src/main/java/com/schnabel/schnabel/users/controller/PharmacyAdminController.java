@@ -3,6 +3,7 @@ package com.schnabel.schnabel.users.controller;
 import com.schnabel.schnabel.users.dto.PharmacyAdminDTO;
 import com.schnabel.schnabel.users.dto.PharmacyAdminDTOAssembler;
 import com.schnabel.schnabel.users.dto.PharmacyAssignmentDTO;
+import com.schnabel.schnabel.users.dto.RegisterPharmacyAdminRequest;
 import com.schnabel.schnabel.users.model.PharmacyAdmin;
 import com.schnabel.schnabel.users.service.IPharmacyAdminService;
 
@@ -83,5 +84,14 @@ public class PharmacyAdminController
         return pharmacyAdminService.assignPharmacyAdmin(assignmentDTO.getPharmacyAdminId(), assignmentDTO.getPharmacyId()) ?
                 ResponseEntity.ok("Pharmacy admin assigned")
                 : ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("register")
+    public ResponseEntity<String> registerPharmacyAdmin(@RequestBody RegisterPharmacyAdminRequest request)
+    {
+        return pharmacyAdminService.registerPharmacyAdmin(request.getName(), request.getSurname(), request.getEmail(), request.getPassword(), request.getAddress()) ?
+                ResponseEntity.ok("Registered")
+                : ResponseEntity.badRequest().build();
+
     }
 }
