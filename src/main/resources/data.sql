@@ -16,11 +16,11 @@ insert into drugprice values(3, 100, '2022-06-01', '2020-01-01', 3);
 insert into drugprice values(4, 100, '2022-06-01', '2020-01-01', 4);
 insert into drugprice values(5, 100, '2022-06-01', '2020-01-01', 5);
 
--- insert into warehouseitem values(1, 20, 10, 1, 1);
--- insert into warehouseitem values(2, 20, 10, 2, 1);
--- insert into warehouseitem values(3, 20, 10, 3, 1);
--- insert into warehouseitem values(4, 20, 10, 4, 1);
--- insert into warehouseitem values(5, 20, 10, 5, 1);
+insert into warehouseitem(id, available, quantity, drug_id, pharmacy_id) values(1, 10, 20, 1, 1);
+insert into warehouseitem(id, available, quantity, drug_id, pharmacy_id) values(2, 10, 20, 2, 1);
+insert into warehouseitem(id, available, quantity, drug_id, pharmacy_id) values(3, 10, 20, 3, 1);
+insert into warehouseitem(id, available, quantity, drug_id, pharmacy_id) values(4, 10, 20, 4, 1);
+insert into warehouseitem(id, available, quantity, drug_id, pharmacy_id) values(5, 10, 20, 5, 1);
 
 insert into patients(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated) values (1, 'Petar', 'Petrovic', 'petar@gmail.com', '$2y$10$y4R0ENDjGsrlx7g81GDvce2x/NYPrV5jlNuig6T0bV9gNoblcSgHK', '21000', 'Novi Sad', 'Bulevar', '1', false);
 
