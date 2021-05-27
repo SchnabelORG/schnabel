@@ -33,6 +33,7 @@ public class PharmacyAdminDTOAssembler extends RepresentationModelAssemblerSuppo
         dto.setSurname(entity.getSurname());
         dto.setEmail(entity.getEmail());
         dto.setAddress(entity.getAddress());
+        dto.setActive(entity.isActivated());
         if(entity.getPharmacy()!=null)
             dto.setPharmacy(toPharmacyModel(entity.getPharmacy()));
         return dto;

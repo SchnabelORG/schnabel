@@ -1,21 +1,21 @@
 package com.schnabel.schnabel.users.controller;
 
-import java.util.Optional;
-
-import com.schnabel.schnabel.users.model.SystemAdmin;
+import com.schnabel.schnabel.users.dto.RegisterPharmacyEmployeeRequest;
+import com.schnabel.schnabel.users.dto.SystemAdminDTO;
 import com.schnabel.schnabel.users.service.ISystemAdminService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * SystemAdmin REST controller
  */
 @RestController
+@RequestMapping("api/systemAdmin")
 public class SystemAdminController 
 {
     private final ISystemAdminService systemAdminService;
@@ -30,22 +30,29 @@ public class SystemAdminController
      * Get systemAdmin by id
      * @return SystemAdmin
      */
-    @GetMapping("/api/systemAdmin/{id}")
-    public ResponseEntity<SystemAdmin> get(@PathVariable long id)
+    @GetMapping("{id}")
+    public ResponseEntity<SystemAdminDTO> get(@PathVariable long id)
     {
-        Optional<SystemAdmin> systemAdmin = systemAdminService.get(id);
-        return systemAdmin.isPresent() ?
-            ResponseEntity.ok(systemAdmin.get())
-            : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return systemAdminService.getDTO(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     /**
      * Get all systemAdmins
      * @return Iterable of SystemAdmins
      */
-    @GetMapping("/api/systemAdmin")
-    public ResponseEntity<Iterable<SystemAdmin>> getAll()
+    @GetMapping()
+    public ResponseEntity<PagedModel<SystemAdminDTO>> getAll(Pageable pageable)
     {
-        return ResponseEntity.ok(systemAdminService.getAll());
+        return new ResponseEntity<>(systemAdminService.getAllDTO(pageable), HttpStatus.OK);
+    }
+
+    @PostMapping("register")
+    public ResponseEntity<String> registerPharmacyAdmin(@RequestBody RegisterPharmacyEmployeeRequest request)
+    {
+        return systemAdminService.registerSystemAdmin(request.getName(), request.getSurname(), request.getEmail(), request.getPassword(), request.getAddress()) ?
+                ResponseEntity.ok("Registered")
+                : ResponseEntity.badRequest().build();
     }
 }
