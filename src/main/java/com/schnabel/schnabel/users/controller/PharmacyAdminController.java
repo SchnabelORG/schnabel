@@ -3,12 +3,11 @@ package com.schnabel.schnabel.users.controller;
 import com.schnabel.schnabel.users.dto.PharmacyAdminDTO;
 import com.schnabel.schnabel.users.dto.PharmacyAdminDTOAssembler;
 import com.schnabel.schnabel.users.dto.PharmacyAssignmentDTO;
-import com.schnabel.schnabel.users.dto.RegisterPharmacyAdminRequest;
+import com.schnabel.schnabel.users.dto.RegisterPharmacyEmployeeRequest;
 import com.schnabel.schnabel.users.model.PharmacyAdmin;
 import com.schnabel.schnabel.users.service.IPharmacyAdminService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
@@ -87,11 +86,10 @@ public class PharmacyAdminController
     }
 
     @PostMapping("register")
-    public ResponseEntity<String> registerPharmacyAdmin(@RequestBody RegisterPharmacyAdminRequest request)
+    public ResponseEntity<String> registerPharmacyAdmin(@RequestBody RegisterPharmacyEmployeeRequest request)
     {
         return pharmacyAdminService.registerPharmacyAdmin(request.getName(), request.getSurname(), request.getEmail(), request.getPassword(), request.getAddress()) ?
                 ResponseEntity.ok("Registered")
                 : ResponseEntity.badRequest().build();
-
     }
 }

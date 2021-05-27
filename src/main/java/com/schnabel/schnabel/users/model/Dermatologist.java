@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 
 import lombok.*;
@@ -25,4 +26,9 @@ public class Dermatologist extends MedicalEmployee
     joinColumns = @JoinColumn(name = "dermatologist_id"),
     inverseJoinColumns = @JoinColumn(name = "pharmacy_id"))
     private List<Pharmacy> pharmacies;
+
+    public Dermatologist(String name, String surname, String email, String encodedPassword, Address address, boolean b) {
+        super(name, surname, email, encodedPassword, address, b);
+    }
+
 }

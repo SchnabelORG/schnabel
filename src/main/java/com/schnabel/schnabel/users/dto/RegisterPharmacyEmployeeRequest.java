@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class RegisterPharmacyAdminRequest {
+public class RegisterPharmacyEmployeeRequest {
     private String name;
     private String surname;
     private String password;

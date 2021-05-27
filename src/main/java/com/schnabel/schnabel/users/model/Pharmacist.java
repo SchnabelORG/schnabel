@@ -5,6 +5,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 
 import lombok.*;
@@ -24,4 +25,9 @@ public class Pharmacist extends MedicalEmployee
     @ManyToOne
     @JoinColumn(name = "pharmacy_id")
     private Pharmacy pharmacy;
+
+    public Pharmacist(String name, String surname, String email, String encodedPassword, Address address, boolean b) {
+        super(name, surname, email, encodedPassword, address, b);
+    }
+
 }
