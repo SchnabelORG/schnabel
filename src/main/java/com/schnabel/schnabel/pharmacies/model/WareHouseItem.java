@@ -31,4 +31,8 @@ public class WareHouseItem implements IIdentifiable<Long>
     @ManyToOne
     @JoinColumn(name = "drug_id")
     private DrugPrice drugPrice;
+
+    @ManyToOne
+    @JoinColumn(name="pharmacy_id")
+    private Pharmacy pharmacy;
 }
