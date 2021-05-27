@@ -3,6 +3,7 @@ package com.schnabel.schnabel.users.service;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.users.dto.PharmacistDTO;
 import com.schnabel.schnabel.users.dto.PharmacistDTOAssembler;
+import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.model.Pharmacist;
 import com.schnabel.schnabel.users.repository.IPharmacistRepository;
 
@@ -34,7 +35,11 @@ public class PharmacistService extends JpaService<Pharmacist, Long, IPharmacistR
         this.pharmacistDTOAssembler = pharmacistDTOAssembler;
         this.pharmacistPagedResourcesAssembler = pharmacistPagedResourcesAssembler;
     }
-
+    @Override
+    @Transactional
+    public Optional<Pharmacist> findByEmail(String email) {
+        return repository.findByEmail(email);
+    }
 
     @Override
     @Transactional
