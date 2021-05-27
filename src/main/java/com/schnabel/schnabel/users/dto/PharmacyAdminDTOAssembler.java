@@ -43,7 +43,7 @@ public class PharmacyAdminDTOAssembler extends RepresentationModelAssemblerSuppo
         dto.setId(pharmacy.getId());
         dto.setName(pharmacy.getName());
         dto.setAddress(pharmacy.getAddress());
-        dto.add(linkTo(methodOn(PharmacyController.class).get(pharmacy.getId())).withSelfRel());
+        dto.add(linkTo(methodOn(PharmacyController.class).getById(pharmacy.getId())).withSelfRel());
 
         return dto;
     }
