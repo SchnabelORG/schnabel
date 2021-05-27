@@ -31,6 +31,7 @@
                 <li><a href="/pharmacyadmin/dermatologist">Dermatologists</a></li>
                 <li><a href="/pharmacyadmin/pharmacist">Pharmacists</a></li>
                 <li><a href="/pharmacyadmin/vacation">Vacations</a></li>
+                <li><a href="/pharmacyadmin/defineappointment">Define appointment</a></li>
                 </ul>
             </div>
             <div class="footer-column">

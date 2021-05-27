@@ -1,10 +1,13 @@
 package com.schnabel.schnabel.users.repository;
 
+import java.util.Optional;
+
 import com.schnabel.schnabel.users.model.Shift;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-
 
 /**
  * Shift Jpa repository interface
@@ -12,4 +15,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(collectionResourceRel = "shifts", path = "shift")
 public interface IShiftRepository extends JpaRepository<Shift, Long>
 {
+    Optional<Shift> findByMedicalEmployeeId(Pageable pageable, Long id);
 }

@@ -1,8 +1,9 @@
 package com.schnabel.schnabel.users.model;
 
 import com.schnabel.schnabel.misc.model.IIdentifiable;
-import com.schnabel.schnabel.misc.model.Period;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
+
+import java.time.LocalTime;
 
 import javax.persistence.*;
 
@@ -21,9 +22,11 @@ public class Shift implements IIdentifiable<Long>
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Embedded
-    private Period period;
-    //TODO(): ? -> or just LocalTime?
+    @Column(nullable = false)
+    private LocalTime startTime;
+    
+    @Column(nullable = false)
+    private LocalTime endTime;
 
     @ManyToOne
     @JoinColumn(name = "pharmacy_id")
@@ -32,4 +35,11 @@ public class Shift implements IIdentifiable<Long>
     @ManyToOne
     @JoinColumn(name = "medical_employee_id")
     private MedicalEmployee medicalEmployee;
+
+    public Shift(LocalTime startTime, LocalTime endTime, MedicalEmployee medicalEmployee)
+    {
+        this.medicalEmployee = medicalEmployee;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
 }
