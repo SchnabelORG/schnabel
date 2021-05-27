@@ -44,12 +44,12 @@ public class PharmacyController
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
-/*
+
     @GetMapping("search")
     public ResponseEntity<PagedModel<PharmacyDTO>> filteredSearch(@RequestParam Map<String, String> params, Pageable pageable) {
         return new ResponseEntity<>(pharmacyService.filteredSearch(params, pageable), HttpStatus.OK);
     }
-*/
+
     /**
      * Get all pharmacies
      * @return OK response containing all pharmacies
@@ -60,3 +60,4 @@ public class PharmacyController
         return new ResponseEntity<>(pharmacyService.getAllDTO(pageable), HttpStatus.OK);
     }
 }
+

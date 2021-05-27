@@ -23,6 +23,7 @@ const routes = [
     name: 'SignUp',
     component: () => import(/* webpackChunkName: "signup" */ '../views/SignUp.vue'),
   },
+
   // Email
   {
     path: '/email/activate/:token',
@@ -33,6 +34,14 @@ const routes = [
           next({ name: "Home"});
         });
     },
+  },
+
+  // PharmacySearch
+
+  {
+    path: '/pharmacysearch',
+    name: 'PharmacySearch',
+    component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacySearch.vue'),
   },
 
   //Pharmacy

@@ -10,7 +10,11 @@ import com.schnabel.schnabel.pharmacies.dto.PharmacyDTO;
 import com.schnabel.schnabel.pharmacies.dto.PharmacyDTOAssembler;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.pharmacies.repository.IPharmacyRepository;
+<<<<<<< HEAD
 //import com.schnabel.schnabel.pharmacies.repository.PharmacySpecification;
+=======
+import com.schnabel.schnabel.pharmacies.repository.PharmacySpecification;
+>>>>>>> develop
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -48,12 +52,11 @@ public class PharmacyService extends JpaService<Pharmacy, Long, IPharmacyReposit
         Page<Pharmacy> pharmacies = getAll(pageable);
         return pharmacyPageAsm.toModel(pharmacies, pharmacyDTOasm);
     }
-/*
+
     @Override
     @Transactional
     public PagedModel<PharmacyDTO> filteredSearch(Map<String, String> params, Pageable pageable) {
         Page<Pharmacy> pharmacies = repository.findAll(PharmacySpecification.filteredQuery(params), pageable);
         return pharmacyPageAsm.toModel(pharmacies, pharmacyDTOasm);
     }
-*/
 }

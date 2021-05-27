@@ -22,8 +22,7 @@ public class Dermatologist extends MedicalEmployee
 {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "dermatologist_pharmacy",
-        joinColumns = @JoinColumn(name = "dermatologist_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "pharmacy_id",
-        referencedColumnName = "id")) 
+    joinColumns = @JoinColumn(name = "dermatologist_id"),
+    inverseJoinColumns = @JoinColumn(name = "pharmacy_id"))
     private List<Pharmacy> pharmacies;
 }
