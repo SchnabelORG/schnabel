@@ -148,7 +148,7 @@
             },
             save: function(){
                 let jws = this.$store.state.jws;
-                this.axios.put("/pharmacist", this.pharmacist, {headers:{"Authorization": "Bearer " + jws}})
+                this.axios.put("api/pharmacist", this.pharmacist, {headers:{"Authorization": "Bearer " + jws}})
                     .then(response =>
                     {
                         this.pharmacistCopy = response.data;
