@@ -2,13 +2,9 @@
     <div id="pharmacist-main">
         <main-navigation>
             <router-link to="/pharmacist/">Home</router-link>
-            <v-divider vertical></v-divider>
             <router-link to="/pharmacist/calendar">Calendar</router-link>
-            <v-divider vertical></v-divider>
             <router-link to="/pharmacist/consultationReport">New consultation</router-link>
-            <v-divider vertical></v-divider>
             <router-link to="/pharmacist/medicationReservations">Reservations</router-link>
-            <v-divider vertical></v-divider>
             <router-link to="/pharmacist/pharmacistacc">Account</router-link>
         </main-navigation>
 
@@ -24,7 +20,9 @@
             return {
                 title: "Pharmacist panel",
             }
+
         }
+    
     }
 </script>
 

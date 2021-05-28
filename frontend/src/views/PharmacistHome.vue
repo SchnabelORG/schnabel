@@ -120,6 +120,7 @@
                 perviousWorkingDay: {},
                 sparkLineShow: false,
                 search: "",
+                pharmacist: {},
                 headers: [
                     { text: "Patient's name", value: "patient.name", },
                     { text: "Patient's surname", value: "patient.surname", },
@@ -129,8 +130,38 @@
             }
         },
         methods:{
+            refreshToken: async function() {
+                let jws = this.$store.state.jws;
+                if(!jws) {
+                    this.$router.push("/");
+                }
+                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + jws}});
+            },
+             getPharmacist: function() {
+                console.log("Getting pharmacist");
+                let jws = this.$store.state.jws;
+                console.log(jws)
+                this.axios.get("api/pharmacist", {headers:{"Authorization": "Bearer " + jws}})
+                    .then(response => {
+                        console.log(response.data);
+                        this.pharmacist = response.data;
+                        this.getAllAppointments()
+                    })
+                    .catch(response => {
+                        console.log("Failed to get patient", response.data);
+                        this.refreshToken()
+                            .then(response => {
+                                this.$store.state.jws = response.data;
+                                this.$router.go();
+                            })
+                            .catch(response => {
+                                console.log(response.data);
+                                this.$router.push("/");
+                            });
+                    });
+            },
             getAllAppointments: function(){
-                this.axios.get("api/appointment/appbyemployye/5")
+                this.axios.get("api/appointment/appbyemployye/" + this.pharmacist.id)
                     .then(response =>
                     {
                         this.allAppointments = response.data._embedded.appointments;
@@ -207,7 +238,7 @@
             }
         },
         mounted(){
-            this.getAllAppointments();
+            this.getPharmacist();
         },
     }
 </script>

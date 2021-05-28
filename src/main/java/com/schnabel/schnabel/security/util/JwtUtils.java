@@ -38,6 +38,7 @@ public class JwtUtils {
             .setSubject(userPrincipal.getEmail())
             .claim("password", userPrincipal.getPassword())
             .setIssuedAt(new Date())
+            //.setExpiration(new Date(1639263600000L))
             .setExpiration(calendar.getTime())
             .signWith(SignatureAlgorithm.HS512, jwtSecret)
             .compact();
