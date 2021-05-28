@@ -131,6 +131,19 @@ const routes = [
     ],
   },
 
+  {
+    path: '/systemadmin',
+    name: 'SystemAdminPanel',
+    component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminPanel.vue'),
+    children:[
+      {
+        path: '',
+        name: 'SystemAdminHome',
+        component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminHome.vue'),
+      },
+    ],
+  },
+
   //PharmacyAdmin
   {
     path: '/pharmacyadmin',
@@ -184,6 +197,7 @@ const routes = [
       },
     ],
   },
+  
 ]
 
 const router = new VueRouter({
