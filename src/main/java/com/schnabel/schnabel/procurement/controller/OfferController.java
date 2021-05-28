@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("api/offer")
-public class OfferController 
+public class OfferController
 {
     private final IOfferService offerService;
     @Autowired
@@ -64,5 +64,11 @@ public class OfferController
         return offerService.createOffer(creationDTO.getPrice(), creationDTO.getDateOfDelivery(), creationDTO.getOrderId()) ?
                 ResponseEntity.ok("Offer made.")
                 : ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("order/{id}")
+    public ResponseEntity<PagedModel<OfferDTO>> getByOrder(Pageable pageable, @PathVariable long id)
+    {
+        return new ResponseEntity<>(offerService.findByOrder(pageable, id), HttpStatus.OK);
     }
 }

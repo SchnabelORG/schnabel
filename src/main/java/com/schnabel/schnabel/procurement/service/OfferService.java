@@ -55,4 +55,11 @@ public class OfferService extends JpaService<Offer, Long, IOfferRepository> impl
             return true;
         return false;
     }
+
+    @Override
+    @Transactional
+    public PagedModel<OfferDTO> findByOrder(Pageable pageable, Long id) {
+        Page<Offer> offers = repository.findByOrderId(pageable, id);
+        return offerPagedResourcesAssembler.toModel(offers, offerDTOAssembler);
+    }
 }

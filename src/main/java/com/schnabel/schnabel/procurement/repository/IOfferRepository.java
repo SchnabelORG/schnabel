@@ -14,4 +14,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface IOfferRepository extends JpaRepository<Offer, Long>
 {
     Page<Offer> findBySupplierId(Pageable pageable, Long id);
+    Page<Offer> findByOrderId(Pageable pageable, Long id);
 }

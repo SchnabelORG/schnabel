@@ -1,24 +1,25 @@
 package com.schnabel.schnabel.procurement.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@JsonRootName("offer")
-@Relation(collectionRelation = "offers")
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class OfferDTO extends RepresentationModel<OfferDTO> {
+@JsonRootName("order")
+@Relation(collectionRelation = "orders")
+public class OrderDTO extends RepresentationModel<OrderDTO> {
     private Long id;
-    private Integer price;
-    private LocalDate dateOfDelivery;
-    //private OrderForOfferDTO order;
+    private LocalDate deadline;
+    private String description;
+    //private PharmacyAdminDTO pharmacyAdmin;
+    //private OfferDTO offerDTO;
+    private List<OrderItemForOfferDTO> orderItems;
 }

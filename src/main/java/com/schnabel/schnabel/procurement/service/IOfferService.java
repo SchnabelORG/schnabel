@@ -15,5 +15,6 @@ public interface IOfferService extends IJpaService<Offer, Long>
 {
     PagedModel<OfferDTO> findBySupplier(Pageable pageable, Long id);
     boolean createOffer(int price, LocalDate dateOfDelivery, long orderId);
+    PagedModel<OfferDTO> findByOrder(Pageable pageable, Long id);
 }
 

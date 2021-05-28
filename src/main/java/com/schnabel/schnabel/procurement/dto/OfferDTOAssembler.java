@@ -1,6 +1,7 @@
 package com.schnabel.schnabel.procurement.dto;
 
 import com.schnabel.schnabel.procurement.controller.OfferController;
+import com.schnabel.schnabel.procurement.controller.OrderController;
 import com.schnabel.schnabel.procurement.model.Offer;
 import com.schnabel.schnabel.procurement.model.Order;
 import com.schnabel.schnabel.procurement.model.OrderItem;
@@ -11,6 +12,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class OfferDTOAssembler extends RepresentationModelAssemblerSupport<Offer, OfferDTO> {
@@ -28,7 +32,8 @@ public class OfferDTOAssembler extends RepresentationModelAssemblerSupport<Offer
         dto.setPrice(entity.getPrice());
         dto.setDateOfDelivery(entity.getDateOfDelivery());
 
-        dto.setOrder(getOrder(entity.getOrder()));
+        //dto.setOrder(getOrder(entity.getOrder()));
+        dto.add(linkTo(methodOn(OrderController.class).get(entity.getOrder().getId())).withRel("order"));
 
         return dto;
     }
