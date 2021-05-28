@@ -138,6 +138,12 @@ export default {
 
     mounted() {
         this.getUser();
+        this.refreshToken().then(r => {
+            console.log(r);
+        })
+        .catch(r => {
+            console.log(r);
+        })
     },
 }
 </script>
@@ -191,8 +197,5 @@ export default {
         border-bottom: 1px solid #eee;
         padding: 10px;
     }
-<<<<<<< HEAD
+    
 </style>
-=======
-</style>
->>>>>>> develop

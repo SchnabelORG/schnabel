@@ -17,19 +17,11 @@ const routes = [
     name: 'Login',
     component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue'),
   },
-<<<<<<< HEAD
-=======
-  
->>>>>>> develop
   {
     path: '/signup',
     name: 'SignUp',
     component: () => import(/* webpackChunkName: "signup" */ '../views/SignUp.vue'),
   },
-<<<<<<< HEAD
-=======
-
->>>>>>> develop
   // Email
   {
     path: '/email/activate/:token',
@@ -41,8 +33,6 @@ const routes = [
         });
     },
   },
-<<<<<<< HEAD
-=======
 
   // PharmacySearch
 
@@ -81,7 +71,6 @@ const routes = [
     ],
   },
 
->>>>>>> develop
   // User
   {
     path: '/user',
