@@ -49,6 +49,8 @@ public class OfferService extends JpaService<Offer, Long, IOfferRepository> impl
         Order order = orderRepository.findById(orderId).get();
         if(order==null)
             return false;
+        if(order.getDeadline().isBefore(dateOfDelivery))
+            return false;
         newOffer.setOrder(order);
         Optional<Offer> offer = add(newOffer);
         if(offer.isPresent())
@@ -61,5 +63,24 @@ public class OfferService extends JpaService<Offer, Long, IOfferRepository> impl
     public PagedModel<OfferDTO> findByOrder(Pageable pageable, Long id) {
         Page<Offer> offers = repository.findByOrderId(pageable, id);
         return offerPagedResourcesAssembler.toModel(offers, offerDTOAssembler);
+    }
+
+    @Override
+    @Transactional
+    public boolean updateOffer(Long id, int price, LocalDate dateOfDelivery) {
+        try {
+            Offer offer = get(id).get();
+            if (offer != null) {
+                if (offer.getOrder().getDeadline().isBefore(LocalDate.now()))
+                    return false;
+                offer.setPrice(price);
+                offer.setDateOfDelivery(dateOfDelivery);
+                return update(offer);
+            }
+            return false;
+        }catch (Exception e)
+        {
+            return false;
+        }
     }
 }

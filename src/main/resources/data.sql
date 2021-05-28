@@ -38,14 +38,16 @@ insert into pharmacyadmins(id, "name", surname, email, "password", city, postcod
 insert into pharmacists(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (5, 'Ana', 'Anic', 'ana@gmail.com', '123', '11000', 'Beograd', 'Bulevar', '1', 1, true);
 
 
-insert into orders(id, deadline, "description", pharmacyadmin_id) values (1, '2021-08-10', 'My order', 4);
+insert into orders(id, deadline, "description", pharmacyadmin_id) values (1, '2021-05-10', 'My order', 4);
 insert into orders(id, deadline, "description", pharmacyadmin_id) values (2, '2021-06-10', 'My order2', 4);
 insert into orders(id, deadline, "description", pharmacyadmin_id) values (3, '2021-07-10', 'My order3', 4);
 insert into orders(id, deadline, "description", pharmacyadmin_id) values (4, '2021-04-10', 'My orde4', 4);
 
 insert into orderitems(id, quantity, drug_id, order_id) values (1, 1, 1, 1);
+insert into orderitems(id, quantity, drug_id, order_id) values (2, 3, 1, 2);
 
 insert into offers(id, price, date_of_delivery, order_id, supplier_id) values (1, 500, '2021-05-05', 1, 3);
+insert into offers(id, price, date_of_delivery, order_id, supplier_id) values (2, 500, '2021-05-05', 2, 3);
 
 insert into dermatologist_pharmacy(dermatologist_id, pharmacy_id) values (2, 1);
 

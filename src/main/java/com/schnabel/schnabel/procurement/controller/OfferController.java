@@ -71,4 +71,12 @@ public class OfferController
     {
         return new ResponseEntity<>(offerService.findByOrder(pageable, id), HttpStatus.OK);
     }
+
+    @PostMapping("update")
+    public ResponseEntity<String> updateOffer(@RequestBody OfferDTO dto)
+    {
+        return offerService.updateOffer(dto.getId(), dto.getPrice(), dto.getDateOfDelivery()) ?
+                ResponseEntity.ok("Updated")
+                : ResponseEntity.badRequest().build();
+    }
 }
