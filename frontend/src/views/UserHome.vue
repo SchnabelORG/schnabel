@@ -191,4 +191,8 @@ export default {
         border-bottom: 1px solid #eee;
         padding: 10px;
     }
+<<<<<<< HEAD
 </style>
+=======
+</style>
+>>>>>>> develop

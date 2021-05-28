@@ -1,14 +1,14 @@
 -- -- TODO(Jovan): Move to separate .sql files
 
-insert into pharmacies(id, "name", city, postcode, street, street_no) values(1, 'aaa', 'ababa', '12222', 'aaaa', 6);
+insert into pharmacies("name", city, postcode, street, street_no, score) values('Schnabel Liman', 'Novi Sad', '21000', 'Balzakova', '24a', 4);
+insert into pharmacies("name", city, postcode, street, street_no, score) values('Schnabel Grbavica', 'Novi Sad', '21000', 'Aleksa Santica', '2', 3);
+insert into pharmacies("name", city, postcode, street, street_no, score) values('Schnabel Beograd', 'Beograd', '11000', 'Proleterska', '4b', 4);
 
-insert into warehouse values(1,1);
-
-insert into drugs values(1, 'anestetik', 'lidokain');
-insert into drugs values(2, 'anestetik', 'prokain');
-insert into drugs values(3, 'anestetik', 'tetrakain');
-insert into drugs values(4, 'sedativ', 'bensedin');
-insert into drugs values(5, 'sedativ', 'xanax');
+insert into drugs values(1, 'anestetik', 'lidokain 50mg');
+insert into drugs values(2, 'anestetik', 'prokain 100mg');
+insert into drugs values(3, 'anestetik', 'tetrakain 100mg');
+insert into drugs values(4, 'sedativ', 'bensedin 100mg');
+insert into drugs values(5, 'sedativ', 'xanax 100mg');
 
 insert into drugprice values(1, 100, '2022-06-01', '2020-01-01', 1);
 insert into drugprice values(2, 100, '2022-06-01', '2020-01-01', 2);
@@ -16,11 +16,11 @@ insert into drugprice values(3, 100, '2022-06-01', '2020-01-01', 3);
 insert into drugprice values(4, 100, '2022-06-01', '2020-01-01', 4);
 insert into drugprice values(5, 100, '2022-06-01', '2020-01-01', 5);
 
-insert into warehouseitem values(1, 20, 10, 1, 1);
-insert into warehouseitem values(2, 20, 10, 2, 1);
-insert into warehouseitem values(3, 20, 10, 3, 1);
-insert into warehouseitem values(4, 20, 10, 4, 1);
-insert into warehouseitem values(5, 20, 10, 5, 1);
+insert into warehouseitem(id, available, quantity, drug_id, pharmacy_id) values(1, 10, 20, 1, 1);
+insert into warehouseitem(id, available, quantity, drug_id, pharmacy_id) values(2, 10, 20, 2, 1);
+insert into warehouseitem(id, available, quantity, drug_id, pharmacy_id) values(3, 10, 20, 3, 1);
+insert into warehouseitem(id, available, quantity, drug_id, pharmacy_id) values(4, 10, 20, 4, 1);
+insert into warehouseitem(id, available, quantity, drug_id, pharmacy_id) values(5, 10, 20, 5, 1);
 
 insert into patients(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated) values (1, 'Petar', 'Petrovic', 'petar@gmail.com', '$2y$10$y4R0ENDjGsrlx7g81GDvce2x/NYPrV5jlNuig6T0bV9gNoblcSgHK', '21000', 'Novi Sad', 'Bulevar', '1', false);
 
@@ -28,9 +28,13 @@ insert into dermatologists(id, "name", surname, email, "password", city, postcod
 
 insert into suppliers(id, "name", surname, email, "password", city, postcode, street, street_no, firm, is_activated) values (3, 'Zoki', 'Zokic', 'zokidoo@gmail.com', '123', '11000', 'Beograd', 'Bulevar', '1', 'Dobavljac Zoki', true);
 
+insert into pharmacists(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (5, 'Ana', 'Anic', 'ana@gmail.com', '123', '11000', 'Beograd', 'Bulevar', '1', 1, true);
 insert into pharmacyadmins(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (4, 'Mika', 'Mikic', 'miki@gmail.com', '123', '11000', 'Beograd', 'Bulevar', '1', 1, true);
 
-insert into pharmacists(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (5, 'Ana', 'Anic', 'ana@gmail.com', '123', '11000', 'Beograd', 'Bulevar', '1', 1, true);
+
+--insert into pharmacyadmins(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no, pharmacy_id) values (4, 'Mika', 'Mikic', '2000-06-01', 'miki@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1, 1);
+
+--insert into pharmacists(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no, pharmacy_id) values (5, 'Ana', 'Anic', '2000-06-01', 'ana@gmail.com', '12345678', 'Beograd', '11000', 'Bulevar', 1, 1);
 
 insert into orders(id, deadline, "description", pharmacyadmin_id) values (1, '2021-05-10', 'My order', 4);
 
@@ -64,7 +68,9 @@ insert into recipes values(1, 1, 1, 5);
 insert into recipe_items values(1, 2, 1, 1);
 insert into recipe_items values(2, 5, 5, 1);
 
-insert into drugs_reservations values(1, '2021-05-20', 2, '2021-05-04', 1, 1, 1);
+insert into drugs_reservations values(1, '2021-05-20', 2, '2021-05-04', true, 1, 1);
+insert into drugs_reservations values(2, '2020-05-20', 2, '2020-05-04', false, 1, 1);
+insert into drugs_reservations values(3, '2021-07-20', 2, '2021-05-04', false, 1, 1);
 
 
 insert into availability_request values(1, 10, 1, 5, 1);

@@ -4,11 +4,9 @@ import com.schnabel.schnabel.security.util.JwtUtils;
 import com.schnabel.schnabel.users.dto.PatientDTO;
 import com.schnabel.schnabel.users.dto.PatientDTOAssembler;
 import com.schnabel.schnabel.users.dto.RegisterRequest;
-import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.service.IPatientService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,15 +26,13 @@ public class PatientController
 {
     private final IPatientService patientService;
     private final PatientDTOAssembler patientDTOAsm;
-    private final PagedResourcesAssembler<Patient> patientPageAsm;
     private final JwtUtils jwtUtils;
 
     @Autowired
-    public PatientController(IPatientService patientService, PatientDTOAssembler patientDTOAsm, PagedResourcesAssembler<Patient> patientPageAsm, JwtUtils jwtUtils)
+    public PatientController(IPatientService patientService, PatientDTOAssembler patientDTOAsm, JwtUtils jwtUtils)
     {
         this.patientService = patientService;
         this.patientDTOAsm = patientDTOAsm;
-        this.patientPageAsm = patientPageAsm;
         this.jwtUtils = jwtUtils;
     }
 
