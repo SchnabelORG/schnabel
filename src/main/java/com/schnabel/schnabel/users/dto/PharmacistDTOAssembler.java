@@ -1,8 +1,9 @@
 package com.schnabel.schnabel.users.dto;
 
-import com.schnabel.schnabel.users.controller.PatientController;
+import com.schnabel.schnabel.pharmacies.controller.PharmacyController;
+import com.schnabel.schnabel.pharmacies.dto.PharmacyDTO;
+import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.users.controller.PharmacistController;
-import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.model.Pharmacist;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
@@ -31,6 +32,13 @@ public class PharmacistDTOAssembler extends RepresentationModelAssemblerSupport<
         dto.setEmail(entity.getEmail());
         dto.setPassword(entity.getPassword());
         dto.setAddress(entity.getAddress());
+        Pharmacy pharmacy = entity.getPharmacy();
+        dto.setPharmacy(PharmacyDTO.builder()
+            .id(pharmacy.getId())
+            .name(pharmacy.getName())
+            .address(pharmacy.getAddress())
+            .build()
+            .add(linkTo(methodOn(PharmacyController.class).getById(pharmacy.getId())).withSelfRel()));
         return dto;
     }
 }

@@ -16,7 +16,6 @@
       </div>
       <img src="../assets/plaguedoctorcovid.png">
     </div>
-
     <div id="cards-home">
       <div id="cards-container">
         <div class="card">

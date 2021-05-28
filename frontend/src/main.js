@@ -4,6 +4,10 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import App from './App.vue'
+
+import VueLayers from 'vuelayers'
+import 'vuelayers/lib/style.css'
+
 import MainNavigation from './components/MainNavigation'
 import vuetify from './plugins/vuetify';
 import Sidebar from './components/Sidebar'
@@ -11,6 +15,7 @@ import Sidebar from './components/Sidebar'
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
 Vue.use(Vuex)
+Vue.use(VueLayers)
 
 const store = new Vuex.Store({
   state: {
