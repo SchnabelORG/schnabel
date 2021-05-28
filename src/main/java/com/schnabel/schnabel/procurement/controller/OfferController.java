@@ -2,20 +2,23 @@ package com.schnabel.schnabel.procurement.controller;
 
 import java.util.Optional;
 
+import com.schnabel.schnabel.procurement.dto.OfferCreationDTO;
+import com.schnabel.schnabel.procurement.dto.OfferDTO;
 import com.schnabel.schnabel.procurement.model.Offer;
 import com.schnabel.schnabel.procurement.service.IOfferService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Offer REST controller
  */
 @RestController
+@RequestMapping("api/offer")
 public class OfferController 
 {
     private final IOfferService offerService;
@@ -29,7 +32,7 @@ public class OfferController
      * Get all offers
      * @return Iterable of Offer
      */
-    @GetMapping("/api/offer")
+    @GetMapping()
     public ResponseEntity<Iterable<Offer>> getAll()
     {
         Iterable<Offer> offers = offerService.getAll();
@@ -40,12 +43,26 @@ public class OfferController
      * Get offer by id
      * @return Offer
      */
-    @GetMapping("/api/offer/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<Offer> get(@PathVariable long id)
     {
         Optional<Offer> offer = offerService.get(id);
         return offer.isPresent() ?
             ResponseEntity.ok(offer.get())
             : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("supplier/{id}")
+    public ResponseEntity<PagedModel<OfferDTO>> getBySupplier(Pageable pageable, @PathVariable long id)
+    {
+        return new ResponseEntity<>(offerService.findBySupplier(pageable, id), HttpStatus.OK);
+    }
+
+    @PostMapping("makeoffer")
+    public ResponseEntity<String> createOffer(@RequestBody OfferCreationDTO creationDTO)
+    {
+        return offerService.createOffer(creationDTO.getPrice(), creationDTO.getDateOfDelivery(), creationDTO.getOrderId()) ?
+                ResponseEntity.ok("Offer made.")
+                : ResponseEntity.badRequest().build();
     }
 }

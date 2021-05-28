@@ -1,12 +1,19 @@
 package com.schnabel.schnabel.procurement.service;
 
 import com.schnabel.schnabel.misc.interfaces.IJpaService;
+import com.schnabel.schnabel.procurement.dto.OfferDTO;
 import com.schnabel.schnabel.procurement.model.Offer;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
+
+import java.time.LocalDate;
 
 /**
  * Offer Service interface
  */
 public interface IOfferService extends IJpaService<Offer, Long>
 {
+    PagedModel<OfferDTO> findBySupplier(Pageable pageable, Long id);
+    boolean createOffer(int price, LocalDate dateOfDelivery, long orderId);
 }
 
