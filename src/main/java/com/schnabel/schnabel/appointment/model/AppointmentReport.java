@@ -2,7 +2,6 @@ package com.schnabel.schnabel.appointment.model;
 
 import com.schnabel.schnabel.misc.model.IIdentifiable;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
-import com.schnabel.schnabel.pharmacies.model.WareHouse;
 import com.schnabel.schnabel.users.model.Pharmacist;
 import lombok.*;
 

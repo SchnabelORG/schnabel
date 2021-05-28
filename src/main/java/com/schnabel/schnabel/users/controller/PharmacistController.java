@@ -1,17 +1,9 @@
 package com.schnabel.schnabel.users.controller;
 
-import java.util.Optional;
-
-import com.schnabel.schnabel.users.dto.PatientDTO;
 import com.schnabel.schnabel.users.dto.PharmacistDTO;
-import com.schnabel.schnabel.users.dto.PharmacistDTOAssembler;
-import com.schnabel.schnabel.users.dto.RegisterRequest;
-import com.schnabel.schnabel.users.model.Pharmacist;
 import com.schnabel.schnabel.users.service.IPharmacistService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,11 +39,17 @@ public class PharmacistController
      * @return Pharmacist
      */
     @GetMapping("{id}")
-    public ResponseEntity<PharmacistDTO> get(@PathVariable long id)
+    public ResponseEntity<PharmacistDTO> get(@PathVariable Long id)
     {
         return pharmacistService.getDTO(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("pharmacy/{id}")
+    public ResponseEntity<PagedModel<PharmacistDTO>> getByPharmacyId(@PathVariable("id") Long pharmacyId, Pageable pageable) {
+//        Page<Pharmacist> pharmacists = pharmacistService.findByPharmacy(pharmacyId, pageable);
+//        PagedModel<PharmacistDTO> pagedModel = pharmacistPageAsm.toModel(pharmacists, pharmacistDTOAssembler);
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
 
 //    @PutMapping
 //    public ResponseEntity<PharmacistDTO> put(@RequestBody Pharmacist pharmacist)

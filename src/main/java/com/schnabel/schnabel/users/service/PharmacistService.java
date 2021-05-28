@@ -1,9 +1,11 @@
 package com.schnabel.schnabel.users.service;
 
+
+import java.util.Optional;
+
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.users.dto.PharmacistDTO;
 import com.schnabel.schnabel.users.dto.PharmacistDTOAssembler;
-import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.model.Pharmacist;
 import com.schnabel.schnabel.users.repository.IPharmacistRepository;
 
@@ -15,7 +17,6 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 /**
  * Pharmacist service implementation
@@ -28,13 +29,12 @@ public class PharmacistService extends JpaService<Pharmacist, Long, IPharmacistR
     private final PagedResourcesAssembler<Pharmacist> pharmacistPagedResourcesAssembler;
 
     @Autowired
-    public PharmacistService(IPharmacistRepository repository, PharmacistDTOAssembler pharmacistDTOAssembler, PagedResourcesAssembler<Pharmacist> pharmacistPagedResourcesAssembler)
-    {
-
+    public PharmacistService(IPharmacistRepository repository, PharmacistDTOAssembler pharmacistDTOAssembler, PagedResourcesAssembler<Pharmacist> pharmacistPagedResourcesAssembler){
         super(repository);
         this.pharmacistDTOAssembler = pharmacistDTOAssembler;
         this.pharmacistPagedResourcesAssembler = pharmacistPagedResourcesAssembler;
     }
+
     @Override
     @Transactional
     public Optional<Pharmacist> findByEmail(String email) {
@@ -47,11 +47,25 @@ public class PharmacistService extends JpaService<Pharmacist, Long, IPharmacistR
         return get(id).map(pharmacistDTOAssembler::toModel);
     }
 
+//    @Override
+//    public Page<Pharmacist> findByPharmacy(Long pharmacyId, Pageable pageable) {
+//        Optional<Pharmacy> pharmacy = pharmacyService.get(pharmacyId);
+//        if(!pharmacy.isPresent()) {
+//            return Page.empty();
+//        }
+//        return repository.findByPharmacy(pharmacy.get(), pageable);
+//    }
+
     @Override
     @Transactional
     public PagedModel<PharmacistDTO> getAllDTO(Pageable pageable) {
 
         Page<Pharmacist> pharmacists = getAll(pageable);
         return pharmacistPagedResourcesAssembler.toModel(pharmacists, pharmacistDTOAssembler);
+    }
+
+    @Override
+    public Page<Pharmacist> findByPharmacy(Long pharmacyId, Pageable pageable) {
+        return null;
     }
 }
