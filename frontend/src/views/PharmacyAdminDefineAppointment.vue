@@ -41,6 +41,7 @@
             return {
                 dermatologist: '',
                 dermatologists: [],
+                pharmacyAdmin: '',
                 startTime: '',
                 endTime: '',
                 price: '',
@@ -53,6 +54,28 @@
             getDermatologists: function() {
 
             },
+
+            getPharmacyAdmin: function() {
+                let jws = this.$store.state.jws;
+                console.log(jws)
+                this.axios.get("api/pharmacyadmin", {headers:{"Authorization": "Bearer " + jws}})
+                    .then(response => {
+                        console.log(response.data);
+                        this.pharmacyadmin = response.data;
+                    })
+                    .catch(response => {
+                        console.log("Failed to get pharmacy admin", response.data);
+                        this.refreshToken()
+                            .then(response => {
+                                this.$store.state.jws = response.data;
+                                this.$router.go();
+                            })
+                            .catch(response => {
+                                console.log(response.data);
+                                this.$router.push("/");
+                            });
+                    });
+            },  
 
             refreshToken: async function() {
                 let jws = this.$store.state.jws;
@@ -68,12 +91,32 @@
                     alert('Time interval is not set properly');
                     return;
                 }
-
-                //let appointmentRequest = { startTime: this.startTime, endTime: this.endTime, price: this.price, dermatologistId: dermatologist.id };
+                // this.refreshToken().then(response => {
+                    
+                    let appointmentRequest = { startTime: this.startTime, endTime: this.endTime, price: this.price, dermatologistId: this.dermatologist.id };
+                    this.axios.post("/api/appointment", appointmentRequest, {headers:{"Authorization":"Bearer " + this.$store.state.jws}})
+                        .then(response =>
+                        {
+                            console.log(response);
+                            this.dermatologist = '';
+                            this.price = '';
+                            this.startTime = '';
+                            this.endTime = '';
+                        })
+                        .catch(response =>
+                        {
+                            console.log(response.data);
+                        });
+               /* })
+                .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });*/
             },
         },
         mounted() {
 			this.getDermatologists();
+            this.getPharmacyAdmin();
 		}
     }
 </script>

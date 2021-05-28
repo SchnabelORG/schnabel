@@ -56,7 +56,8 @@ export default {
                 .then(r => {
                     console.log(r);
                     this.$store.state.jws = r.data;
-                    this.$router.push("user");
+                    //this.$router.push("user");
+                    this.$router.push("pharmacyadmin");
                 })
                 .catch(r => {
                     console.log(r);
