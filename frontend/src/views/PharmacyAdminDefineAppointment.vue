@@ -22,8 +22,13 @@
                 type="number"
                 :rules="[rules.required]"
                 required/>
-            <v-datetime-picker label="Datetime" v-model="datetime"> </v-datetime-picker>
-            <v-btn class='primary' elevation="1" @click="createAppointment()" :disabled="!dermatologist || !price">
+            <div>
+                <v-datetime-picker v-model="startTime" :min="new Date().toISOString().substr(0, 10)" label="From"/>
+            </div>
+            <div>
+                <v-datetime-picker v-model="endTime" :min="startTime" label="To"/>
+            </div>
+            <v-btn class='primary' elevation="1" @click="createAppointment()" :disabled="/*!dermatologist ||*/ !price || !startTime || !endTime">
                 Create
             </v-btn>
         </v-card>
@@ -36,6 +41,8 @@
             return {
                 dermatologist: '',
                 dermatologists: [],
+                startTime: '',
+                endTime: '',
                 price: '',
                 rules: {
                     required: value => !!value || 'Required.',
@@ -56,7 +63,13 @@
             },
 
             createAppointment: function() {
-                
+                if(this.startTime < Date.now() || this.endTime < Date.now() || this.startTime > this.endTime)
+                {
+                    alert('Time interval is not set properly');
+                    return;
+                }
+
+                //let appointmentRequest = { startTime: this.startTime, endTime: this.endTime, price: this.price, dermatologistId: dermatologist.id };
             },
         },
         mounted() {

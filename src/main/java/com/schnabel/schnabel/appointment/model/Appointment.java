@@ -62,11 +62,12 @@ public class Appointment implements IIdentifiable<Long>
     private AppointmentReport report;
 
 
-    public Appointment(double price, Period period, boolean free, MedicalEmployee medicalEmployee)
+    public Appointment(double price, Period period, boolean free, MedicalEmployee medicalEmployee, Pharmacy pharmacy)
     {
         this.price = price;
         this.period = period;
         this.free = free;
         this.medicalEmployee = medicalEmployee;
+        this.pharmacy = pharmacy;
     }
 }

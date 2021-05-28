@@ -1,5 +1,7 @@
 package com.schnabel.schnabel.users.repository;
 
+import java.util.Optional;
+
 import com.schnabel.schnabel.users.model.Dermatologist;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +14,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(collectionResourceRel = "dermatologists", path = "dermatologist")
 public interface IDermatologistRepository extends JpaRepository<Dermatologist, Long>
 {
+    Optional<Dermatologist> findByEmail(String email);
 }

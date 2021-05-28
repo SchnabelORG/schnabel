@@ -35,4 +35,10 @@ public class PharmacyAdminService extends JpaService<PharmacyAdmin, Long, IPharm
         }
         return false;
     }
+
+    @Override
+    public Optional<PharmacyAdmin> findByEmail(String email)
+    {
+        return repository.findByEmail(email);
+    }
 }

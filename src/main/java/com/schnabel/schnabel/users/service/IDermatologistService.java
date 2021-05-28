@@ -16,4 +16,5 @@ public interface IDermatologistService extends IJpaService<Dermatologist, Long>
 {
     Optional<DermatologistDTO> getDTO(Long id);
     PagedModel<DermatologistDTO> getAllDTO(Pageable pageable);
+    Optional<Dermatologist> findByEmail(String email);
 }

@@ -6,7 +6,6 @@ import com.schnabel.schnabel.misc.interfaces.IJpaService;
 import com.schnabel.schnabel.users.dto.ShiftDTO;
 import com.schnabel.schnabel.users.model.Shift;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
@@ -17,5 +16,5 @@ public interface IShiftService extends IJpaService<Shift, Long>
 {
     Optional<ShiftDTO> getDTO(Long id);
     PagedModel<ShiftDTO> getAllDTO(Pageable pageable);
-    Optional<Shift> getAllByMedicalEmployee(Pageable pageable, Long medicalEmployeeId);
+    Optional<Shift> getAllByMedicalEmployee(Long medicalEmployeeId);
 }

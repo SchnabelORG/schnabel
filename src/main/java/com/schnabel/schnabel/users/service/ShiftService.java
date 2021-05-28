@@ -50,8 +50,8 @@ public class ShiftService extends JpaService<Shift, Long, IShiftRepository> impl
 
     @Override
     @Transactional
-    public Optional<Shift> getAllByMedicalEmployee(Pageable pageable, Long medicalEmployeeId) 
+    public Optional<Shift> getAllByMedicalEmployee(Long medicalEmployeeId) 
     {
-        return repository.findByMedicalEmployeeId(pageable, medicalEmployeeId);
+        return repository.findByMedicalEmployeeId(medicalEmployeeId);
     }
 }
