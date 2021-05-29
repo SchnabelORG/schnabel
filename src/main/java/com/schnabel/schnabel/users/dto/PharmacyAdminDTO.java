@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @JsonRootName("pharmacyadmin")
 @Relation(collectionRelation = "pharmacyadmins")
 @JsonInclude(Include.NON_NULL)
-public class PharmacyAdminDTO extends RepresentationModel<PatientDTO> 
+public class PharmacyAdminDTO extends RepresentationModel<PharmacyAdminDTO> 
 {
     private Long id;
     private String name;

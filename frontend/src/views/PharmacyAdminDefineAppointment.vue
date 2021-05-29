@@ -23,18 +23,18 @@
                 :rules="[rules.required]"
                 required/>
             <div>
-                <v-datetime-picker v-model="startTime" :min="new Date().toISOString().substr(0, 10)" label="From"/>
+                <v-datetime-picker v-model="startTime" date-format="dd.MM.yyyy." time-format="HH:mm" :min="new Date().toISOString().substr(0, 10)" label="From"/>
             </div>
             <div>
-                <v-datetime-picker v-model="endTime" :min="startTime" label="To"/>
+                <v-datetime-picker v-model="endTime" date-format="dd.MM.yyyy." time-format="HH:mm" :min="startTime" label="To"/>
             </div>
-            <v-btn class='primary' elevation="1" @click="createAppointment()" :disabled="/*!dermatologist ||*/ !price || !startTime || !endTime">
+            <v-btn class='primary' elevation="1" @click="createAppointment()" >
                 Create
             </v-btn>
         </v-card>
     </div>
 </template>
-
+<!-- :disabled="!dermatologist || !price || !startTime || !endTime"-->
 <script>
     export default {
         data() {
@@ -58,7 +58,7 @@
             getPharmacyAdmin: function() {
                 let jws = this.$store.state.jws;
                 console.log(jws)
-                this.axios.get("api/pharmacyadmin", {headers:{"Authorization": "Bearer " + jws}})
+                this.axios.get("api/pharmacyadmin", {headers:{"Authorization": "Bearer " + this.jws}})
                     .then(response => {
                         console.log(response.data);
                         this.pharmacyadmin = response.data;
@@ -93,7 +93,7 @@
                 }
                 // this.refreshToken().then(response => {
                     
-                    let appointmentRequest = { startTime: this.startTime, endTime: this.endTime, price: this.price, dermatologistId: this.dermatologist.id };
+                    let appointmentRequest = { startTime: this.startTime, endTime: this.endTime, price: this.price, dermatologistId: '2' };
                     this.axios.post("/api/appointment", appointmentRequest, {headers:{"Authorization":"Bearer " + this.$store.state.jws}})
                         .then(response =>
                         {

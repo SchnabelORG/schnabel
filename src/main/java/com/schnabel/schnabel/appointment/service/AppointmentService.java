@@ -12,6 +12,7 @@ import com.schnabel.schnabel.appointment.model.Appointment;
 import com.schnabel.schnabel.appointment.repository.IAppointmentRepository;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.misc.model.Period;
+import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.security.util.JwtUtils;
 import com.schnabel.schnabel.users.model.Shift;
 import com.schnabel.schnabel.users.service.IDermatologistService;
@@ -60,21 +61,22 @@ public class AppointmentService extends JpaService<Appointment, Long, IAppointme
         {
             return false;
         }
-        String jws;
-        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
-            jws = authHeader.substring(7, authHeader.length());
-            String email = jwtUtils.getEmailFromJws(jws);
+       // String jws;
+      //  if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+       //     jws = authHeader.substring(7, authHeader.length());
+       //     String email = jwtUtils.getEmailFromJws(jws);
 
+            System.out.println("header" + authHeader);
             if(checkAvailability(startTime, endTime, dermatologistId))
             {
-                Appointment newAppointment = new Appointment(price, new Period(startTime, endTime), true, dermatologistService.get(dermatologistId).get(), pharmacyAdminService.findByEmail(email).get().getPharmacy());
+                Appointment newAppointment = new Appointment(price, new Period(startTime, endTime), true, dermatologistService.get(dermatologistId).get(), pharmacyAdminService.findByEmail("jankovicpharmacy@gmail.com").get().getPharmacy());
                 Optional<Appointment> appointment = add(newAppointment);
                 if(appointment.isPresent())
                 {
                     return true;
                 }
             }
-        }
+       // }
         return false;
     }
 
@@ -88,11 +90,14 @@ public class AppointmentService extends JpaService<Appointment, Long, IAppointme
 
         if (startTime.toLocalTime().isAfter(shift.get().getStartTime()) && endTime.toLocalTime().isBefore(shift.get().getEndTime()))
         {
-            for (Appointment appointment : appointments) 
+            if(!appointments.isEmpty())
             {
-                if(appointment.getPeriod().getStartTime().isBefore(endTime) && startTime.isBefore(appointment.getPeriod().getEndTime()))
+                for (Appointment appointment : appointments) 
                 {
-                    return false;
+                    if(appointment.getPeriod().getStartTime().isBefore(endTime) && startTime.isBefore(appointment.getPeriod().getEndTime()))
+                    {
+                        return false;
+                    }
                 }
             }
             return true;
@@ -110,12 +115,15 @@ public class AppointmentService extends JpaService<Appointment, Long, IAppointme
         List<Appointment> appointments = repository.findByMedicalEmployeeId(dermatologistId);
         List<Appointment> appointmentsForDay = new ArrayList<Appointment>();
         
-        for (Appointment appointment : appointments) 
+        if(!appointments.isEmpty())
         {
-            if(appointment.getPeriod().getStartTime().getDayOfMonth() == date.getDayOfMonth())
+            for (Appointment appointment : appointments) 
             {
-                appointmentsForDay.add(appointment);
-            }    
+                if(appointment.getPeriod().getStartTime().getDayOfMonth() == date.getDayOfMonth())
+                {
+                    appointmentsForDay.add(appointment);
+                }    
+            }
         }
         return appointmentsForDay;
     }

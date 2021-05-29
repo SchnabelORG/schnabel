@@ -1,7 +1,5 @@
 package com.schnabel.schnabel.users.controller;
 
-import java.util.Optional;
-
 import com.schnabel.schnabel.security.util.JwtUtils;
 import com.schnabel.schnabel.users.dto.PharmacyAdminDTO;
 import com.schnabel.schnabel.users.dto.PharmacyAdminDTOAssembler;
