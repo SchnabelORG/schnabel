@@ -57,8 +57,9 @@ export default {
                 { text: 'Date', value: 'date' },
                 { text: 'Start', value: 'start'},
                 { text: 'Duration (min.)', value: 'duration'},
-                { text: 'Derm.', value: 'dermatologist'},
+                { text: 'Derm.', value: 'medicalEmployee.name'},
                 { text: 'Derm. rating', value: 'dermatologistRating' },
+                { text: 'Price', value: 'price'}
             ],
             appointments: [
                 {
@@ -74,6 +75,25 @@ export default {
 
     methods: {
 
+        getAppointments: function() {
+            this.refreshToken()
+                .then(() => {
+                    this.axios.get("api/appointment/dermatology")
+                        .then(r => {
+                            if (r.data._embedded) {
+                                console.log(r.data._embedded);
+                                this.appointments = r.data._embedded.appointments;
+                            }
+                        })
+                        .catch(r => {
+                            console.log(r);
+                        });
+                })
+                .catch(r => {
+                    console.log(r);
+                });
+        },
+
         scheduleAppt: function() {
 
         },
@@ -84,6 +104,10 @@ export default {
             this.selected = item;
             this.dialog = true;
         }
+    },
+
+    mounted() {
+        this.getAppointments();
     },
 }
 </script>
