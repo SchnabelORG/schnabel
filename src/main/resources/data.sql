@@ -22,7 +22,8 @@ insert into warehouseitem(id, available, quantity, drug_id, pharmacy_id) values(
 insert into warehouseitem(id, available, quantity, drug_id, pharmacy_id) values(4, 10, 20, 4, 1);
 insert into warehouseitem(id, available, quantity, drug_id, pharmacy_id) values(5, 10, 20, 5, 1);
 
-insert into patients(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated) values (1, 'Petar', 'Petrovic', 'petar@gmail.com', '$2y$10$y4R0ENDjGsrlx7g81GDvce2x/NYPrV5jlNuig6T0bV9gNoblcSgHK', '21000', 'Novi Sad', 'Bulevar', '1', false);
+insert into patients(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated, phone_no) values (1, 'Jovan', 'Ivosevic', 'ivos.jovan@protonmail.ch', '$2a$10$IevzxrzynxfElyhc1zuUferMhXfAWbDRsob0cXmCc6jEETM7xhCiG', '21000', 'Novi Sad', 'Balzakova', '69', true, '0607671370');
+insert into refresh_tokens(id, email, token) values(1, 'ivos.jovan@protonmail.ch', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpdm9zLmpvdmFuQHByb3Rvbm1haWwuY2giLCJleHAiOjE2MzgxOTAzOTl9.G_Z0-9Q5keOYK3RuZnrhEAF3a23d8rhYY3fowYV9GbO7owggRkQ1M4A4oq6th9p1UDBDBDl8jFqJpf5K0cyJ1Q');
 
 insert into dermatologists(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated) values (2, 'Mamma', 'Mia', 'mamma@gmail.com', '123', '11000', 'Beograd', 'Bulevar', '1', true);
 
