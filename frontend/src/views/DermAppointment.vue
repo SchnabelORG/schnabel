@@ -52,6 +52,7 @@ export default {
     data() {
         return {
             selected: {
+                id: '',
                 date: '',
                 start: '',
                 duration: '',
@@ -78,7 +79,8 @@ export default {
 
         getAppointments: function() {
             this.refreshToken()
-                .then(() => {
+                .then(rr => {
+                    localStorage.jws = rr.data;
                     this.axios.get("api/appointment/dermatology")
                         .then(r => {
                             if (r.data._embedded) {
@@ -96,7 +98,26 @@ export default {
         },
 
         scheduleAppt: function() {
+            this.refreshToken()
+                .then(rr => {
+                    localStorage.jws = rr.data;
+                    this.axios.post("api/patient/appointment",
+                    parseInt(this.selected.id),
+                    { headers: {
+                        "Authorization": "Bearer " + localStorage.jws,
+                        "Content-Type" : "application/json",
+                    }})
+                        .then(r => {
+                            console.log(r);
+                        })
+                        .catch(r => {
+                            console.log(r);
+                        });
 
+                })
+                .catch(r => {
+                    console.log(r);
+                });
         },
 
         selectRow: function(item, event) {

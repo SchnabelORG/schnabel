@@ -90,4 +90,12 @@ public class PatientController
             : ResponseEntity.badRequest().build();
 
     }
+
+    @PostMapping("appointment")
+    public ResponseEntity<String> scheduleAppointment(@RequestBody long apptId, @RequestHeader("Authorization") String auth) {
+        String jws = jwtUtils.parseJwtFromAuthorizationHeader(auth);
+        return patientService.scheduleAppointment(apptId, jwtUtils.getEmailFromJws(jws)) ?
+            ResponseEntity.ok("Scheduled")
+            : ResponseEntity.badRequest().build();
+    }
 }

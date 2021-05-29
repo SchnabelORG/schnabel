@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 @Relation(collectionRelation = "appointments")
 @JsonInclude(Include.NON_NULL)
 public class AppointmentDTO extends RepresentationModel<AppointmentDTO>{
+    private Long id;
     private double price;
     private String date;
     private String start;
