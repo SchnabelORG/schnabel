@@ -31,7 +31,7 @@
                         </div>
                         <div id="appt-preview-derm">
                             <v-img src="../assets/placeholder-profile-sq.jpg" height="64px" width="64px"></v-img>
-                            <p>{{selected.dermatologist}}</p>
+                            <p>{{selected.medicalEmployee.name}}</p>
                             <p><span class="info--text">Rating: </span>{{selected.dermatologistRating}}</p>
                         </div>
                     </v-card-text>
@@ -51,7 +51,16 @@
 export default {
     data() {
         return {
-            selected: {},
+            selected: {
+                date: '',
+                start: '',
+                duration: '',
+                medicalEmployee: {
+                    name: '',
+                },
+                dermatologistRating: '',
+                price: '',
+            },
             dialog: false,
             headers: [
                 { text: 'Date', value: 'date' },
@@ -61,15 +70,7 @@ export default {
                 { text: 'Derm. rating', value: 'dermatologistRating' },
                 { text: 'Price', value: 'price'}
             ],
-            appointments: [
-                {
-                    date: '06.06.2021.',
-                    start: '12:33',
-                    duration: 12,
-                    dermatologist: "Petar Petrovic",
-                    dermatologistRating: 3,
-                },
-            ],
+            appointments: [],
         }
     },
 
