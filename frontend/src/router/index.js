@@ -34,6 +34,24 @@ const routes = [
     },
   },
 
+  {
+    path: '/dermappointment/:pharmacyname',
+    beforeEnter: (to, from, next) => {
+      // Validate pharmacy exists
+      let pharmacyName = to.params["pharmacyname"]
+      axios.get("api/pharmacy/check/" + pharmacyName)
+        .then(r => {
+          console.log(r);
+          next();
+        })
+        .catch(r => {
+          console.log(r);
+          next({name: 'Home'});
+        });
+    },
+    component: () => import(/* webpackChunkName: "makeappointment" */  '../views/DermAppointment.vue'),
+  },
+
   // PharmacySearch
 
   {

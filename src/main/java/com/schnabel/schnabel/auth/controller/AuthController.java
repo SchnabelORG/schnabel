@@ -47,9 +47,7 @@ public class AuthController {
         if (token.isBlank() || !refreshTokenService.validate(token)) {
             return ResponseEntity.badRequest().build();
         }
-        Authentication auth = authenticationManager.authenticate(jwtUtils.getUPAT(oldJws));
-        String newJws = jwtUtils.generateJws(auth);
-        return ResponseEntity.ok(newJws);
+        return ResponseEntity.ok(jwtUtils.regenerateJws(jwtUtils.parseJwtFromAuthorizationHeader(oldJws)));
     }
 
     @PostMapping("login")

@@ -2,11 +2,20 @@ package com.schnabel.schnabel.appointment.service;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
+import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
+import com.schnabel.schnabel.appointment.dto.AppointmentDTOAssembler;
 import com.schnabel.schnabel.appointment.model.Appointment;
 import com.schnabel.schnabel.appointment.repository.IAppointmentRepository;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.users.model.Patient;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 
@@ -16,8 +25,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class AppointmentService extends JpaService<Appointment, Long, IAppointmentRepository> implements IAppointmentService {
 
-    public AppointmentService(IAppointmentRepository repository) {
+    private final AppointmentDTOAssembler dtoAsm;
+    private final PagedResourcesAssembler<Appointment> pageAsm;
+
+    @Autowired
+    public AppointmentService(IAppointmentRepository repository, AppointmentDTOAssembler dtoAsm, PagedResourcesAssembler<Appointment> pageAsm) {
         super(repository);
+        this.dtoAsm = dtoAsm;
+        this.pageAsm = pageAsm;
     }
     
     @Override
@@ -48,6 +63,18 @@ public class AppointmentService extends JpaService<Appointment, Long, IAppointme
         appointment.get().setPatient(null);
         appointment.get().setFree(true);
         return update(appointment.get());
+    }
+
+    @Override
+    @Transactional
+    public PagedModel<AppointmentDTO> getDermatologistAppointments(Pageable pageable) {
+        Page<Appointment> appointments = repository.findDermatologistAppointments(pageable);
+        return pageAsm.toModel(appointments, dtoAsm);
+    }
+
+    @Override
+    public Optional<AppointmentDTO> getDTO(Long id) {
+        return get(id).map(dtoAsm::toModel);
     }
 
 }

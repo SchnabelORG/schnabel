@@ -10,12 +10,12 @@ import com.schnabel.schnabel.security.service.SchnabelUserDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -35,11 +35,26 @@ public class JwtUtils {
 
     public String generateJws(Authentication authentication) {
         SchnabelUserDetails userPrincipal = (SchnabelUserDetails) authentication.getPrincipal();
+        return buildJws(userPrincipal.getEmail(), userPrincipal.getPassword());
+    }
+
+    public String regenerateJws(String oldJws) {
+        Claims claims = null;
+        try {
+            claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(oldJws).getBody();
+            return buildJws(claims.getSubject(), claims.get("password", String.class));
+        } catch (ExpiredJwtException ignore) {
+            claims = ignore.getClaims();
+            return buildJws(claims.getSubject(), claims.get("password", String.class));
+        }
+    }
+
+    private String buildJws(String email, String password) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, jwtExpMin);
         return Jwts.builder()
-            .setSubject(userPrincipal.getEmail())
-            .claim("password", userPrincipal.getPassword())
+            .setSubject(email)
+            .claim("password", password)
             .setIssuedAt(new Date())
             .setExpiration(calendar.getTime())
             .signWith(SignatureAlgorithm.HS512, jwtSecret)
@@ -48,11 +63,6 @@ public class JwtUtils {
 
     public String getEmailFromJws(String jws) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jws).getBody().getSubject();
-    }
-
-    public UsernamePasswordAuthenticationToken getUPAT(String jws) {
-        Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jws).getBody();
-        return new UsernamePasswordAuthenticationToken(claims.getSubject(), claims.get("password"));
     }
 
     public boolean validateJws(String jws) {
@@ -65,10 +75,9 @@ public class JwtUtils {
         }
     }
 
-    public String parseJwtFromHttpServletRequest(HttpServletRequest request) {
-        String headerAuth = request.getHeader("Authorization");
-        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
-            return headerAuth.substring(7, headerAuth.length());
+    public String parseJwtFromAuthorizationHeader(String authorizationHeader) {
+        if (StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.substring(7, authorizationHeader.length());
         }
 
         return null;
