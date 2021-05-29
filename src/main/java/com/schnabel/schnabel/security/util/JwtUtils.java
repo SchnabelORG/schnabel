@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -36,8 +37,14 @@ public class JwtUtils {
     }
 
     public String regenerateJws(String oldJws) {
-        Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(oldJws).getBody();
-        return buildJws(claims.getSubject(), claims.get("password", String.class));
+        Claims claims = null;
+        try {
+            claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(oldJws).getBody();
+            return buildJws(claims.getSubject(), claims.get("password", String.class));
+        } catch (ExpiredJwtException ignore) {
+            claims = ignore.getClaims();
+            return buildJws(claims.getSubject(), claims.get("password", String.class));
+        }
     }
 
     private String buildJws(String email, String password) {
