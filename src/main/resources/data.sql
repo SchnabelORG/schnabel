@@ -40,7 +40,7 @@ insert into pharmacyadmins(id, "name", surname, email, "password", city, postcod
 
 insert into pharmacists(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (5, 'Ana', 'Anic', 'rzupunski@gmail.com', '$2a$10$8mp7f8oEHCVXnv8jkfBvtOxn/FPASROZJQ10Bi3820tf0qzlCs4Pm', '11000', 'Beograd', 'Bulevar', '1', 1, true);--password:Radovan123
 
-insert into refresh_tokens(id, email, token) values(1, 'rzupunski@gmail.com', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyenVwdW5za2lAZ21haWwuY29tIiwiZXhwIjoxNjM4MTE0OTQzfQ.qzYAcHinQwfAKx4kBzTt3Hf5nkGDuuYNGvrKaN5aopnFkJxW7r0t1h9w33KzhD7TM1VJMLrsoq9T-avxXwa6iw');
+insert into refresh_tokens(id, email, token) values(1, 'rzupunski@gmail.com', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyenVwdW5za2lAZ21haWwuY29tIiwiZXhwIjoxNjM4MTgwNzM5fQ.CRizdEz-jRFayMYiY0JmYf9G550CHqPnm1acY6hmZjMs0qtvnz-NhmtG5JxL9Z3GjQtXzlerO1k0CPiEKidGlg');
 
 insert into orders(id, deadline, "description", pharmacyadmin_id) values (1, '2021-05-10', 'My order', 4);
 
