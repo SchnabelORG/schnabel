@@ -54,7 +54,7 @@
         methods: {
             getDermatologists: function() {
                 console.log("Usao");
-                this.axios.get("api/dermatologist/pharmacy/" + this.pharmacyId)
+                this.axios.get("api/dermatologist/pharmacy/" + 1)
                     .then(response => {
                         this.dermatologists = response.data;
                         console.log("Jesam");

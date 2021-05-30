@@ -59,12 +59,13 @@ public class DermatologistService extends JpaService<Dermatologist, Long, IDerma
     }
 
     @Override
+    @Transactional
     public Page<Dermatologist> findAllByPharmacy(Long pharmacyId, Pageable pageable) {
         Optional<Pharmacy> pharmacy = pharmacyService.get(pharmacyId);
         if(!pharmacy.isPresent()) {
             return Page.empty();
         }
-        return repository.findAllDermatologistsByPharmacy(pharmacyId, pageable);
+        return repository.findAllDermatologistsPharmacy(pharmacyId, pageable);
     }
 
     /*@Override
