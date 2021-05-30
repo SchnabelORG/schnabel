@@ -351,13 +351,9 @@ export default {
                             'Content-Type' : 'application/json',
                             'Authorization' : 'Bearer ' + localStorage.jws,
                         }})
-                        .then(r => {
-                            console.log(r.data);
+                        .then(() => {
                             this.getAppointments();
-                        })
-                        .catch(r => {
-                            console.log(r.data);
-                        })
+                        });
                 })
                 .catch(() => {
                     this.$router.push("/");
@@ -377,7 +373,6 @@ export default {
                     localStorage.jws = rr.data;
                     this.axios.get("api/patient/apptderm", { headers: { 'Authorization' : 'Bearer ' + localStorage.jws } })
                         .then(r => {
-                            console.log(r.data);
                             if(r.data._embedded) {
                                 r.data._embedded.appointments.forEach(a => {
                                     let startDate = this.getDateTimeFromString(a.date, a.start);
@@ -393,9 +388,6 @@ export default {
                                 this.$refs.calendar.checkChange()
                             }
                         })
-                        .catch(r => {
-                            console.log(r);
-                        })
                 })
                 .catch(() => {
                     this.$router.push("/");
@@ -406,11 +398,7 @@ export default {
         this.axios.get("api/pharmacy")
             .then(r => {
                 this.pharmacies = r.data._embedded.pharmacies;
-                console.log("Pharmacies", this.pharmacies);
             })
-            .catch(r => {
-                console.log(r.data);
-            });
         },
 
       getProfileImg: function() {
@@ -418,7 +406,6 @@ export default {
       },
 
       getUser: function() {
-          console.log("Getting user");
           this.refreshToken()
             .then(rr => {
                 localStorage.jws = rr.data;
