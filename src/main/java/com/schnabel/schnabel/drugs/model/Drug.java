@@ -52,7 +52,7 @@ public class Drug implements IIdentifiable<Long>
     private String ingredients;
     @Column
     private String contraindications;
-    @Column(nullable = false) 
+    @Column
     private String description;
     @Column
     @Enumerated(EnumType.STRING)

@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -32,17 +33,20 @@ public class DrugService extends JpaService<Drug, Long, IDrugRepository> impleme
     }
 
     @Override
+    @Transactional
     public Optional<DrugDTO> getDTO(Long id) {
         return get(id).map(drugDTOAssembler::toModel);
     }
 
     @Override
+    @Transactional
     public PagedModel<DrugDTO> getAllDTO(Pageable pageable) {
         Page<Drug> drugs = getAll(pageable);
         return drugPagedResourcesAssembler.toModel(drugs, drugDTOAssembler);
     }
 
     @Override
+    @Transactional
     public boolean registerDrug(String code, String name, String description, DrugState drugState, DrugOrigin drugOrigin, DrugType drugType, String producer, String dosage, String ingredients, IssuingType issuingType) {
         Drug newDrug = new Drug(code, name,  description, drugType, drugState, drugOrigin , producer, dosage, ingredients, issuingType);
         Optional<Drug> drug = add(newDrug);

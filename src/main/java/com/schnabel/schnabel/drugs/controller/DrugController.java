@@ -56,9 +56,4 @@ public class DrugController {
                 : ResponseEntity.badRequest().build();
     }
 
-    @GetMapping("name/{name}")
-    public ResponseEntity<PagedModel<DrugDTO>> filterByName(String name)
-    {
-
-    }
 }

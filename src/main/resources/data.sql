@@ -4,11 +4,15 @@ insert into pharmacies("name", city, postcode, street, street_no, score) values(
 insert into pharmacies("name", city, postcode, street, street_no, score) values('Schnabel Grbavica', 'Novi Sad', '21000', 'Aleksa Santica', '2', 3);
 insert into pharmacies("name", city, postcode, street, street_no, score) values('Schnabel Beograd', 'Beograd', '11000', 'Proleterska', '4b', 4);
 
-insert into drugs values(1, 'anestetik', 'lidokain 50mg');
-insert into drugs values(2, 'anestetik', 'prokain 100mg');
-insert into drugs values(3, 'anestetik', 'tetrakain 100mg');
-insert into drugs values(4, 'sedativ', 'bensedin 100mg');
-insert into drugs values(5, 'sedativ', 'xanax 100mg');
+insert into drugs(id, "code", "name", "dosage", "drug_type", "drug_state", "drug_origin", "producer", "ingredients", "contraindications", "description", "issuing_type") values(1, '515-14-00353-08-003', 'Lidocaine Sopharma', '10mg/mL', 'ANTISEPTIC', 'SOLUTION', 'BIOLOGICAL', 'SOPHARMA', 'lidokain-hidrohlorid, monohidrat, natrijum-hlorid', 'Unknown', '', 'WITHOUT_PRESCRIPTION');
+insert into drugs(id, "code", "name", "dosage", "drug_type", "drug_state", "drug_origin", "producer", "ingredients", "contraindications", "description", "issuing_type") values(2, '515-02-20060-09-002', 'prokain', '100mg', 'ANALGESIC', 'PILL', 'HERBAL', 'BYER', 'prokain-hidroglorid', 'Unknown', '', 'ON_PRESCRIPTION');
+insert into drugs(id, "code", "name", "dosage", "drug_type", "drug_state", "drug_origin", "producer", "ingredients", "contraindications", "description", "issuing_type") values(3, '515-01-03185-10-001', 'tetrakain', '100mg', 'ANALGESIC', 'PILL', 'BIOLOGICAL', 'Hemofarm', 'tetrakain-hidrohlorid', 'Possible light pain and itchiness', 'tetrakain drops for eyes', 'WITHOUT_PRESCRIPTION');
+insert into drugs(id, "code", "name", "dosage", "drug_type", "drug_state", "drug_origin", "producer", "ingredients", "contraindications", "description", "issuing_type") values(4, '515-01-04933-16-001', 'Bensedin', '10mg', 'MOOD_STABILIZERS', 'PILL', 'BIOLOGICAL', 'GALENIKA', 'diazepam', 'Insomnia, Depression, Dry mouth, Vertigo, Possible death', '', 'ON_PRESCRIPTION');
+insert into drugs(id, "code", "name", "dosage", "drug_type", "drug_state", "drug_origin", "producer", "ingredients", "contraindications", "description", "issuing_type") values(5, '515-01-00805-17-001', 'Xanax', '0.5mg', 'MOOD_STABILIZERS', 'PILL', 'BIOLOGICAL', 'PFIZER', 'alprazolam, dokusat-natirijum, silicijum-dioksid', 'Aggression, Nightmare, Psychosis', '', 'ON_PRESCRIPTION');
+
+insert into substitute_drugs(drug_id, substitute_id) values(1, 4);
+insert into substitute_drugs(drug_id, substitute_id) values(1, 5);
+insert into substitute_drugs(drug_id, substitute_id) values(4, 5);
 
 insert into drugprice values(1, 100, '2022-06-01', '2020-01-01', 1);
 insert into drugprice values(2, 100, '2022-06-01', '2020-01-01', 2);
