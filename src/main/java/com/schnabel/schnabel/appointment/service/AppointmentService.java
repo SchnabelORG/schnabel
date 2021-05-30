@@ -61,22 +61,20 @@ public class AppointmentService extends JpaService<Appointment, Long, IAppointme
         {
             return false;
         }
-       // String jws;
-      //  if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
-       //     jws = authHeader.substring(7, authHeader.length());
-       //     String email = jwtUtils.getEmailFromJws(jws);
-
-            System.out.println("header" + authHeader);
+        String jws = jwtUtils.parseJwtFromAuthorizationHeader(authHeader);
+        if (jws != null)
+        {
+            String email = jwtUtils.getEmailFromJws(jws);
             if(checkAvailability(startTime, endTime, dermatologistId))
             {
-                Appointment newAppointment = new Appointment(price, new Period(startTime, endTime), true, dermatologistService.get(dermatologistId).get(), pharmacyAdminService.findByEmail("jankovicpharmacy@gmail.com").get().getPharmacy());
+                Appointment newAppointment = new Appointment(price, new Period(startTime, endTime), true, dermatologistService.get(dermatologistId).get(), pharmacyAdminService.findByEmail(email).get().getPharmacy());
                 Optional<Appointment> appointment = add(newAppointment);
                 if(appointment.isPresent())
                 {
                     return true;
                 }
             }
-       // }
+        }
         return false;
     }
 

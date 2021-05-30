@@ -6,6 +6,7 @@ import com.schnabel.schnabel.users.model.Dermatologist;
 import com.schnabel.schnabel.users.service.IDermatologistService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
@@ -55,5 +56,18 @@ public class DermatologistController
         return dermatologistService.getDTO(id)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
+    }
+
+    /**
+     * Get dermatologists by pahrmacy id
+     * @return Dermatologist
+     */
+    @GetMapping("pharmacy/{id}")
+    public ResponseEntity<PagedModel<DermatologistDTO>> getAllByPharmacyId(@PathVariable("id") Long pharmacyId, Pageable pageable) 
+    {
+        Page<Dermatologist> dermatologists = dermatologistService.findAllByPharmacy(pharmacyId, pageable);
+        //Page<Dermatologist> dermatologists = dermatologistService.findByPharmaciesId(pharmacyId, pageable);
+        PagedModel<DermatologistDTO> pagedModel = dermatologistDTOAsm.toModel(dermatologists, dermatologistDTOAssembler);
+        return new ResponseEntity<>(pagedModel, HttpStatus.OK);
     }
 }

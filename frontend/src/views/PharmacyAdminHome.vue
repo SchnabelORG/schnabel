@@ -28,20 +28,20 @@
                 <h4 class="primary--text">Employees</h4>
                 <div class="footer-divider"></div>
                 <ul class="footer-column-list unstyled-list">
-                <li><a href="/pharmacyadmin/dermatologist">Dermatologists</a></li>
-                <li><a href="/pharmacyadmin/pharmacist">Pharmacists</a></li>
-                <li><a href="/pharmacyadmin/vacation">Vacations</a></li>
-                <li><a href="/pharmacyadmin/defineappointment">Define appointment</a></li>
+                <li><router-link to="/pharmacyadmin/dermatologist">Dermatologists</router-link></li>
+                <li><router-link to="/pharmacyadmin/pharmacist">Pharmacists</router-link></li>
+                <li><router-link to="/pharmacyadmin/vacation">Vacations</router-link></li>
+                <li><router-link to="/pharmacyadmin/defineappointment">Define appointment</router-link></li>
                 </ul>
             </div>
             <div class="footer-column">
                 <h4 class="primary--text">Drugs</h4>
                 <div class="footer-divider"></div>
                 <ul class="footer-column-list unstyled-list">
-                <li><a href="/pharmacyadmin/drug">Drugs</a></li>
-                <li><a href="/pharmacyadmin/makeorder">New order</a></li>
-                <li><a href="/pharmacyadmin/order">Orders</a></li>
-                <li><a href="/pharmacyadmin/promotion">Promotion</a></li>
+                <li><router-link to="/pharmacyadmin/drug">Drugs</router-link></li>
+                <li><router-link to="/pharmacyadmin/makeorder">New order</router-link></li>
+                <li><router-link to="/pharmacyadmin/order">Orders</router-link></li>
+                <li><router-link to="/pharmacyadmin/promotion">Promotion</router-link></li>
                 </ul>
             </div>
             </div>

@@ -45,6 +45,7 @@
                 startTime: '',
                 endTime: '',
                 price: '',
+                pharmacyId: '',
                 rules: {
                     required: value => !!value || 'Required.',
                 },
@@ -52,30 +53,44 @@
         },
         methods: {
             getDermatologists: function() {
-
+                console.log("Usao");
+                this.axios.get("api/dermatologist/pharmacy/" + this.pharmacyId)
+                    .then(response => {
+                        this.dermatologists = response.data;
+                        console.log("Jesam");
+                    })
+                    .catch(response => {
+                        console.log("Failed to get dermatologists", response.data);
+                    });
             },
 
             getPharmacyAdmin: function() {
-                let jws = this.$store.state.jws;
-                console.log(jws)
-                this.axios.get("api/pharmacyadmin", {headers:{"Authorization": "Bearer " + this.jws}})
-                    .then(response => {
-                        console.log(response.data);
-                        this.pharmacyadmin = response.data;
-                    })
+                this.refreshToken().then(response => {
+                    console.log(response.data);
+                    let jws = this.$store.state.jws;
+                    this.axios.get("api/pharmacyadmin", {headers:{"Authorization": "Bearer " + jws}})
+                        .then(response => {
+                            this.pharmacyAdmin = response.data;
+                            this.pharmacyId = this.pharmacyAdmin.pharmacy.id;
+                        })
+                        .catch(response => {
+                            console.log("Failed to get pharmacy admin", response.data);
+                            this.refreshToken()
+                                .then(response => {
+                                    this.$store.state.jws = response.data;
+                                    this.$router.go();
+                                })
+                                .catch(response => {
+                                    console.log(response.data);
+                                    this.$router.push("/");
+                                });
+                        });
+                   })
                     .catch(response => {
-                        console.log("Failed to get pharmacy admin", response.data);
-                        this.refreshToken()
-                            .then(response => {
-                                this.$store.state.jws = response.data;
-                                this.$router.go();
-                            })
-                            .catch(response => {
-                                console.log(response.data);
-                                this.$router.push("/");
-                            });
-                    });
-            },  
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
+            },
 
             refreshToken: async function() {
                 let jws = this.$store.state.jws;
@@ -91,10 +106,11 @@
                     alert('Time interval is not set properly');
                     return;
                 }
-                // this.refreshToken().then(response => {
-                    
+                this.refreshToken().then(response => {
+                    console.log(response.data);
+                    let jws = this.$store.state.jws;
                     let appointmentRequest = { startTime: this.startTime, endTime: this.endTime, price: this.price, dermatologistId: '2' };
-                    this.axios.post("/api/appointment", appointmentRequest, {headers:{"Authorization":"Bearer " + this.$store.state.jws}})
+                    this.axios.post("/api/appointment", appointmentRequest, {headers:{"Authorization": "Bearer " + jws}})
                         .then(response =>
                         {
                             console.log(response);
@@ -107,16 +123,16 @@
                         {
                             console.log(response.data);
                         });
-               /* })
-                .catch(response => {
+             })
+               .catch(response => {
                     console.log(response.data);
                     this.$router.push("/");
-                });*/
+                });
             },
         },
         mounted() {
-			this.getDermatologists();
             this.getPharmacyAdmin();
+			this.getDermatologists();
 		}
     }
 </script>

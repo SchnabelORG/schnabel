@@ -35,10 +35,8 @@ public class AppointmentController
      * @return OK if created, else BadRequest
      */
     @PostMapping
-    public ResponseEntity<String> defineAppointment(@RequestBody AppointmentRequest req, @RequestHeader("Authorization") String authHeader) {
-        String jws = jwtUtils.parseJwtFromAuthorizationHeader(authHeader);
-        System.out.println("CONTROLLER -----------------------" + req.getStartTime() + "" +  req.getEndTime() + "" + req.getPrice() + "" + req.getDermatologistId() + "JWT" + jws);
-
+    public ResponseEntity<String> defineAppointment(@RequestBody AppointmentRequest req, @RequestHeader("Authorization") String authHeader)
+    {
         return appointmentService.defineAppointment(req.getStartTime(), req.getEndTime(), req.getPrice(), req.getDermatologistId(), authHeader) ?
             ResponseEntity.ok("Added")
             : ResponseEntity.badRequest().build();

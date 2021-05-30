@@ -57,6 +57,26 @@ public class DermatologistService extends JpaService<Dermatologist, Long, IDerma
     {
         return repository.findByEmail(email);
     }
+
+    @Override
+    public Page<Dermatologist> findAllByPharmacy(Long pharmacyId, Pageable pageable) {
+        Optional<Pharmacy> pharmacy = pharmacyService.get(pharmacyId);
+        if(!pharmacy.isPresent()) {
+            return Page.empty();
+        }
+        return repository.findAllDermatologistsByPharmacy(pharmacyId, pageable);
+    }
+
+    /*@Override
+    public Page<Dermatologist> findByPharmaciesId(Long pharmacyId, Pageable pageable)
+    {
+        Optional<Pharmacy> pharmacy = pharmacyService.get(pharmacyId);
+        if(!pharmacy.isPresent()) {
+            return Page.empty();
+        }
+        return repository.findByPharmaciesId(pharmacyId, pageable);
+    }*/
+
 }
 
 
