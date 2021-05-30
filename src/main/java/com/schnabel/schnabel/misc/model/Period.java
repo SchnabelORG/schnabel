@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.misc.model;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -28,5 +29,9 @@ public class Period
     public boolean isPeriodValid()
     {
         return this.endTime.isAfter(this.startTime);
+    }
+
+    public long getDurationMinutes() {
+        return Duration.between(this.startTime, this.endTime).toMinutes();
     }
 }
