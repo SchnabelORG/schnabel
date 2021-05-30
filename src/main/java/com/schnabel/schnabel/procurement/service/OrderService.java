@@ -40,6 +40,14 @@ public class OrderService extends JpaService<Order, Long, IOrderRepository> impl
 
     @Override
     @Transactional
+    public PagedModel<OrderDTO> getAllDTO(Pageable pageable) {
+        Page<Order> orders = repository.findAll(pageable);
+        return orderPagedResourcesAssembler.toModel(orders, orderDTOAssembler);
+    }
+
+
+    @Override
+    @Transactional
     public PagedModel<OrderDTO> getNonExpired(Pageable pageable) {
         Page<Order> orders = repository.findByDeadlineAfter(pageable, LocalDate.now());
         return orderPagedResourcesAssembler.toModel(orders, orderDTOAssembler);

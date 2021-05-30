@@ -14,6 +14,7 @@ import java.util.Optional;
 public interface IOrderService extends IJpaService<Order, Long>
 {
     Optional<OrderDTO> getDTO(Long id);
+    PagedModel<OrderDTO> getAllDTO(Pageable pageable);
     PagedModel<OrderDTO> getNonExpired(Pageable pageable);
     PagedModel<OrderDTO> getNewOrders(Pageable pageable, Long id);
 }

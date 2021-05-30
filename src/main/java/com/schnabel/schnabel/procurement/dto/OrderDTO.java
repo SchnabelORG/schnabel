@@ -1,7 +1,11 @@
 package com.schnabel.schnabel.procurement.dto;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
@@ -21,5 +25,5 @@ public class OrderDTO extends RepresentationModel<OrderDTO> {
     private String description;
     //private PharmacyAdminDTO pharmacyAdmin;
     //private OfferDTO offerDTO;
-    private List<OrderItemForOfferDTO> orderItems;
+    private List<OrderItemDTO> orderItems;
 }

@@ -44,6 +44,7 @@ public class OfferService extends JpaService<Offer, Long, IOfferRepository> impl
     }
 
     @Override
+    @Transactional
     public boolean createOffer(int price, LocalDate dateOfDelivery, long orderId) {
         Offer newOffer = new Offer(price, dateOfDelivery);
         Order order = orderRepository.findById(orderId).get();
@@ -82,5 +83,18 @@ public class OfferService extends JpaService<Offer, Long, IOfferRepository> impl
         {
             return false;
         }
+    }
+
+    @Override
+    @Transactional
+    public Optional<OfferDTO> getDTO(Long id) {
+        return get(id).map(offerDTOAssembler::toModel);
+    }
+
+    @Override
+    @Transactional
+    public PagedModel<OfferDTO> getAllDTO(Pageable pageable) {
+        Page<Offer> offers = repository.findAll(pageable);
+        return offerPagedResourcesAssembler.toModel(offers, offerDTOAssembler);
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -49,13 +48,13 @@ public class OfferDTOAssembler extends RepresentationModelAssemblerSupport<Offer
         return dto;
     }
 
-    private List<OrderItemForOfferDTO> getOrderItems(List<OrderItem> items)
+    private List<OrderItemDTO> getOrderItems(List<OrderItem> items)
     {
         if(items.isEmpty())
             return Collections.emptyList();
 
         return items.stream()
-                .map(p -> OrderItemForOfferDTO.builder()
+                .map(p -> OrderItemDTO.builder()
                 .id(p.getId())
                 .quantity(p.getQuantity())
                 .drug(p.getDrug().getName())

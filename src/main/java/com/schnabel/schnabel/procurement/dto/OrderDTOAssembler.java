@@ -4,7 +4,6 @@ import com.schnabel.schnabel.procurement.controller.OfferController;
 import com.schnabel.schnabel.procurement.controller.OrderController;
 import com.schnabel.schnabel.procurement.model.Order;
 import com.schnabel.schnabel.procurement.model.OrderItem;
-import com.schnabel.schnabel.users.controller.PharmacyAdminController;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
@@ -37,13 +36,13 @@ public class OrderDTOAssembler extends RepresentationModelAssemblerSupport<Order
         return dto;
     }
 
-    private List<OrderItemForOfferDTO> getOrderItems(List<OrderItem> items)
+    private List<OrderItemDTO> getOrderItems(List<OrderItem> items)
     {
         if(items.isEmpty())
             return Collections.emptyList();
 
         return items.stream()
-                .map(p -> OrderItemForOfferDTO.builder()
+                .map(p -> OrderItemDTO.builder()
                         .id(p.getId())
                         .quantity(p.getQuantity())
                         .drug(p.getDrug().getName())

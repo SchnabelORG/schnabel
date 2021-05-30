@@ -16,6 +16,6 @@ public class OrderForOfferDTO {
     private Long id;
     private LocalDate deadline;
     private String description;
-    private List<OrderItemForOfferDTO> orderItems;
+    private List<OrderItemDTO> orderItems;
 
 }

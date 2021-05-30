@@ -33,10 +33,9 @@ public class OfferController
      * @return Iterable of Offer
      */
     @GetMapping()
-    public ResponseEntity<Iterable<Offer>> getAll()
+    public ResponseEntity<PagedModel<OfferDTO>> getAll(Pageable pageable)
     {
-        Iterable<Offer> offers = offerService.getAll();
-        return ResponseEntity.ok(offers);
+        return new ResponseEntity<>(offerService.getAllDTO(pageable), HttpStatus.OK);
     }
 
     /**
@@ -44,12 +43,11 @@ public class OfferController
      * @return Offer
      */
     @GetMapping("{id}")
-    public ResponseEntity<Offer> get(@PathVariable long id)
+    public ResponseEntity<OfferDTO> get(@PathVariable long id)
     {
-        Optional<Offer> offer = offerService.get(id);
-        return offer.isPresent() ?
-            ResponseEntity.ok(offer.get())
-            : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return offerService.getDTO(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("supplier/{id}")

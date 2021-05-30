@@ -31,15 +31,15 @@ public class OrderController
         this.orderService = orderService;
     }
 
+
     /**
      * Get all orders
      * @return Iterable of Order
-     */
+    */
     @GetMapping()
-    public ResponseEntity<Iterable<Order>> getAll()
+    public ResponseEntity<PagedModel<OrderDTO>> getAll(Pageable pageable)
     {
-        Iterable<Order> orders = orderService.getAll();
-        return ResponseEntity.ok(orders);
+        return new ResponseEntity<>(orderService.getAllDTO(pageable), HttpStatus.OK);
     }
 
     /**
