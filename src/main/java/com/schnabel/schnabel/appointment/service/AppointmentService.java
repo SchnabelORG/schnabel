@@ -2,6 +2,7 @@ package com.schnabel.schnabel.appointment.service;
 
 import java.util.Optional;
 
+import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 
 import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
@@ -75,6 +76,16 @@ public class AppointmentService extends JpaService<Appointment, Long, IAppointme
     @Override
     public Optional<AppointmentDTO> getDTO(Long id) {
         return get(id).map(dtoAsm::toModel);
+    }
+
+    @Override
+    public PagedModel<AppointmentDTO> getFreeDermatologistAppointments(Pageable pageable) {
+        try{
+            Page<Appointment> appointments = repository.findFreeDermatologistAppointments(pageable);
+            return pageAsm.toModel(appointments, dtoAsm);
+        } catch (NoResultException ignore) {
+            return pageAsm.toModel(Page.empty(), dtoAsm);
+        }
     }
 
 }

@@ -18,5 +18,6 @@ public interface IAppointmentService extends IJpaService<Appointment, Long> {
     boolean scheduleAppointment(Long id, Patient patient);
     boolean cancelAppointment(Long id, Long patientId);
     PagedModel<AppointmentDTO> getDermatologistAppointments(Pageable pageable);
+    PagedModel<AppointmentDTO> getFreeDermatologistAppointments(Pageable pageable);
     Optional<AppointmentDTO> getDTO(Long id);
 }

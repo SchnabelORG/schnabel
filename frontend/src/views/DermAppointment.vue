@@ -4,6 +4,7 @@
             <p>Dermatologist appointments</p>
             <h2>Schedule an appointment</h2>
             <div id="appt-form">
+                <b class="err">{{error}}</b>
                 <v-data-table
                 :headers="headers"
                 :items="appointments"
@@ -15,7 +16,12 @@
             max-width="600px"
             transition="dialog-bottom-transition"
             >
-                <v-card>
+
+                <div v-if="success" id="success-form">
+                    <p id="success-icon"><i class="fa fa-check"></i></p>
+                    <p>Appointment scheduled!</p>
+                </div>
+                <v-card v-else>
                     <v-card-title class="primary white--text">
                         Appointment preview
                         <v-spacer></v-spacer>
@@ -51,6 +57,8 @@
 export default {
     data() {
         return {
+            error: '',
+            success: false,
             selected: {
                 id: '',
                 date: '',
@@ -86,18 +94,22 @@ export default {
                             if (r.data._embedded) {
                                 console.log(r.data._embedded);
                                 this.appointments = r.data._embedded.appointments;
+                            } else {
+                                this.appointments = [];
                             }
                         })
-                        .catch(r => {
-                            console.log(r);
+                        .catch(() => {
+                            this.error = 'Could not get appointments';
                         });
                 })
-                .catch(r => {
-                    console.log(r);
+                .catch(() => {
+                    this.$router.push("/");
                 });
         },
 
         scheduleAppt: function() {
+            this.error = '';
+            this.success = false;
             this.refreshToken()
                 .then(rr => {
                     localStorage.jws = rr.data;
@@ -107,16 +119,18 @@ export default {
                         "Authorization": "Bearer " + localStorage.jws,
                         "Content-Type" : "application/json",
                     }})
-                        .then(r => {
-                            console.log(r);
+                        .then(() => {
+                            this.getAppointments();
+                            this.success = true;
+                            this.dialog = false;
                         })
-                        .catch(r => {
-                            console.log(r);
+                        .catch(() => {
+                            this.error = 'Could not schedule the appointment';
                         });
 
                 })
-                .catch(r => {
-                    console.log(r);
+                .catch(() => {
+                    this.$router.push("/");
                 });
         },
 
@@ -156,6 +170,9 @@ export default {
 
     #appt-form {
         margin-top: 20px;
+        background: #fff;
+        padding: 20px;
+        border: 1px solid #eee;
     }
 
     #appt-preview-container {
@@ -174,5 +191,21 @@ export default {
         flex-direction: column;
         align-items: center;
     }
+
+    #success-form {
+        background: #fff;
+        text-align: center;
+        height: 100%;
+        padding: 20px;
+    }
+
+    #success-form p {
+        margin: 0px;
+    }
+
+    #success-icon {
+        font-size: 3rem;
+    }
+
 
 </style>

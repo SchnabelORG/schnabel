@@ -33,7 +33,7 @@ public class AppointmentController {
 
     @GetMapping("/dermatology")
     public ResponseEntity<PagedModel<AppointmentDTO>> getDermatologicalAppts(Pageable pageable) {
-        return new ResponseEntity<>(service.getDermatologistAppointments(pageable), HttpStatus.OK);
+        return new ResponseEntity<>(service.getFreeDermatologistAppointments(pageable), HttpStatus.OK);
     }
 
 }
