@@ -55,7 +55,8 @@ export default {
             this.axios.post("api/auth/login", dto)
                 .then(r => {
                     console.log(r);
-                    this.$store.state.jws = r.data;
+                    //this.$store.state.jws = r.data;
+                    window.localStorage.jwt = r.data;
                     this.$router.push("pharmacist");
                     //this.$router.push("user");
                 })

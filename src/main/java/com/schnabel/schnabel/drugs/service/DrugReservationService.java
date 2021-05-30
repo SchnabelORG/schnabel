@@ -1,16 +1,17 @@
 package com.schnabel.schnabel.drugs.service;
 
 
-import com.schnabel.schnabel.auth.service.IRefreshTokenService;
+import com.schnabel.schnabel.drugs.dto.DrugReservationAssembler;
+import com.schnabel.schnabel.drugs.dto.DrugReservationDTO;
 import com.schnabel.schnabel.drugs.model.DrugReservation;
 import com.schnabel.schnabel.drugs.repository.IDrugReservationRepository;
-import com.schnabel.schnabel.email.service.IMailService;
 import com.schnabel.schnabel.misc.implementations.JpaService;
-import com.schnabel.schnabel.users.model.Patient;
-import com.schnabel.schnabel.users.repository.IPatientRepository;
-import com.schnabel.schnabel.users.service.IPatientService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.schnabel.schnabel.users.dto.PharmacistDTO;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.Optional;
 
 /**
  * Drug reservation service implementation
@@ -18,10 +19,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class DrugReservationService extends JpaService<DrugReservation, Long, IDrugReservationRepository> implements IDrugReservationService {
 
-    public DrugReservationService(IDrugReservationRepository drugReservationRepository)
+
+    private final DrugReservationAssembler drugReservationAssembler;
+    private final PagedResourcesAssembler<DrugReservation> drugReservationPagedResourcesAssembler;
+
+    public DrugReservationService(IDrugReservationRepository drugReservationRepository, DrugReservationAssembler drugReservationAssembler, PagedResourcesAssembler<DrugReservation> drugReservationPagedResourcesAssembler)
     {
         super(drugReservationRepository);
+        this.drugReservationAssembler = drugReservationAssembler;
+        this.drugReservationPagedResourcesAssembler = drugReservationPagedResourcesAssembler;
     }
 
 
+    @Override
+    @Transactional
+    public Optional<DrugReservationDTO> getDTO(Long id) {
+        return get(id).map(drugReservationAssembler::toModel);
+    }
 }

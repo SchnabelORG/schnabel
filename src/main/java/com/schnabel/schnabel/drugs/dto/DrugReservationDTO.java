@@ -29,6 +29,7 @@ public class DrugReservationDTO extends RepresentationModel<DrugReservationDTO>{
     private int quantity;
     private LocalDateTime reservationDate;
     private LocalDateTime endOfReservation;
+    private Long pharmacyId;
     private String patientName;
     private String patientSurname;
     private String patientEmail;

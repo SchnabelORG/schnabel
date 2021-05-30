@@ -22,13 +22,12 @@ public class DrugReservationAssembler extends RepresentationModelAssemblerSuppor
     @Override
     public DrugReservationDTO toModel(DrugReservation entity) {
         DrugReservationDTO dto = instantiateModel(entity);
-
-        dto.add(linkTo(methodOn(DrugReservationController.class).get(entity.getId())).withSelfRel());
         dto.setId(entity.getId());
         dto.setDrugName(entity.getDrug().getName());
         dto.setQuantity(entity.getQuantity());
         dto.setReservationDate(entity.getReservationDate());
         dto.setEndOfReservation(entity.getEndOfReservation());
+        dto.setPharmacyId(entity.getPharmacy().getId());
         dto.setPatientName(entity.getPatient().getName());
         dto.setPatientSurname(entity.getPatient().getSurname());
         dto.setPatientEmail(entity.getPatient().getEmail());

@@ -31,17 +31,13 @@ insert into suppliers(id, "name", surname, email, "password", city, postcode, st
 
 insert into pharmacyadmins(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (4, 'Mika', 'Mikic', 'miki@gmail.com', '123', '11000', 'Beograd', 'Bulevar', '1', 1, true);
 
-
-
---
-
 --insert into pharmacyadmins(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no, pharmacy_id) values (4, 'Mika', 'Mikic', '2000-06-01', 'miki@gmail.com', '123', '11000', 'Beograd', 'Bulevar', 1, 1);
 
 --insert into pharmacists(id, "name", surname, date_of_birth, email, "password", city, postcode, street, street_no, pharmacy_id) values (5, 'Ana', 'Anic', '2000-06-01', 'ana@gmail.com', '12345678', 'Beograd', '11000', 'Bulevar', 1, 1);
 
 insert into pharmacists(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (5, 'Ana', 'Anic', 'rzupunski@gmail.com', '$2a$10$8mp7f8oEHCVXnv8jkfBvtOxn/FPASROZJQ10Bi3820tf0qzlCs4Pm', '11000', 'Beograd', 'Bulevar', '1', 1, true);--password:Radovan123
 
-insert into refresh_tokens(id, email, token) values(1, 'rzupunski@gmail.com', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyenVwdW5za2lAZ21haWwuY29tIiwiZXhwIjoxNjM4MTgwNzM5fQ.CRizdEz-jRFayMYiY0JmYf9G550CHqPnm1acY6hmZjMs0qtvnz-NhmtG5JxL9Z3GjQtXzlerO1k0CPiEKidGlg');
+insert into refresh_tokens(id, email, token) values(2, 'rzupunski@gmail.com', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyenVwdW5za2lAZ21haWwuY29tIiwiZXhwIjoxNjM4MTgwNzM5fQ.CRizdEz-jRFayMYiY0JmYf9G550CHqPnm1acY6hmZjMs0qtvnz-NhmtG5JxL9Z3GjQtXzlerO1k0CPiEKidGlg');
 
 insert into orders(id, deadline, "description", pharmacyadmin_id) values (1, '2021-05-10', 'My order', 4);
 
@@ -85,9 +81,9 @@ insert into recipes values(1, 1, 1, 5);
 insert into recipe_items values(1, 2, 1, 1);
 insert into recipe_items values(2, 5, 5, 1);
 
-insert into drugs_reservations values(1, '2021-05-20', 2, '2021-05-04', true, 1, 1);
-insert into drugs_reservations values(2, '2020-05-20', 2, '2020-05-04', false, 1, 1);
-insert into drugs_reservations values(3, '2021-07-20', 2, '2021-05-04', false, 1, 1);
+insert into drugs_reservations(id, end_reservation, quantity, reservation_date, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values(1, '2021-05-20', 2, '2021-05-04', true, 1, 1, 1);
+insert into drugs_reservations(id, end_reservation, quantity, reservation_date, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values(2, '2020-05-20', 2, '2020-05-04', false, 1, 1, 1);
+insert into drugs_reservations(id, end_reservation, quantity, reservation_date, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values(3, '2021-07-20', 2, '2021-05-04', false, 1, 1, 1);
 
 
 insert into availability_request values(1, 10, 1, 5, 1);

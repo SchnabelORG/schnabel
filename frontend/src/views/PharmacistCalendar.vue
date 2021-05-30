@@ -33,7 +33,7 @@
                         </v-btn>
                         <v-spacer></v-spacer>
                         <v-toolbar-title v-if="$refs.calendar">
-                            <v-menu
+                            <v-menu v-if="type == 'month'"
                                 ref="menu"
                                 v-model="menu"
                                 :close-on-content-click="false"
@@ -60,6 +60,9 @@
                                     @change="moveView()"
                                 ></v-date-picker>
                             </v-menu>
+                            <div v-else>
+                                 {{ $refs.calendar.title }}
+                            </div>
                         </v-toolbar-title>
                         <v-spacer></v-spacer>
                         <v-menu
@@ -162,6 +165,7 @@
                     day: 'Day',
                     '4day': '4 Days',
                 },
+                pharmacist: {},
                 selectedEvent: {},
                 selectedElement: null,
                 selectedOpen: false,
@@ -173,11 +177,42 @@
             }
         },
         mounted () {
-            this.getAllAppointments();
+            this.getPharmacist();
         },
         methods: {
+            refreshToken: async function() {
+                let jws = window.localStorage.getItem('jwt');
+                if(!jws) {
+                    this.$router.push("/");
+                }
+                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + jws}});
+            },
+             getPharmacist: function() {
+                console.log("Getting pharmacist");
+                let jws = window.localStorage.getItem('jwt');
+                console.log(jws)
+                this.axios.get("api/pharmacist", {headers:{"Authorization": "Bearer " + jws}})
+                    .then(response => {
+                        console.log(response.data);
+                        this.pharmacist = response.data;
+                        this.getAllAppointments()
+                    })
+                    .catch(response => {
+                        console.log("Failed to get pahrmacist", response.data);
+                        this.refreshToken()
+                            .then(response => {
+                                window.localStorage.jwt = response.data;
+                                this.$router.go();
+                            })
+                            .catch(response => {
+                                console.log(response.data);
+                                this.$router.push("/");
+                            });
+                    });
+            },
             getAllAppointments: function(){
-                this.axios.get("api/appointment/appbyemployye/5")
+                let jws = window.localStorage.getItem('jwt');
+                this.axios.get("api/appointment/appbyemployye/" + this.pharmacist.id, {headers:{"Authorization": "Bearer " + jws}})
                     .then(response =>
                     {
                         this.allAppointments = response.data._embedded.appointments;
@@ -189,73 +224,76 @@
                     });
             },
             moveView: function(){
+                this.type = 'month';
                 var moveFor = 12*(this.currentDate.getFullYear()-parseInt(this.picker.slice(0,4))) + (this.currentDate.getMonth() + 1 - parseInt(this.picker.slice(5)));
                 this.currentDate.setMonth(this.currentDate.getMonth() - moveFor);
                 this.menu = false;
-                this.type = 'month';
+                
                 this.$refs.calendar.move(-moveFor)
             },
             viewDay: function({ date }) {
-            this.focus = date
-            this.type = 'day'
+                this.focus = date
+                this.type = 'day'
             },
             getEventColor: function(event) {
-            return event.color
+                return event.color
             },
             setToday: function() {
-            this.focus = ''
+                this.currentDate = new Date();
+                this.picker = new Date().toISOString().substr(0, 10);
+                this.focus = ''
             },
             prev: function() {
-            this.$refs.calendar.prev()
-            var month = this.focus.slice(5,7) - 1
-            var year = this.focus.slice(0,4)
-            this.currentDate.setMonth(month);
-            this.currentDate.setFullYear(year);
-            console.log(this.focus);
-            console.log(this.currentDate)
+                this.$refs.calendar.prev()
+                var month = this.focus.slice(5,7) - 1
+                var year = this.focus.slice(0,4)
+                this.currentDate.setMonth(month);
+                this.currentDate.setFullYear(year);
+                this.picker = new Date(this.currentDate).toISOString().substr(0, 10);
             },
             next: function() {
-            this.$refs.calendar.next()
-            var month = this.focus.slice(5,7) - 1 
-            var year = this.focus.slice(0,4)
-            this.currentDate.setMonth(month);
-            this.currentDate.setFullYear(year);
+                this.$refs.calendar.next()
+                var month = this.focus.slice(5,7) - 1 
+                var year = this.focus.slice(0,4)
+                this.currentDate.setMonth(month);
+                this.currentDate.setFullYear(year);
+                this.picker = new Date(this.currentDate).toISOString().substr(0, 10);
             },
             showEvent: function({ nativeEvent, event }) {
-            const open = () => {
-                this.selectedEvent = event
-                this.selectedElement = nativeEvent.target
-                setTimeout(() => {
-                this.selectedOpen = true
-                }, 10)
-            }
+                const open = () => {
+                    this.selectedEvent = event
+                    this.selectedElement = nativeEvent.target
+                    setTimeout(() => {
+                    this.selectedOpen = true
+                    }, 10)
+                }
 
-            if (this.selectedOpen) {
-                this.selectedOpen = false
-                setTimeout(open, 10)
-            } else {
-                open()
-            }
+                if (this.selectedOpen) {
+                    this.selectedOpen = false
+                    setTimeout(open, 10)
+                } else {
+                    open()
+                }
 
-            nativeEvent.stopPropagation()
+                nativeEvent.stopPropagation()
             },
             updateRange: function() {
-            const events = []
-            for (let i = 0; i < this.allAppointments.length; i++) {
-                const start = new Date(this.allAppointments[i].period.startTime)
-                const end = new Date(this.allAppointments[i].period.endTime)
+                const events = []
+                for (let i = 0; i < this.allAppointments.length; i++) {
+                    const start = new Date(this.allAppointments[i].period.startTime)
+                    const end = new Date(this.allAppointments[i].period.endTime)
 
-                events.push({
-                name: "Consultation",
-                details: this.allAppointments[i],
-                start: start,
-                end: end,
-                color: 'blue',
-                timed: true,
-                })
-            }
+                    events.push({
+                    name: "Consultation",
+                    details: this.allAppointments[i],
+                    start: start,
+                    end: end,
+                    color: 'blue',
+                    timed: true,
+                    })
+                }
 
-            this.events = events
+                this.events = events
             },
         }
     }

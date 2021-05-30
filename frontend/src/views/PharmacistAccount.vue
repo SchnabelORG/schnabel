@@ -110,7 +110,7 @@
         // },
          methods: {
              refreshToken: async function() {
-                let jws = this.$store.state.jws;
+                let jws = window.localStorage.getItem('jwt');
                 if(!jws) {
                     this.$router.push("/");
                 }
@@ -118,7 +118,7 @@
             },
              getPharmacist: function() {
                 console.log("Getting pharmacist");
-                let jws = this.$store.state.jws;
+                let jws = window.localStorage.getItem('jwt');
                 console.log(jws)
                 this.axios.get("api/pharmacist", {headers:{"Authorization": "Bearer " + jws}})
                     .then(response => {
@@ -131,7 +131,7 @@
                         console.log("Failed to get patient", response.data);
                         this.refreshToken()
                             .then(response => {
-                                this.$store.state.jws = response.data;
+                                window.localStorage.jwt = response.data;
                                 this.$router.go();
                             })
                             .catch(response => {
@@ -147,7 +147,7 @@
 
             },
             save: function(){
-                let jws = this.$store.state.jws;
+                let jws = window.localStorage.getItem('jwt');
                 this.axios.put("api/pharmacist", this.pharmacist, {headers:{"Authorization": "Bearer " + jws}})
                     .then(response =>
                     {
