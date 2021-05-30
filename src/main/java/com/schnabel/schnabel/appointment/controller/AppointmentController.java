@@ -1,5 +1,4 @@
 package com.schnabel.schnabel.appointment.controller;
-
 import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
 import com.schnabel.schnabel.appointment.service.IAppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,22 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/appointment")
 public class AppointmentController {
-    private final IAppointmentService appointmentService;
+
+    private final IAppointmentService service;
 
     @Autowired
-    public AppointmentController(IAppointmentService appointmentService)
+    public AppointmentController(IAppointmentService service)
     {
-        this.appointmentService = appointmentService;
+        this.service = service;
     }
 
-    /**
-     * Get all appointments
-     * @return Page of Appointment
-     */
-    @GetMapping
-    public ResponseEntity<PagedModel<AppointmentDTO>> getAll(Pageable pageable)
+    @GetMapping("appbyemployye/{id}")
+    public ResponseEntity<PagedModel<AppointmentDTO>> getAllByEmployee(@PathVariable long id, Pageable pageable)
     {
-        return new ResponseEntity<>(appointmentService.getAllDTO(pageable), HttpStatus.OK);
+        return new ResponseEntity<>(service.getAllbyPharmacist(pageable, id), HttpStatus.OK);
     }
 
     /**
@@ -41,16 +37,15 @@ public class AppointmentController {
      * @return AppointmentDOT
      */
     @GetMapping("{id}")
-    public ResponseEntity<AppointmentDTO> get(@PathVariable long id)
-    {
-        return appointmentService.getDTO(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<AppointmentDTO> get(@PathVariable("id") Long id) {
+        return service.getDTO(id)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("appbyemployye/{id}")
-    public ResponseEntity<PagedModel<AppointmentDTO>> getAllByEmployee(@PathVariable long id, Pageable pageable)
-    {
-        return new ResponseEntity<>(appointmentService.getAllbyPharmacist(pageable, id), HttpStatus.OK);
-
+    @GetMapping("/dermatology")
+    public ResponseEntity<PagedModel<AppointmentDTO>> getDermatologicalAppts(Pageable pageable) {
+        return new ResponseEntity<>(service.getFreeDermatologistAppointments(pageable), HttpStatus.OK);
     }
 
 }

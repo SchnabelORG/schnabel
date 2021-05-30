@@ -3,9 +3,6 @@ package com.schnabel.schnabel.drugs.dto;
 
 import com.schnabel.schnabel.drugs.controller.DrugReservationController;
 import com.schnabel.schnabel.drugs.model.DrugReservation;
-import com.schnabel.schnabel.users.controller.PatientController;
-import com.schnabel.schnabel.users.dto.PatientDTO;
-import com.schnabel.schnabel.users.model.Patient;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 

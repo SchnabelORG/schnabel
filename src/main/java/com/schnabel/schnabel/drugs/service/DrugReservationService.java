@@ -6,8 +6,8 @@ import com.schnabel.schnabel.drugs.dto.DrugReservationDTO;
 import com.schnabel.schnabel.drugs.model.DrugReservation;
 import com.schnabel.schnabel.drugs.repository.IDrugReservationRepository;
 import com.schnabel.schnabel.misc.implementations.JpaService;
-import com.schnabel.schnabel.users.dto.PharmacistDTO;
 import org.springframework.data.web.PagedResourcesAssembler;
+
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -29,7 +29,6 @@ public class DrugReservationService extends JpaService<DrugReservation, Long, ID
         this.drugReservationAssembler = drugReservationAssembler;
         this.drugReservationPagedResourcesAssembler = drugReservationPagedResourcesAssembler;
     }
-
 
     @Override
     @Transactional

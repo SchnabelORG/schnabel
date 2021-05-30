@@ -27,6 +27,10 @@
 </script>
 
 <style scoped>
+    /* #pharmacist-main {
+        display: grid;
+        grid-template-columns: minmax(150px, 15vw) 1fr;
+    } */
     #main-content {
         background-color: #fafafa;
     }

@@ -25,18 +25,12 @@ public class DrugReservationController {
     private final IDrugReservationService drugReservationService;
     private final IWareHouseItemService wareHouseItemService;
     private final DrugReservationAssembler drugReservationAssembler;
-    private final PagedResourcesAssembler<DrugReservation> drugReservationPagedResourcesAssembler;
-    private final JwtUtils jwtUtils;
-
-
 
     @Autowired
     public DrugReservationController(IDrugReservationService drugReservationService, IWareHouseItemService wareHouseItemService, DrugReservationAssembler drugReservationAssembler, PagedResourcesAssembler<DrugReservation> drugReservationPagedResourcesAssembler, JwtUtils jwtUtils) {
         this.drugReservationService = drugReservationService;
         this.wareHouseItemService = wareHouseItemService;
         this.drugReservationAssembler = drugReservationAssembler;
-        this.drugReservationPagedResourcesAssembler = drugReservationPagedResourcesAssembler;
-        this.jwtUtils = jwtUtils;
     }
 
 

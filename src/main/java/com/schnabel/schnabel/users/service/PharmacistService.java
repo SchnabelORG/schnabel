@@ -1,6 +1,5 @@
 package com.schnabel.schnabel.users.service;
 
-
 import java.util.Optional;
 
 import com.schnabel.schnabel.misc.implementations.JpaService;
