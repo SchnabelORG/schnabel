@@ -59,5 +59,12 @@ public class PharmacyController
     {
         return new ResponseEntity<>(pharmacyService.getAllDTO(pageable), HttpStatus.OK);
     }
+
+    @GetMapping("check/{pharmacyName}")
+    public ResponseEntity<?> checkByName(@PathVariable("pharmacyName") String pharmacyName) {
+        return pharmacyService.findByName(pharmacyName).isPresent() ?
+            ResponseEntity.ok().build()
+            : ResponseEntity.notFound().build();
+    }
 }
 

@@ -6,50 +6,82 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
+import javax.persistence.NoResultException;
 
+import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
 import com.schnabel.schnabel.appointment.dto.AppointmentDTOAssembler;
 import com.schnabel.schnabel.appointment.model.Appointment;
 import com.schnabel.schnabel.appointment.repository.IAppointmentRepository;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.misc.model.Period;
-import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.security.util.JwtUtils;
+import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.model.Shift;
 import com.schnabel.schnabel.users.service.IDermatologistService;
 import com.schnabel.schnabel.users.service.IPharmacyAdminService;
 import com.schnabel.schnabel.users.service.IShiftService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 
 /**
- * Appointment service implementation
+ * Appointment JPA service implementation
  */
 @Service
-public class AppointmentService extends JpaService<Appointment, Long, IAppointmentRepository> implements IAppointmentService
-{
+public class AppointmentService extends JpaService<Appointment, Long, IAppointmentRepository> implements IAppointmentService {
 
+    private final AppointmentDTOAssembler dtoAsm;
+    private final PagedResourcesAssembler<Appointment> pageAsm;
     private final IShiftService shiftService;
-    private final AppointmentDTOAssembler appointmentDTOAssembler;
-    private final PagedResourcesAssembler<Appointment> appointmentPagedResourcesAssembler;
     private final IDermatologistService dermatologistService;
     private final IPharmacyAdminService pharmacyAdminService;
     private final JwtUtils jwtUtils;
 
     @Autowired
-    public AppointmentService(IAppointmentRepository repository, IShiftService shiftService, AppointmentDTOAssembler appointmentDTOAssembler, PagedResourcesAssembler<Appointment> appointmentPagedResourcesAssembler, IDermatologistService dermatologistService, IPharmacyAdminService pharmacyAdminService, JwtUtils jwtUtils)
-    {
-		  super(repository);
-          this.shiftService = shiftService;
-          this.appointmentDTOAssembler = appointmentDTOAssembler;
-          this.appointmentPagedResourcesAssembler = appointmentPagedResourcesAssembler;
-          this.dermatologistService = dermatologistService;
-          this.pharmacyAdminService = pharmacyAdminService;
-          this.jwtUtils = jwtUtils;
-	}
+    public AppointmentService(IAppointmentRepository repository, AppointmentDTOAssembler dtoAsm, PagedResourcesAssembler<Appointment> pageAsm, IShiftService shiftService, AppointmentDTOAssembler appointmentDTOAssembler, IDermatologistService dermatologistService, IPharmacyAdminService pharmacyAdminService, JwtUtils jwtUtils) {
+        super(repository);
+        this.dtoAsm = dtoAsm;
+        this.pageAsm = pageAsm;
+        this.shiftService = shiftService;
+        this.dermatologistService = dermatologistService;
+        this.pharmacyAdminService = pharmacyAdminService;
+        this.jwtUtils = jwtUtils;
+    }
+    
+    @Override
+    public Iterable<Appointment> findByFree(boolean isFree) {
+        return repository.findByFree(isFree);
+    }
+
+    @Override
+    public boolean scheduleAppointment(Long id, Patient patient) {
+        Optional<Appointment> appointment = get(id);
+        if(!appointment.isPresent() || !appointment.get().isFree()) {
+            return false;
+        }
+
+        appointment.get().setPatient(patient);
+        appointment.get().setFree(false);
+        return update(appointment.get());
+    }
+
+    @Override
+    public boolean cancelAppointment(Long id, Long patientId) {
+        
+        Optional<Appointment> appointment = get(id);
+        if (!appointment.isPresent() || !appointment.get().getPatient().getId().equals(patientId)) {
+            return false;
+        }
+
+        appointment.get().setPatient(null);
+        appointment.get().setFree(true);
+        return update(appointment.get());
+    }
 
     /**
     * Pharmacy admin define appointment
@@ -106,6 +138,7 @@ public class AppointmentService extends JpaService<Appointment, Long, IAppointme
         }
     }
 
+
     @Override
     @Transactional
     public List<Appointment> getAllByDermatologistForDay(Long dermatologistId, LocalDateTime date) 
@@ -125,4 +158,25 @@ public class AppointmentService extends JpaService<Appointment, Long, IAppointme
         }
         return appointmentsForDay;
     }
+
+    public PagedModel<AppointmentDTO> getDermatologistAppointments(Pageable pageable) {
+        Page<Appointment> appointments = repository.findDermatologistAppointments(pageable);
+        return pageAsm.toModel(appointments, dtoAsm);
+    }
+
+    @Override
+    public Optional<AppointmentDTO> getDTO(Long id) {
+        return get(id).map(dtoAsm::toModel);
+    }
+
+    @Override
+    public PagedModel<AppointmentDTO> getFreeDermatologistAppointments(Pageable pageable) {
+        try{
+            Page<Appointment> appointments = repository.findFreeDermatologistAppointments(pageable);
+            return pageAsm.toModel(appointments, dtoAsm);
+        } catch (NoResultException ignore) {
+            return pageAsm.toModel(Page.empty(), dtoAsm);
+        }
+    }
+
 }

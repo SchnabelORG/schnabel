@@ -30,9 +30,17 @@ Vue.component('sidebar', Sidebar, {
 	props: ["title", "user"],
 })
 
-
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = process.env.VUE_APP_API_ENDPOINT;
+
+Vue.mixin({
+  methods: {
+    refreshToken: async function() {
+      // TODO(Jovan): KEEP IN STORE!
+      return axios.get("api/auth/refresh", { headers: { "Authorization" : "Bearer " + localStorage.jws}});
+    }
+  },
+});
 
 new Vue({
   router: router,

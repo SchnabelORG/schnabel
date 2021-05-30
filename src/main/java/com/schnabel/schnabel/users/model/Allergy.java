@@ -2,9 +2,7 @@ package com.schnabel.schnabel.users.model;
 
 
 import com.schnabel.schnabel.drugs.model.Drug;
-import com.schnabel.schnabel.drugs.model.DrugPrice;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
-import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import lombok.*;
 
 import javax.persistence.*;

@@ -2,6 +2,7 @@ package com.schnabel.schnabel.users.service;
 
 import java.util.Optional;
 
+import com.schnabel.schnabel.appointment.service.IAppointmentService;
 import com.schnabel.schnabel.auth.service.IRefreshTokenService;
 import com.schnabel.schnabel.email.service.IMailService;
 import com.schnabel.schnabel.misc.implementations.JpaService;
@@ -20,14 +21,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class PatientService extends JpaService<Patient, Long, IPatientRepository> implements IPatientService
 {
+    private final IAppointmentService appointmentService;
     private final IMailService mailService;
     private final PasswordEncoder passwordEncoder;
     private final IRefreshTokenService refreshTokenService;
 
     @Autowired
-    public PatientService(IPatientRepository patientRepository, IMailService mailService, IRefreshTokenService refreshTokenService)
+    public PatientService(IPatientRepository patientRepository, IMailService mailService, IRefreshTokenService refreshTokenService, IAppointmentService appointmentService)
     {
         super(patientRepository);
+        this.appointmentService = appointmentService;
         this.mailService = mailService;
         this.passwordEncoder = new BCryptPasswordEncoder();
         this.refreshTokenService = refreshTokenService;
@@ -39,6 +42,24 @@ public class PatientService extends JpaService<Patient, Long, IPatientRepository
     }
 
     @Override
+    public boolean scheduleAppointment(Long apptId, String email) {
+        Optional<Patient> patient = findByEmail(email);
+        if (!patient.isPresent()) {
+            return false;
+        }
+        return appointmentService.scheduleAppointment(apptId, patient.get());
+    }
+
+    @Override
+    public boolean cancelAppointment(Long apptId, String email) {
+        Optional<Patient> patient = findByEmail(email);
+        if (!patient.isPresent()) {
+            return false;
+        }
+
+        return appointmentService.cancelAppointment(apptId, patient.get().getId());
+    }
+
     public boolean registerPatient(String name, String surname, String email, String password, Address address,
             String phoneNo) {
         String encodedPassword = passwordEncoder.encode(password);
