@@ -1,5 +1,9 @@
 package com.schnabel.schnabel.users.dto;
 
+
+import com.schnabel.schnabel.pharmacies.controller.PharmacyController;
+import com.schnabel.schnabel.pharmacies.dto.PharmacyDTO;
+
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.users.controller.PharmacyAdminController;
 import com.schnabel.schnabel.users.model.PharmacyAdmin;
@@ -14,8 +18,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * Assembles PharmacyAdminDTO
  */
 @Component
-public class PharmacyAdminDTOAssembler extends RepresentationModelAssemblerSupport<PharmacyAdmin, PharmacyAdminDTO> {
-
+public class PharmacyAdminDTOAssembler extends RepresentationModelAssemblerSupport<PharmacyAdmin, PharmacyAdminDTO>
+{
     public PharmacyAdminDTOAssembler() {
         super(PharmacyAdminController.class, PharmacyAdminDTO.class);
     }
@@ -31,14 +35,13 @@ public class PharmacyAdminDTOAssembler extends RepresentationModelAssemblerSuppo
         dto.setEmail(entity.getEmail());
         dto.setPassword(entity.getPassword());
         dto.setAddress(entity.getAddress());
-        /*Pharmacy pharmacy = entity.getPharmacy();
+        Pharmacy pharmacy = entity.getPharmacy();
         dto.setPharmacy(PharmacyDTO.builder()
             .id(pharmacy.getId())
             .name(pharmacy.getName())
             .address(pharmacy.getAddress())
             .build()
-            .add(linkTo(methodOn(PharmacyController.class).getById(pharmacy.getId())).withSelfRel()));*/
+            .add(linkTo(methodOn(PharmacyController.class).getById(pharmacy.getId())).withSelfRel()));
         return dto;
     }
 }
-

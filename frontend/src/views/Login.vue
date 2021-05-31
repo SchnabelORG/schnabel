@@ -57,7 +57,8 @@ export default {
                     console.log(r);
                     this.$store.state.jws = r.data;
                     localStorage.jws = r.data; // TODO(Jovan): TEMP!
-                    this.$router.push("user");
+                    //this.$router.push("user");
+                    this.$router.push("pharmacyadmin");
                 })
                 .catch(r => {
                     console.log(r);
