@@ -3,8 +3,10 @@ package com.schnabel.schnabel.procurement.controller;
 import java.util.Optional;
 
 import com.schnabel.schnabel.procurement.dto.OrderDTO;
+import com.schnabel.schnabel.procurement.dto.OrderRequest;
 import com.schnabel.schnabel.procurement.model.Order;
 import com.schnabel.schnabel.procurement.service.IOrderService;
+import com.schnabel.schnabel.security.util.JwtUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,10 +30,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderController 
 {
     private final IOrderService orderService;
+    private final JwtUtils jwtUtils;
+
     @Autowired
-    public OrderController(IOrderService orderService)
+    public OrderController(IOrderService orderService, JwtUtils jwtUtils)
     {
         this.orderService = orderService;
+        this.jwtUtils = jwtUtils;
     }
 
 
@@ -65,4 +73,13 @@ public class OrderController
     {
         return new ResponseEntity<>(orderService.getNewOrders(pageable, id), HttpStatus.OK);
     }
+
+    /*@PostMapping
+    public ResponseEntity<String> createNewOrder(@RequestBody OrderRequest req, @RequestHeader("Authorization") String authHeader)
+    {
+        String jws = jwtUtils.parseJwtFromAuthorizationHeader(authHeader);
+        return orderService.createNewOrder(req.getDescription(), req.getDeadline(), req.getOrderItems(), jwtUtils.getEmailFromJws(jws)) ?
+            ResponseEntity.ok("Added")
+            : ResponseEntity.badRequest().build();
+    }*/
 }
