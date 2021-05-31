@@ -26,14 +26,14 @@ public class AppointmentController {
 
     @GetMapping("{id}")
     public ResponseEntity<AppointmentDTO> get(@PathVariable("id") Long id) {
-        return service.getDTO(id)
+        return service.findByIdDTO(id)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/dermatology")
     public ResponseEntity<PagedModel<AppointmentDTO>> getDermatologicalAppts(Pageable pageable) {
-        return new ResponseEntity<>(service.getFreeDermatologistAppointments(pageable), HttpStatus.OK);
+        return new ResponseEntity<>(service.findFreeDermatologistAppointments(pageable), HttpStatus.OK);
     }
 
 }
