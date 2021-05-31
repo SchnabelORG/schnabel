@@ -30,6 +30,6 @@ public class PharmacyDTO extends RepresentationModel<PharmacyDTO> {
     private String name;
     private Address address;
     // private WareHouse wareHouse;
-    // private List<Dermatologist> dermatologists;
+    // private List<DermatologistDTO> dermatologists;
     private List<PharmacistDTO> pharmacists;
 }

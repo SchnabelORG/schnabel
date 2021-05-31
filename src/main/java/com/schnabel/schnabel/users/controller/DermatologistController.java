@@ -1,10 +1,14 @@
 package com.schnabel.schnabel.users.controller;
 
 import com.schnabel.schnabel.users.dto.DermatologistDTO;
+import com.schnabel.schnabel.users.dto.DermatologistDTOAssembler;
+import com.schnabel.schnabel.users.model.Dermatologist;
 import com.schnabel.schnabel.users.service.IDermatologistService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +25,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class DermatologistController 
 {
     private final IDermatologistService dermatologistService;
+    private final DermatologistDTOAssembler dermatologistDTOAssembler;
+    private final PagedResourcesAssembler<Dermatologist> dermatologistDTOAsm;
 
     @Autowired
-    public DermatologistController(IDermatologistService dermatologistService)
+    public DermatologistController(IDermatologistService dermatologistService, DermatologistDTOAssembler dermatologistDTOAssembler, PagedResourcesAssembler<Dermatologist> dermatologistDTOAsm)
     {
         this.dermatologistService = dermatologistService;
+        this.dermatologistDTOAssembler = dermatologistDTOAssembler;
+        this.dermatologistDTOAsm = dermatologistDTOAsm;
     }
 
     /**
@@ -48,5 +56,15 @@ public class DermatologistController
         return dermatologistService.getDTO(id)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
+    }
+
+    /**
+     * Get dermatologists by pahrmacy id
+     * @return Dermatologist
+     */
+    @GetMapping("pharmacy/{id}")
+    public ResponseEntity<PagedModel<DermatologistDTO>> getAllByPharmacyId(@PathVariable("id") Long pharmacyId, Pageable pageable) 
+    {
+        return new ResponseEntity<>(dermatologistService.findAllByPharmacy(pharmacyId, pageable), HttpStatus.OK);
     }
 }

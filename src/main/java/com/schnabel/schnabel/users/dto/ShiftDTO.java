@@ -1,9 +1,10 @@
-package com.schnabel.schnabel.appointment.dto;
+package com.schnabel.schnabel.users.dto;
+
+import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.schnabel.schnabel.users.dto.MedicalEmployeeDTO;
 
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
@@ -14,21 +15,19 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+/**
+ * Shift DTO for JSON representation
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-
-@JsonRootName("appointment")
-@Relation(collectionRelation = "appointments")
+@JsonRootName("shift")
+@Relation(collectionRelation = "shifts")
 @JsonInclude(Include.NON_NULL)
-public class AppointmentDTO extends RepresentationModel<AppointmentDTO>{
-    private Long id;
-    private double price;
-    private String date;
-    private String start;
-    private long duration;
-    private boolean free;
-    private MedicalEmployeeDTO medicalEmployee;
+public class ShiftDTO extends RepresentationModel<ShiftDTO>
+{
+    private LocalTime startTime;
+    private LocalTime endTime;
 }
