@@ -10,5 +10,5 @@ import com.schnabel.schnabel.promotion.model.Promotion;
  */
 public interface IPromotionService extends IJpaService<Promotion, Long>
 {
-    public boolean createPromotion(String description, LocalDateTime startTime, LocalDateTime endTime, String authHeader);
+    public boolean createPromotion(String description, LocalDateTime startTime, LocalDateTime endTime, String email);
 }

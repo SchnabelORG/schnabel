@@ -7,13 +7,10 @@ import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.misc.model.Period;
 import com.schnabel.schnabel.promotion.model.Promotion;
 import com.schnabel.schnabel.promotion.repository.IPromotionRepository;
-import com.schnabel.schnabel.security.util.JwtUtils;
-import com.schnabel.schnabel.users.model.PharmacyAdmin;
 import com.schnabel.schnabel.users.service.IPharmacyAdminService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 /**
  * Promotion service implementation
@@ -21,23 +18,19 @@ import org.springframework.util.StringUtils;
 @Service
 public class PromotionService extends JpaService<Promotion, Long, IPromotionRepository> implements IPromotionService
 {
-    private final JwtUtils jwtUtils;
     private final IPharmacyAdminService pharmacyAdminService;
 
     @Autowired
-    public PromotionService(IPromotionRepository promotionRepository, JwtUtils jwtUtils, IPharmacyAdminService pharmacyAdminService)
+    public PromotionService(IPromotionRepository promotionRepository, IPharmacyAdminService pharmacyAdminService)
     {
         super(promotionRepository);
-        this.jwtUtils = jwtUtils;
         this.pharmacyAdminService = pharmacyAdminService;
     }
 
     @Override
-    public boolean createPromotion(String description, LocalDateTime startTime, LocalDateTime endTime, String authHeader) 
+    public boolean createPromotion(String description, LocalDateTime startTime, LocalDateTime endTime, String email) 
     {
-        //Optional<PharmacyAdmin> pharmacyAdmin = getPharmacyByPharmacyAdmin(authHeader);
-        
-        Promotion newPromotion = new Promotion(description, new Period(startTime, endTime));
+        Promotion newPromotion = new Promotion(description, new Period(startTime, endTime), pharmacyAdminService.findByEmail(email).get().getPharmacy());
         Optional<Promotion> promotion = add(newPromotion);
         if(promotion.isPresent())
         {
@@ -45,23 +38,5 @@ public class PromotionService extends JpaService<Promotion, Long, IPromotionRepo
         }
         return false;
     }
-
-    /*private Optional<PharmacyAdmin> getPharmacyByPharmacyAdmin(String authHeader)
-    {
-        Optional<PharmacyAdmin> pharmacyAdmin = null;
-        try {
-            String jws;
-            if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
-                jws = authHeader.substring(7, authHeader.length());
-                if(jws != null) {
-                    String email = jwtUtils.getEmailFromJws(jws);
-                    pharmacyAdmin = pharmacyAdminService.findByEmail(email);
-                }
-            }
-        } catch (Exception e) {
-            
-        }
-        return pharmacyAdmin;
-    }*/
 }
 

@@ -4,6 +4,11 @@
         id="promotion-card"
         elevation="2">
             <v-card-title>New promotion</v-card-title>
+            <b class="err">{{error}}</b>
+            <div v-if="success" id="success-form">
+                    <p id="success-icon"><i class="fa fa-check"></i></p>
+                    <p>Promotion created!</p>
+                </div>
             <v-textarea
               v-model="description"
               color="teal"
@@ -115,42 +120,43 @@
                 validFrom: '',
                 validUntil: '',
                 description: '',
+                error: '',
+                success: false,
                 rules: {
                     required: value => !!value || 'Required.',
                 },
             }
         },
         methods: {
-            refreshToken: async function() {
-                let jws = this.$store.state.jws;
-                if(!jws) {
-                    this.$router.push("/");
-                }
-                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + jws}});
-            },
-
             createPromotion: function() {
-                /*this.refreshToken().then(response => {
-                    
-                    let promotion = { description: this.description, startTime: this.validFrom, endTime: this.validUntil };
-
-                    this.axios.post("/api/promotion", promotion, {headers:{"Authorization":"Bearer " + this.$store.state.jws}})
-                        .then(response =>
-                        {
-                            console.log(response);
+                if(endTime < startTime)
+                {
+                    this.error = 'Invalid time interval';
+                    return;
+                }
+                let promotionRequest = { description: this.description, startTime: this.validFrom, endTime: this.validUntil };
+                this.refreshToken()
+                .then(rr => {
+                    localStorage.jws = rr.data;
+                    this.axios.post("api/promotion",
+                    promotionRequest,
+                    { headers: {
+                        "Authorization": "Bearer " + localStorage.jws,
+                        "Content-Type" : "application/json",
+                    }})
+                        .then(() => {
+                            this.success = true;
                             this.description = '';
                             this.validFrom = '';
-                            this.validUntil = '';
+                            this.description = '';
                         })
-                        .catch(response =>
-                        {
-                            console.log(response.data);
+                        .catch(() => {
+                            this.error = 'Could not create the promotion';
                         });
                 })
-                .catch(response => {
-                    console.log(r.data);
+                .catch(() => {
                     this.$router.push("/");
-                });*/
+                });
             },
         },
     }

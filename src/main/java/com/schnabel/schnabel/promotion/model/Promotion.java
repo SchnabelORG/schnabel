@@ -31,9 +31,10 @@ public class Promotion implements IIdentifiable<Long>
     @JoinColumn(name = "pharmacy_id")
     private Pharmacy pharmacy;
 
-    public Promotion(String description, Period period) 
+    public Promotion(String description, Period period, Pharmacy pharmacy) 
     {   
         this.description = description;
         this.period = period;
+        this.pharmacy = pharmacy;
     }
 }

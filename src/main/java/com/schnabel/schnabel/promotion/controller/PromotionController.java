@@ -1,14 +1,11 @@
 package com.schnabel.schnabel.promotion.controller;
 
-import com.schnabel.schnabel.promotion.dto.PromotionDTO;
-import com.schnabel.schnabel.promotion.dto.PromotionDTOAssembler;
 import com.schnabel.schnabel.promotion.dto.PromotionRequest;
 import com.schnabel.schnabel.promotion.service.IPromotionService;
+import com.schnabel.schnabel.security.util.JwtUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -23,23 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class PromotionController
 {
     private final IPromotionService promotionService;
-    private final PromotionDTOAssembler promotionDTOAsm;
+    private final JwtUtils jwtUtils;
 
     @Autowired
-    public PromotionController(IPromotionService promotionService, PromotionDTOAssembler promotionDTOAsm)
+    public PromotionController(IPromotionService promotionService, JwtUtils jwtUtils)
     {
         this.promotionService = promotionService;
-        this.promotionDTOAsm = promotionDTOAsm;
-    }
-
-    /**
-     * Get promotion by id
-     * @return Promotion
-     */
-    @GetMapping("{id}")
-    public ResponseEntity<PromotionDTO> get(@PathVariable Long id)
-    {
-        return promotionService.get(id).map(promotionDTOAsm::toModel).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        this.jwtUtils = jwtUtils;
     }
 
      /**
@@ -50,7 +37,8 @@ public class PromotionController
     @PostMapping()
     public ResponseEntity<String> createPromotion(@RequestBody PromotionRequest promotionRequest, @RequestHeader("Authorization") String authHeader)
     {
-        return promotionService.createPromotion(promotionRequest.getDescription(), promotionRequest.getStartTime(), promotionRequest.getEndTime(), authHeader)? 
+        String jws = jwtUtils.parseJwtFromAuthorizationHeader(authHeader);
+        return promotionService.createPromotion(promotionRequest.getDescription(), promotionRequest.getStartTime(), promotionRequest.getEndTime(), jwtUtils.getEmailFromJws(jws))? 
         ResponseEntity.ok("Added")
             : ResponseEntity.badRequest().build();
     }
