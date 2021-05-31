@@ -1,10 +1,7 @@
 package com.schnabel.schnabel.pharmacies.controller;
 
-import java.beans.PropertyEditorSupport;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.TimeZone;
 
 import com.schnabel.schnabel.pharmacies.dto.PharmacyDTO;
 import com.schnabel.schnabel.pharmacies.service.IPharmacyService;
@@ -14,9 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -80,15 +75,4 @@ public class PharmacyController
     public ResponseEntity<PagedModel<PharmacyDTO>> getWithPhAppts(@PathVariable("date") LocalDateTime startTime, Pageable pageable) {
         return new ResponseEntity<>(pharmacyService.findByFreePharmacistAppointment(startTime, pageable), HttpStatus.OK);
     }
-
-    @InitBinder
-    public void initBinder(final WebDataBinder webDataBinder) {
-        webDataBinder.registerCustomEditor(LocalDateTime.class, new PropertyEditorSupport() {
-            @Override
-            public void setAsText(String timestamp) throws IllegalArgumentException {
-                setValue(LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.valueOf(timestamp)), TimeZone.getDefault().toZoneId()));
-            }
-        });
-    }
-
 }
