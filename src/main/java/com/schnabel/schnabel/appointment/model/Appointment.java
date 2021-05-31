@@ -47,7 +47,7 @@ public class Appointment implements IIdentifiable<Long>
     private boolean free;
 
     @ManyToOne
-    @JoinColumn(name = "patient_id")
+    @JoinColumn(name = "patient_id", nullable = true)
     private Patient patient;
 
     @ManyToOne
@@ -60,4 +60,14 @@ public class Appointment implements IIdentifiable<Long>
 
     @OneToOne(mappedBy = "appointment")
     private AppointmentReport report;
+
+
+    public Appointment(double price, Period period, boolean free, MedicalEmployee medicalEmployee, Pharmacy pharmacy)
+    {
+        this.price = price;
+        this.period = period;
+        this.free = free;
+        this.medicalEmployee = medicalEmployee;
+        this.pharmacy = pharmacy;
+    }
 }

@@ -27,6 +27,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
+
 @JsonRootName("appointment")
 @Relation(collectionRelation = "appointments")
 @JsonInclude(Include.NON_NULL)

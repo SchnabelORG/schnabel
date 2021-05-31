@@ -1,9 +1,7 @@
 package com.schnabel.schnabel.appointment.dto;
-
 import com.schnabel.schnabel.appointment.controller.AppointmentController;
 import com.schnabel.schnabel.appointment.model.Appointment;
-import com.schnabel.schnabel.users.controller.PatientController;
-import com.schnabel.schnabel.users.dto.PatientDTO;
+import com.schnabel.schnabel.users.dto.MedicalEmployeeDTO;
 import com.schnabel.schnabel.users.model.MedicalEmployee;
 import com.schnabel.schnabel.users.model.Patient;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
