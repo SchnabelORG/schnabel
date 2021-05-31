@@ -1,11 +1,14 @@
 package com.schnabel.schnabel.promotion.controller;
 
+import com.schnabel.schnabel.promotion.dto.PromotionDTO;
 import com.schnabel.schnabel.promotion.dto.PromotionRequest;
 import com.schnabel.schnabel.promotion.service.IPromotionService;
 import com.schnabel.schnabel.security.util.JwtUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -27,6 +30,13 @@ public class PromotionController
     {
         this.promotionService = promotionService;
         this.jwtUtils = jwtUtils;
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<PromotionDTO> get(@PathVariable("id") Long id) {
+        return promotionService.findByIdDTO(id)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
     }
 
      /**

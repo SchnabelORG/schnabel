@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.misc.model.Period;
+import com.schnabel.schnabel.promotion.dto.PromotionDTO;
+import com.schnabel.schnabel.promotion.dto.PromotionDTOAssembler;
 import com.schnabel.schnabel.promotion.model.Promotion;
 import com.schnabel.schnabel.promotion.repository.IPromotionRepository;
 import com.schnabel.schnabel.users.service.IPharmacyAdminService;
@@ -18,13 +20,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class PromotionService extends JpaService<Promotion, Long, IPromotionRepository> implements IPromotionService
 {
+    private final PromotionDTOAssembler dtoAsm;
     private final IPharmacyAdminService pharmacyAdminService;
 
     @Autowired
-    public PromotionService(IPromotionRepository promotionRepository, IPharmacyAdminService pharmacyAdminService)
+    public PromotionService(IPromotionRepository promotionRepository, PromotionDTOAssembler dtoAsm, IPharmacyAdminService pharmacyAdminService)
     {
         super(promotionRepository);
+        this.dtoAsm = dtoAsm;
         this.pharmacyAdminService = pharmacyAdminService;
+    }
+
+    @Override
+    public Optional<PromotionDTO> findByIdDTO(Long id) {
+        return get(id).map(dtoAsm::toModel);
     }
 
     @Override

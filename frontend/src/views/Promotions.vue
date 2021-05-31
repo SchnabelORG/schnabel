@@ -129,12 +129,12 @@
         },
         methods: {
             createPromotion: function() {
-                if(endTime < startTime)
+                if(this.validUntil < this.validFrom)
                 {
                     this.error = 'Invalid time interval';
                     return;
                 }
-                let promotionRequest = { description: this.description, startTime: this.validFrom, endTime: this.validUntil };
+                let promotionRequest = { description: this.description, startTime: new Date(this.validFrom).toISOString(), endTime: new Date(this.validUntil).toISOString() };
                 this.refreshToken()
                 .then(rr => {
                     localStorage.jws = rr.data;
@@ -148,7 +148,7 @@
                             this.success = true;
                             this.description = '';
                             this.validFrom = '';
-                            this.description = '';
+                            this.validUntil = '';
                         })
                         .catch(() => {
                             this.error = 'Could not create the promotion';
