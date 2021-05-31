@@ -3,7 +3,8 @@
         <v-card
         id="define-card"
         elevation="2">
-            <v-card-title>New appointment</v-card-title>
+        <b class="err">{{error}}</b>
+            <v-card-title>New free appointment</v-card-title>
             <v-combobox v-model="dermatologist"
                         :items="dermatologists"
                         return-object="true"
@@ -28,13 +29,12 @@
             <div>
                 <v-datetime-picker v-model="endTime" date-format="dd.MM.yyyy." time-format="HH:mm" :min="startTime" label="To"/>
             </div>
-            <v-btn class='primary' elevation="1" @click="createAppointment()" >
+            <v-btn class='primary' elevation="1" @click="createAppointment()" :disabled="!dermatologist || !price || !startTime || !endTime">
                 Create
             </v-btn>
         </v-card>
     </div>
 </template>
-<!-- :disabled="!dermatologist || !price || !startTime || !endTime"-->
 <script>
     export default {
         data() {
@@ -46,44 +46,24 @@
                 endTime: '',
                 price: '',
                 pharmacyId: '',
+                error: '',
                 rules: {
                     required: value => !!value || 'Required.',
                 },
             }
         },
         methods: {
-            getDermatologists: function() {
-                console.log("Usao");
-                this.axios.get("api/dermatologist/pharmacy/" + 1)
-                    .then(response => {
-                        this.dermatologists = response.data;
-                        console.log("Jesam");
-                    })
-                    .catch(response => {
-                        console.log("Failed to get dermatologists", response.data);
-                    });
-            },
-
             getPharmacyAdmin: function() {
                 this.refreshToken().then(response => {
-                    console.log(response.data);
-                    let jws = this.$store.state.jws;
-                    this.axios.get("api/pharmacyadmin", {headers:{"Authorization": "Bearer " + jws}})
+                    localStorage.jws = response.data;
+                    this.axios.get("api/pharmacyadmin", {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
                         .then(response => {
                             this.pharmacyAdmin = response.data;
                             this.pharmacyId = this.pharmacyAdmin.pharmacy.id;
+                            this.getDermatologists();
                         })
                         .catch(response => {
                             console.log("Failed to get pharmacy admin", response.data);
-                            this.refreshToken()
-                                .then(response => {
-                                    this.$store.state.jws = response.data;
-                                    this.$router.go();
-                                })
-                                .catch(response => {
-                                    console.log(response.data);
-                                    this.$router.push("/");
-                                });
                         });
                    })
                     .catch(response => {
@@ -92,12 +72,14 @@
                 });
             },
 
-            refreshToken: async function() {
-                let jws = this.$store.state.jws;
-                if(!jws) {
-                    this.$router.push("/");
-                }
-                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + jws}});
+            getDermatologists: function() {
+                this.axios.get("api/dermatologist/pharmacy/" + this.pharmacyId)
+                    .then(response => {
+                        this.dermatologists = response.data._embedded.dermatologists;
+                    })
+                    .catch(response => {
+                        console.log("Failed to get dermatologists", response.data);
+                    });
             },
 
             createAppointment: function() {
@@ -108,9 +90,9 @@
                 }
                 this.refreshToken().then(response => {
                     console.log(response.data);
-                    let jws = this.$store.state.jws;
-                    let appointmentRequest = { startTime: this.startTime, endTime: this.endTime, price: this.price, dermatologistId: '2' };
-                    this.axios.post("/api/appointment", appointmentRequest, {headers:{"Authorization": "Bearer " + jws}})
+                    localStorage.jws = response.data;
+                    let appointmentRequest = { startTime: this.startTime, endTime: this.endTime, price: this.price, dermatologistId: this.dermatologist.id };
+                    this.axios.post("/api/appointment", appointmentRequest, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
                         .then(response =>
                         {
                             console.log(response);
@@ -118,12 +100,24 @@
                             this.price = '';
                             this.startTime = '';
                             this.endTime = '';
+                            this.error = 'Successfully added';
                         })
                         .catch(response =>
                         {
+                            this.axios.get("/api/shift/medicalemployeepharmacy/" + this.dermatologist.id + "/" + this.pharmacyId)
+                                .then(response =>
+                                {
+                                    console.log(response.data);
+                                    let shift = response.data;
+                                    alert("Shift -> start: " + shift.startTime + " end: " + shift.endTime);
+                                }).catch(response => {
+                                    console.log(response.data);
+                                });
+
+                            this.error = "Defining new free appointment unsuccessfull";
                             console.log(response.data);
                         });
-             })
+                })
                .catch(response => {
                     console.log(response.data);
                     this.$router.push("/");
@@ -132,7 +126,6 @@
         },
         mounted() {
             this.getPharmacyAdmin();
-			this.getDermatologists();
 		}
     }
 </script>

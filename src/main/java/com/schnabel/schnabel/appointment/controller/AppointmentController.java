@@ -51,7 +51,8 @@ public class AppointmentController {
     @PostMapping
     public ResponseEntity<String> defineAppointment(@RequestBody AppointmentRequest req, @RequestHeader("Authorization") String authHeader)
     {
-        return service.defineAppointment(req.getStartTime(), req.getEndTime(), req.getPrice(), req.getDermatologistId(), authHeader) ?
+        String jws = jwtUtils.parseJwtFromAuthorizationHeader(authHeader);
+        return service.defineAppointment(req.getStartTime(), req.getEndTime(), req.getPrice(), req.getDermatologistId(), jwtUtils.getEmailFromJws(jws)) ?
             ResponseEntity.ok("Added")
             : ResponseEntity.badRequest().build();
     }

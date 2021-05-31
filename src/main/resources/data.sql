@@ -25,7 +25,8 @@ insert into warehouseitem(id, available, quantity, drug_id, pharmacy_id) values(
 insert into patients(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated, phone_no) values (1, 'Jovan', 'Ivosevic', 'ivos.jovan@protonmail.ch', '$2a$10$IevzxrzynxfElyhc1zuUferMhXfAWbDRsob0cXmCc6jEETM7xhCiG', '21000', 'Novi Sad', 'Balzakova', '69', true, '0607671370');
 insert into refresh_tokens(id, email, token) values(1, 'ivos.jovan@protonmail.ch', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpdm9zLmpvdmFuQHByb3Rvbm1haWwuY2giLCJleHAiOjE2MzgxOTAzOTl9.G_Z0-9Q5keOYK3RuZnrhEAF3a23d8rhYY3fowYV9GbO7owggRkQ1M4A4oq6th9p1UDBDBDl8jFqJpf5K0cyJ1Q');
 
-insert into dermatologists(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated) values (2, 'Mamma', 'Mia', 'mamma@gmail.com', '123', '11000', 'Beograd', 'Bulevar', '1', true);
+insert into dermatologists(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated) values (2, 'Marija', 'Maric', 'marija@gmail.com', '123', '11000', 'Beograd', 'Bulevar', '1', true);
+insert into dermatologists(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated) values (6, 'Milan', 'Milanovic', 'milan@gmail.com', '321', '11000', 'Beograd', 'Bulevar', '1', true);
 
 insert into suppliers(id, "name", surname, email, "password", city, postcode, street, street_no, firm, is_activated) values (3, 'Zoki', 'Zokic', 'zokidoo@gmail.com', '123', '11000', 'Beograd', 'Bulevar', '1', 'Dobavljac Zoki', true);
 
@@ -45,8 +46,10 @@ insert into orderitems(id, quantity, drug_id, order_id) values (1, 1, 1, 1);
 insert into offers(id, price, date_of_delivery, order_id, supplier_id) values (1, 500, '2021-05-05', 1, 3);
 
 insert into dermatologist_pharmacy(dermatologist_id, pharmacy_id) values (2, 1);
+insert into dermatologist_pharmacy(dermatologist_id, pharmacy_id) values (2, 2);
+insert into dermatologist_pharmacy(dermatologist_id, pharmacy_id) values (6, 1);
 
-insert into promotions(id, "description", start_time, end_time, pharmacy_id) values (1, 'New promotion!!!', '2021-05-04','2021-06-04', 1);
+insert into promotions(id, "description", start_time, end_time, pharmacy_id) values (111, 'New promotion!!!', '2021-05-04','2021-06-04', 1);
 
 insert into vacations(id, start_time, end_time, pharmacy_id, medical_employee_id) values (1, '2021-06-01', '2021-06-11', 1, 5);
 
@@ -87,7 +90,11 @@ insert into availability_request values(2, 5, 2, 5, 1);
 insert into availability_request values(3, 7, 3, 5, 1);
 
 
-insert into shifts(id, start_time, end_time, pharmacy_id, medical_employee_id) values(1, '08:00:00', '14:00:00', 1, 2);
+insert into shifts(id, start_time, end_time, pharmacy_id, medical_employee_id) values(111, '08:00:00', '14:00:00', 1, 2);
+insert into shifts(id, start_time, end_time, pharmacy_id, medical_employee_id) values(222, '15:00:00', '16:00:00', 2, 2);
+insert into shifts(id, start_time, end_time, pharmacy_id, medical_employee_id) values(333, '08:00:00', '17:00:00', 1, 6);
+
+
 -- INSERT INTO hospitals("name", api_key) VALUES('sacred_heart_hospital', 'apishh1234');
 -- INSERT INTO hospitals("name", api_key) VALUES('princeton_plainsboro', 'apipp1234');
 -- INSERT INTO hospitals("name", api_key) VALUES('limanska_ambulanta', 'apila1234');

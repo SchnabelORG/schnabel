@@ -54,13 +54,7 @@ public class PharmacyAdminController
      */
     @GetMapping
     public ResponseEntity<PharmacyAdminDTO> getByJws(@RequestHeader("Authorization") String authHeader) {
-        String jws;
-        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
-            jws = authHeader.substring(7, authHeader.length());
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
-
+        String jws = jwtUtils.parseJwtFromAuthorizationHeader(authHeader);
         String email = jwtUtils.getEmailFromJws(jws);
         return pharmacyAdminService.findByEmail(email)
             .map(pharmacyAdminDTOAsm::toModel)

@@ -28,11 +28,11 @@ public class Shift implements IIdentifiable<Long>
     @Column(nullable = false)
     private LocalTime endTime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pharmacy_id")
     private Pharmacy pharmacy;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "medical_employee_id")
     private MedicalEmployee medicalEmployee;
 

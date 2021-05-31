@@ -41,7 +41,7 @@
                 <li><router-link to="/pharmacyadmin/drug">Drugs</router-link></li>
                 <li><router-link to="/pharmacyadmin/makeorder">New order</router-link></li>
                 <li><router-link to="/pharmacyadmin/order">Orders</router-link></li>
-                <li><router-link to="/pharmacyadmin/promotion">Promotion</router-link></li>
+                <li><router-link to="/pharmacyadmin/promotion">New promotion</router-link></li>
                 </ul>
             </div>
             </div>

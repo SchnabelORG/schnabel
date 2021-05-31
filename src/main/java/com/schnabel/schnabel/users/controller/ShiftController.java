@@ -1,5 +1,7 @@
 package com.schnabel.schnabel.users.controller;
 
+import java.util.Optional;
+
 import com.schnabel.schnabel.users.dto.ShiftDTO;
 import com.schnabel.schnabel.users.dto.ShiftDTOAssembler;
 import com.schnabel.schnabel.users.model.Shift;
@@ -58,5 +60,14 @@ public class ShiftController
         return shiftService.get(id).map(shiftDTOAssembler::toModel).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
-    
+    /**
+     * Get shift by dermatologist id and pharmacy id
+     * @return Shift
+     */
+    @GetMapping("medicalemployeepharmacy/{medical_employee_id}/{pharmacy_id}")
+    public ResponseEntity<Optional<ShiftDTO>> getShiftMedicalEmployeePharmacy(@PathVariable("medical_employee_id") Long medicalEmployeeId, @PathVariable("pharmacy_id") Long pharmacyId)
+    {
+        return new ResponseEntity<>(shiftService.getShiftMedicalEmployeePharmacy(medicalEmployeeId, pharmacyId), HttpStatus.OK);
+    }
+
 }

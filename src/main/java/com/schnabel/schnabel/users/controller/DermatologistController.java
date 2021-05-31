@@ -65,9 +65,6 @@ public class DermatologistController
     @GetMapping("pharmacy/{id}")
     public ResponseEntity<PagedModel<DermatologistDTO>> getAllByPharmacyId(@PathVariable("id") Long pharmacyId, Pageable pageable) 
     {
-        Page<Dermatologist> dermatologists = dermatologistService.findAllByPharmacy(pharmacyId, pageable);
-        //Page<Dermatologist> dermatologists = dermatologistService.findByPharmaciesId(pharmacyId, pageable);
-        PagedModel<DermatologistDTO> pagedModel = dermatologistDTOAsm.toModel(dermatologists, dermatologistDTOAssembler);
-        return new ResponseEntity<>(pagedModel, HttpStatus.OK);
+        return new ResponseEntity<>(dermatologistService.findAllByPharmacy(pharmacyId, pageable), HttpStatus.OK);
     }
 }

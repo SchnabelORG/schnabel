@@ -17,4 +17,5 @@ public interface IShiftService extends IJpaService<Shift, Long>
     Optional<ShiftDTO> getDTO(Long id);
     PagedModel<ShiftDTO> getAllDTO(Pageable pageable);
     Optional<Shift> getAllByMedicalEmployee(Long medicalEmployeeId);
+    Optional<ShiftDTO> getShiftMedicalEmployeePharmacy(Long medicalEmployeeId, Long pharmacyId);
 }

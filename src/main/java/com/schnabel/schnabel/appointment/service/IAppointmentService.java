@@ -22,7 +22,7 @@ public interface IAppointmentService extends IJpaService<Appointment, Long> {
     PagedModel<AppointmentDTO> getDermatologistAppointments(Pageable pageable);
     PagedModel<AppointmentDTO> getFreeDermatologistAppointments(Pageable pageable);
     Optional<AppointmentDTO> getDTO(Long id);
-    boolean defineAppointment(LocalDateTime startTime, LocalDateTime endTime, double price, Long dermatologistId, String authHeader);
+    boolean defineAppointment(LocalDateTime startTime, LocalDateTime endTime, double price, Long dermatologistId, String email);
     List<Appointment> getAllByDermatologistForDay(Long dermatologistId, LocalDateTime date);
 }
 

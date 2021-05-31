@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.users.service;
 
+import java.time.LocalTime;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -53,5 +54,13 @@ public class ShiftService extends JpaService<Shift, Long, IShiftRepository> impl
     public Optional<Shift> getAllByMedicalEmployee(Long medicalEmployeeId) 
     {
         return repository.findByMedicalEmployeeId(medicalEmployeeId);
+    }
+
+    @Override
+    @Transactional
+    public Optional<ShiftDTO> getShiftMedicalEmployeePharmacy(Long medicalEmployeeId, Long pharmacyId)
+    {
+        Optional<Shift> shift = repository.findShiftMedicalEmployeePharmacy(medicalEmployeeId, pharmacyId);
+        return shift.map(shiftDTOAssembler::toModel);
     }
 }

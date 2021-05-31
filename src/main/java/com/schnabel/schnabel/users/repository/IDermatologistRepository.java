@@ -2,8 +2,6 @@ package com.schnabel.schnabel.users.repository;
 
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import com.schnabel.schnabel.users.model.Dermatologist;
 
 import org.springframework.data.domain.Page;
@@ -21,16 +19,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface IDermatologistRepository extends JpaRepository<Dermatologist, Long>
 {
     Optional<Dermatologist> findByEmail(String email);
-
-    /*@Query(value = "SELECT d.id, d.name, d.surname, d.password, d.city, d.postcode, d.street, d.street_no, d.email, d.is_activated"
-    + " FROM dermatologists d"
-    + " INNER JOIN dermatologist_pharmacy dp"
-    + " ON d.id = dp.dermatologist_id AND dp.pharmacy_id = pharmacyId", nativeQuery = true)
-    Page<Dermatologist> findAllDermatologistsPharmacy(@Param("pharmacyId") Long id, Pageable pageable);*/
-
-    @Query(value = "SELECT d.id, d.name, d.surname, d.password, d.city, d.postcode, d.street, d.street_no, d.email, d.is_activated"
-    + " FROM dermatologists d"
-    + " INNER JOIN dermatologist_pharmacy dp"
-    + " ON d.id = dp.dermatologist_id", nativeQuery = true)
-    Page<Dermatologist> findAllDermatologistsPharmacy(Long id, Pageable pageable);
+    @Query("SELECT DISTINCT d FROM Dermatologist d join d.pharmacies p WHERE p.id = :pharmacy_id")
+    Page<Dermatologist> findAllDermatologistsPharmacy(@Param("pharmacy_id") Long id, Pageable pageable);
 }
