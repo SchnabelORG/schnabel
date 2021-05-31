@@ -4,6 +4,11 @@
         id="promotion-card"
         elevation="2">
             <v-card-title>New promotion</v-card-title>
+            <b class="err">{{error}}</b>
+            <div v-if="success" id="success-form">
+                    <p id="success-icon"><i class="fa fa-check"></i></p>
+                    <p>Promotion created!</p>
+                </div>
             <v-textarea
               v-model="description"
               color="teal"
@@ -40,7 +45,7 @@
                     no-title
                     scrollable
                     :min="new Date().toISOString().substr(0, 10)"
-                    :max="validUntil"
+                    :max="this.validUntil"
                 >
                     <v-spacer></v-spacer>
                     <v-btn
@@ -82,7 +87,7 @@
                         v-model="validUntil"
                         no-title
                         scrollable
-                        :min="validFrom"
+                        :min="this.validFrom"
                     >
                         <v-spacer></v-spacer>
                         <v-btn
@@ -115,6 +120,8 @@
                 validFrom: '',
                 validUntil: '',
                 description: '',
+                error: '',
+                success: false,
                 rules: {
                     required: value => !!value || 'Required.',
                 },
@@ -122,11 +129,35 @@
         },
         methods: {
             createPromotion: function() {
-
+                if(this.validUntil < this.validFrom)
+                {
+                    this.error = 'Invalid time interval';
+                    return;
+                }
+                let promotionRequest = { description: this.description, startTime: new Date(this.validFrom).toISOString(), endTime: new Date(this.validUntil).toISOString() };
+                this.refreshToken()
+                .then(rr => {
+                    localStorage.jws = rr.data;
+                    this.axios.post("api/promotion",
+                    promotionRequest,
+                    { headers: {
+                        "Authorization": "Bearer " + localStorage.jws,
+                        "Content-Type" : "application/json",
+                    }})
+                        .then(() => {
+                            this.success = true;
+                            this.description = '';
+                            this.validFrom = '';
+                            this.validUntil = '';
+                        })
+                        .catch(() => {
+                            this.error = 'Could not create the promotion';
+                        });
+                })
+                .catch(() => {
+                    this.$router.push("/");
+                });
             },
-        },
-        mounted() {
-
         },
     }
 </script>

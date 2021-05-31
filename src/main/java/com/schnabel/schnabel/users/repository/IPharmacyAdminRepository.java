@@ -15,4 +15,3 @@ public interface IPharmacyAdminRepository extends JpaRepository<PharmacyAdmin, L
 {
     Optional<PharmacyAdmin> findByEmail(String email);
 }
-

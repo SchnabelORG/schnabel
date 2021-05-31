@@ -15,6 +15,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+
 /**
  * PharmacyAdmin DTO for JSON representation
  */
@@ -25,6 +26,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 @JsonRootName("pharmacyadmin")
 @Relation(collectionRelation = "pharmacyadmins")
+
 @JsonInclude(Include.NON_NULL)
 public class PharmacyAdminDTO extends RepresentationModel<PharmacyAdminDTO> 
 {
