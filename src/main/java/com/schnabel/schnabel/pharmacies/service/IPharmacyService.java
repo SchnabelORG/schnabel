@@ -20,4 +20,5 @@ public interface IPharmacyService extends IJpaService<Pharmacy, Long>
     PagedModel<PharmacyDTO> getAllDTO(Pageable pageable);
     PagedModel<PharmacyDTO> filteredSearch(Map<String, String> params, Pageable pageable);
     boolean registerPharmacy(PharmacyCreationDTO creationDTO);
+    Optional<Pharmacy> findByName(String name);
 }

@@ -1,14 +1,16 @@
 package com.schnabel.schnabel.users.controller;
 
+import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
 import com.schnabel.schnabel.security.util.JwtUtils;
 import com.schnabel.schnabel.users.dto.PatientDTO;
 import com.schnabel.schnabel.users.dto.PatientDTOAssembler;
 import com.schnabel.schnabel.users.dto.RegisterRequest;
-import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.service.IPatientService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,15 +30,13 @@ public class PatientController
 {
     private final IPatientService patientService;
     private final PatientDTOAssembler patientDTOAsm;
-    private final PagedResourcesAssembler<Patient> patientPageAsm;
     private final JwtUtils jwtUtils;
 
     @Autowired
-    public PatientController(IPatientService patientService, PatientDTOAssembler patientDTOAsm, PagedResourcesAssembler<Patient> patientPageAsm, JwtUtils jwtUtils)
+    public PatientController(IPatientService patientService, PatientDTOAssembler patientDTOAsm, JwtUtils jwtUtils)
     {
         this.patientService = patientService;
         this.patientDTOAsm = patientDTOAsm;
-        this.patientPageAsm = patientPageAsm;
         this.jwtUtils = jwtUtils;
     }
 
@@ -93,5 +93,27 @@ public class PatientController
             ResponseEntity.ok("Registered")
             : ResponseEntity.badRequest().build();
 
+    }
+
+    @GetMapping("apptderm")
+    public ResponseEntity<PagedModel<AppointmentDTO>> getAppointments(Pageable pageable, @RequestHeader("Authorization") String auth) {
+        String email = jwtUtils.getEmailFromJws(jwtUtils.parseJwtFromAuthorizationHeader(auth));
+        return new ResponseEntity<>(patientService.findDermAppts(email, pageable), HttpStatus.OK);
+    }
+
+    @PostMapping("appointment")
+    public ResponseEntity<String> scheduleAppointment(@RequestBody long apptId, @RequestHeader("Authorization") String auth) {
+        String jws = jwtUtils.parseJwtFromAuthorizationHeader(auth);
+        return patientService.scheduleAppointment(apptId, jwtUtils.getEmailFromJws(jws)) ?
+            ResponseEntity.ok("Scheduled")
+            : ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("appointemnt/cancel")
+    public ResponseEntity<String> cancelAppointment(@RequestBody long apptId, @RequestHeader("Authorization") String auth) {
+        String email = jwtUtils.getEmailFromJws(jwtUtils.parseJwtFromAuthorizationHeader(auth));
+        return patientService.cancelAppointment(apptId, email) ?
+            ResponseEntity.ok("Cancelled")
+            : ResponseEntity.badRequest().build();
     }
 }

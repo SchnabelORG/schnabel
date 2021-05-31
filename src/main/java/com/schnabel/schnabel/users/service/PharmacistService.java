@@ -1,7 +1,5 @@
 package com.schnabel.schnabel.users.service;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import com.schnabel.schnabel.misc.implementations.JpaService;

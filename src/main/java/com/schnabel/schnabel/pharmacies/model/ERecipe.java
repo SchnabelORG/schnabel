@@ -1,7 +1,5 @@
 package com.schnabel.schnabel.pharmacies.model;
 
-
-import com.schnabel.schnabel.drugs.model.Drug;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
 import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.model.Pharmacist;

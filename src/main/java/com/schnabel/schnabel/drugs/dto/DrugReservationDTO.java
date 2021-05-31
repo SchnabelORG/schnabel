@@ -3,13 +3,10 @@ package com.schnabel.schnabel.drugs.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.schnabel.schnabel.misc.model.Address;
-import com.schnabel.schnabel.users.dto.PatientDTO;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**

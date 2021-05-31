@@ -3,6 +3,8 @@ package com.schnabel.schnabel.security.util;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.schnabel.schnabel.security.service.SchnabelUserDetails;
 
 import org.slf4j.Logger;
@@ -80,5 +82,4 @@ public class JwtUtils {
 
         return null;
     }
-
 }

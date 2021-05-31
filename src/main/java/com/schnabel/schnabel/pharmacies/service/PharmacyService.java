@@ -64,4 +64,9 @@ public class PharmacyService extends JpaService<Pharmacy, Long, IPharmacyReposit
         return pharmacyPageAsm.toModel(pharmacies, pharmacyDTOasm);
     }
 
+    @Override
+    public Optional<Pharmacy> findByName(String name) {
+        return repository.findByName(name);
+    }
+
 }

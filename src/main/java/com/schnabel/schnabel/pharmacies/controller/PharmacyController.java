@@ -69,4 +69,11 @@ public class PharmacyController
                 ResponseEntity.ok("Registered")
                 : ResponseEntity.badRequest().build();
     }
+    
+    @GetMapping("check/{pharmacyName}")
+    public ResponseEntity<?> checkByName(@PathVariable("pharmacyName") String pharmacyName) {
+        return pharmacyService.findByName(pharmacyName).isPresent() ?
+            ResponseEntity.ok().build()
+            : ResponseEntity.notFound().build();
+    }
 }
