@@ -2,11 +2,7 @@ package com.schnabel.schnabel.appointment.controller;
 import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
 import com.schnabel.schnabel.appointment.dto.AppointmentRequest;
 import com.schnabel.schnabel.appointment.service.IAppointmentService;
-<<<<<<< HEAD
-=======
 import com.schnabel.schnabel.security.util.JwtUtils;
-
->>>>>>> develop
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;

@@ -134,10 +134,16 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
 
 
     @Override
+    public Optional<AppointmentDTO> getDTO(Long id) {
+        return Optional.empty();
+    }
+
+    @Override
     @Transactional
     public PagedModel<AppointmentDTO> getAllbyPharmacist(Pageable pageable, Long pharmacystId) {
-        Page<Appointment> appointments = repository.findByMedicalEmployeeId(pageable, pharmacystId);
-        return pageAsm.toModel(appointments, dtoAsm);
+//        Page<Appointment> appointments = repository.findByMedicalEmployeeId(pageable, pharmacystId);
+//        return pageAsm.toModel(appointments, dtoAsm);
+        return null;
     }
 
     @Override
