@@ -3,6 +3,9 @@ package com.schnabel.schnabel.drugs.model;
 import lombok.*;
 
 import javax.persistence.*;
+
+import com.schnabel.schnabel.misc.model.IIdentifiable;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class DrugPrice {
+public class DrugPrice implements IIdentifiable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
