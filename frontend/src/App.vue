@@ -20,4 +20,9 @@
     .v-application > .title {
         font-family: "Poppins", sans-serif !important;
     }
+
+    .err {
+        color: #f00;
+        font-weight: 500;
+    }
 </style>

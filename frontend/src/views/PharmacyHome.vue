@@ -39,26 +39,14 @@
         <div class="card">
           <div class="card-header primary--text">
             <i class="fa fa-clock-o" aria-hidden="true"></i>
-            <p class="info--text">Timing schedule</p>
-            <h3 class="primary--text">Working hours</h3>
+            <p class="info--text">Dermatologist appointment</p>
+            <h3 class="primary--text">Schedule a visit to a dermatologist</h3>
           </div>
           <div class="card-body">
-            <ul class="w-hours unstyled-list info--text">
-              <li>
-                Sun - Wed:
-                <span>8:00 - 17:00</span>
-              </li>
-              <li>
-                Thu - Fri:
-                <span>9:00 - 17:00</span>
-              </li>
-              <li>
-                Sat - Sun:
-                <span>10:00 - 17:00</span>
-              </li>
-            </ul>
+            <p class="info--text">Find a dermatologist and schedule an appointment with him.</p>
           </div>
           <div class="card-footer">
+            <v-btn class="primary" :to="'/dermappointment/' + pharmacyName">Schedule</v-btn>
           </div>
         </div>
       </div>
@@ -130,7 +118,7 @@
             return {
                 address: 'Balzakova 48, Novi Sad',
                 avarageGrade: '4.5',
-                pharmacyName: 'Schnabel',
+                pharmacyName: 'Schnabel Liman',
             }
         },
     }
