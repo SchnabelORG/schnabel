@@ -89,18 +89,18 @@ insert into allergies values(1, 'Sta god', 4, 1);
 insert into complaints values(1, null, 'Ana Anic neljubazna full', 1);
 insert into complaints values(2, 'Nema se novaca. Srdacno, Mika Mikic', 'Zasto imate samo jednu apoteku pobogu?', 1);
 
-insert into recipes values(1, 1, 1, 5);
-insert into recipe_items values(1, 2, 1, 1);
-insert into recipe_items values(2, 5, 5, 1);
+-- insert into recipes values(1, 1, 1, 5);
+-- insert into recipe_items values(1, 2, 1, 1);
+-- insert into recipe_items values(2, 5, 5, 1);
 
 insert into drugs_reservations(id, end_reservation, quantity, reservation_date, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values(1, '2021-05-20', 2, '2021-05-04', true, 1, 1, 1);
 insert into drugs_reservations(id, end_reservation, quantity, reservation_date, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values(2, '2020-05-20', 2, '2020-05-04', false, 1, 1, 1);
 insert into drugs_reservations(id, end_reservation, quantity, reservation_date, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values(3, '2021-07-20', 2, '2021-05-04', false, 1, 1, 1);
 
 
-insert into availability_request values(1, 10, 1, 5, 1);
-insert into availability_request values(2, 5, 2, 5, 1);
-insert into availability_request values(3, 7, 3, 5, 1);
+insert into availability_request values(1, 10, 1, 6, 1);
+insert into availability_request values(2, 5, 2, 6, 1);
+insert into availability_request values(3, 7, 3, 6, 1);
 
 
 insert into shifts(id, start_time, end_time, pharmacy_id, medical_employee_id) values(111, '08:00:00', '14:00:00', 1, 2);
