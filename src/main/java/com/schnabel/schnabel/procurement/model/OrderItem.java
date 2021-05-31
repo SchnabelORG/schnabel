@@ -16,8 +16,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "orderitems")
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
