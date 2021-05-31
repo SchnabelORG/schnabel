@@ -19,10 +19,12 @@ public interface IAppointmentService extends IJpaService<Appointment, Long> {
     Iterable<Appointment> findByFree(boolean isFree);
     boolean scheduleAppointment(Long id, Patient patient);
     boolean cancelAppointment(Long id, Long patientId);
-    PagedModel<AppointmentDTO> getDermatologistAppointments(Pageable pageable);
-    PagedModel<AppointmentDTO> getFreeDermatologistAppointments(Pageable pageable);
-    Optional<AppointmentDTO> getDTO(Long id);
     boolean defineAppointment(LocalDateTime startTime, LocalDateTime endTime, double price, Long dermatologistId, String email);
     List<Appointment> getAllByDermatologistForDay(Long dermatologistId, LocalDateTime date);
+    PagedModel<AppointmentDTO> findDermatologistAppointments(Pageable pageable);
+    PagedModel<AppointmentDTO> findFreeDermatologistAppointments(Pageable pageable);
+    PagedModel<AppointmentDTO> findByPatientId(Long patientId, Pageable pageable);
+    Optional<AppointmentDTO> findByIdDTO(Long id);
+    PagedModel<AppointmentDTO> findDermApptByPatientId(Long patientId, Pageable pageable);
 }
 

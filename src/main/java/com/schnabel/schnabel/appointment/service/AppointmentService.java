@@ -152,23 +152,43 @@ public class AppointmentService extends JpaService<Appointment, Long, IAppointme
         return appointmentsForDay;
     }
 
-    public PagedModel<AppointmentDTO> getDermatologistAppointments(Pageable pageable) {
+    public PagedModel<AppointmentDTO> findDermatologistAppointments(Pageable pageable) {
         Page<Appointment> appointments = repository.findDermatologistAppointments(pageable);
         return pageAsm.toModel(appointments, dtoAsm);
     }
 
     @Override
-    public Optional<AppointmentDTO> getDTO(Long id) {
+    public Optional<AppointmentDTO> findByIdDTO(Long id) {
         return get(id).map(dtoAsm::toModel);
     }
 
     @Override
-    public PagedModel<AppointmentDTO> getFreeDermatologistAppointments(Pageable pageable) {
+    public PagedModel<AppointmentDTO> findFreeDermatologistAppointments(Pageable pageable) {
         try{
             Page<Appointment> appointments = repository.findFreeDermatologistAppointments(pageable);
             return pageAsm.toModel(appointments, dtoAsm);
         } catch (NoResultException ignore) {
-            return pageAsm.toModel(Page.empty(), dtoAsm);
+            return PagedModel.empty();
+        }
+    }
+
+    @Override
+    public PagedModel<AppointmentDTO> findByPatientId(Long patientId, Pageable pageable) {
+        try {
+            Page<Appointment> appointments = repository.findByPatientId(patientId, pageable);
+            return pageAsm.toModel(appointments, dtoAsm);
+        } catch (NoResultException ignore) {
+            return PagedModel.empty();
+        }
+    }
+
+    @Override
+    public PagedModel<AppointmentDTO> findDermApptByPatientId(Long patientId, Pageable pageable) {
+        try {
+            Page<Appointment> appointments = repository.findDermApptByPatientId(patientId, pageable);
+            return pageAsm.toModel(appointments, dtoAsm);
+        } catch (NoResultException ignore) {
+            return PagedModel.empty();
         }
     }
 

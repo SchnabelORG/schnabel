@@ -53,15 +53,11 @@ insert into promotions(id, "description", start_time, end_time, pharmacy_id) val
 
 insert into vacations(id, start_time, end_time, pharmacy_id, medical_employee_id) values (1, '2021-06-01', '2021-06-11', 1, 5);
 
---insert into appointments values (111, false, '2020-12-20 12:30:00', '2020-12-20 12:15:00', 3000, 5, 1, 1);
---insert into appointments values (222, false, '2020-11-20 08:45:00', '2020-11-20 08:15:00', 5000, 2, 1, 1);
 
----insert into appointments values (1, true, '2020-12-20 12:30:00', '2020-12-20 12:15:00', 3000, 5, 1, 1);
----insert into appointments values (2, true, '2020-11-20 08:45:00', '2020-11-20 08:15:00', 5000, 2, 1, 1);
-
-insert into appointments (id, price, start_time, end_time, free, patient_id, pharmacy_id, medical_employee_id) values (111, 2000, '2020-12-20 12:15:00', '2020-12-20 12:30:00', false, 1, 1, 2);
-insert into appointments (id, price, start_time, end_time, free, patient_id, pharmacy_id, medical_employee_id) values (222, 2000, '2021-05-31 12:00:00', '2021-05-31 12:30:00', false, 1, 1, 2);
-
+insert into appointments values (111, true, '2021-06-02 12:30:00', '2021-06-02 12:15:00', 3000, 5, 1, 1);
+insert into appointments values (222, false, '2021-06-02 08:45:00', '2021-06-02 08:15:00', 5000, 2, 1, 1);
+insert into appointments values (333, false, '2021-06-03 09:45:00', '2021-06-03 09:00:00', 5000, 2, 1, 1);
+insert into appointments values (444, true, '2021-06-03 08:45:00', '2021-06-03 08:15:00', 5000, 2, null, 1);
 
 insert into app_report values(1, 'BO', 111);
 insert into app_report values(2, 'BO', 222);
