@@ -19,14 +19,15 @@ public interface IPharmacyRepository extends JpaRepository<Pharmacy, Long>, JpaS
 {
     Optional<Pharmacy> findByName(String name);
 
-    @Query(value = "SELECT p.id, p.city, p.postcode, p.street, p.street_no, p.name, p.score"
-            + " FROM pharmacies p"
+    @Query(value = "SELECT ph.*"
+            + " FROM pharmacies ph"
+            + " WHERE NOT EXISTS (SELECT NULL"
+            + " FROM pharmacists p"
             + " INNER JOIN appointments a"
-            + " ON p.id = a.pharmacy_id"
-            + " WHERE a.free = 'T'"
+            + " ON p.id = a.medical_employee_id"
+            + " AND ph.id = p.pharmacy_id"
             + " AND a.start_time <= :start"
-            + " AND a.end_time >= :start"
-            + " GROUP BY p.id",
+            + " AND a.end_time >= :end)",
         nativeQuery = true)
-    Page<Pharmacy> findByFreePharmacistAppointment(@Param("start") LocalDateTime start, Pageable pageable);
+    Page<Pharmacy> findByFreePharmacistAppointment(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end, Pageable pageable);
 }

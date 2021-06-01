@@ -113,7 +113,7 @@ export default {
             this.refreshToken()
                 .then(rr => {
                     localStorage.jws = rr.data;
-                    this.axios.post("api/patient/appointment",
+                    this.axios.post("api/patient/apptderm",
                     parseInt(this.selected.id),
                     { headers: {
                         "Authorization": "Bearer " + localStorage.jws,

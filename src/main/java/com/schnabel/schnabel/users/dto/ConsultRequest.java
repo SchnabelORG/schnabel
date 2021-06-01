@@ -9,15 +9,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * DTO for looking up pharmacists without appointments
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FreePharmacistLookupRequest {
-    private Long pharmacyId;
+public class ConsultRequest {
     
+    private Long pharmacistId;
     @JsonDeserialize(using = UnixToLocalDateTimeConverter.class)
     private LocalDateTime start;
 }

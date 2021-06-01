@@ -25,6 +25,7 @@ public class PharmacistService extends JpaService<Pharmacist, Long, IPharmacistR
 
     private final PharmacistDTOAssembler dtoAsm;
     private final PagedResourcesAssembler<Pharmacist> pageAsm;
+    private static final long CONSULT_DURATION_MINUTES = 15;
 
     @Autowired
     public PharmacistService(IPharmacistRepository repository, PharmacistDTOAssembler pharmacistDTOAssembler, PagedResourcesAssembler<Pharmacist> pharmacistPageAsm)
@@ -42,7 +43,7 @@ public class PharmacistService extends JpaService<Pharmacist, Long, IPharmacistR
 
     @Override
     public PagedModel<PharmacistDTO> findFreeByPharmacy(FreePharmacistLookupRequest req, Pageable pageable) {
-        Page<Pharmacist> pharmacists = repository.findFreeByPharmacy(req.getPharmacyId(), req.getPeriod().getStartTime(), req.getPeriod().getEndTime(), pageable);
+        Page<Pharmacist> pharmacists = repository.findFreeByPharmacy(req.getPharmacyId(), req.getStart(), req.getStart().plusMinutes(CONSULT_DURATION_MINUTES), pageable);
         return pageAsm.toModel(pharmacists, dtoAsm);
     }
 

@@ -26,7 +26,7 @@ public class AppointmentDTOAssembler extends RepresentationModelAssemblerSupport
     dto.add(linkTo(methodOn(AppointmentController.class).get(entity.getId())).withSelfRel());
     dto.setId(entity.getId());
     dto.setPrice(entity.getPrice());
-    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
     dto.setDate(entity.getPeriod().getStartTime().format(dateFormatter));
     dto.setStart(entity.getPeriod().getStartTime().format(timeFormatter));

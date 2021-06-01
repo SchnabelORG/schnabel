@@ -1,8 +1,8 @@
 -- -- TODO(Jovan): Move to separate .sql files
 
-insert into pharmacies("name", city, postcode, street, street_no, score) values('Schnabel Liman', 'Novi Sad', '21000', 'Balzakova', '24a', 4);
-insert into pharmacies("name", city, postcode, street, street_no, score) values('Schnabel Grbavica', 'Novi Sad', '21000', 'Aleksa Santica', '2', 3);
-insert into pharmacies("name", city, postcode, street, street_no, score) values('Schnabel Beograd', 'Beograd', '11000', 'Proleterska', '4b', 4);
+insert into pharmacies("name", city, postcode, street, street_no, score, consult_price) values('Schnabel Liman', 'Novi Sad', '21000', 'Balzakova', '24a', 4, 2000);
+insert into pharmacies("name", city, postcode, street, street_no, score, consult_price) values('Schnabel Grbavica', 'Novi Sad', '21000', 'Aleksa Santica', '2', 3, 3000);
+insert into pharmacies("name", city, postcode, street, street_no, score, consult_price) values('Schnabel Beograd', 'Beograd', '11000', 'Proleterska', '4b', 4, 1570);
 
 insert into drugs values(1, 'anestetik', 'lidokain 50mg');
 insert into drugs values(2, 'anestetik', 'prokain 100mg');
@@ -53,11 +53,11 @@ insert into vacations(id, start_time, end_time, pharmacy_id, medical_employee_id
 -- derm. ids: 2,
 -- pharm. ids: 5, 6
 -- patient ids: 1,
-insert into appointments(id, free, end_time, start_time, price, medical_employee_id, patient_id, pharmacy_id) values (1, false, '2021-06-20 12:30:00', '2021-06-20 12:15:00', 3000, 5, 1, 1);
-insert into appointments(id, free, end_time, start_time, price, medical_employee_id, patient_id, pharmacy_id) values (2, false, '2021-06-01 08:45:00', '2021-06-01 08:15:00', 5000, 2, 1, 1);
-insert into appointments(id, free, end_time, start_time, price, medical_employee_id, patient_id, pharmacy_id) values (3, true, '2021-06-01 09:45:00', '2021-06-01 09:00:00', 5000, 2, null, 1);
-insert into appointments(id, free, end_time, start_time, price, medical_employee_id, patient_id, pharmacy_id) values (4, true, '2021-06-02 08:45:00', '2021-06-02 08:15:00', 5000, 5, null, 1);
-insert into appointments(id, free, end_time, start_time, price, medical_employee_id, patient_id, pharmacy_id) values (5, true, '2021-06-02 08:45:00', '2021-06-02 08:15:00', 5000, 6, null, 2);
+insert into appointments(free, end_time, start_time, price, medical_employee_id, patient_id, pharmacy_id) values (false, '2021-06-20 12:30:00', '2021-06-20 12:15:00', 3000, 5, 1, 1);
+insert into appointments(free, end_time, start_time, price, medical_employee_id, patient_id, pharmacy_id) values (false, '2021-06-01 08:45:00', '2021-06-01 08:15:00', 5000, 2, 1, 1);
+insert into appointments(free, end_time, start_time, price, medical_employee_id, patient_id, pharmacy_id) values (true, '2021-06-01 09:45:00', '2021-06-01 09:00:00', 5000, 2, null, 1);
+insert into appointments(free, end_time, start_time, price, medical_employee_id, patient_id, pharmacy_id) values (true, '2021-06-02 08:45:00', '2021-06-02 08:15:00', 5000, 5, null, 1);
+insert into appointments(free, end_time, start_time, price, medical_employee_id, patient_id, pharmacy_id) values (true, '2021-06-02 08:45:00', '2021-06-02 08:15:00', 5000, 6, null, 2);
 
 insert into app_report values(1, 'BO', 1);
 insert into app_report values(2, 'BO', 2);

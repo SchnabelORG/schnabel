@@ -48,6 +48,7 @@ public class Pharmacy implements IIdentifiable<Long>
     @Min(0)
     @Max(5)
     private int score;
+    private double consultPrice;
 
     public Pharmacy(Long id, String name, Address address, int score)
     {

@@ -36,5 +36,5 @@ AND p.pharmacy_id = 1;*/
             + " AND a.free = 'F')"
             + " AND p.pharmacy_id = :pharmacy_id",
         nativeQuery = true)
-    Page<Pharmacist> findFreeByPharmacy(@Param("pharmacy_id") Long pharmacyId, @Param("start") LocalDateTime start, LocalDateTime end, Pageable pageable);
+    Page<Pharmacist> findFreeByPharmacy(@Param("pharmacy_id") Long pharmacyId, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end, Pageable pageable);
 }
