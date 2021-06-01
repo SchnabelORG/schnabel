@@ -37,4 +37,11 @@ public class OrderItem implements IIdentifiable<Long>
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
+
+    public OrderItem(int quantity, Drug drug, Order order)
+    {
+        this.quantity = quantity;
+        this.drug = drug;
+        this.order = order;
+    }
 }

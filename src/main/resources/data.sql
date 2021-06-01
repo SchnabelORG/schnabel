@@ -42,7 +42,7 @@ insert into pharmacists(id, "name", surname, email, "password", city, postcode, 
 
 insert into refresh_tokens(id, email, token) values(3, 'rzupunski@gmail.com', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyenVwdW5za2lAZ21haWwuY29tIiwiZXhwIjoxNjM4MTgwNzM5fQ.CRizdEz-jRFayMYiY0JmYf9G550CHqPnm1acY6hmZjMs0qtvnz-NhmtG5JxL9Z3GjQtXzlerO1k0CPiEKidGlg');
 
-insert into orders(id, deadline, "description", pharmacyadmin_id, pharmacy_id, order_status) values (1, '2021-05-10', 'My order', 4, 1, 'CREATED');
+insert into orders(id, deadline, "description", pharmacyadmin_id, pharmacy_id, order_status) values (111, '2021-05-10', 'My order', 4, 1, 'CREATED');
 
 
 insert into orderitems(id, quantity, drug_id, order_id) values (111, 1, 111, 111);

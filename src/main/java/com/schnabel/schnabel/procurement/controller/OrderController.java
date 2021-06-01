@@ -82,12 +82,12 @@ public class OrderController
         return new ResponseEntity<>(orderService.getCreatedOrdersByPharmacyId(pharmacyId, pageable), HttpStatus.OK);
     }
 
-    /*@PostMapping
+    @PostMapping
     public ResponseEntity<String> createNewOrder(@RequestBody OrderRequest req, @RequestHeader("Authorization") String authHeader)
     {
         String jws = jwtUtils.parseJwtFromAuthorizationHeader(authHeader);
         return orderService.createNewOrder(req.getDescription(), req.getDeadline(), req.getOrderItems(), jwtUtils.getEmailFromJws(jws)) ?
             ResponseEntity.ok("Added")
             : ResponseEntity.badRequest().build();
-    }*/
+    }
 }

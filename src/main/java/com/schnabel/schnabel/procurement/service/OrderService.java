@@ -1,10 +1,13 @@
 package com.schnabel.schnabel.procurement.service;
 
+import com.schnabel.schnabel.drugs.service.IDrugService;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.procurement.dto.OrderDTO;
 import com.schnabel.schnabel.procurement.dto.OrderDTOAssembler;
+import com.schnabel.schnabel.procurement.dto.OrderItemRequest;
 import com.schnabel.schnabel.procurement.model.Order;
 import com.schnabel.schnabel.procurement.model.OrderItem;
+import com.schnabel.schnabel.procurement.model.OrderStatus;
 import com.schnabel.schnabel.procurement.repository.IOrderRepository;
 import com.schnabel.schnabel.users.service.IPharmacyAdminService;
 
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,13 +32,17 @@ public class OrderService extends JpaService<Order, Long, IOrderRepository> impl
     private final OrderDTOAssembler orderDTOAssembler;
     private final PagedResourcesAssembler<Order> orderPagedResourcesAssembler;
     private final IPharmacyAdminService pharmacyAdminService;
+    private final IDrugService drugService;
+    private final IOrderItemService orderItemService;
 
-    public OrderService(IOrderRepository repository, OrderDTOAssembler orderDTOAssembler, PagedResourcesAssembler<Order> orderPagedResourcesAssembler, IPharmacyAdminService pharmacyAdminService)
+    public OrderService(IOrderRepository repository, OrderDTOAssembler orderDTOAssembler, PagedResourcesAssembler<Order> orderPagedResourcesAssembler, IPharmacyAdminService pharmacyAdminService, IDrugService drugService, IOrderItemService orderItemService)
     {
 		super(repository);
         this.orderDTOAssembler = orderDTOAssembler;
         this.orderPagedResourcesAssembler = orderPagedResourcesAssembler;
         this.pharmacyAdminService = pharmacyAdminService;
+        this.drugService = drugService;
+        this.orderItemService = orderItemService;
     }
 
     @Override
@@ -74,16 +82,31 @@ public class OrderService extends JpaService<Order, Long, IOrderRepository> impl
     }
 
     @Override
-    public boolean createNewOrder(String description, LocalDate deadline, List<OrderItem> orderItems, String email) 
+    public boolean createNewOrder(String description, LocalDate deadline, List<OrderItemRequest> orderItemRequests, String email) 
     {
-        Order newOrder = new Order(description, deadline, orderItems, pharmacyAdminService.findByEmail(email).get(), pharmacyAdminService.findByEmail(email).get().getPharmacy());
+        Order newOrder = new Order(description, deadline, pharmacyAdminService.findByEmail(email).get(), pharmacyAdminService.findByEmail(email).get().getPharmacy(), OrderStatus.CREATED);
         Optional<Order> order = add(newOrder);
         if(order.isPresent())
         {
-            return true;
+            return addOrderItemsToOrder(orderItemRequests, order.get());
         }
         return false;
     }
+
+    private boolean addOrderItemsToOrder(List<OrderItemRequest> orderItemRequests, Order order)
+    {
+        List<OrderItem> orderItems = new ArrayList<OrderItem>();
+        for (OrderItemRequest orderItemRequest : orderItemRequests) 
+        {
+            OrderItem newOrderItem = new OrderItem(orderItemRequest.getQuantity(), drugService.get(orderItemRequest.getDrugId()).get(), order);
+            Optional<OrderItem> orderItem = orderItemService.add(newOrderItem);
+            if(!orderItem.isPresent())
+            {
+                return false;
+            }
+            orderItems.add(orderItem.get());
+        }
+        order.setOrderItems(orderItems);
+        return update(order);
+    }
 }
-
-

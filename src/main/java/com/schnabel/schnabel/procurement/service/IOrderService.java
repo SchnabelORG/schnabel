@@ -2,8 +2,8 @@ package com.schnabel.schnabel.procurement.service;
 
 import com.schnabel.schnabel.misc.interfaces.IJpaService;
 import com.schnabel.schnabel.procurement.dto.OrderDTO;
+import com.schnabel.schnabel.procurement.dto.OrderItemRequest;
 import com.schnabel.schnabel.procurement.model.Order;
-import com.schnabel.schnabel.procurement.model.OrderItem;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
@@ -22,5 +22,5 @@ public interface IOrderService extends IJpaService<Order, Long>
     PagedModel<OrderDTO> getNonExpired(Pageable pageable);
     PagedModel<OrderDTO> getNewOrders(Pageable pageable, Long id);
     PagedModel<OrderDTO> getCreatedOrdersByPharmacyId(Long pharmacyId, Pageable pageable);
-    boolean createNewOrder(String description, LocalDate deadline, List<OrderItem> orderItems, String email);
+    boolean createNewOrder(String description, LocalDate deadline, List<OrderItemRequest> orderItems, String email);
 }

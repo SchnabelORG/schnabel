@@ -28,7 +28,7 @@ public class SchnabelApplication {
 				registry.addMapping("/**")
 				.allowCredentials(true)
 				.allowedHeaders("*")
-				.allowedOrigins("http://localhost:8080")
+				.allowedOrigins("http://localhost:8082")
 				.allowedMethods("GET", "PUT", "POST", "DELETE", "OPTIONS");
 			}
 		};

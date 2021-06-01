@@ -49,11 +49,11 @@ public class Order implements IIdentifiable<Long>
     @Column
     private OrderStatus orderStatus;
 
-    public Order(String description, LocalDate deadline, List<OrderItem> orderItems, PharmacyAdmin pharmacyAdmin, Pharmacy pharmacy) {
+    public Order(String description, LocalDate deadline, PharmacyAdmin pharmacyAdmin, Pharmacy pharmacy, OrderStatus orderStatus) {
         this.description = description;
         this.deadline = deadline;
-        this.orderItems = new ArrayList<OrderItem>();
         this.pharmacyAdmin = pharmacyAdmin;
         this.pharmacy = pharmacy;
+        this.orderStatus = orderStatus;
     }
 }
