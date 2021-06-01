@@ -6,10 +6,10 @@ import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 
 import com.schnabel.schnabel.misc.implementations.JpaService;
-import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
-import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTOAssembler;
 import com.schnabel.schnabel.pharmacies.model.WareHouseItem;
 import com.schnabel.schnabel.pharmacies.repository.IWareHouseItemRepository;
+import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
+import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTOAssembler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
+
 
 /**
  * Implementation of WareHouseItem service
@@ -35,13 +36,19 @@ public class WareHouseItemService extends JpaService<WareHouseItem, Long, IWareH
         this.pageAsm = pageAsm;
     }
 
+    /*@Override
+    public Optional<WareHouseItem> findWareHouseItemByPharmacyAndDrugId(Long drugId, Long pharmacyId) {
+        return Optional.empty();
+    }*/
+
     @Override
     public Optional<WareHouseItemDTO> findByIdDTO(Long id) {
         return get(id).map(dtoAssembler::toModel);
     }
 
     @Override
-    public PagedModel<WareHouseItemDTO> findByPharmacyId(Long pharmacyId, Pageable pageable)
+    @Transactional
+    public PagedModel<WareHouseItemDTO> findAllByPharmacyId(Long pharmacyId, Pageable pageable)
     {
         try {
             Page<WareHouseItem> warehouseitems = repository.findByPharmacyId(pharmacyId, pageable);

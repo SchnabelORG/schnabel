@@ -31,8 +31,13 @@ public class WareHouseItemController
             .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * Get warehouseitems by pharmacy id
+     * @return WareHouseItemDTO
+     */
     @GetMapping("pharmacy/{id}")
-    public ResponseEntity<PagedModel<WareHouseItemDTO>> getWareHouseItemsByPharmacy(@PathVariable("id") Long pharmacyId, Pageable pageable) {
-        return new ResponseEntity<>(wareHouseItemService.findByPharmacyId(pharmacyId, pageable), HttpStatus.OK);
+    public ResponseEntity<PagedModel<WareHouseItemDTO>> getAllByPharmacyId(@PathVariable("id") Long pharmacyId, Pageable pageable) 
+    {
+        return new ResponseEntity<>(wareHouseItemService.findAllByPharmacyId(pharmacyId, pageable), HttpStatus.OK);
     }
 }

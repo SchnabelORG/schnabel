@@ -56,9 +56,13 @@ export default {
                 .then(r => {
                     console.log(r);
                     this.$store.state.jws = r.data;
+                    //window.localStorage.jwt = r.data;
+                    this.$router.push("pharmacist");
+
+                    // this.$store.state.jws = r.data;
                     localStorage.jws = r.data; // TODO(Jovan): TEMP!
-                    //this.$router.push("user");
-                    this.$router.push("pharmacyadmin");
+                    this.$router.push("user");
+                    //this.$router.push("pharmacyadmin");
                 })
                 .catch(r => {
                     console.log(r);

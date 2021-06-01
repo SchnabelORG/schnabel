@@ -5,8 +5,9 @@ import lombok.*;
 import javax.persistence.*;
 
 import com.schnabel.schnabel.misc.model.IIdentifiable;
+import com.schnabel.schnabel.pharmacies.model.WareHouseItem;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "drugprice")
@@ -24,12 +25,12 @@ public class DrugPrice implements IIdentifiable<Long> {
     private double price;
 
     @Column(name = "price_start_date", nullable = false)
-    private LocalDateTime priceStartDate;
+    private LocalDate priceStartDate;
 
     @Column(name = "price_end_date", nullable = true)
-    private LocalDateTime priceEndDate;
+    private LocalDate priceEndDate;
 
-    @ManyToOne
-    @JoinColumn(name = "drug_id")
-    private Drug drug;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "warehouseitem_id")
+    private WareHouseItem wareHouseItem;
 }
