@@ -8,10 +8,15 @@ import java.util.Optional;
 
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
+
 /**
  * WareHouseItem service interface
  */
-public interface IWareHouseItemService extends IJpaService<WareHouseItem, Long> {
-    Optional<WareHouseItem> findWareHouseItemByPharmacyAndDrugId(Long drugId, Long pharmacyId);
-    Optional<WareHouseItemDTO> findByIdDTO(Long id);
+public interface IWareHouseItemService 
+{
+    Optional<WareHouseItemDTO> findByIdDTO(Long id);   
+    PagedModel<WareHouseItemDTO> findAllByPharmacyId(Long pharmacyId, Pageable pageable);
+    //Optional<WareHouseItem> findWareHouseItemByPharmacyAndDrugId(Long drugId, Long pharmacyId);
 }

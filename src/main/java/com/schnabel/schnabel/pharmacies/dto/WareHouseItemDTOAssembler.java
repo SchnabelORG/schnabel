@@ -1,7 +1,10 @@
 package com.schnabel.schnabel.pharmacies.dto;
 
+import com.schnabel.schnabel.drugs.controller.DrugController;
 import com.schnabel.schnabel.drugs.controller.DrugPriceController;
+import com.schnabel.schnabel.drugs.dto.DrugDTO;
 import com.schnabel.schnabel.drugs.dto.DrugPriceDTO;
+import com.schnabel.schnabel.drugs.model.Drug;
 import com.schnabel.schnabel.drugs.model.DrugPrice;
 import com.schnabel.schnabel.pharmacies.controller.PharmacyController;
 import com.schnabel.schnabel.pharmacies.controller.WareHouseItemController;
@@ -32,12 +35,27 @@ public class WareHouseItemDTOAssembler extends RepresentationModelAssemblerSuppo
         dto.setId(entity.getId());
         dto.setQuantity(entity.getQuantity());
         dto.setAvailable(entity.getAvailable());
-        DrugPrice drugPrice = entity.getDrugPrice();         
+        DrugPrice drugPrice = entity.getPriceForToday();  
+        if (drugPrice == null) 
+        {
+            dto.setDrugPrice(DrugPriceDTO.builder()
+            .id(-1l)
+            .price(0)
+            .build());
+        } else 
+        {      
         dto.setDrugPrice(DrugPriceDTO.builder()
             .id(drugPrice.getId())
             .price(drugPrice.getPrice())
             .build()
             .add(linkTo(methodOn(DrugPriceController.class).get(drugPrice.getId())).withSelfRel()));
+        }
+        Drug drug = entity.getDrug();
+        dto.setDrug(DrugDTO.builder()
+            .id(drug.getId())
+            .name(drug.getName())
+            .build()
+            .add(linkTo(methodOn(DrugController.class).get(drug.getId())).withSelfRel()));
         Pharmacy pharmacy = entity.getPharmacy();
         dto.setPharmacy(PharmacyDTO.builder()
             .id(pharmacy.getId())
