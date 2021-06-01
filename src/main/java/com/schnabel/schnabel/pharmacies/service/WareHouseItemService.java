@@ -1,16 +1,18 @@
 package com.schnabel.schnabel.pharmacies.service;
 
-import java.util.Optional;
-
 import com.schnabel.schnabel.misc.implementations.JpaService;
-import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
-import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTOAssembler;
 import com.schnabel.schnabel.pharmacies.model.WareHouseItem;
 import com.schnabel.schnabel.pharmacies.repository.IWareHouseItemRepository;
+import java.util.Optional;
+import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
+import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTOAssembler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
 
 /**
  * Implementation of WareHouseItem service
@@ -27,6 +29,11 @@ public class WareHouseItemService extends JpaService<WareHouseItem, Long, IWareH
         super(repository);
         this.dtoAssembler = dtoAssembler;
         this.pageAsm = pageAsm;
+    }
+
+    @Override
+    public Optional<WareHouseItem> findWareHouseItemByPharmacyAndDrugId(Long drugId, Long pharmacyId) {
+        return Optional.empty();
     }
 
     @Override
