@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.pharmacies.model;
 
+import com.schnabel.schnabel.drugs.model.Drug;
 import com.schnabel.schnabel.drugs.model.DrugPrice;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
 
@@ -28,9 +29,13 @@ public class WareHouseItem implements IIdentifiable<Long>
     @Column
     private int available;
 
+    /*@ManyToOne
+    @JoinColumn(name = "drug_id")
+    private DrugPrice drugPrice;*/
+
     @ManyToOne
     @JoinColumn(name = "drug_id")
-    private DrugPrice drugPrice;
+    private Drug drug;
 
     @ManyToOne
     @JoinColumn(name="pharmacy_id")

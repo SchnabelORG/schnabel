@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 import com.schnabel.schnabel.misc.model.IIdentifiable;
+import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 
 import java.time.LocalDateTime;
 
@@ -32,4 +33,8 @@ public class DrugPrice implements IIdentifiable<Long> {
     @ManyToOne
     @JoinColumn(name = "drug_id")
     private Drug drug;
+
+    @ManyToOne
+    @JoinColumn(name = "pharmacy_id")
+    private Pharmacy pharmacy;
 }
