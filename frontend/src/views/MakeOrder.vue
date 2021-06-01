@@ -88,10 +88,13 @@
                 description: '',
                 menu: false,
                 drugs: [],
+                warehouseitem: '',
                 drugItem: '',
                 orderItems: [],
                 addedOrderItems: [],
                 neworder: '',
+                pharmacyId: '',
+                pharmacyAdmin: '',
                 drugHeaders: [
                     { text: "Name"}, 
                     { text: "Quantity" },
@@ -108,28 +111,43 @@
             }
         },
         methods: {
+            getPharmacyAdmin: function() {
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.get("api/pharmacyadmin", {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            this.pharmacyAdmin = response.data;
+                            this.pharmacyId = this.pharmacyAdmin.pharmacy.id;
+                            this.getDrugs();
+                        })
+                        .catch(response => {
+                            console.log("Failed to get pharmacy admin", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
+            },
             getDrugs: function () {
-				/*this.axios.get("/pswapi/drugs")
-					.then(response => {
-						this.drugs = response.data;
-						console.log(response);
-					})
-					.catch(response => {
-						console.log(response);
-					})
-					.finally(function(){
-					})*/
+                this.axios.get("api/warehouseitem/pharmacy/" + this.pharmacyId)
+                    .then(response => {
+                        this.warehouseitems = response.data._embedded.warehouseitems;
+                    })
+                    .catch(response => {
+                        console.log("Failed to get warehouseitems", response.data);
+                    });
             },
             add: function() {
                 
-                this.orderItems.push({ id: '', order: '', drug: this.drugItem, quantity : this.quantity });
+                this.orderItems.push({ order: '', drug: this.drugItem, quantity : this.quantity });
                 
                 this.drugItem = '';
                 this.quantity = '';
 
             },
             makeOrder: function() {
-                let addorder = { id: '', description: this.description, deadline: this.deadline };
+               /* let addorder = { description: this.description, deadline: this.deadline };
 
                 this.axios.post("/api/order", addorder)
 					.then(response => {
@@ -172,7 +190,7 @@
 						console.log(response);
 					})
 					.finally(function(){
-					});
+					});*/
 
             },
             save (date) {
@@ -180,7 +198,7 @@
             },
         },
         mounted() {
-			this.getDrugs();
+            this.getPharmacyAdmin();
 		}
     }
 </script>

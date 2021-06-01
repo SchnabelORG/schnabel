@@ -36,6 +36,10 @@ public class Offer implements IIdentifiable<Long>
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
 
+    @Enumerated(EnumType.STRING)
+    @Column
+    private OfferStatus offerStatus;
+
     public Offer(int price, LocalDate dateOfDelivery) {
         this.price = price;
         this.dateOfDelivery = dateOfDelivery;

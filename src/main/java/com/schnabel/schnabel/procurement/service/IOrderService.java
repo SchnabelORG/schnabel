@@ -21,5 +21,6 @@ public interface IOrderService extends IJpaService<Order, Long>
     PagedModel<OrderDTO> getAllDTO(Pageable pageable);
     PagedModel<OrderDTO> getNonExpired(Pageable pageable);
     PagedModel<OrderDTO> getNewOrders(Pageable pageable, Long id);
+    PagedModel<OrderDTO> getCreatedOrdersByPharmacyId(Long pharmacyId, Pageable pageable);
     boolean createNewOrder(String description, LocalDate deadline, List<OrderItem> orderItems, String email);
 }

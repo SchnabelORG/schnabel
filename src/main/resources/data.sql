@@ -39,7 +39,7 @@ insert into refresh_tokens(id, email, token) values (2, 'jankovicpharmacy@gmail.
 
 insert into pharmacists(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (5, 'Ana', 'Anic', 'ana@gmail.com', '123', '11000', 'Beograd', 'Bulevar', '1', 1, true);
 
-insert into orders(id, deadline, "description", pharmacyadmin_id) values (1, '2021-05-10', 'My order', 4);
+insert into orders(id, deadline, "description", pharmacyadmin_id, pharmacy_id, order_status) values (1, '2021-05-10', 'My order', 4, 1, 'CREATED');
 
 insert into orderitems(id, quantity, drug_id, order_id) values (1, 1, 1, 1);
 

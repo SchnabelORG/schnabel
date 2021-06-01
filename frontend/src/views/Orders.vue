@@ -3,7 +3,7 @@
         <v-card
         id="orders-card"
         elevation="2">
-            <v-card-title>Order</v-card-title>
+            <v-card-title>Open orders</v-card-title>
             <v-card-text>
                 <div id="orders-table">
                     <v-data-table :headers="orderHeaders"
@@ -56,10 +56,9 @@
     export default {
         data() {
             return {
-                orders: [{description: "dfgf"}],
-                offers: [{supplier: "Pera"}],
+                orders: [],
+                offers: [],
                 dialog: false,
-                id: '',
                 orderHeaders: [
                     { text: "Description" },
                     { text: "Deadline" },
@@ -74,27 +73,55 @@
             }
         },
         methods: {
-            getOrders: function() {
-                
-
-
+            getPharmacyAdmin: function() {
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.get("api/pharmacyadmin", {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            this.pharmacyAdmin = response.data;
+                            this.pharmacyId = this.pharmacyAdmin.pharmacy.id;
+                            this.getOrders();
+                        })
+                        .catch(response => {
+                            console.log("Failed to get pharmacy admin", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
             },
-            showOffers: function(id) {
+            getOrders: function() {
+                this.axios.get("api/order/pharmacy/" + this.pharmacyId)
+                    .then(response => {
+                        this.orders = response.data._embedded.orders;
+                    })
+                    .catch(response => {
+                        console.log("Failed to get orders", response.data);
+                    });
+            },
+            showOffers: function(orderId) {
                 this.offers = [];
-                this.id = id;
-                
+                this.axios.get("api/offer/order/" + orderId)
+                    .then(response => {
+                        this.offers = response.data._embedded.offers;
+                    })
+                    .catch(response => {
+                        console.log("Failed to get offers", response.data);
+                    });
                 this.dialog = true;
             },
-            acceptOffer: function(id) {
+            /*acceptOffer: function(offerId) {
                 this.dialog = false;
-                this.id = id;
-            },
+
+
+            },*/
             disableDialog: function() {
                 this.dialog = false;
             },
         },
         mounted() {
-            this.getOrders();
+            this.getPharmacyAdmin();
         },
     }
 </script>

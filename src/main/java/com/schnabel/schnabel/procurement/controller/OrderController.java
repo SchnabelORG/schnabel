@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 /**
  * Order REST controller
@@ -72,6 +74,12 @@ public class OrderController
     public ResponseEntity<PagedModel<OrderDTO>> getNewOrders(Pageable pageable, @PathVariable long id)
     {
         return new ResponseEntity<>(orderService.getNewOrders(pageable, id), HttpStatus.OK);
+    }
+
+    @GetMapping("pharmacy/{id}")
+    public ResponseEntity<PagedModel<OrderDTO>> getCreatedOrdersByPharmacyId(@PathVariable("id") Long pharmacyId, Pageable pageable)
+    {
+        return new ResponseEntity<>(orderService.getCreatedOrdersByPharmacyId(pharmacyId, pageable), HttpStatus.OK);
     }
 
     /*@PostMapping

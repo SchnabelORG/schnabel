@@ -45,6 +45,10 @@ public class Order implements IIdentifiable<Long>
     @JoinColumn(name = "pharmacy_id")
     private Pharmacy pharmacy;
 
+    @Enumerated(EnumType.STRING)
+    @Column
+    private OrderStatus orderStatus;
+
     public Order(String description, LocalDate deadline, List<OrderItem> orderItems, PharmacyAdmin pharmacyAdmin, Pharmacy pharmacy) {
         this.description = description;
         this.deadline = deadline;

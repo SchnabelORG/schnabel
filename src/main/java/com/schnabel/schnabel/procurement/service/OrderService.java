@@ -64,6 +64,14 @@ public class OrderService extends JpaService<Order, Long, IOrderRepository> impl
         Page<Order> orders = repository.findByDeadlineAfterAndSupplierId(pageable, LocalDate.now(), id);
         return orderPagedResourcesAssembler.toModel(orders, orderDTOAssembler);
     }
+    
+    @Override
+    @Transactional
+    public PagedModel<OrderDTO> getCreatedOrdersByPharmacyId(Long pharmacyId, Pageable pageable)
+    {
+        Page<Order> orders = repository.findCreatedOrdersByPharmacyId(pharmacyId, pageable);
+        return orderPagedResourcesAssembler.toModel(orders, orderDTOAssembler);
+    }
 
     @Override
     public boolean createNewOrder(String description, LocalDate deadline, List<OrderItem> orderItems, String email) 
