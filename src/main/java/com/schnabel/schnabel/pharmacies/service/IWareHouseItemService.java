@@ -18,4 +18,5 @@ public interface IWareHouseItemService
 {
     Optional<WareHouseItemDTO> findByIdDTO(Long id);   
     PagedModel<WareHouseItemDTO> findAllByPharmacyId(Long pharmacyId, Pageable pageable);
+    //Optional<WareHouseItem> findWareHouseItemByPharmacyAndDrugId(Long drugId, Long pharmacyId);
 }

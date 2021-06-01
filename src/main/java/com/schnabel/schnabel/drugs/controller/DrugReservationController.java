@@ -53,7 +53,7 @@ public class DrugReservationController {
     @GetMapping("dispensing/{reservationId}")
     public ResponseEntity<String> dispensing(@PathVariable long reservationId)
     {
-        Optional<DrugReservation> drugReservation = drugReservationService.get(reservationId);
+        /*Optional<DrugReservation> drugReservation = drugReservationService.get(reservationId);
         if (drugReservation.isPresent()){
             Optional<WareHouseItem> wareHouseItem = wareHouseItemService.findWareHouseItemByPharmacyAndDrugId(drugReservation.get().getDrug().getId(), drugReservation.get().getPharmacy().getId());
             if(wareHouseItem.isPresent()){
@@ -64,7 +64,7 @@ public class DrugReservationController {
                 return ResponseEntity.ok("Successfully");
             }
             return ResponseEntity.notFound().build();
-        }
+        }*/
         return ResponseEntity.notFound().build();
     }
 }

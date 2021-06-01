@@ -36,6 +36,11 @@ public class WareHouseItemService extends JpaService<WareHouseItem, Long, IWareH
         this.pageAsm = pageAsm;
     }
 
+    /*@Override
+    public Optional<WareHouseItem> findWareHouseItemByPharmacyAndDrugId(Long drugId, Long pharmacyId) {
+        return Optional.empty();
+    }*/
+
     @Override
     public Optional<WareHouseItemDTO> findByIdDTO(Long id) {
         return get(id).map(dtoAssembler::toModel);
