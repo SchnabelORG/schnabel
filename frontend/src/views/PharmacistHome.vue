@@ -4,7 +4,7 @@
             <v-col id="container">
                 <v-row id="pharm-home-table">
 					<v-data-table :headers="headers"
-									:items="patients"
+									:items="allAppointments"
 									:search="search"
                                     :footer-props="{
                                     'items-per-page-options': [5, 10, 20, 30]}"
@@ -24,27 +24,29 @@
 						<template v-slot:item="row">
 							<tr>
 								
-								<td>{{row.item.name}}</td>
-								<td>{{row.item.surname}}</td>
-                                <td>{{row.item.date}}</td>
-                                <td>{{row.item.time}}</td>
+								<td>{{row.item.patient.name}}</td>
+								<td>{{row.item.patient.surname}}</td>
+                                <td>{{row.item.period.startTime.slice(0,10)}}</td>
+                                <td>{{row.item.period.startTime.slice(11)}}</td>
 							</tr>
 						</template>
 					</v-data-table>
                 </v-row>
                 <v-row>
-                    <v-card
+                    <v-card v-if="sparkLineShow"
                         class="pharm-home-graph info primary--text"
                         dark>
                         <v-card-title class="justify-center">
                             <div class="display-1">
-                            Last 7 days appointment
+                            Last 7 days consultation
                             </div>
                         </v-card-title>
                         <v-card-text>
                             <v-sheet color="#f4f9fc">
                             <v-sparkline
-                                :value="value"
+                                :value="sparkLineValues"
+                                :auto-draw="true"
+                                :auto-draw-duration="2000"
                                 color="primary"
                                 height="100"
                                 padding="24"
@@ -65,25 +67,41 @@
                 <v-timeline
                     :reverse="true"
                     dense>
-                    <v-timeline-item
-                    v-for="n in 10"
-                    :key="n"
-                    >
-                    <v-card v-if="n == 1 || n == 6">
-                        <v-card-title class="justify-center accent white--text">
-                            <div v-if="n == 1">Todays consultation</div>
-                            <div v-else>Previous working day</div>
-                        </v-card-title>
-                    </v-card>
-                    <v-card v-else>
-                        <v-card-title class="info primary--text">
-                        <b>Consultation at {{n}}:00pm</b>
-                        </v-card-title>
-                        <v-card-text>
-                            <h3>Radovan Zupunski</h3>
-                            <h3>Brufen</h3>
-                        </v-card-text>
-                    </v-card>
+                    <v-timeline-item>
+                        <v-card>
+                            <v-card-title class="justify-center accent white--text">
+                                <div>Todays consultation</div>
+                            </v-card-title>
+                        </v-card>
+                    </v-timeline-item>
+                    <v-timeline-item  v-for="item in todayAppointments" v-bind:key="item.id">
+                        <v-card>
+                            <v-card-title class="info primary--text">
+                            <b>Consultation at {{item.period.startTime.slice(11)}} ({{item.period.endTime.slice(11)}})</b>
+                            </v-card-title>
+                            <v-card-text>
+                                <h3>{{item.patient.name}} {{item.patient.surname}}</h3>
+                                <h3>{{item.patient.email}}</h3>
+                            </v-card-text>
+                        </v-card>
+                    </v-timeline-item>
+                    <v-timeline-item>
+                        <v-card>
+                            <v-card-title class="justify-center accent white--text">
+                                <div>Previous working day ({{this.perviousWorkingDay.slice(0,10)}})</div>
+                            </v-card-title>
+                        </v-card>
+                    </v-timeline-item>
+                    <v-timeline-item  v-for="item in previousDayAppointments" v-bind:key="item.id">
+                        <v-card>
+                            <v-card-title class="info primary--text">
+                            <b>Consultation at {{item.period.startTime.slice(11)}} ({{item.period.endTime.slice(11)}})</b>
+                            </v-card-title>
+                            <v-card-text>
+                                <h3>{{item.patient.name}} {{item.patient.surname}}</h3>
+                                <h3>{{item.patient.email}}</h3>
+                            </v-card-text>
+                        </v-card> 
                     </v-timeline-item>
                 </v-timeline>
             </v-col>
@@ -95,29 +113,133 @@
     export default {
         data() {
             return {
-                value: [5, 10, 0, 11, 12, 20, 17],
-                patients: [],
+                sparkLineValues: [0,0,0,0,0,0,0],
+                todayAppointments: [],
+                previousDayAppointments: [],
+                allAppointments: [],
+                perviousWorkingDay: {},
+                sparkLineShow: false,
                 search: "",
+                pharmacist: {},
                 headers: [
-                    { text: "Patient's name", value: "name", },
-                    { text: "Patient's surname", value: "surname", },
-                    { text: "Consultation date", value: "date", },
-                    { text: "Consultation time", value: "time", },
+                    { text: "Patient's name", value: "patient.name", },
+                    { text: "Patient's surname", value: "patient.surname", },
+                    { text: "Consultation date", value: "period.startTime", },
+                    { text: "Consultation time"},
 				],
             }
         },
         methods:{
-            getAllPatients: function(){
-                this.patients.push({name: 'Radovan', surname: 'Zupunski', date: '20.01.2021', time: '12:30'});
-                this.patients.push({name: 'Radovan', surname: 'Zupunski', date: '20.01.2021', time: '12:30'});
-                this.patients.push({name: 'Aadovan', surname: 'Zupunski', date: '20.01.2021', time: '12:30'});
-                this.patients.push({name: 'Radovan', surname: 'Gupunski', date: '20.01.2020', time: '11:30'});
-                this.patients.push({name: 'Radovan', surname: 'Zupunski', date: '20.01.2021', time: '12:30'});
-                this.patients.push({name: 'Radovan', surname: 'Zupunski', date: '20.01.2021', time: '12:30'});
+            refreshToken: async function() {
+                let jws = window.localStorage.getItem('jwt');
+                if(!jws) {
+                    this.$router.push("/");
+                }
+                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + jws}});
+            },
+             getPharmacist: function() {
+                console.log("Getting pharmacist");
+                let jws = window.localStorage.getItem('jwt');
+                console.log(jws)
+                this.axios.get("api/pharmacist", {headers:{"Authorization": "Bearer " + jws}})
+                    .then(response => {
+                        console.log(response.data);
+                        this.pharmacist = response.data;
+                        this.getAllAppointments()
+                    })
+                    .catch(response => {
+                        console.log("Failed to get patient", response.data);
+                        this.refreshToken()
+                            .then(response => {
+                                window.localStorage.jwt = response.data;
+                                this.$router.go();
+                            })
+                            .catch(response => {
+                                console.log(response.data);
+                                this.$router.push("/");
+                            });
+                    });
+            },
+            getAllAppointments: function(){
+                let jws = window.localStorage.getItem('jwt');
+                this.axios.get("api/appointment/appbyemployye/" + this.pharmacist.id, {headers:{"Authorization": "Bearer " + jws}})
+                    .then(response =>
+                    {
+                        this.allAppointments = response.data._embedded.appointments;
+                        this.getSparkLineValues();
+                        this.sparkLineShow = true;
+                        this.getTodaysAppointments();
+                    })
+                    .catch(response =>
+                    {
+                        console.log(response.data);
+                    });
+            },
+            getTodaysAppointments: function(){
+                var today = new Date();
+                today.setHours(0,0,0,0);
+                var date = new Date(this.getPerviousWorkingDay());
+                date.setHours(0,0,0,0);
+                var i = 0;
+                var j = 0;
+                while(i < this.allAppointments.length){
+                    var appDate = new Date(this.allAppointments[i].period.startTime);
+                    appDate.setHours(0,0,0,0);
+                    if(today.getTime() === appDate.getTime()){
+                        this.todayAppointments = this.allAppointments.splice(i);
+                    }
+                    else if(appDate.getTime() === date.getTime()){
+                        this.previousDayAppointments[j++] = this.allAppointments[i];
+                        ++i;
+                    }
+                    else{
+                        ++i;
+                    }
+                }
+                console.log(this.previousDayAppointments);
+            },
+            getPerviousWorkingDay: function(){
+                var yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                yesterday.setHours(0,0,0,0);
+                var tempI;
+                var temp = 10000000000;//Infinity
+                for (var i = 0; i < this.allAppointments.length; i++) {
+                    var appDate = new Date(this.allAppointments[i].period.startTime);
+                    appDate.setHours(0,0,0,0);
+                    if(appDate.getTime()-yesterday.getTime() == 0){
+                        tempI = i;
+                    }else if(appDate.getTime()-yesterday.getTime() < temp){
+                        temp = appDate.getTime()-yesterday.getTime();
+                        tempI = i;
+                    }
+                }
+                this.perviousWorkingDay = this.allAppointments[tempI].period.startTime;
+                return this.allAppointments[tempI].period.startTime;
+            },
+            getSparkLineValues: function(){
+                var today = new Date();
+                today.setHours(0,0,0,0);
+                var lastSevenDays = [today.setDate(today.getDate() - 1), today.setDate(today.getDate() - 1), today.setDate(today.getDate() - 1), 
+                                   today.setDate(today.getDate() - 1), today.setDate(today.getDate() - 1), today.setDate(today.getDate() - 1), today.setDate(today.getDate() - 1)];
+                for (var i = 0; i < 7; i++) {
+                    this.sparkLineValues[6-i] = this.calculateNumberOfAppointments(new Date(lastSevenDays[i]));
+                }
+            },
+            calculateNumberOfAppointments: function(date){
+                var counter = 0;
+                for (var i = 0; i < this.allAppointments.length; i++) {
+                    var appDate = new Date(this.allAppointments[i].period.startTime);
+                    appDate.setHours(0,0,0,0);
+                    if(appDate.getTime() === date.getTime()){
+                        counter++;
+                    }
+                }
+                return counter;
             }
         },
         mounted(){
-            this.getAllPatients();
+            this.getPharmacist();
         },
     }
 </script>

@@ -27,7 +27,8 @@ public class SchnabelApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
 				.allowCredentials(true)
-				.allowedOrigins("http://localhost:8082")
+				.allowedHeaders("*")
+				.allowedOrigins("http://localhost:8080")
 				.allowedMethods("GET", "PUT", "POST", "DELETE", "OPTIONS");
 			}
 		};

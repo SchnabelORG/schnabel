@@ -29,10 +29,10 @@ import org.springframework.stereotype.Service;
 
 
 /**
- * Appointment JPA service implementation
+ * Appointment service implementation
  */
 @Service
-public class AppointmentService extends JpaService<Appointment, Long, IAppointmentRepository> implements IAppointmentService {
+public class AppointmentService  extends JpaService<Appointment, Long, IAppointmentRepository> implements IAppointmentService {
 
     private final AppointmentDTOAssembler dtoAsm;
     private final PagedResourcesAssembler<Appointment> pageAsm;
@@ -49,7 +49,8 @@ public class AppointmentService extends JpaService<Appointment, Long, IAppointme
         this.dermatologistService = dermatologistService;
         this.pharmacyAdminService = pharmacyAdminService;
     }
-    
+
+
     @Override
     public Iterable<Appointment> findByFree(boolean isFree) {
         return repository.findByFree(isFree);
@@ -131,6 +132,19 @@ public class AppointmentService extends JpaService<Appointment, Long, IAppointme
         }
     }
 
+
+    @Override
+    public Optional<AppointmentDTO> getDTO(Long id) {
+        return Optional.empty();
+    }
+
+    @Override
+    @Transactional
+    public PagedModel<AppointmentDTO> getAllbyPharmacist(Pageable pageable, Long pharmacystId) {
+//        Page<Appointment> appointments = repository.findByMedicalEmployeeId(pageable, pharmacystId);
+//        return pageAsm.toModel(appointments, dtoAsm);
+        return null;
+    }
 
     @Override
     @Transactional
