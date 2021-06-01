@@ -35,12 +35,21 @@ public class WareHouseItemDTOAssembler extends RepresentationModelAssemblerSuppo
         dto.setId(entity.getId());
         dto.setQuantity(entity.getQuantity());
         dto.setAvailable(entity.getAvailable());
-        /*DrugPrice drugPrice = entity.getDrugPrice();         
+        DrugPrice drugPrice = entity.getPriceForToday();  
+        if (drugPrice == null) 
+        {
+            dto.setDrugPrice(DrugPriceDTO.builder()
+            .id(-1l)
+            .price(0)
+            .build());
+        } else 
+        {      
         dto.setDrugPrice(DrugPriceDTO.builder()
             .id(drugPrice.getId())
             .price(drugPrice.getPrice())
             .build()
-            .add(linkTo(methodOn(DrugPriceController.class).get(drugPrice.getId())).withSelfRel()));*/
+            .add(linkTo(methodOn(DrugPriceController.class).get(drugPrice.getId())).withSelfRel()));
+        }
         Drug drug = entity.getDrug();
         dto.setDrug(DrugDTO.builder()
             .id(drug.getId())

@@ -26,7 +26,7 @@ public class WareHouseItemDTO extends RepresentationModel<WareHouseItemDTO>{
     private Long id;
     private int quantity;
     private int available;
-    //private DrugPriceDTO drugPrice;
+    private DrugPriceDTO drugPrice;
     private DrugDTO drug;
     private PharmacyDTO pharmacy;
 }
