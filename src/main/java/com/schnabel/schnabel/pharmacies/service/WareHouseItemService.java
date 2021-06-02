@@ -8,6 +8,8 @@ import javax.transaction.Transactional;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.pharmacies.model.WareHouseItem;
 import com.schnabel.schnabel.pharmacies.repository.IWareHouseItemRepository;
+import com.schnabel.schnabel.users.dto.DrugReservationRequest;
+import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTOAssembler;
 
@@ -38,7 +40,7 @@ public class WareHouseItemService extends JpaService<WareHouseItem, Long, IWareH
 
     @Override
     public Optional<WareHouseItem> findWareHouseItemByPharmacyAndDrugId(Long drugId, Long pharmacyId) {
-        Optional<WareHouseItem> wareHouseItem = repository.findWareHouseItemByPharmacyAndDrugId(drugId, pharmacyId);
+        Optional<WareHouseItem> wareHouseItem = repository.findByPharmacyIdAndDrugId(drugId, pharmacyId);
         return wareHouseItem;
     }
 
@@ -57,5 +59,23 @@ public class WareHouseItemService extends JpaService<WareHouseItem, Long, IWareH
         } catch (NoResultException ignore) {
             return PagedModel.empty();
         }
+    }
+
+    @Override
+    public Integer getStock(Long pharmacyId, Long drugId) {
+        Optional<WareHouseItem> warehouseItem = findWareHouseItemByPharmacyAndDrugId(drugId, pharmacyId);
+        return warehouseItem.isPresent() ?
+            warehouseItem.get().getAvailable()
+            : 0;
+    }
+
+    @Override
+    public boolean reserveDrug(DrugReservationRequest req, Patient patient) {
+        Optional<WareHouseItem> item = findWareHouseItemByPharmacyAndDrugId(req.getDrugId(), req.getPharmacyId());
+        if(!item.isPresent()) {
+            return false;
+        }
+        return item.get().reduceAvailable(req.getQuantity())
+            && update(item.get());
     }
 }
