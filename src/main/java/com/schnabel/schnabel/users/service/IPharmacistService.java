@@ -6,7 +6,6 @@ import com.schnabel.schnabel.misc.interfaces.IJpaService;
 import com.schnabel.schnabel.users.dto.FreePharmacistLookupRequest;
 import com.schnabel.schnabel.users.dto.PharmacistDTO;
 import com.schnabel.schnabel.users.model.Pharmacist;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
@@ -24,4 +23,7 @@ public interface IPharmacistService extends IJpaService<Pharmacist, Long>
     PagedModel<PharmacistDTO> findAllDTO(Pageable pageable);
     Optional<PharmacistDTO> findbyIdDTO(Long id);
     Optional<PharmacistDTO> updateDTO(Pharmacist pharmacist);
+    Optional<Pharmacist> findByEmail(String email);
+    Optional<PharmacistDTO> getDTO(Long id);
+    PagedModel<PharmacistDTO> getAllDTO(Pageable pageable);
 }

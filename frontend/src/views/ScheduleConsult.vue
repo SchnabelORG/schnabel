@@ -51,11 +51,11 @@
                                         <v-tab><i class="fa fa-clock-o"></i></v-tab>
                                     </v-tabs>
                                     <v-tabs-items v-model="dateTimeTab" class="date-and-time">
-                                        <v-tab-item>
-                                            <v-date-picker v-model="apptDate"></v-date-picker>
+                                        <v-tab-item class="picker">
+                                            <v-date-picker v-model="apptDate" full-width></v-date-picker>
                                         </v-tab-item>
-                                        <v-tab-item>
-                                            <v-time-picker v-model="apptTime" format="24hr" :allowed-minutes="allowedMinutes"></v-time-picker>
+                                        <v-tab-item class="picker">
+                                            <v-time-picker v-model="apptTime" full-width format="24hr" :allowed-minutes="allowedMinutes"></v-time-picker>
                                         </v-tab-item>
                                     </v-tabs-items>
                                 </div>
@@ -368,5 +368,6 @@ export default {
     #success-icon {
         font-size: 3rem;
     }
+
 
 </style>

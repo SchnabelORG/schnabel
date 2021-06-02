@@ -22,3 +22,4 @@ public interface IPharmacyService extends IJpaService<Pharmacy, Long>
     Optional<Pharmacy> findByName(String name);
     PagedModel<PharmacyDTO> findByFreePharmacistAppointment(LocalDateTime startTime, Pageable pageable);
 }
+

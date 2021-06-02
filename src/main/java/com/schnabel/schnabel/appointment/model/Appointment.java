@@ -69,4 +69,13 @@ public class Appointment implements IIdentifiable<Long>
         this.free = free;
         this.period = period;
     }
+
+    public Appointment(double price, Period period, boolean free, MedicalEmployee medicalEmployee, Pharmacy pharmacy)
+    {
+        this.price = price;
+        this.period = period;
+        this.free = free;
+        this.medicalEmployee = medicalEmployee;
+        this.pharmacy = pharmacy;
+    }
 }

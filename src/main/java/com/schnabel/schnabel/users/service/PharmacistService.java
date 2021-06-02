@@ -16,6 +16,8 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 /**
  * Pharmacist service implementation
  */
@@ -65,5 +67,32 @@ public class PharmacistService extends JpaService<Pharmacist, Long, IPharmacistR
             : Optional.empty();
     }
 
+    @Override
+    @Transactional
+    public Optional<Pharmacist> findByEmail(String email) {
+        return repository.findByEmail(email);
+    }
 
+    @Override
+    @Transactional
+    public Optional<PharmacistDTO> getDTO(Long id) {
+        return get(id).map(dtoAsm::toModel);
+    }
+
+//    @Override
+//    public Page<Pharmacist> findByPharmacy(Long pharmacyId, Pageable pageable) {
+//        Optional<Pharmacy> pharmacy = pharmacyService.get(pharmacyId);
+//        if(!pharmacy.isPresent()) {
+//            return Page.empty();
+//        }
+//        return repository.findByPharmacy(pharmacy.get(), pageable);
+//    }
+
+    @Override
+    @Transactional
+    public PagedModel<PharmacistDTO> getAllDTO(Pageable pageable) {
+
+        Page<Pharmacist> pharmacists = getAll(pageable);
+        return pageAsm.toModel(pharmacists, dtoAsm);
+    }
 }

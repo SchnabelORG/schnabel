@@ -35,9 +35,9 @@ const routes = [
   },
 
   {
-    path: '/pharmappointment',
-    name: 'PharmAppointment',
-    component: () => import( /* webpackChunkName: "makeappointment" */ '../views/PharmAppointment.vue'),
+    path: '/consult',
+    name: 'ScheduleConsult',
+    component: () => import( /* webpackChunkName: "makeappointment" */ '../views/ScheduleConsult.vue'),
   },
 
   {
@@ -203,6 +203,11 @@ const routes = [
         path: 'pharmacist',
         name: 'PharmacyAdminPharmacists',
         component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminPharmacists.vue'),
+      },
+      {
+        path: 'defineappointment',
+        name: 'PharmacyAdminDefineAppointment',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminDefineAppointment.vue'),
       },
     ],
   },

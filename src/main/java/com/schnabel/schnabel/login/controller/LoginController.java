@@ -6,6 +6,7 @@ import com.schnabel.schnabel.login.dto.LoginDTO;
 import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.service.IPatientService;
 
+import com.schnabel.schnabel.users.service.IPharmacistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

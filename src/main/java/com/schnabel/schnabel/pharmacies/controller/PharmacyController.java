@@ -76,3 +76,4 @@ public class PharmacyController
         return new ResponseEntity<>(pharmacyService.findByFreePharmacistAppointment(startTime, pageable), HttpStatus.OK);
     }
 }
+

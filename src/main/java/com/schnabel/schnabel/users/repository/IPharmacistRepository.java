@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 /**
  * Pharmacist Jpa repository interface
  */
@@ -37,4 +39,5 @@ AND p.pharmacy_id = 1;*/
             + " AND p.pharmacy_id = :pharmacy_id",
         nativeQuery = true)
     Page<Pharmacist> findFreeByPharmacy(@Param("pharmacy_id") Long pharmacyId, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end, Pageable pageable);
+    Optional<Pharmacist> findByEmail(String email);
 }

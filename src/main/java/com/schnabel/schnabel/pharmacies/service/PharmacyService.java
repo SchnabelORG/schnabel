@@ -40,12 +40,14 @@ public class PharmacyService extends JpaService<Pharmacy, Long, IPharmacyReposit
     }
 
     @Override
+    @Transactional
     public Optional<PharmacyDTO> getDTO(Long id) {
         return get(id)
             .map(pharmacyDTOasm::toModel);
     }
 
     @Override
+    @Transactional
     public PagedModel<PharmacyDTO> getAllDTO(Pageable pageable) {
         Page<Pharmacy> pharmacies = getAll(pageable);
         return pharmacyPageAsm.toModel(pharmacies, pharmacyDTOasm);

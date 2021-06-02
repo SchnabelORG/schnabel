@@ -1,6 +1,7 @@
 package com.schnabel.schnabel.appointment.repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.schnabel.schnabel.appointment.model.Appointment;
 
@@ -18,6 +19,8 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(collectionResourceRel = "appointments", path = "appointment")
 public interface IAppointmentRepository extends JpaRepository<Appointment, Long>
 {
+
+    List<Appointment> findByMedicalEmployeeId(Long id);
     Iterable<Appointment> findByFree(boolean isFree);
     @Query(value = "SELECT a.id, a.price, a.start_time, a.end_time, a.free, a.medical_employee_id, a.pharmacy_id, a.patient_id"
         + " FROM appointments a"

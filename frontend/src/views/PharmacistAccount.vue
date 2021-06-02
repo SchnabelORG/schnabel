@@ -54,7 +54,7 @@
                     label="Street number"
                     :disabled="!editMode"
                     ></v-text-field>
-                    <v-text-field
+                   <!-- <v-text-field
                     v-model="pharmacist.password"
                     :append-icon="show1 ? 'fa-eye' : 'fa-eye-slash'"
                     :rules="[rules.required, rules.min]"
@@ -75,7 +75,7 @@
                     hint="At least 8 characters"
                     counter
                     @click:append="show2 = !show2"
-                    ></v-text-field>
+                    ></v-text-field>-->
                     <v-btn :disabled="!valid" id="save-btn"  v-if="editMode" class="accent white--text" @click="save()">
                         Save changes
                     </v-btn>
@@ -92,7 +92,7 @@
                 editMode: false,
                 pharmacist: {},
                 pharmacistCopy: {},
-                confirmPassword: '',
+                //confirmPassword: '',
                 show1: false,
                 show2: false,
                 valid: false,
@@ -103,34 +103,52 @@
                 },
             }
         },
-        computed:{
-            passwordConfirmationRule: function() {
-                return () => (this.pharmacist.password === this.confirmPassword) || 'Password must match'
-            },
-        },
+        // computed:{
+        //     passwordConfirmationRule: function() {
+        //         return () => (this.pharmacist.password === this.confirmPassword) || 'Password must match'
+        //     },
+        // },
          methods: {
-            getPharmacist: function(){
-                this.axios.get("api/pharmacist/5")
-                    .then(response =>
-                    {
+             refreshToken: async function() {
+                let jws = window.localStorage.getItem('jwt');
+                if(!jws) {
+                    this.$router.push("/");
+                }
+                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + jws}});
+            },
+             getPharmacist: function() {
+                console.log("Getting pharmacist");
+                let jws = window.localStorage.getItem('jwt');
+                console.log(jws)
+                this.axios.get("api/pharmacist", {headers:{"Authorization": "Bearer " + jws}})
+                    .then(response => {
+                        console.log(response.data);
                         this.pharmacist = response.data;
                         this.pharmacistCopy = JSON.parse(JSON.stringify(response.data));
-                        this.confirmPassword = this.pharmacistCopy.password;
+                        //this.confirmPassword = this.pharmacistCopy.password;
                     })
-                    .catch(response =>
-                    {
-                        console.log(response.data);
+                    .catch(response => {
+                        console.log("Failed to get patient", response.data);
+                        this.refreshToken()
+                            .then(response => {
+                                window.localStorage.jwt = response.data;
+                                this.$router.go();
+                            })
+                            .catch(response => {
+                                console.log(response.data);
+                                this.$router.push("/");
+                            });
                     });
-                
             },
             editModeChange: function(){
                 this.editMode = !this.editMode;
-                this.confirmPassword = this.pharmacistCopy.password;
+                //this.confirmPassword = this.pharmacistCopy.password;
                 this.pharmacist = JSON.parse(JSON.stringify(this.pharmacistCopy));
 
             },
             save: function(){
-                this.axios.put("/pharmacist", this.pharmacist)
+                let jws = window.localStorage.getItem('jwt');
+                this.axios.put("api/pharmacist", this.pharmacist, {headers:{"Authorization": "Bearer " + jws}})
                     .then(response =>
                     {
                         this.pharmacistCopy = response.data;

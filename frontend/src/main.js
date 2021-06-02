@@ -7,6 +7,7 @@ import App from './App.vue'
 
 import VueLayers from 'vuelayers'
 import 'vuelayers/lib/style.css'
+import DatetimePicker from 'vuetify-datetime-picker'
 
 import MainNavigation from './components/MainNavigation'
 import vuetify from './plugins/vuetify';
@@ -16,6 +17,7 @@ Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
 Vue.use(Vuex)
 Vue.use(VueLayers)
+Vue.use(DatetimePicker)
 
 const store = new Vuex.Store({
   state: {
