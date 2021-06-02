@@ -1,14 +1,20 @@
 package com.schnabel.schnabel.users.controller;
 
+import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
+import com.schnabel.schnabel.pharmacies.model.WareHouseItem;
 import com.schnabel.schnabel.security.util.JwtUtils;
+import com.schnabel.schnabel.users.dto.DermatologistDTO;
+import com.schnabel.schnabel.users.dto.PharmacistDTO;
 import com.schnabel.schnabel.users.dto.PharmacyAdminDTO;
 import com.schnabel.schnabel.users.dto.PharmacyAdminDTOAssembler;
 import com.schnabel.schnabel.users.model.PharmacyAdmin;
 import com.schnabel.schnabel.users.service.IPharmacyAdminService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
-
+import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,4 +67,25 @@ public class PharmacyAdminController
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.badRequest().build());
     }
+
+    @GetMapping("dermatologist")
+    public ResponseEntity<PagedModel<DermatologistDTO>> getDermatologistsPharmacyAdmin(@RequestHeader("Authorization") String authHeader, Pageable pageable)
+    {
+        String jws = jwtUtils.parseJwtFromAuthorizationHeader(authHeader);
+        return new ResponseEntity<>(pharmacyAdminService.getAllDermatologists(jwtUtils.getEmailFromJws(jws), pageable), HttpStatus.OK);
+    } 
+
+    @GetMapping("pharmacist")
+    public ResponseEntity<PagedModel<PharmacistDTO>> getPharmacistsPharmacyAdmin(@RequestHeader("Authorization") String authHeader, Pageable pageable)
+    {
+        String jws = jwtUtils.parseJwtFromAuthorizationHeader(authHeader);
+        return new ResponseEntity<>(pharmacyAdminService.getAllPharmacists(jwtUtils.getEmailFromJws(jws), pageable), HttpStatus.OK);
+    } 
+
+    @GetMapping("drug")
+    public ResponseEntity<PagedModel<WareHouseItemDTO>> getDrugsPharmacyAdmin(@RequestHeader("Authorization") String authHeader, Pageable pageable)
+    {
+        String jws = jwtUtils.parseJwtFromAuthorizationHeader(authHeader);
+        return new ResponseEntity<>(pharmacyAdminService.getAllDrugs(jwtUtils.getEmailFromJws(jws), pageable), HttpStatus.OK);
+    } 
 }
