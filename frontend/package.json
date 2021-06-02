@@ -9,13 +9,13 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "core-js": "^3.12.1",
-    "css-loader": "^5.2.5",
+    "core-js": "^3.13.1",
+    "css-loader": "^5.2.6",
     "vue": "^2.6.11",
     "vue-axios": "^3.2.4",
     "vue-router": "^3.5.1",
     "vuelayers": "^0.11.35",
-    "vuetify": "^2.5.0",
+    "vuetify": "^2.5.1",
     "vuetify-datetime-picker": "^2.1.1",
     "vuex": "^3.6.2"
   },

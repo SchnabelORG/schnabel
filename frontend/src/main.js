@@ -34,11 +34,24 @@ axios.defaults.withCredentials = true;
 axios.defaults.baseURL = process.env.VUE_APP_API_ENDPOINT;
 
 Vue.mixin({
+
   methods: {
+    getAHeader: function() {
+      return { 'Authorization': 'Bearer ' + localStorage.jws };
+    },
+
     refreshToken: async function() {
       // TODO(Jovan): KEEP IN STORE!
       return axios.get("api/auth/refresh", { headers: { "Authorization" : "Bearer " + localStorage.jws}});
-    }
+    },
+
+    // Expected yy-mm-dd and HH:mm format
+    getDateTimeFromString: function(dstr, tstr) {
+      let dparts = dstr.split('-');
+      let tparts = tstr.split(':');
+      // -1 because js counts months from 0
+      return new Date(dparts[0], dparts[1] - 1, dparts[2], tparts[0], tparts[1]);
+    },
   },
 });
 

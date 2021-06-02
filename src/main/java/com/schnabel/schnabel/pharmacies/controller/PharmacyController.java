@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.pharmacies.controller;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import com.schnabel.schnabel.pharmacies.dto.PharmacyDTO;
@@ -65,6 +66,14 @@ public class PharmacyController
         return pharmacyService.findByName(pharmacyName).isPresent() ?
             ResponseEntity.ok().build()
             : ResponseEntity.notFound().build();
+    }
+
+    /**
+     * Returns pharmacies that have free pharmacist appointments at date(time)
+     */
+    @GetMapping("phappt/{date}")
+    public ResponseEntity<PagedModel<PharmacyDTO>> getWithPhAppts(@PathVariable("date") LocalDateTime startTime, Pageable pageable) {
+        return new ResponseEntity<>(pharmacyService.findByFreePharmacistAppointment(startTime, pageable), HttpStatus.OK);
     }
 }
 

@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.appointment.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.schnabel.schnabel.appointment.model.Appointment;
@@ -41,4 +42,13 @@ public interface IAppointmentRepository extends JpaRepository<Appointment, Long>
         + " ON a.medical_employee_id = dermatologists.id AND a.patient_id = :patient_id",
         nativeQuery = true)
     Page<Appointment> findDermApptByPatientId(@Param("patient_id") Long patientId, Pageable pageable);
+
+    @Query(value = "SELECT CASE WHEN COUNT(a) > 0 THEN TRUE ELSE FALSE END"
+            + " FROM appointments a"
+            + " WHERE a.pharmacy_id = :pharmacy_id"
+            + " AND a.medical_employee_id = :pharmacist_id"
+            + " AND a.start_time <= :start"
+            + " AND a.end_time >= :end",
+        nativeQuery = true)
+    boolean checkIfExists(@Param("pharmacy_id") Long pharmacyId, @Param("pharmacist_id") Long pharmacistId, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 }
