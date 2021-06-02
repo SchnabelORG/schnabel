@@ -212,7 +212,7 @@
             },
             getAllAppointments: function(){
                 let jws = window.localStorage.getItem('jwt');
-                this.axios.get("api/appointment/appbyemployye/" + this.pharmacist.id, {headers:{"Authorization": "Bearer " + jws}})
+                this.axios.get("api/appointment/appbyemployee/" + this.pharmacist.id, {headers:{"Authorization": "Bearer " + jws}})
                     .then(response =>
                     {
                         this.allAppointments = response.data._embedded.appointments;

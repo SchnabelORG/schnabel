@@ -77,3 +77,4 @@ insert into offers(price, date_of_delivery, order_id, supplier_id) values (800, 
 insert into offers(price, date_of_delivery, order_id, supplier_id) values (900, '2021-08-03', 2, 10);
 
 insert into promotions("description", start_time, end_time, pharmacy_id) values ('New promotion!!!', '2021-05-04','2021-06-04', 1);
+

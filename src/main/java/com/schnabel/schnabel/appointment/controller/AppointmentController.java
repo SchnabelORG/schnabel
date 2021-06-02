@@ -32,7 +32,7 @@ public class AppointmentController {
         this.jwtUtils = jwtUtils;
     }
 
-    @GetMapping("appbyemployye/{id}")
+    @GetMapping("appbyemployee/{id}")
     public ResponseEntity<PagedModel<AppointmentDTO>> getAllByEmployee(@PathVariable long id, Pageable pageable)
     {
         return new ResponseEntity<>(service.getAllbyPharmacist(pageable, id), HttpStatus.OK);
