@@ -57,7 +57,7 @@ export default {
                     console.log(r);
                     this.$store.state.jws = r.data;
                     //window.localStorage.jwt = r.data;
-                    this.$router.push("pharmacist");
+                    //this.$router.push("pharmacist");
 
                     // this.$store.state.jws = r.data;
                     localStorage.jws = r.data; // TODO(Jovan): TEMP!
