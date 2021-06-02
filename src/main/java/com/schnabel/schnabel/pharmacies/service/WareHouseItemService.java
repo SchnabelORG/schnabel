@@ -1,10 +1,15 @@
 package com.schnabel.schnabel.pharmacies.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 
+import com.schnabel.schnabel.drugs.model.Drug;
+import com.schnabel.schnabel.drugs.model.DrugPrice;
+import com.schnabel.schnabel.drugs.service.IDrugPriceService;
+import com.schnabel.schnabel.drugs.service.IDrugService;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.pharmacies.model.WareHouseItem;
 import com.schnabel.schnabel.pharmacies.repository.IWareHouseItemRepository;
@@ -12,6 +17,8 @@ import com.schnabel.schnabel.users.dto.DrugReservationRequest;
 import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTOAssembler;
+import com.schnabel.schnabel.pharmacies.dto.WareHouseItemRequest;
+import com.schnabel.schnabel.pharmacies.dto.WareHouseItemUpdateRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,13 +36,19 @@ public class WareHouseItemService extends JpaService<WareHouseItem, Long, IWareH
 {
     private final WareHouseItemDTOAssembler dtoAssembler;
     private final PagedResourcesAssembler<WareHouseItem> pageAsm;
+    private final IDrugService drugService;
+    private final IPharmacyService pharmacyService;
+    private final IDrugPriceService drugPriceService;
 
     @Autowired
-    public WareHouseItemService(IWareHouseItemRepository repository, WareHouseItemDTOAssembler dtoAssembler, PagedResourcesAssembler<WareHouseItem> pageAsm)
+    public WareHouseItemService(IWareHouseItemRepository repository, WareHouseItemDTOAssembler dtoAssembler, PagedResourcesAssembler<WareHouseItem> pageAsm, IDrugService drugService, IPharmacyService pharmacyService, IDrugPriceService drugPriceService)
     {
         super(repository);
         this.dtoAssembler = dtoAssembler;
         this.pageAsm = pageAsm;
+        this.drugService = drugService;
+        this.pharmacyService = pharmacyService;
+        this.drugPriceService = drugPriceService;
     }
 
     @Override
@@ -78,4 +91,45 @@ public class WareHouseItemService extends JpaService<WareHouseItem, Long, IWareH
         return item.get().reduceAvailable(req.getQuantity())
             && update(item.get());
     }
+
+    @Override
+    public boolean deleteWareHouseItem(Long id) 
+    {
+        List<DrugPrice> drugPrices = drugPriceService.findAllByWareHouseItemId(id);
+        for (DrugPrice drugPrice : drugPrices) {
+            drugPriceService.remove(drugPrice.getId());
+        }
+        return remove(id);
+    }
+
+    @Override
+    public boolean updateWareHouseItem(WareHouseItemUpdateRequest wareHouseItemUpdateRequest)
+    {
+        Optional<WareHouseItem> wareHouseItem = get(wareHouseItemUpdateRequest.getId());
+        if(!wareHouseItem.isPresent()) {
+            return false;
+        }
+        Optional<Drug> drug = drugService.get(wareHouseItemUpdateRequest.getDrugId());
+        if(!drug.isPresent()) {
+            return false;
+        }
+        drug.get().setName(wareHouseItemUpdateRequest.getName());
+        drug.get().setDescription(wareHouseItemUpdateRequest.getDescription());
+        drugService.update(drug.get());
+        return update(wareHouseItem.get()); 
+    }
+
+    @Override
+    public boolean addWareHouseItem(WareHouseItemRequest wareHouseItemRequest)
+    {
+        Drug newDrug = new Drug(wareHouseItemRequest.getName(), wareHouseItemRequest.getDescription());
+        Optional<Drug> drug = drugService.add(newDrug);
+        if(!drug.isPresent()) {
+            return false;
+        }
+        WareHouseItem newWareHouseItem = new WareHouseItem(drug.get(), pharmacyService.get(wareHouseItemRequest.getPharmacyId()).get());
+        Optional<WareHouseItem> wareHouseItem = add(newWareHouseItem);
+        return wareHouseItem.isPresent();
+    }
+
 }

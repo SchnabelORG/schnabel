@@ -8,6 +8,8 @@ import com.schnabel.schnabel.users.model.Patient;
 import java.util.Optional;
 
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
+import com.schnabel.schnabel.pharmacies.dto.WareHouseItemRequest;
+import com.schnabel.schnabel.pharmacies.dto.WareHouseItemUpdateRequest;
 import com.schnabel.schnabel.pharmacies.model.WareHouseItem;
 
 import org.springframework.data.domain.Pageable;
@@ -23,4 +25,7 @@ public interface IWareHouseItemService extends IJpaService<WareHouseItem, Long>
     Optional<WareHouseItem> findWareHouseItemByPharmacyAndDrugId(Long drugId, Long pharmacyId);
     Integer getStock(Long pharmacyId, Long drugId);
     boolean reserveDrug(DrugReservationRequest req, Patient patient);
+    boolean deleteWareHouseItem(Long id);
+    boolean updateWareHouseItem(WareHouseItemUpdateRequest wareHouseItemUpdateRequest);
+    boolean addWareHouseItem(WareHouseItemRequest wareHouseItemRequest);
 }

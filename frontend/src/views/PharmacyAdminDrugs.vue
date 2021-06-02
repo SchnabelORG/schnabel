@@ -10,13 +10,13 @@
                 </v-btn>
                 <div id="drugs-table">
                     <v-data-table :headers="headers"
-                                    :items="drugs"
+                                    :items="warehouseitems"
                                     :search="search">
                         <template v-slot:item="row">
                             <tr>
-                                <td>{{row.item.name}}</td>                     
+                                <td>{{row.item.drug.name}}</td>                     
                                 <td>
-                                    <v-btn @click="editDrug(row.item.id)">
+                                    <v-btn @click="editDrug(row.item)">
                                         Edit
                                     </v-btn>
                                 </td>
@@ -36,33 +36,43 @@
                 <v-card-title>Drug</v-card-title>
                 <v-spacer></v-spacer>
                  <v-text-field
-                        v-model="name"
-                        :rules="[rules.required]"
-                        label="Name"
-                        ></v-text-field>
+                    v-model="name"
+                    :rules="[rules.required]"
+                    label="Name"
+                    ></v-text-field>
+                <v-text-field
+                    v-model="description"
+                    :rules="[rules.required]"
+                    label="Description"
+                    ></v-text-field>
                 <v-spacer></v-spacer>
-                <v-btn class="primary" @click="addDrug()" :disabled="!name">
+                <v-btn class="primary" @click="addDrug()" :disabled="!name || !description">
                     Add
                 </v-btn>
-                <v-btn class="accent" @click="cancel()">
+                <v-btn class="accent" @click="cancelNew()">
                     Cancel
                 </v-btn>
             </v-card>
         </v-dialog>
         <v-dialog v-model="this.edit" persistent>
-            <v-card id="new-card">
-                <v-card-title>Reason for denial</v-card-title>
+            <v-card id="edit-card">
+                <v-card-title>Edit drug</v-card-title>
                 <v-spacer></v-spacer>
                  <v-text-field
-                        v-model="name"
+                        v-model="drug.name"
                         :rules="[rules.required]"
                         label="Name"
                         ></v-text-field>
+                    <v-text-field
+                        v-model="drug.description"
+                        :rules="[rules.required]"
+                        label="Description"
+                        ></v-text-field>
                 <v-spacer></v-spacer>
-                <v-btn class="primary" @click="saveDrug()" :disabled="!name">
-                    Add
+                <v-btn class="primary" @click="saveDrug()" :disabled="!drug.name || !drug.description">
+                    Save
                 </v-btn>
-                <v-btn class="accent" @click="cancel()">
+                <v-btn class="accent" @click="cancelEdit()">
                     Cancel
                 </v-btn>
             </v-card>
@@ -74,11 +84,15 @@
     export default {
         data() {
             return {
-                drugs: [{name: "Brufen"}],
+                drugs: [],
+                warehouseitems: [],
                 new: false,
                 edit: false,
                 name: '',
-                id: '',
+                description: '',
+                drug: '',
+                warehouseitem: '',
+                pharmacyId: '',
                 headers: [
                     { text: "Name" },
                     { text: "Edit" },
@@ -90,36 +104,113 @@
             }
         },
         methods: {
-            getDrugs: function() {
-                
-
-
+            getPharmacyAdmin: function() {
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.get("api/pharmacyadmin", {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            this.pharmacyId = response.data.pharmacy.id;
+                            this.getDrugs();
+                        })
+                        .catch(response => {
+                            console.log("Failed to get pharmacy admin", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
             },
-            editDrug: function(id) {
-                this.id = id;
+            getDrugs: function() {
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.get("api/pharmacyadmin/drug", {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            this.warehouseitems = response.data._embedded.warehouseitems;
+                        })
+                        .catch(response => {
+                            console.log("Failed to get drugs", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
+            },
+            editDrug: function(wareHouseItem) {
+                this.drug = wareHouseItem.drug;
+                this.warehouseitem = wareHouseItem;
                 this.edit = true;
             },
             deleteDrug: function(id) {
-                this.id = id;
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.delete("api/warehouseitem/" + id, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            console.log("Successfully deleted", response.data);
+                            this.getDrugs();
+                        })
+                        .catch(response => {
+                            console.log("Failed to delete", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
             },
             newDrug: function() {
                 this.new = true;
             },
             addDrug: function() {
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    let newDrug = { name: this.name, description: this.description, pharmacyId: this.pharmacyId };
+                    this.axios.post("api/warehouseitem", newDrug, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            console.log("Successfully added", response.data);
+                            alert("Successfully added!");
+                            this.getDrugs();
+                        })
+                        .catch(response => {
+                            console.log("Failed to add", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
                 this.new = false;
-
-
-
             },
             saveDrug: function() {
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    let updateDrug = { id: this.warehouseitem.id, drugId: this.drug.id, name: this.drug.name, description: this.drug.description };
+                    this.axios.put("api/warehouseitem", updateDrug, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            console.log("Successfully updated", response.data);
+                            alert("Successfully updated!");
+                            this.getDrugs();
+                        })
+                        .catch(response => {
+                            console.log("Failed to update", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
                 this.edit = false;
             },
-            cancel: function() {
-                this.dialog = false;
+            cancelEdit: function() {
+                this.edit = false;
             },
+            cancelNew: function() {
+                this.new = false;
+            }
         },
         mounted() {
-            this.getDrugs();
+            this.getPharmacyAdmin();
         },
     }
 </script>
@@ -145,9 +236,10 @@
         width: 100vw;
         min-height: 100vh;
     }
-    #edit-card {
-        width: 60%;
+    #edit-card, #new-card {
+        display:grid;
+        grid-template-columns:auto;
         margin: 0 auto;
-        justify-content: center;
+        width: 40%;
     }
 </style>

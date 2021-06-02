@@ -75,7 +75,20 @@
         },
         methods: {
             getPharmacists: function() {
-                
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.get("api/pharmacyadmin/pharmacist", {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            this.pharmacists = response.data._embedded.pharmacists;
+                        })
+                        .catch(response => {
+                            console.log("Failed to get pharmacists", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
             },
             deletePharmacist: function(id) {
                 this.id = id;
