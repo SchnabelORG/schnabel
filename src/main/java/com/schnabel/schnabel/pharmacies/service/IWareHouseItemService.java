@@ -6,8 +6,8 @@ import com.schnabel.schnabel.pharmacies.model.WareHouseItem;
 
 import java.util.Optional;
 
-
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
+import com.schnabel.schnabel.pharmacies.model.WareHouseItem;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
