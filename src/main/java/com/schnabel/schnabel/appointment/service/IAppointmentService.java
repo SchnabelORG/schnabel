@@ -7,11 +7,10 @@ import java.util.Optional;
 import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
 import com.schnabel.schnabel.appointment.model.Appointment;
 import com.schnabel.schnabel.misc.interfaces.IJpaService;
-import org.springframework.data.domain.Pageable;
-import org.springframework.hateoas.PagedModel;
 import com.schnabel.schnabel.users.model.Patient;
 
-import java.util.Optional;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 
 /**
  * Appointment Service interface
@@ -29,5 +28,6 @@ public interface IAppointmentService extends IJpaService<Appointment, Long> {
     PagedModel<AppointmentDTO> findByPatientId(Long patientId, Pageable pageable);
     Optional<AppointmentDTO> findByIdDTO(Long id);
     PagedModel<AppointmentDTO> findDermApptByPatientId(Long patientId, Pageable pageable);
+    boolean scheduleConsult(Patient patient, Long pharmacistId, LocalDateTime start);
 }
 

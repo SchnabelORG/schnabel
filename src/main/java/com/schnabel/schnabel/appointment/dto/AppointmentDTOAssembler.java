@@ -8,7 +8,6 @@ import com.schnabel.schnabel.users.model.MedicalEmployee;
 import com.schnabel.schnabel.users.model.Patient;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
-import com.schnabel.schnabel.users.dto.MedicalEmployeeDTO;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.time.format.DateTimeFormatter;
@@ -29,8 +28,8 @@ public class AppointmentDTOAssembler extends RepresentationModelAssemblerSupport
     dto.add(linkTo(methodOn(AppointmentController.class).get(entity.getId())).withSelfRel());
     dto.setId(entity.getId());
     dto.setPrice(entity.getPrice());
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     dto.setPeriod(entity.getPeriod());
-    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
     dto.setDate(entity.getPeriod().getStartTime().format(dateFormatter));
     dto.setStart(entity.getPeriod().getStartTime().format(timeFormatter));

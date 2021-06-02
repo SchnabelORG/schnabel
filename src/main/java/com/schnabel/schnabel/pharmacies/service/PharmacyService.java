@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.pharmacies.service;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
@@ -28,6 +29,7 @@ public class PharmacyService extends JpaService<Pharmacy, Long, IPharmacyReposit
 
     private final PharmacyDTOAssembler pharmacyDTOasm;
     private final PagedResourcesAssembler<Pharmacy> pharmacyPageAsm;
+    private static final long CONSULT_DURATION_MINUTES = 15;
 
     @Autowired
     public PharmacyService(IPharmacyRepository pharmacyRepository, PharmacyDTOAssembler pharmacyDTOasm, PagedResourcesAssembler<Pharmacy> pharmacyPageAsm)
@@ -62,4 +64,11 @@ public class PharmacyService extends JpaService<Pharmacy, Long, IPharmacyReposit
     public Optional<Pharmacy> findByName(String name) {
         return repository.findByName(name);
     }
+
+    @Override
+    public PagedModel<PharmacyDTO> findByFreePharmacistAppointment(LocalDateTime startTime, Pageable pageable) {
+        Page<Pharmacy> pharmacies = repository.findByFreePharmacistAppointment(startTime, startTime.plusMinutes(CONSULT_DURATION_MINUTES), pageable);
+        return pharmacyPageAsm.toModel(pharmacies, pharmacyDTOasm);
+    }
+
 }

@@ -3,6 +3,7 @@ package com.schnabel.schnabel.users.service;
 import java.util.Optional;
 
 import com.schnabel.schnabel.misc.implementations.JpaService;
+import com.schnabel.schnabel.users.dto.FreePharmacistLookupRequest;
 import com.schnabel.schnabel.users.dto.PharmacistDTO;
 import com.schnabel.schnabel.users.dto.PharmacistDTOAssembler;
 import com.schnabel.schnabel.users.model.Pharmacist;
@@ -24,14 +25,46 @@ import javax.transaction.Transactional;
 public class PharmacistService extends JpaService<Pharmacist, Long, IPharmacistRepository> implements IPharmacistService
 {
 
-    private final PharmacistDTOAssembler pharmacistDTOAssembler;
-    private final PagedResourcesAssembler<Pharmacist> pharmacistPagedResourcesAssembler;
+    private final PharmacistDTOAssembler dtoAsm;
+    private final PagedResourcesAssembler<Pharmacist> pageAsm;
+    private static final long CONSULT_DURATION_MINUTES = 15;
 
     @Autowired
-    public PharmacistService(IPharmacistRepository repository, PharmacistDTOAssembler pharmacistDTOAssembler, PagedResourcesAssembler<Pharmacist> pharmacistPagedResourcesAssembler){
+    public PharmacistService(IPharmacistRepository repository, PharmacistDTOAssembler pharmacistDTOAssembler, PagedResourcesAssembler<Pharmacist> pharmacistPageAsm)
+    {
         super(repository);
-        this.pharmacistDTOAssembler = pharmacistDTOAssembler;
-        this.pharmacistPagedResourcesAssembler = pharmacistPagedResourcesAssembler;
+        this.dtoAsm = pharmacistDTOAssembler;
+        this.pageAsm = pharmacistPageAsm;
+    }
+
+    @Override
+    public PagedModel<PharmacistDTO> findByPharmacy(Long pharmacyId, Pageable pageable) {
+        Page<Pharmacist> pharmacists = repository.findByPharmacyId(pharmacyId, pageable);
+        return pageAsm.toModel(pharmacists, dtoAsm);
+    }
+
+    @Override
+    public PagedModel<PharmacistDTO> findFreeByPharmacy(FreePharmacistLookupRequest req, Pageable pageable) {
+        Page<Pharmacist> pharmacists = repository.findFreeByPharmacy(req.getPharmacyId(), req.getStart(), req.getStart().plusMinutes(CONSULT_DURATION_MINUTES), pageable);
+        return pageAsm.toModel(pharmacists, dtoAsm);
+    }
+
+    @Override
+    public PagedModel<PharmacistDTO> findAllDTO(Pageable pageable) {
+        Page<Pharmacist> pharmacists = getAll(pageable);
+        return pageAsm.toModel(pharmacists, dtoAsm);
+    }
+
+    @Override
+    public Optional<PharmacistDTO> findbyIdDTO(Long id) {
+        return get(id).map(dtoAsm::toModel);
+    }
+
+    @Override
+    public Optional<PharmacistDTO> updateDTO(Pharmacist pharmacist) {
+        return update(pharmacist) ?
+            findbyIdDTO(pharmacist.getId())
+            : Optional.empty();
     }
 
     @Override
@@ -43,7 +76,7 @@ public class PharmacistService extends JpaService<Pharmacist, Long, IPharmacistR
     @Override
     @Transactional
     public Optional<PharmacistDTO> getDTO(Long id) {
-        return get(id).map(pharmacistDTOAssembler::toModel);
+        return get(id).map(dtoAsm::toModel);
     }
 
 //    @Override
@@ -60,11 +93,6 @@ public class PharmacistService extends JpaService<Pharmacist, Long, IPharmacistR
     public PagedModel<PharmacistDTO> getAllDTO(Pageable pageable) {
 
         Page<Pharmacist> pharmacists = getAll(pageable);
-        return pharmacistPagedResourcesAssembler.toModel(pharmacists, pharmacistDTOAssembler);
-    }
-
-    @Override
-    public Page<Pharmacist> findByPharmacy(Long pharmacyId, Pageable pageable) {
-        return null;
+        return pageAsm.toModel(pharmacists, dtoAsm);
     }
 }
