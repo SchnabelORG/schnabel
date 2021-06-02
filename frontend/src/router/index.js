@@ -35,6 +35,12 @@ const routes = [
   },
 
   {
+    path:'/drugsearch',
+    name: 'DrugSearch',
+    component: () => import( /* webpackChunkName: "drugsearch" */ '../views/DrugSearch.vue'),
+  },
+
+  {
     path: '/consult',
     name: 'ScheduleConsult',
     component: () => import( /* webpackChunkName: "makeappointment" */ '../views/ScheduleConsult.vue'),

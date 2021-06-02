@@ -15,7 +15,7 @@ import com.schnabel.schnabel.pharmacies.model.Pharmacy_;
 import org.springframework.data.jpa.domain.Specification;
 
 /**
- * Used for filtered queries
+ * Used for generating complex queries
  */
 public class PharmacySpecification {
 

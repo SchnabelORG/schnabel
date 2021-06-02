@@ -55,9 +55,9 @@ insert into appointments("free", end_time, start_time, price, patient_id, medica
 insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-05-24 08:45:00', '2021-05-24 08:15:00', 12000, 2, 4, 2);
 insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-05-25 08:45:00', '2021-05-25 08:15:00', 6000, 1, 4, 2);
 
-insert into drugs_reservations(end_reservation, quantity, reservation_date, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values('2021-05-20', 2, '2021-05-04', true, 1, 1, 1);
-insert into drugs_reservations(end_reservation, quantity, reservation_date, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values('2020-05-20', 2, '2020-05-04', false, 1, 1, 1);
-insert into drugs_reservations(end_reservation, quantity, reservation_date, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values('2021-07-20', 2, '2021-05-04', false, 1, 1, 1);
+insert into drug_reservations(end_time, start_time, quantity, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values('2021-05-20', '2021-05-04', 2, true, 1, 1, 1);
+insert into drug_reservations(end_time, start_time, quantity, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values('2020-05-20', '2020-05-04', 2, false, 1, 1, 1);
+insert into drug_reservations(end_time, start_time, quantity, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values('2021-07-20', '2021-05-04', 2, false, 1, 1, 1);
 
 insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('08:00:00', '14:00:00', 1, 2);
 insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('15:00:00', '16:00:00', 2, 2);
