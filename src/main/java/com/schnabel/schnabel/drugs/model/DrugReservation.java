@@ -56,4 +56,12 @@ public class DrugReservation implements IIdentifiable<Long> {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pharmacy_reservation_id")
     private Pharmacy pharmacy;
+
+    public DrugReservation(int quantity, Period period, Patient patient, Drug drug, Pharmacy pharmacy) {
+        this.quantity = quantity;
+        this.period = period;
+        this.patient = patient;
+        this.drug = drug;
+        this.pharmacy = pharmacy;
+    }
 }

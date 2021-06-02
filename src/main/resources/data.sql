@@ -13,6 +13,9 @@ insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 
 insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 20, 3, 1);
 insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 20, 4, 1);
 insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 20, 5, 1);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 20, 3, 2);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 20, 4, 2);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 20, 5, 2);
 
 insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2022-06-01', '2020-01-01', 1);
 insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2022-06-01', '2020-01-01', 2);
