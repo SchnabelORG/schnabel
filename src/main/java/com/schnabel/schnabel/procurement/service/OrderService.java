@@ -2,9 +2,11 @@ package com.schnabel.schnabel.procurement.service;
 
 import com.schnabel.schnabel.drugs.service.IDrugService;
 import com.schnabel.schnabel.misc.implementations.JpaService;
+import com.schnabel.schnabel.procurement.dto.OfferDTO;
 import com.schnabel.schnabel.procurement.dto.OrderDTO;
 import com.schnabel.schnabel.procurement.dto.OrderDTOAssembler;
 import com.schnabel.schnabel.procurement.dto.OrderItemRequest;
+import com.schnabel.schnabel.procurement.dto.OrderUpdateRequest;
 import com.schnabel.schnabel.procurement.model.Order;
 import com.schnabel.schnabel.procurement.model.OrderItem;
 import com.schnabel.schnabel.procurement.model.OrderStatus;
@@ -34,8 +36,9 @@ public class OrderService extends JpaService<Order, Long, IOrderRepository> impl
     private final IPharmacyAdminService pharmacyAdminService;
     private final IDrugService drugService;
     private final IOrderItemService orderItemService;
+    private final IOfferService offerService;
 
-    public OrderService(IOrderRepository repository, OrderDTOAssembler orderDTOAssembler, PagedResourcesAssembler<Order> orderPagedResourcesAssembler, IPharmacyAdminService pharmacyAdminService, IDrugService drugService, IOrderItemService orderItemService)
+    public OrderService(IOrderRepository repository, OrderDTOAssembler orderDTOAssembler, PagedResourcesAssembler<Order> orderPagedResourcesAssembler, IPharmacyAdminService pharmacyAdminService, IDrugService drugService, IOrderItemService orderItemService, IOfferService offerService)
     {
 		super(repository);
         this.orderDTOAssembler = orderDTOAssembler;
@@ -43,6 +46,7 @@ public class OrderService extends JpaService<Order, Long, IOrderRepository> impl
         this.pharmacyAdminService = pharmacyAdminService;
         this.drugService = drugService;
         this.orderItemService = orderItemService;
+        this.offerService = offerService;
     }
 
     @Override
@@ -108,5 +112,40 @@ public class OrderService extends JpaService<Order, Long, IOrderRepository> impl
         }
         order.setOrderItems(orderItems);
         return update(order);
+    }
+
+    @Override
+    public boolean deleteOrder(Pageable pageable, Long orderId)
+    {
+        if(!offerService.checkEmptyOrderOfferList(orderId, pageable))
+        {
+            return false;
+        }       
+        List<OrderItem> orderItems = orderItemService.findAllByOrderId(orderId);
+        for (OrderItem orderItem : orderItems) 
+        {
+            if(orderItemService.remove(orderItem.getId()) == false)
+            {
+                return false;
+            }
+        }        
+        return remove(orderId);
+    }
+
+    @Override
+    public boolean updateOrder(OrderUpdateRequest orderUpdateRequest, Pageable pageable)
+    {
+        Optional<Order> order = get(orderUpdateRequest.getId());
+        if(!order.isPresent()) 
+        {
+            return false;
+        }
+        if(!offerService.checkEmptyOrderOfferList(order.get().getId(), pageable))
+        {
+            return false;
+        }
+        order.get().setDescription(orderUpdateRequest.getDescription());
+        order.get().setDeadline(orderUpdateRequest.getDeadline());
+        return update(order.get());
     }
 }

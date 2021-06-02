@@ -1,5 +1,7 @@
 package com.schnabel.schnabel.procurement.service;
 
+import java.util.List;
+
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.procurement.model.OrderItem;
 import com.schnabel.schnabel.procurement.repository.IOrderItemRepository;
@@ -16,4 +18,10 @@ public class OrderItemService extends JpaService<OrderItem, Long, IOrderItemRepo
     {
         super(repository);
     }
+
+    @Override
+    public List<OrderItem> findAllByOrderId(Long id)
+    {
+        return repository.findAllByOrderId(id);    
+    }    
 }

@@ -27,5 +27,5 @@ public class OrderDTO extends RepresentationModel<OrderDTO> {
     private String description;
     private PharmacyAdminDTO pharmacyAdmin;
     //private OfferDTO offerDTO;
-    //private List<OrderItemDTO> orderItems;
+    private List<OrderItemDTO> orderItems;
 }

@@ -88,9 +88,9 @@ public class OfferController
     }
 
     @PostMapping("acceptoffer")
-    public ResponseEntity<String> acceptOffer(@RequestBody OfferDTO dto, @RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<String> acceptOffer(@RequestBody long offerId, @RequestHeader("Authorization") String authHeader) {
         String jws = jwtUtils.parseJwtFromAuthorizationHeader(authHeader);
-        return offerService.acceptOffer(jwtUtils.getEmailFromJws(jws)) ?
+        return offerService.acceptOffer(offerId, jwtUtils.getEmailFromJws(jws)) ?
             ResponseEntity.ok("Accepted")
             : ResponseEntity.badRequest().build();
     }

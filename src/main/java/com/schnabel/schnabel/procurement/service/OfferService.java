@@ -1,13 +1,17 @@
 package com.schnabel.schnabel.procurement.service;
 
+import com.schnabel.schnabel.email.service.IMailService;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.procurement.dto.OfferDTO;
 import com.schnabel.schnabel.procurement.dto.OfferDTOAssembler;
 import com.schnabel.schnabel.procurement.model.Offer;
+import com.schnabel.schnabel.procurement.model.OfferStatus;
 import com.schnabel.schnabel.procurement.model.Order;
+import com.schnabel.schnabel.procurement.model.OrderStatus;
 import com.schnabel.schnabel.procurement.repository.IOfferRepository;
 
 import com.schnabel.schnabel.procurement.repository.IOrderRepository;
+import com.schnabel.schnabel.users.service.IPharmacyAdminService;
 
 import org.apache.http.annotation.Obsolete;
 import org.springframework.data.domain.Page;
@@ -17,6 +21,7 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -29,13 +34,17 @@ public class OfferService extends JpaService<Offer, Long, IOfferRepository> impl
     private final OfferDTOAssembler offerDTOAssembler;
     private final PagedResourcesAssembler<Offer> offerPagedResourcesAssembler;
     private final IOrderRepository orderRepository;
+    private final IPharmacyAdminService pharmacyAdminService;
+    private final IMailService mailService;
 
-    public OfferService(IOfferRepository repository, OfferDTOAssembler offerDTOAssembler, PagedResourcesAssembler<Offer> offerPagedResourcesAssembler, IOrderRepository orderRepository)
+    public OfferService(IOfferRepository repository, OfferDTOAssembler offerDTOAssembler, PagedResourcesAssembler<Offer> offerPagedResourcesAssembler, IOrderRepository orderRepository, IPharmacyAdminService pharmacyAdminService, IMailService mailService)
     {
 		super(repository);
         this.offerDTOAssembler = offerDTOAssembler;
         this.offerPagedResourcesAssembler = offerPagedResourcesAssembler;
         this.orderRepository = orderRepository;
+        this.pharmacyAdminService = pharmacyAdminService;
+        this.mailService = mailService;
     }
 
     @Override
@@ -102,10 +111,33 @@ public class OfferService extends JpaService<Offer, Long, IOfferRepository> impl
 
     @Override
     @Transactional
-    public boolean acceptOffer(String email) {
-        //todo
-        
-        return false;
+    public boolean acceptOffer(Long offerId, String email) {
+        Offer offer = get(offerId).get();
+        Order order = offer.getOrder();
+        if(order.getPharmacyAdmin().getId() != pharmacyAdminService.findByEmail(email).get().getId() || order.getDeadline().isAfter(LocalDate.now()))
+        {
+            return false;
+        }
+
+        offer.setOfferStatus(OfferStatus.ACCEPTED);
+        mailService.sendOrderClosingMail(offer.getSupplier().getEmail(), "Your offer is ACCEPTED for order -> id: " + order.getId() + " description: " + order.getDescription());
+        for (Offer o : order.getOffers()) 
+        {
+            if(o.getId() != offerId)
+            {
+                o.setOfferStatus(OfferStatus.REJECTED);
+                mailService.sendOrderClosingMail(o.getSupplier().getEmail(), "Your offer is REJECTED for order -> id: " + order.getId() + " description: " + order.getDescription());
+            }
+        }
+        order.setOrderStatus(OrderStatus.CLOSED);
+        return true;
+    }
+
+    @Override
+    public boolean checkEmptyOrderOfferList(Long orderId, Pageable pageable)
+    {
+        Page<Offer> offers = repository.findByOrderId(pageable, orderId);
+        return offers.isEmpty();
     }
 
 }

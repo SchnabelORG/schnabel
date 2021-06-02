@@ -1,10 +1,8 @@
 package com.schnabel.schnabel.procurement.controller;
 
-import java.util.Optional;
-
 import com.schnabel.schnabel.procurement.dto.OrderDTO;
 import com.schnabel.schnabel.procurement.dto.OrderRequest;
-import com.schnabel.schnabel.procurement.model.Order;
+import com.schnabel.schnabel.procurement.dto.OrderUpdateRequest;
 import com.schnabel.schnabel.procurement.service.IOrderService;
 import com.schnabel.schnabel.security.util.JwtUtils;
 
@@ -13,15 +11,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 /**
@@ -88,6 +86,22 @@ public class OrderController
         String jws = jwtUtils.parseJwtFromAuthorizationHeader(authHeader);
         return orderService.createNewOrder(req.getDescription(), req.getDeadline(), req.getOrderItems(), jwtUtils.getEmailFromJws(jws)) ?
             ResponseEntity.ok("Added")
+            : ResponseEntity.badRequest().build();
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteOrder(@PathVariable("id") Long orderId, @RequestHeader("Authorization") String authHeader, Pageable pageable)
+    {
+        return orderService.deleteOrder(pageable, orderId) ? 
+            ResponseEntity.ok("Deleted")
+            : ResponseEntity.badRequest().build();
+    }
+
+    @PutMapping
+    public ResponseEntity<String> updateOrder(@RequestBody OrderUpdateRequest orderUpdateRequest, @RequestHeader("Authorization") String authHeader, Pageable pageable)
+    {
+        return orderService.updateOrder(orderUpdateRequest, pageable) ?
+            ResponseEntity.ok("Updated")
             : ResponseEntity.badRequest().build();
     }
 }

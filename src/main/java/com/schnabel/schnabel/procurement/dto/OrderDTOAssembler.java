@@ -40,7 +40,7 @@ public class OrderDTOAssembler extends RepresentationModelAssemblerSupport<Order
             .build()
             .add(linkTo(methodOn(PharmacyAdminController.class).get(pharmacyAdmin.getId())).withSelfRel()));
 
-        //dto.setOrderItems(getOrderItems(entity.getOrderItems()));
+        dto.setOrderItems(getOrderItems(entity.getOrderItems()));
         //dto.add(linkTo(methodOn(OfferController.class).getByOrder(Pageable.unpaged(), entity.getId())).withRel("offers"));
         return dto;
     }
