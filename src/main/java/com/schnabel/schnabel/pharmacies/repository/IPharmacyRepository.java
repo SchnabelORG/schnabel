@@ -30,4 +30,14 @@ public interface IPharmacyRepository extends JpaRepository<Pharmacy, Long>, JpaS
             + " AND a.end_time >= :end)",
         nativeQuery = true)
     Page<Pharmacy> findByFreePharmacistAppointment(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end, Pageable pageable);
+
+    @Query(value = "SELECT ph.*"
+        + " FROM pharmacies ph"
+        + " INNER JOIN warehouseitem w"
+        + " ON ph.id = w.pharmacy_id"
+        + " WHERE w.drug_id = :drug_id"
+        + " AND w.available > 0"
+        + " GROUP BY ph.id",
+        nativeQuery = true)
+    Page<Pharmacy> findWithStock(@Param("drug_id") Long drugId, Pageable pageable);
 }

@@ -3,6 +3,7 @@ package com.schnabel.schnabel.users.controller;
 import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
 import com.schnabel.schnabel.security.util.JwtUtils;
 import com.schnabel.schnabel.users.dto.ConsultRequest;
+import com.schnabel.schnabel.users.dto.DrugReservationRequest;
 import com.schnabel.schnabel.users.dto.PatientDTO;
 import com.schnabel.schnabel.users.dto.PatientDTOAssembler;
 import com.schnabel.schnabel.users.dto.RegisterRequest;
@@ -29,14 +30,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/patient")
 public class PatientController
 {
-    private final IPatientService patientService;
+    private final IPatientService service;
     private final PatientDTOAssembler patientDTOAsm;
     private final JwtUtils jwtUtils;
 
     @Autowired
-    public PatientController(IPatientService patientService, PatientDTOAssembler patientDTOAsm, JwtUtils jwtUtils)
+    public PatientController(IPatientService service, PatientDTOAssembler patientDTOAsm, JwtUtils jwtUtils)
     {
-        this.patientService = patientService;
+        this.service = service;
         this.patientDTOAsm = patientDTOAsm;
         this.jwtUtils = jwtUtils;
     }
@@ -48,7 +49,10 @@ public class PatientController
     @GetMapping("{id}")
     public ResponseEntity<PatientDTO> get(@PathVariable long id)
     {
-        return patientService.get(id).map(patientDTOAsm::toModel).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return service.get(id)
+            .map(patientDTOAsm::toModel)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
     }
 
     // /**
@@ -77,7 +81,7 @@ public class PatientController
         }
 
         String email = jwtUtils.getEmailFromJws(jws);
-        return patientService.findByEmail(email)
+        return service.findByEmail(email)
             .map(patientDTOAsm::toModel)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.badRequest().build());
@@ -90,7 +94,7 @@ public class PatientController
      */
     @PostMapping
     public ResponseEntity<String> registerPatient(@RequestBody RegisterRequest req) {
-        return patientService.registerPatient(req.getName(), req.getSurname(), req.getEmail(), req.getPassword(), req.getAddress(), req.getPhoneNo()) ?
+        return service.registerPatient(req.getName(), req.getSurname(), req.getEmail(), req.getPassword(), req.getAddress(), req.getPhoneNo()) ?
             ResponseEntity.ok("Registered")
             : ResponseEntity.badRequest().build();
 
@@ -99,13 +103,13 @@ public class PatientController
     @GetMapping("apptderm")
     public ResponseEntity<PagedModel<AppointmentDTO>> getAppointments(Pageable pageable, @RequestHeader("Authorization") String auth) {
         String email = jwtUtils.getEmailFromJws(jwtUtils.parseJwtFromAuthorizationHeader(auth));
-        return new ResponseEntity<>(patientService.findDermAppts(email, pageable), HttpStatus.OK);
+        return new ResponseEntity<>(service.findDermAppts(email, pageable), HttpStatus.OK);
     }
 
     @PostMapping("apptderm")
     public ResponseEntity<String> scheduleDermAppt(@RequestBody long apptId, @RequestHeader("Authorization") String auth) {
         String jws = jwtUtils.parseJwtFromAuthorizationHeader(auth);
-        return patientService.scheduleDermAppt(apptId, jwtUtils.getEmailFromJws(jws)) ?
+        return service.scheduleDermAppt(apptId, jwtUtils.getEmailFromJws(jws)) ?
             ResponseEntity.ok("Scheduled")
             : ResponseEntity.badRequest().build();
     }
@@ -116,7 +120,7 @@ public class PatientController
     @PostMapping("consult")
     public ResponseEntity<String> scheduleConsult(@RequestBody ConsultRequest req, @RequestHeader("Authorization") String auth) {
         String email = jwtUtils.getEmailFromJws(jwtUtils.parseJwtFromAuthorizationHeader(auth));
-        return patientService.scheduleConsult(req, email) ?
+        return service.scheduleConsult(req, email) ?
             ResponseEntity.ok("Scheduled")
             : ResponseEntity.badRequest().build();
     }
@@ -124,8 +128,19 @@ public class PatientController
     @PostMapping("appointemnt/cancel")
     public ResponseEntity<String> cancelAppointment(@RequestBody long apptId, @RequestHeader("Authorization") String auth) {
         String email = jwtUtils.getEmailFromJws(jwtUtils.parseJwtFromAuthorizationHeader(auth));
-        return patientService.cancelAppointment(apptId, email) ?
+        return service.cancelAppointment(apptId, email) ?
             ResponseEntity.ok("Cancelled")
+            : ResponseEntity.badRequest().build();
+    }
+
+    /**
+     * Creates a drug reservation
+     */
+    @PostMapping("resdrug")
+    public ResponseEntity<String> reserveDrug(@RequestBody DrugReservationRequest req, @RequestHeader("Authorization") String auth) {
+        String email = jwtUtils.getEmailFromJws(jwtUtils.parseJwtFromAuthorizationHeader(auth));
+        return service.reserveDrug(req, email) ?
+            ResponseEntity.ok("Reserved")
             : ResponseEntity.badRequest().build();
     }
 }

@@ -9,7 +9,6 @@ import com.schnabel.schnabel.drugs.repository.IDrugPriceRepository;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,14 +18,12 @@ import org.springframework.stereotype.Service;
 public class DrugPriceService extends JpaService<DrugPrice, Long, IDrugPriceRepository> implements IDrugPriceService {
     
     private final DrugPriceDTOAssembler dtoAssembler;
-    private final PagedResourcesAssembler<DrugPrice> pageAsm;
 
     @Autowired
-    public DrugPriceService(IDrugPriceRepository repository, DrugPriceDTOAssembler dtoAssembler, PagedResourcesAssembler<DrugPrice> pageAsm)
+    public DrugPriceService(IDrugPriceRepository repository, DrugPriceDTOAssembler dtoAssembler)
     {
         super(repository);
         this.dtoAssembler = dtoAssembler;
-        this.pageAsm = pageAsm;
     }
 
     @Override

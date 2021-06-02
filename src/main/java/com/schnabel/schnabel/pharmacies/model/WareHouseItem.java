@@ -81,4 +81,12 @@ public class WareHouseItem implements IIdentifiable<Long>
         this.drugPrices.add(drugPrice);
         return true;
      }
+
+     public boolean reduceAvailable(int amount) {
+         if (this.available - amount >= 0) {
+             this.available -= amount;
+             return true;
+         }
+         return false;
+     }
 }

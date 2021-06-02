@@ -1,21 +1,33 @@
 package com.schnabel.schnabel.drugs.model;
 
 
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import com.schnabel.schnabel.misc.model.IIdentifiable;
+import com.schnabel.schnabel.misc.model.Period;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.users.model.Patient;
-import lombok.*;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * Drug Reservation
  */
 @Entity
-@Table(name = "drugs_reservations")
-@Getter
-@Setter
+@Table(name = "drug_reservations")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -30,21 +42,26 @@ public class DrugReservation implements IIdentifiable<Long> {
     @Column
     private boolean taken;
 
-    @Column(name = "reservation_date")
-    private LocalDateTime reservationDate;
+    @Embedded
+    private Period period;
 
-    @Column(name = "end_reservation")
-    private LocalDateTime endOfReservation;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_patient_id")
     private Patient patient;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reserved_drug_id")
     private Drug drug;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pharmacy_reservation_id")
     private Pharmacy pharmacy;
+
+    public DrugReservation(int quantity, Period period, Patient patient, Drug drug, Pharmacy pharmacy) {
+        this.quantity = quantity;
+        this.period = period;
+        this.patient = patient;
+        this.drug = drug;
+        this.pharmacy = pharmacy;
+    }
 }

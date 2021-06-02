@@ -5,10 +5,12 @@ import java.util.Optional;
 import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
 import com.schnabel.schnabel.appointment.service.IAppointmentService;
 import com.schnabel.schnabel.auth.service.IRefreshTokenService;
+import com.schnabel.schnabel.drugs.service.IDrugReservationService;
 import com.schnabel.schnabel.email.service.IMailService;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.users.dto.ConsultRequest;
+import com.schnabel.schnabel.users.dto.DrugReservationRequest;
 import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.repository.IPatientRepository;
 
@@ -29,15 +31,17 @@ public class PatientService extends JpaService<Patient, Long, IPatientRepository
     private final IMailService mailService;
     private final PasswordEncoder passwordEncoder;
     private final IRefreshTokenService refreshTokenService;
+    private final IDrugReservationService drugResService;
     
     @Autowired
-    public PatientService(IPatientRepository patientRepository, IMailService mailService, IRefreshTokenService refreshTokenService, IAppointmentService appointmentService)
+    public PatientService(IPatientRepository patientRepository, IMailService mailService, IRefreshTokenService refreshTokenService, IAppointmentService appointmentService, IDrugReservationService drugResService)
     {
         super(patientRepository);
         this.appointmentService = appointmentService;
         this.mailService = mailService;
         this.passwordEncoder = new BCryptPasswordEncoder();
         this.refreshTokenService = refreshTokenService;
+        this.drugResService = drugResService;
     }
 
     @Override
@@ -120,6 +124,16 @@ public class PatientService extends JpaService<Patient, Long, IPatientRepository
             return false;
         }
         return appointmentService.scheduleConsult(patient.get(), req.getPharmacistId(), req.getStart());
+    }
+
+    @Override
+    public boolean reserveDrug(DrugReservationRequest req, String email) {
+        Optional<Patient> patient = findByEmail(email);
+        if(!patient.isPresent()) {
+            return false;
+        }
+
+        return drugResService.reserveDrug(req, patient.get());
     }
 
 }

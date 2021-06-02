@@ -1,8 +1,9 @@
 package com.schnabel.schnabel.pharmacies.service;
 
 import com.schnabel.schnabel.misc.interfaces.IJpaService;
-import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.pharmacies.model.WareHouseItem;
+import com.schnabel.schnabel.users.dto.DrugReservationRequest;
+import com.schnabel.schnabel.users.model.Patient;
 
 import java.util.Optional;
 
@@ -20,4 +21,6 @@ public interface IWareHouseItemService extends IJpaService<WareHouseItem, Long>
     Optional<WareHouseItemDTO> findByIdDTO(Long id);   
     PagedModel<WareHouseItemDTO> findAllByPharmacyId(Long pharmacyId, Pageable pageable);
     Optional<WareHouseItem> findWareHouseItemByPharmacyAndDrugId(Long drugId, Long pharmacyId);
+    Integer getStock(Long pharmacyId, Long drugId);
+    boolean reserveDrug(DrugReservationRequest req, Patient patient);
 }

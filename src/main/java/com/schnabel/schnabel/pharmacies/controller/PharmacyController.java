@@ -24,12 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/pharmacy")
 public class PharmacyController
 {
-    private final IPharmacyService pharmacyService;
+    private final IPharmacyService service;
 
     @Autowired
     public PharmacyController(IPharmacyService pharmacyService)
     {
-        this.pharmacyService = pharmacyService;
+        this.service = pharmacyService;
     }
 
     /**
@@ -41,14 +41,14 @@ public class PharmacyController
     @GetMapping("{id}")
     public ResponseEntity<PharmacyDTO> getById(@PathVariable Long id)
     {
-        return pharmacyService.getDTO(id)
+        return service.getDTO(id)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("search")
     public ResponseEntity<PagedModel<PharmacyDTO>> filteredSearch(@RequestParam Map<String, String> params, Pageable pageable) {
-        return new ResponseEntity<>(pharmacyService.filteredSearch(params, pageable), HttpStatus.OK);
+        return new ResponseEntity<>(service.filteredSearch(params, pageable), HttpStatus.OK);
     }
 
     /**
@@ -58,12 +58,12 @@ public class PharmacyController
     @GetMapping
     public ResponseEntity<PagedModel<PharmacyDTO>> getAll(Pageable pageable)
     {
-        return new ResponseEntity<>(pharmacyService.getAllDTO(pageable), HttpStatus.OK);
+        return new ResponseEntity<>(service.getAllDTO(pageable), HttpStatus.OK);
     }
 
     @GetMapping("check/{pharmacyName}")
     public ResponseEntity<?> checkByName(@PathVariable("pharmacyName") String pharmacyName) {
-        return pharmacyService.findByName(pharmacyName).isPresent() ?
+        return service.findByName(pharmacyName).isPresent() ?
             ResponseEntity.ok().build()
             : ResponseEntity.notFound().build();
     }
@@ -73,7 +73,15 @@ public class PharmacyController
      */
     @GetMapping("phappt/{date}")
     public ResponseEntity<PagedModel<PharmacyDTO>> getWithPhAppts(@PathVariable("date") LocalDateTime startTime, Pageable pageable) {
-        return new ResponseEntity<>(pharmacyService.findByFreePharmacistAppointment(startTime, pageable), HttpStatus.OK);
+        return new ResponseEntity<>(service.findByFreePharmacistAppointment(startTime, pageable), HttpStatus.OK);
+    }
+
+    /**
+     * Return pharmacies that have specific drug in stock
+     */
+    @GetMapping("drug/{id}")
+    public ResponseEntity<PagedModel<PharmacyDTO>> getWithStock(@PathVariable("id") Long drugId, Pageable pageable) {
+        return new ResponseEntity<>(service.findWithStock(drugId, pageable), HttpStatus.OK);
     }
 }
 

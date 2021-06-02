@@ -6,6 +6,7 @@ import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
 import com.schnabel.schnabel.misc.interfaces.IJpaService;
 import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.users.dto.ConsultRequest;
+import com.schnabel.schnabel.users.dto.DrugReservationRequest;
 import com.schnabel.schnabel.users.model.Patient;
 
 import org.springframework.data.domain.Pageable;
@@ -24,4 +25,5 @@ public interface IPatientService extends IJpaService<Patient, Long>
     PagedModel<AppointmentDTO> findAppointments(String email, Pageable pageable);
     PagedModel<AppointmentDTO> findDermAppts(String email, Pageable pageable);
     boolean scheduleConsult(ConsultRequest req, String email);
+    boolean reserveDrug(DrugReservationRequest req, String email);
 }
