@@ -29,7 +29,7 @@ public class PharmacyDTO extends RepresentationModel<PharmacyDTO> {
     private Long id;
     private String name;
     private Address address;
-    // private WareHouse wareHouse;
-    // private List<DermatologistDTO> dermatologists;
+    private double consultPrice;
+    private int score;
     private List<PharmacistDTO> pharmacists;
 }

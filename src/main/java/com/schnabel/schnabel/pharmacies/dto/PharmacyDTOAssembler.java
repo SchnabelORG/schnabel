@@ -29,6 +29,8 @@ public class PharmacyDTOAssembler extends RepresentationModelAssemblerSupport<Ph
         dto.setAddress(entity.getAddress());
         dto.setId(entity.getId());
         dto.setName(entity.getName());
+        dto.setConsultPrice(entity.getConsultPrice());
+        dto.setScore(entity.getScore());
         dto.add(linkTo(methodOn(PharmacistController.class).getByPharmacyId(entity.getId(), Pageable.unpaged())).withRel("pharmacies"));
         return dto;
     }

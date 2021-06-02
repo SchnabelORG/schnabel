@@ -359,13 +359,6 @@ export default {
                     this.$router.push("/");
                 })
         },
-        // Expected dd-mm-yy format
-        getDateTimeFromString: function(dstr, tstr) {
-            let dparts = dstr.split('-');
-            let tparts = tstr.split(':');
-            // -1 because js counts months from 0
-            return new Date(dparts[2], dparts[1] - 1, dparts[0], tparts[0], tparts[1]);
-        },
 
         getDermAppts: function() {
             this.refreshToken()

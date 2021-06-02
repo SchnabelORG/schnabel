@@ -35,6 +35,12 @@ const routes = [
   },
 
   {
+    path: '/consult',
+    name: 'ScheduleConsult',
+    component: () => import( /* webpackChunkName: "makeappointment" */ '../views/ScheduleConsult.vue'),
+  },
+
+  {
     path: '/dermappointment/:pharmacyname',
     beforeEnter: (to, from, next) => {
       // Validate pharmacy exists
