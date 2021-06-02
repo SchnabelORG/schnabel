@@ -2,7 +2,6 @@ package com.schnabel.schnabel.procurement.service;
 
 import com.schnabel.schnabel.drugs.service.IDrugService;
 import com.schnabel.schnabel.misc.implementations.JpaService;
-import com.schnabel.schnabel.procurement.dto.OfferDTO;
 import com.schnabel.schnabel.procurement.dto.OrderDTO;
 import com.schnabel.schnabel.procurement.dto.OrderDTOAssembler;
 import com.schnabel.schnabel.procurement.dto.OrderItemRequest;

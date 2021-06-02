@@ -20,7 +20,7 @@ public interface IOfferService extends IJpaService<Offer, Long>
     boolean updateOffer(Long id, int price, LocalDate dateOfDelivery);
     Optional<OfferDTO> getDTO(Long id);
     PagedModel<OfferDTO> getAllDTO(Pageable pageable);
-    boolean acceptOffer(Long offerId, String email);
+    boolean acceptOffer(Long offerId, String email, Pageable pageable);
     boolean checkEmptyOrderOfferList(Long orderId, Pageable pageable);
 }
 

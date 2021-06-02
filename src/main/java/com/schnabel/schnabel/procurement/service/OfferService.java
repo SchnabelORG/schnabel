@@ -2,11 +2,14 @@ package com.schnabel.schnabel.procurement.service;
 
 import com.schnabel.schnabel.email.service.IMailService;
 import com.schnabel.schnabel.misc.implementations.JpaService;
+import com.schnabel.schnabel.pharmacies.model.WareHouseItem;
+import com.schnabel.schnabel.pharmacies.service.IWareHouseItemService;
 import com.schnabel.schnabel.procurement.dto.OfferDTO;
 import com.schnabel.schnabel.procurement.dto.OfferDTOAssembler;
 import com.schnabel.schnabel.procurement.model.Offer;
 import com.schnabel.schnabel.procurement.model.OfferStatus;
 import com.schnabel.schnabel.procurement.model.Order;
+import com.schnabel.schnabel.procurement.model.OrderItem;
 import com.schnabel.schnabel.procurement.model.OrderStatus;
 import com.schnabel.schnabel.procurement.repository.IOfferRepository;
 
@@ -23,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -36,14 +40,18 @@ public class OfferService extends JpaService<Offer, Long, IOfferRepository> impl
     private final IOrderRepository orderRepository;
     private final IPharmacyAdminService pharmacyAdminService;
     private final IMailService mailService;
+    private final IWareHouseItemService wareHouseItemService;
+    private final IOrderItemService orderItemService;
 
-    public OfferService(IOfferRepository repository, OfferDTOAssembler offerDTOAssembler, PagedResourcesAssembler<Offer> offerPagedResourcesAssembler, IOrderRepository orderRepository, IPharmacyAdminService pharmacyAdminService, IMailService mailService)
+    public OfferService(IOfferRepository repository, OfferDTOAssembler offerDTOAssembler, PagedResourcesAssembler<Offer> offerPagedResourcesAssembler, IOrderRepository orderRepository, IPharmacyAdminService pharmacyAdminService, IWareHouseItemService wareHouseItemService, IOrderItemService orderItemService, IMailService mailService)
     {
 		super(repository);
         this.offerDTOAssembler = offerDTOAssembler;
         this.offerPagedResourcesAssembler = offerPagedResourcesAssembler;
         this.orderRepository = orderRepository;
         this.pharmacyAdminService = pharmacyAdminService;
+        this.wareHouseItemService = wareHouseItemService;
+        this.orderItemService = orderItemService;
         this.mailService = mailService;
     }
 
@@ -111,7 +119,7 @@ public class OfferService extends JpaService<Offer, Long, IOfferRepository> impl
 
     @Override
     @Transactional
-    public boolean acceptOffer(Long offerId, String email) {
+    public boolean acceptOffer(Long offerId, String email, Pageable pageable) {
         Offer offer = get(offerId).get();
         Order order = offer.getOrder();
         if(order.getPharmacyAdmin().getId() != pharmacyAdminService.findByEmail(email).get().getId() || order.getDeadline().isAfter(LocalDate.now()))
@@ -127,10 +135,12 @@ public class OfferService extends JpaService<Offer, Long, IOfferRepository> impl
             {
                 o.setOfferStatus(OfferStatus.REJECTED);
                 mailService.sendOrderClosingMail(o.getSupplier().getEmail(), "Your offer is REJECTED for order -> id: " + order.getId() + " description: " + order.getDescription());
+                update(o);
             }
         }
         order.setOrderStatus(OrderStatus.CLOSED);
-        return true;
+        update(offer);
+        return updateWareHouseItems(offer, order, pageable);
     }
 
     @Override
@@ -138,6 +148,22 @@ public class OfferService extends JpaService<Offer, Long, IOfferRepository> impl
     {
         Page<Offer> offers = repository.findByOrderId(pageable, orderId);
         return offers.isEmpty();
+    }
+
+    private boolean updateWareHouseItems(Offer offer, Order order, Pageable pageable)
+    {
+        List<OrderItem> orderItems = orderItemService.findAllByOrderId(order.getId());
+        for(OrderItem orderItem : orderItems)
+        {
+            Optional<WareHouseItem> wareHouseItem = wareHouseItemService.findWareHouseItemByPharmacyAndDrugId(orderItem.getDrug().getId(), order.getPharmacy().getId());
+            if(!wareHouseItem.isPresent())
+            {
+                return false;
+            }
+            wareHouseItem.get().setQuantity(wareHouseItem.get().getQuantity() + orderItem.getQuantity());
+            wareHouseItemService.update(wareHouseItem.get());
+        }
+        return true;
     }
 
 }
