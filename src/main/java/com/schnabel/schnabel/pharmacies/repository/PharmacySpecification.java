@@ -30,19 +30,19 @@ public class PharmacySpecification {
         ArrayList<Predicate> predicates = new ArrayList<Predicate>();
         // TODO(Jovan): Ugly, probably better way using reflections?
         if(params.containsKey("name")) {
-            predicates.add(cb.like(root.get(Pharmacy_.NAME), "%" + params.get("name") + "%"));
+            predicates.add(cb.like(cb.lower(root.get(Pharmacy_.NAME)), "%" + params.get("name").toLowerCase() + "%"));
         }
 
         if(params.containsKey("street")) {
-            predicates.add(cb.like(root.get(Pharmacy_.ADDRESS).get(Address_.STREET), "%" + params.get("street") + "%"));
+            predicates.add(cb.like(cb.lower(root.get(Pharmacy_.ADDRESS).get(Address_.STREET)), "%" + params.get("street").toLowerCase() + "%"));
         }
         
         if(params.containsKey("street_no")) {
-            predicates.add(cb.like(root.get(Pharmacy_.ADDRESS).get(Address_.STREET_NO), "%" + params.get("street_no") + "%"));
+            predicates.add(cb.like(cb.lower(root.get(Pharmacy_.ADDRESS).get(Address_.STREET_NO)), "%" + params.get("street_no").toLowerCase() + "%"));
         }
         
         if(params.containsKey("city")) {
-            predicates.add(cb.like(root.get(Pharmacy_.ADDRESS).get(Address_.CITY), "%" + params.get("city") + "%"));
+            predicates.add(cb.like(cb.lower(root.get(Pharmacy_.ADDRESS).get(Address_.CITY)), "%" + params.get("city").toLowerCase() + "%"));
         }
 
         if(params.containsKey("score")) {
