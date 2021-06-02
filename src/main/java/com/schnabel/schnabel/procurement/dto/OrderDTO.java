@@ -1,6 +1,8 @@
 package com.schnabel.schnabel.procurement.dto;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.schnabel.schnabel.users.dto.PharmacyAdminDTO;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +25,7 @@ public class OrderDTO extends RepresentationModel<OrderDTO> {
     private Long id;
     private LocalDate deadline;
     private String description;
-    //private PharmacyAdminDTO pharmacyAdmin;
+    private PharmacyAdminDTO pharmacyAdmin;
     //private OfferDTO offerDTO;
-    private List<OrderItemDTO> orderItems;
+    //private List<OrderItemDTO> orderItems;
 }

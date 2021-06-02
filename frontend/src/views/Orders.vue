@@ -14,7 +14,7 @@
                                 <td>{{row.item.description}}</td>
                                 <td>{{row.item.deadline}}</td>
                                 <td>                              
-                                    <v-btn @click="showOffers(row.item.id)">
+                                    <v-btn @click="showOffers(row.item)">
                                         Show
                                     </v-btn>
                                 </td>
@@ -33,11 +33,11 @@
                                     :search="search">
                         <template v-slot:item="row">
                             <tr>
-                                <td>{{row.item.supplier}}</td>
+                                <td>{{row.item.supplier.firm}}</td>
                                 <td>{{row.item.price}}</td>
                                 <td>{{row.item.dateOfDelivery}}</td>
                                 <td>                              
-                                    <v-btn @click="acceptOffer(row.item.id)">
+                                    <v-btn @click="acceptOffer(row.item.id)" v-if="check()">
                                         Accept
                                     </v-btn>
                                 </td>
@@ -59,6 +59,9 @@
                 orders: [],
                 offers: [],
                 dialog: false,
+                order: '',
+                pharmacyAdmin: '',
+                pharmacyId: '',
                 orderHeaders: [
                     { text: "Description" },
                     { text: "Deadline" },
@@ -100,9 +103,10 @@
                         console.log("Failed to get orders", response.data);
                     });
             },
-            showOffers: function(orderId) {
+            showOffers: function(o) {
+                this.order = o;
                 this.offers = [];
-                this.axios.get("api/offer/order/" + orderId)
+                this.axios.get("api/offer/order/" + o.id)
                     .then(response => {
                         this.offers = response.data._embedded.offers;
                     })
@@ -115,7 +119,15 @@
                 this.dialog = false;
 
 
+
             },*/
+            check: function() {
+                if(this.pharmacyAdmin.id == this.order.pharmacyAdmin.id && this.order.deadline < new Date().toISOString().substr(0, 10))
+                {
+                    return true;
+                }
+                return false;
+            },
             disableDialog: function() {
                 this.dialog = false;
             },

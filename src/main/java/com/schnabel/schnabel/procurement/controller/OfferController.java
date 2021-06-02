@@ -6,6 +6,8 @@ import com.schnabel.schnabel.procurement.dto.OfferCreationDTO;
 import com.schnabel.schnabel.procurement.dto.OfferDTO;
 import com.schnabel.schnabel.procurement.model.Offer;
 import com.schnabel.schnabel.procurement.service.IOfferService;
+import com.schnabel.schnabel.procurement.service.IOrderService;
+import com.schnabel.schnabel.security.util.JwtUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +15,10 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 /**
  * Offer REST controller
@@ -22,10 +28,13 @@ import org.springframework.web.bind.annotation.*;
 public class OfferController
 {
     private final IOfferService offerService;
+    private final JwtUtils jwtUtils;
+
     @Autowired
-    public OfferController(IOfferService offerService)
+    public OfferController(IOfferService offerService, JwtUtils jwtUtils)
     {
         this.offerService = offerService;
+        this.jwtUtils = jwtUtils;
     }
 
     /**
@@ -76,5 +85,13 @@ public class OfferController
         return offerService.updateOffer(dto.getId(), dto.getPrice(), dto.getDateOfDelivery()) ?
                 ResponseEntity.ok("Updated")
                 : ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("acceptoffer")
+    public ResponseEntity<String> acceptOffer(@RequestBody OfferDTO dto, @RequestHeader("Authorization") String authHeader) {
+        String jws = jwtUtils.parseJwtFromAuthorizationHeader(authHeader);
+        return offerService.acceptOffer(jwtUtils.getEmailFromJws(jws)) ?
+            ResponseEntity.ok("Accepted")
+            : ResponseEntity.badRequest().build();
     }
 }

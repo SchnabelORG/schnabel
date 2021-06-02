@@ -8,6 +8,8 @@ import com.schnabel.schnabel.procurement.model.Order;
 import com.schnabel.schnabel.procurement.repository.IOfferRepository;
 
 import com.schnabel.schnabel.procurement.repository.IOrderRepository;
+
+import org.apache.http.annotation.Obsolete;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -97,4 +99,13 @@ public class OfferService extends JpaService<Offer, Long, IOfferRepository> impl
         Page<Offer> offers = repository.findAll(pageable);
         return offerPagedResourcesAssembler.toModel(offers, offerDTOAssembler);
     }
+
+    @Override
+    @Transactional
+    public boolean acceptOffer(String email) {
+        //todo
+        
+        return false;
+    }
+
 }

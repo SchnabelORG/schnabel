@@ -29,7 +29,7 @@ insert into dermatologists(id, "name", surname, email, "password", city, postcod
 insert into dermatologists(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated) values (6, 'Milan', 'Milanovic', 'milan@gmail.com', '321', '11000', 'Beograd', 'Bulevar', '1', true);
 
 insert into suppliers(id, "name", surname, email, "password", city, postcode, street, street_no, firm, is_activated) values (3, 'Zoki', 'Zokic', 'zokidoo@gmail.com', '123', '11000', 'Beograd', 'Bulevar', '1', 'Dobavljac Zoki', true);
-
+insert into suppliers(id, "name", surname, email, "password", city, postcode, street, street_no, firm, is_activated) values (8, 'Jovan', 'Jovanovic', 'jovan@gmail.com', '123', '21000', 'Novi Sad', 'Bulevar', '1', 'Jova trans', true);
 
 insert into pharmacyadmins(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (4, 'Mika', 'Mikic', 'jankovicpharmacy@gmail.com', '$2y$10$XX.wKVB2GvZA024rrB672OUXfZZ9c9Whqbp8qAqCTiIfVEM8h9buK', '11000', 'Beograd', 'Bulevar', '1', 1, true); --password: Mikamikic123
 insert into refresh_tokens(id, email, token) values (2, 'jankovicpharmacy@gmail.com', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYW5rb3ZpY3BoYXJtYWN5QGdtYWlsLmNvbSIsImV4cCI6MTYzODExMTM5Mn0.W6yqYsldEUdznOQnXaFb0pe4sUHSC89PcsOdd5cTkDNX8mnJtO5wboT2lflmyuoSquP-vf4Z1pMLJGw1GfgqpA');
@@ -43,11 +43,19 @@ insert into pharmacists(id, "name", surname, email, "password", city, postcode, 
 insert into refresh_tokens(id, email, token) values(3, 'rzupunski@gmail.com', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyenVwdW5za2lAZ21haWwuY29tIiwiZXhwIjoxNjM4MTgwNzM5fQ.CRizdEz-jRFayMYiY0JmYf9G550CHqPnm1acY6hmZjMs0qtvnz-NhmtG5JxL9Z3GjQtXzlerO1k0CPiEKidGlg');
 
 insert into orders(id, deadline, "description", pharmacyadmin_id, pharmacy_id, order_status) values (111, '2021-05-10', 'My order', 4, 1, 'CREATED');
+insert into orders(id, deadline, "description", pharmacyadmin_id, pharmacy_id, order_status) values (222, '2021-08-10', 'Bensedin order', 4, 1, 'CREATED');
 
 
 insert into orderitems(id, quantity, drug_id, order_id) values (111, 1, 111, 111);
+insert into orderitems(id, quantity, drug_id, order_id) values (222, 2, 222, 111);
+insert into orderitems(id, quantity, drug_id, order_id) values (333, 3, 444, 222);
 
-insert into offers(id, price, date_of_delivery, order_id, supplier_id) values (111, 500, '2021-05-05', 111, 3);
+
+insert into offers(id, price, date_of_delivery, order_id, supplier_id, offer_status) values (111, 500, '2021-07-05', 111, 3, 'CREATED');
+insert into offers(id, price, date_of_delivery, order_id, supplier_id, offer_status) values (222, 600, '2021-07-07', 111, 8, 'CREATED');
+insert into offers(id, price, date_of_delivery, order_id, supplier_id, offer_status) values (333, 800, '2021-08-05', 222, 3, 'CREATED');
+insert into offers(id, price, date_of_delivery, order_id, supplier_id, offer_status) values (444, 700, '2021-08-01', 222, 8, 'CREATED');
+
 
 insert into dermatologist_pharmacy(dermatologist_id, pharmacy_id) values (2, 1);
 insert into dermatologist_pharmacy(dermatologist_id, pharmacy_id) values (2, 2);

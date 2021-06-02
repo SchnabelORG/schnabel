@@ -5,6 +5,10 @@ import com.schnabel.schnabel.procurement.controller.OrderController;
 import com.schnabel.schnabel.procurement.model.Offer;
 import com.schnabel.schnabel.procurement.model.Order;
 import com.schnabel.schnabel.procurement.model.OrderItem;
+import com.schnabel.schnabel.users.controller.SupplierController;
+import com.schnabel.schnabel.users.dto.SupplierDTO;
+import com.schnabel.schnabel.users.model.Supplier;
+
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -30,9 +34,15 @@ public class OfferDTOAssembler extends RepresentationModelAssemblerSupport<Offer
         dto.setId(entity.getId());
         dto.setPrice(entity.getPrice());
         dto.setDateOfDelivery(entity.getDateOfDelivery());
-
+        Supplier supplier = entity.getSupplier();
+        dto.setSupplier(SupplierDTO.builder()
+            .id(supplier.getId())
+            .firm(supplier.getFirm())
+            .build()
+            .add(linkTo(methodOn(SupplierController.class).get(supplier.getId())).withSelfRel()));
+        
         //dto.setOrder(getOrder(entity.getOrder()));
-        dto.add(linkTo(methodOn(OrderController.class).get(entity.getOrder().getId())).withRel("order"));
+        //dto.add(linkTo(methodOn(OrderController.class).get(entity.getOrder().getId())).withRel("order"));
 
         return dto;
     }
