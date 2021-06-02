@@ -1,6 +1,7 @@
 package com.schnabel.schnabel.pharmacies.service;
 
 import com.schnabel.schnabel.misc.interfaces.IJpaService;
+import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.pharmacies.model.WareHouseItem;
 
 import java.util.Optional;
@@ -18,5 +19,5 @@ public interface IWareHouseItemService extends IJpaService<WareHouseItem, Long>
 {
     Optional<WareHouseItemDTO> findByIdDTO(Long id);   
     PagedModel<WareHouseItemDTO> findAllByPharmacyId(Long pharmacyId, Pageable pageable);
-    //Optional<WareHouseItem> findWareHouseItemByPharmacyAndDrugId(Long drugId, Long pharmacyId);
+    Optional<WareHouseItem> findWareHouseItemByPharmacyAndDrugId(Long drugId, Long pharmacyId);
 }
