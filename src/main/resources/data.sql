@@ -34,8 +34,9 @@ insert into dermatologists(id, "name", surname, email, "password", city, postcod
 insert into dermatologists(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated) values (7, 'Milan', 'Milanovic', 'milan@gmail.com', '$2y$10$XbX38l.s9p1k2cPZrSQQSe657AajL.n..RVmXlDrmm4Bg3E.1Au8i', '11000', 'Beograd', 'Jurija Gagarina', '4', true);--password:Sifra1337
 
 insert into pharmacyadmins(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (8, 'Mika', 'Mikic', 'jankovicpharmacy@gmail.com', '$2y$10$XX.wKVB2GvZA024rrB672OUXfZZ9c9Whqbp8qAqCTiIfVEM8h9buK', '11000', 'Beograd', 'Bulevar', '1', 1, true); --password: Mikamikic123
+insert into pharmacyadmins(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (11, 'Zoran', 'Zoranovic', 'zoran@gmail.com', '$2y$10$XX.wKVB2GvZA024rrB672OUXfZZ9c9Whqbp8qAqCTiIfVEM8h9buK', '11000', 'Beograd', 'Bulevar', '1', 1, true); --password: Mikamikic123
 
-insert into suppliers(id, "name", surname, email, "password", city, postcode, street, street_no, firm, is_activated) values (9, 'Zoki', 'Zokic', 'zokidoo@gmail.com', '$2y$10$pTN2xTyuOLd3pyReU4QlGecab7eTQxgEevZrdbVYRYKqiU0timsga ', '11000', 'Beograd', 'Carlija Caplina', '12', 'Dobavljac Zoki', true);--password:Sifra1337
+insert into suppliers(id, "name", surname, email, "password", city, postcode, street, street_no, firm, is_activated) values (9, 'Zoki', 'Zokic', 'zoki@gmail.com', '$2y$10$pTN2xTyuOLd3pyReU4QlGecab7eTQxgEevZrdbVYRYKqiU0timsga ', '11000', 'Beograd', 'Carlija Caplina', '12', 'Dobavljac Zoki', true);--password:Sifra1337
 insert into suppliers(id, "name", surname, email, "password", city, postcode, street, street_no, firm, is_activated) values (10, 'Jovan', 'Jovanovic', 'jovan@gmail.com', '$2y$10$ll2ULAuxZbDQUg7mCVhTF.aa2Xx7Al2BNaFMyhmlOVxDoRurB52ji ', '21000', 'Novi Sad', 'Bulevar Oslobodjenja', '14a', 'Jova trans', true);--password:Sifra1337
 
 insert into refresh_tokens(email, token) values('rzupunski@gmail.com', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyenVwdW5za2lAZ21haWwuY29tIiwiZXhwIjoxNjM4MTgwNzM5fQ.CRizdEz-jRFayMYiY0JmYf9G550CHqPnm1acY6hmZjMs0qtvnz-NhmtG5JxL9Z3GjQtXzlerO1k0CPiEKidGlg');
@@ -66,18 +67,20 @@ insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) value
 insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('15:00:00', '16:00:00', 2, 2);
 insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('08:00:00', '17:00:00', 1, 6);
 
-insert into orders(deadline, "description", pharmacyadmin_id) values ('2021-07-10', 'Urgent order!', 8);
-insert into orders(deadline, "description", pharmacyadmin_id) values ('2021-08-12', 'Bensedin order!', 8);
+insert into orders(deadline, "description", pharmacyadmin_id, pharmacy_id, order_status) values ('2021-05-10', 'Urgent order!', 8, 1, 'CREATED');
+insert into orders(deadline, "description", pharmacyadmin_id, pharmacy_id, order_status) values ('2021-08-12', 'Bensedin order!', 8, 1, 'CREATED');
+insert into orders(deadline, "description", pharmacyadmin_id, pharmacy_id, order_status) values ('2021-07-12', 'Xanax order!', 8, 1, 'CREATED');
 
 insert into orderitems(quantity, drug_id, order_id) values (10, 1, 1);
 insert into orderitems(quantity, drug_id, order_id) values (50, 2, 1);
 insert into orderitems(quantity, drug_id, order_id) values (20, 3, 1);
 insert into orderitems(quantity, drug_id, order_id) values (30, 4, 2);
+insert into orderitems(quantity, drug_id, order_id) values (20, 5, 3);
 
-insert into offers(price, date_of_delivery, order_id, supplier_id) values (500, '2021-07-05', 1, 9);
-insert into offers(price, date_of_delivery, order_id, supplier_id) values (700, '2021-07-02', 1, 10);
-insert into offers(price, date_of_delivery, order_id, supplier_id) values (800, '2021-07-01', 2, 9);
-insert into offers(price, date_of_delivery, order_id, supplier_id) values (900, '2021-08-03', 2, 10);
+insert into offers(price, date_of_delivery, order_id, supplier_id, offer_status) values (500, '2021-05-05', 1, 9, 'CREATED');
+insert into offers(price, date_of_delivery, order_id, supplier_id, offer_status) values (700, '2021-05-02', 1, 10, 'CREATED');
+insert into offers(price, date_of_delivery, order_id, supplier_id, offer_status) values (800, '2021-08-01', 2, 9, 'CREATED');
+insert into offers(price, date_of_delivery, order_id, supplier_id, offer_status) values (900, '2021-08-03', 2, 10, 'CREATED');
 
 insert into promotions("description", start_time, end_time, pharmacy_id) values ('New promotion!!!', '2021-05-04','2021-06-04', 1);
 

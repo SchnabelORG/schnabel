@@ -8,4 +8,5 @@ public interface IMailService {
     boolean sendActivationEmail(String email);
     boolean sendAppointmentConfirmationMail(String email, Appointment appointment);
     String activate(String token);
+    boolean sendOrderClosingMail(String email, String content);
 }
