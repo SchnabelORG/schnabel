@@ -19,10 +19,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonRootName("drugprice")
 @Relation(collectionRelation = "drugprices")
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.ALWAYS)
 @EqualsAndHashCode(callSuper = false)
 public class DrugPriceDTO extends RepresentationModel<DrugPriceDTO>{
     private Long id;
     private double price;
-    private DrugDTO drug;
 }

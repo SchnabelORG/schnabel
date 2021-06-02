@@ -4,12 +4,6 @@ insert into drugs("description", "name") values('anestetik', 'Tetrakain 100mg');
 insert into drugs("description", "name") values('sedativ', 'Bensedin 100mg');
 insert into drugs("description", "name") values('sedativ', 'Xanax 100mg');
 
-insert into drugprice(price, price_end_date, price_start_date, drug_id) values(100, '2022-06-01', '2020-01-01', 1);
-insert into drugprice(price, price_end_date, price_start_date, drug_id) values(100, '2022-06-01', '2020-01-01', 2);
-insert into drugprice(price, price_end_date, price_start_date, drug_id) values(100, '2022-06-01', '2020-01-01', 3);
-insert into drugprice(price, price_end_date, price_start_date, drug_id) values(100, '2022-06-01', '2020-01-01', 4);
-insert into drugprice(price, price_end_date, price_start_date, drug_id) values(100, '2022-06-01', '2020-01-01', 5);
-
 insert into pharmacies("name", city, postcode, street, street_no, score, consult_price) values('Schnabel Liman', 'Novi Sad', '21000', 'Balzakova', '24a', 4, 2000);
 insert into pharmacies("name", city, postcode, street, street_no, score, consult_price) values('Schnabel Grbavica', 'Novi Sad', '21000', 'Aleksa Santica', '2', 3, 3000);
 insert into pharmacies("name", city, postcode, street, street_no, score, consult_price) values('Schnabel Beograd', 'Beograd', '11000', 'Proleterska', '4b', 4, 1570);
@@ -19,6 +13,12 @@ insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 
 insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 20, 3, 1);
 insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 20, 4, 1);
 insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 20, 5, 1);
+
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2022-06-01', '2020-01-01', 1);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2022-06-01', '2020-01-01', 2);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2022-06-01', '2020-01-01', 3);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2022-06-01', '2020-01-01', 4);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2022-06-01', '2020-01-01', 5);
 
 insert into patients(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated, phone_no) values (1, 'Jovan', 'Ivosevic', 'ivos.jovan@protonmail.ch', '$2a$10$IevzxrzynxfElyhc1zuUferMhXfAWbDRsob0cXmCc6jEETM7xhCiG', '21000', 'Novi Sad', 'Balzakova', '69', true, '0607671370'); --password:Sifra1337
 insert into patients(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated, phone_no) values (2, 'Mile', 'Knezevic', 'lemara98@gmail.com', '$2y$10$VS2RQAcHBqO.aLSEGlaYGe2b2605tXpUxAKCeZfXYTnMGriXGguoy', '21000', 'Novi Sad', 'Bulevar Oslobodjenja', '42', true, '0631931345'); --password:Sifra1337
