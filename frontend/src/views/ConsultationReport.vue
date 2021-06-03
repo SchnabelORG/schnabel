@@ -130,9 +130,9 @@
         
                 <v-stepper-content step="3">
                     <v-card
-                        class="mb-12"
+                        class="step-3-card mb-12"
                         
-                        height="200px">
+                        height="600px">
                         <v-row>
                             <div id="select-medication">
                                 <v-select
@@ -154,11 +154,16 @@
                                 Add
                             </v-btn>
                         </v-row>
-                        
+                        <div class="check-btn">
+                            
+                            <v-btn v-if="prescripedMedication.length !== 0" @click="deleteFromTable" class="del-btn accent white--text">
+                                <i class="fa fa-trash">clear all</i>
+                            </v-btn>
+                        </div>
                         <v-data-table :items="prescripedMedication"
                                         :hide-default-footer="true"
                                         :hide-default-header="true">
-                            <template v-slot:item="row"> 
+                            <template v-slot:item="row">
                                 <tr>
                                     <td>{{row.item.name}}</td>
                                     <td>{{row.item.dosage}}</td>
@@ -207,11 +212,6 @@
                                         ></v-text-field>
                                         quantity
                                     </td>
-                                    <td>
-                                        <v-btn elevation="2" @click="remove(row.item)" class="check-btn accent white--text">
-                                            <i class="fa fa-trash fa-fw" aria-hidden="true"></i>
-                                        </v-btn>
-                                    </td>
                                 </tr>
                             </template>
                         </v-data-table>
@@ -220,7 +220,6 @@
                             <v-btn v-if="prescripedMedication.length !== 0" @click="checkForMedication" class="check-btn accent white--text">
                                 Check availability
                             </v-btn>
-                            
                         </div>
                         
                         <v-alert
@@ -237,7 +236,7 @@
                     <v-row>
                         <v-col class="text-left">
                             <v-btn
-                                :disabled="shouldCheck"
+                                :disabled="haveMedication !=='success'"
                                 color="primary"
                                 @click="e1 = 4">
                                 Continue
@@ -260,27 +259,32 @@
                 <v-stepper-content step="4">
                     <v-card
                         class="mb-12"
-                        height="450px">
+                        height="650px">
                         <v-row>
                             <v-col>
-                                <v-date-picker
-                                    v-model="date"
-                                    :allowed-dates="getAllowedDates"
-                                ></v-date-picker>
+                                <v-row v-for="item in freeTerms" :key="item">
+                                    <v-chip class="primary date-chip" @click="setDateForTerms(item)"> 
+                                        {{item[0].startTime.slice(0,10)}}
+                                    </v-chip>
+                                </v-row>
                             </v-col>
                             <v-col>
-                                <!-- <v-radio-group
+                                <v-radio-group
+                                v-if="termsToShow.length > 0"
                                     v-model="time"
                                     column>
-                                    <v-radio
-                                        v-for="n in 6"
-                                        :key="n"
-                                        :label="n"
+                                     <v-radio
+                                        :label="`none`"
                                         color="primary"
-                                        :value="n"
+                                    ></v-radio>
+                                    <v-radio
+                                        v-for="item in termsToShow"
+                                        :key="item"
+                                        :label="`${item.start.toISOString().substr(11, 5)}-${item.end.toISOString().substr(11, 5)} (${item.start.toISOString().substr(0, 10)})`"
+                                        color="primary"
                                     ></v-radio>
 
-                                </v-radio-group> -->
+                                </v-radio-group>
                             </v-col>
                         </v-row>
 
@@ -290,11 +294,6 @@
                             type="info">
                             Choosen term is 20.03.2021 at 12:30
                         </v-alert>
-
-                        <v-btn :disabled="(time == null) || (date == null)" id="sumbit-btn" elevation="2" @click="makeNewConsultation" class="accent white--text">
-                            Submit
-                        </v-btn>
-
                     </v-card>
 
                     <v-row>
@@ -331,14 +330,17 @@
                 medicationName: '',
                 allAppointments: [],
                 todayAppointments: [],
+                futureAppointments: [],
+                freeTerms: [],
                 pharmacist: {},
                 chosen: false,
                 chosenAppointment: {},
                 consultationInfo: '',
                 medications: [],
+                shift: {},
                 prescripedMedication: [],
+                termsToShow: [],
                 choosenMedication: null,
-                shouldCheck: true,
                 dosage:[],
                 haveMedication: '',
                 rules: {
@@ -387,12 +389,63 @@
                     {
                         this.allAppointments = response.data._embedded.appointments;
                         this.getTodaysAppointments();
+                        this.getShift();
                         console.log(this.todayAppointments)
                     })
                     .catch(response =>
                     {
                         console.log(response.data);
                     });
+            },
+            getShift: function(){
+                let jws = window.localStorage.getItem('jwt');
+                this.axios.get("api/shift/medicalemployeepharmacy/" + this.pharmacist.id + "/" + this.pharmacist.pharmacy.id, {headers:{"Authorization": "Bearer " + jws}})
+                    .then(response =>
+                    {
+                        this.shift = response.data;
+                        console.log(response.data);
+                        this.getFreeTerms();
+                    })
+                    .catch(response =>
+                    {
+                        console.log(response.data);
+                    });
+            },
+            getFreeTerms: function(){
+                let start = parseInt(this.shift.startTime.slice(0,2))
+                let end = parseInt(this.shift.endTime.slice(0,2))
+
+                var today = new Date();
+
+                for(var i = 0; i < 15; i++){
+                    var dates = [];
+                    start = parseInt(this.shift.startTime.slice(0,2))
+                    for(start; start < end; start++){
+                        dates.push({startTime:  new Date(today.setHours(start, 0, 0, 0)), endTime: new Date(today.setHours(start, 30, 0, 0))});
+                        dates.push({startTime:  new Date(today.setHours(start, 30, 0, 0)), endTime: new Date(today.setHours(start+1, 0, 0, 0))});
+                    }
+                    for(var j = 0; j < dates.length; j++){
+                        dates[j].startTime.setTime( dates[j].startTime.getTime() + (i+1) *86400000);
+                        dates[j].endTime.setTime( dates[j].endTime.getTime() + (i+1) *86400000);
+                        for(var k = 0; k < this.futureAppointments.length; k++){
+                            let startApp = new Date(this.futureAppointments[k].period.startTime).getTime()
+                            let endApp = new Date(this.futureAppointments[k].period.endTime).getTime()
+                            if((dates[j].startTime.getTime() > startApp && dates[j].startTime.getTime() < endApp)||
+                               (dates[j].endTime.getTime() > startApp && dates[j].endTime.getTime() < endApp)||
+                               (dates[j].startTime.getTime() < startApp && dates[j].endTime.getTime() > endApp)){
+                                    console.log(startApp)
+                                    console.log(endApp)
+                                    console.log(dates[j].startTime.getTime())
+                                    console.log(dates[j].endTime.getTime())
+                                    dates.splice(j,1);
+                                    j--;
+                               }
+                        }
+                        
+                    }
+                    this.freeTerms.push(JSON.parse(JSON.stringify(dates)));
+                }
+                console.log(this.freeTerms);
             },
             getTodaysAppointments: function(){
                 
@@ -403,11 +456,13 @@
                     var appDate = new Date(this.allAppointments[i].period.startTime);
                     appDate.setHours(0,0,0,0);
                     if(today.getTime() === appDate.getTime()){
-                        this.todayAppointments = this.allAppointments.splice(i);
+                        this.todayAppointments.push(this.allAppointments[i]);
+                        
                     }
-                    else{
-                        ++i;
+                    else if (today.getTime() < appDate.getTime()){
+                        this.futureAppointments.push(this.allAppointments[i]);
                     }
+                    ++i;
                 }
                 console.log(this.previousDayAppointments);
             },
@@ -441,36 +496,23 @@
                     return false;
 
             },
-            remove: function(item){
-                for(var i = 0; i <  this.prescripedMedication.length; i++){
-                    console.log(this.prescripedMedication.length)
-                    console.log(this.prescripedMedication[i].id + " " + item.id)
-                    if(item.id === this.prescripedMedication[i].id){
-                        this.prescripedMedication.splice(i, 1);
-                        this.dosage.splice(item.id, 1)
-                        this.haveMedication = '';
-                        this.shouldCheck = true;
-                        console.log(this.prescripedMedication)
-                    }  
-                }
-                
+            deleteFromTable: function(){
+                this.prescripedMedication.splice(0);
+                this.haveMedication = '';
             },
             addMedication: function(){
                 this.dosage[this.choosenMedication.id] = {perDay: 1, howManyDays: 1, quantity: 1};
                 console.log(this.dosage);
                 this.prescripedMedication.push(this.choosenMedication);
                 this.choosenMedication = null;
-                this.shouldCheck = true;
                 this.haveMedication = '';
                 this.$refs["med"].reset();
 
             },
             checkForMedication: function(){
-                this.shouldCheck = false;
-                console.log(this.prescripedMedication.length)
+                console.log(this.prescripedMedication)
                 let jws = window.localStorage.getItem('jwt');
                 for(var i = 0; i < this.prescripedMedication.length; i++){
-
                     let dto = {drugId: this.prescripedMedication[i].id, quantity: this.dosage[this.prescripedMedication[i].id].quantity, pharmacyId: this.pharmacist.pharmacy.id}
                     console.log(this.prescripedMedication[i])
                     this.axios.post("api/warehouseitem/doeshave", dto, {headers:{"Authorization": "Bearer " + jws}})
@@ -487,13 +529,17 @@
                         {
                             console.log(response.data);
                         });
-                    if(this.haveMedication === "error") {
-                        this.shouldCheck = true;
-                        return;
-                    }
                 }
-                this.haveMedication = "success";
                 
+                console.log(this.haveMedication);
+                
+            },
+            setDateForTerms: function(item){
+                this.termsToShow = [];
+                for(var i = 0; i < item.length; i++){
+                    this.termsToShow.push({start: new Date(item[i].startTime), end: new Date(item[i].endTime)});
+                    console.log(this.termsToShow)
+                }
             },
             getAllowedDates: function(val){
                 if (this.allowedDates.indexOf(val) !== -1) {
@@ -543,5 +589,17 @@
         margin-top: 1%;
         margin-left: 5%;
         width: 90%;
+    }
+    .del-btn{
+        margin-top: 1%;
+        margin-left: 80%;
+        width: 20%;
+    }
+    #medication-and-intake{
+        min-height: 50vh;
+    }
+    .date-chip{
+        margin-left: 5%;
+        margin-top: 3%;
     }
 </style>
