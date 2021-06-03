@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 
+import com.schnabel.schnabel.drugs.dto.DrugPriceRequest;
 import com.schnabel.schnabel.drugs.model.Drug;
 import com.schnabel.schnabel.drugs.model.DrugPrice;
 import com.schnabel.schnabel.drugs.service.IDrugPriceService;
@@ -130,6 +131,20 @@ public class WareHouseItemService extends JpaService<WareHouseItem, Long, IWareH
         WareHouseItem newWareHouseItem = new WareHouseItem(drug.get(), pharmacyService.get(wareHouseItemRequest.getPharmacyId()).get());
         Optional<WareHouseItem> wareHouseItem = add(newWareHouseItem);
         return wareHouseItem.isPresent();
+    }
+
+    @Override
+    public boolean addDrugPrice(DrugPriceRequest drugPriceRequest) 
+    {
+        List<DrugPrice> drugPrices = drugPriceService.findAllByWareHouseItemId(drugPriceRequest.getWareHouseItemId());
+        for (DrugPrice drugPrice : drugPrices) {
+            if(drugPrice.getPriceStartDate().isBefore(drugPriceRequest.getPriceEndDate()) && drugPriceRequest.getPriceStartDate().isBefore(drugPrice.getPriceEndDate())) {
+                return false;
+            }
+        }
+        DrugPrice newDrugPrice = new DrugPrice(drugPriceRequest.getPrice(), drugPriceRequest.getPriceStartDate(), drugPriceRequest.getPriceEndDate(), get(drugPriceRequest.getWareHouseItemId()).get());
+        Optional<DrugPrice> drugPrice = drugPriceService.add(newDrugPrice);
+        return drugPrice.isPresent();
     }
 
 }

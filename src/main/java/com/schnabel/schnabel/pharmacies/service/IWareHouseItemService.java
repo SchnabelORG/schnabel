@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.pharmacies.service;
 
+import com.schnabel.schnabel.drugs.dto.DrugPriceRequest;
 import com.schnabel.schnabel.misc.interfaces.IJpaService;
 import com.schnabel.schnabel.pharmacies.model.WareHouseItem;
 import com.schnabel.schnabel.users.dto.DrugReservationRequest;
@@ -28,4 +29,5 @@ public interface IWareHouseItemService extends IJpaService<WareHouseItem, Long>
     boolean deleteWareHouseItem(Long id);
     boolean updateWareHouseItem(WareHouseItemUpdateRequest wareHouseItemUpdateRequest);
     boolean addWareHouseItem(WareHouseItemRequest wareHouseItemRequest);
+    boolean addDrugPrice(DrugPriceRequest drugPriceRequest);
 }

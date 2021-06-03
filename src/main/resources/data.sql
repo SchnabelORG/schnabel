@@ -17,11 +17,11 @@ insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 
 insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 20, 4, 2);
 insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 20, 5, 2);
 
-insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2022-06-01', '2020-01-01', 1);
-insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2022-06-01', '2020-01-01', 2);
-insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2022-06-01', '2020-01-01', 3);
-insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2022-06-01', '2020-01-01', 4);
-insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2022-06-01', '2020-01-01', 5);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2021-06-12', '2020-01-01', 1);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(200, '2021-06-20', '2020-01-01', 2);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(300, '2022-06-01', '2020-01-01', 3);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(250, '2022-06-01', '2020-01-01', 4);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(200, '2022-06-01', '2020-01-01', 5);
 
 insert into patients(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated, phone_no) values (1, 'Jovan', 'Ivosevic', 'ivos.jovan@protonmail.ch', '$2a$10$IevzxrzynxfElyhc1zuUferMhXfAWbDRsob0cXmCc6jEETM7xhCiG', '21000', 'Novi Sad', 'Balzakova', '69', true, '0607671370'); --password:Sifra1337
 insert into patients(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated, phone_no) values (2, 'Mile', 'Knezevic', 'lemara98@gmail.com', '$2y$10$VS2RQAcHBqO.aLSEGlaYGe2b2605tXpUxAKCeZfXYTnMGriXGguoy', '21000', 'Novi Sad', 'Bulevar Oslobodjenja', '42', true, '0631931345'); --password:Sifra1337

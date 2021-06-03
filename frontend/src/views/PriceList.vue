@@ -14,7 +14,7 @@
                             <td>{{row.item.drug.description}}</td>
                             <td>{{row.item.drugPrice.price}}</td>
                             <td>
-                                <v-btn @click="define()">
+                                <v-btn @click="define(row.item)">
                                     Define
                                 </v-btn>
                             </td>
@@ -23,6 +23,119 @@
                 </v-data-table>
             </div>
         </v-card>
+        <v-dialog v-model="this.dialog" persistent>
+            <v-card id="define-card">
+                <v-card-title>Define drug price</v-card-title>
+                <v-spacer></v-spacer>
+                    <v-text-field
+                        v-model="name"
+                        label="Name"
+                        disabled
+                        ></v-text-field>
+                    <v-text-field
+                        v-model="description"
+                        label="Description"
+                        disabled
+                        ></v-text-field>
+                    <v-text-field
+                        v-model="drugPrice"
+                        label="Price"
+                        type="number"
+                        :rules="[rules.required]"
+                    ></v-text-field>
+            <v-menu
+                ref="menu"
+                v-model="menu"
+                :close-on-content-click="false"
+                :return-value.sync="date"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+            >
+                <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                    v-model="validFrom"
+                    label="Valid from"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                ></v-text-field>
+                </template>
+                <v-date-picker
+                    v-model="validFrom"
+                    no-title
+                    scrollable
+                    :min="new Date().toISOString().substr(0, 10)"
+                >
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        text
+                        color="primary"
+                        @click="menu = false"
+                    >
+                        Cancel
+                    </v-btn>
+                    <v-btn
+                        text
+                        color="primary"
+                        @click="$refs.menu.save(date)"
+                    >
+                        OK
+                    </v-btn>
+                </v-date-picker>
+            </v-menu>
+            <v-menu
+                    ref="menu2"
+                    v-model="menu2"
+                    :close-on-content-click="false"
+                    :return-value.sync="date"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                >
+                    <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                        v-model="validUntil"
+                        label="Valid until"
+                        prepend-icon="mdi-calendar"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                    ></v-text-field>
+                    </template>
+                    <v-date-picker
+                        v-model="validUntil"
+                        no-title
+                        scrollable
+                        :min="this.validFrom"
+                    >
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            text
+                            color="primary"
+                            @click="menu2 = false"
+                        >
+                            Cancel
+                        </v-btn>
+                        <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.menu2.save(date)"
+                        >
+                            OK
+                        </v-btn>
+                    </v-date-picker>
+            </v-menu>
+                <v-spacer></v-spacer>
+                <v-btn class="primary" @click="save()" :disabled="!validFrom || !validUntil || !drugPrice">
+                    Save
+                </v-btn>
+                <v-btn class="accent" @click="cancel()">
+                    Cancel
+                </v-btn>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -30,8 +143,13 @@
     export default {
         data() {
             return {
-                drug: '',
+                warehouseitem: '',
                 warehouseitems: [],
+                price: '',
+                validUntil: '',
+                name: '',
+                description: '',
+                drugPrice: '',
                 dialog: false,
                 headers: [
 					{ text: "Name" },
@@ -39,6 +157,9 @@
                     { text: "Price" },
                     { text: "Define" },
                 ],
+                rules: {
+                    required: value => !!value || 'Required.',
+                },
             }
         },
         methods: {
@@ -58,9 +179,53 @@
                     this.$router.push("/");
                 });
             },
-            define: function() {
-               this.dialog = true;
+            define: function(wareHouseItem) {
+                this.dialog = true;
+                this.warehouseitem = wareHouseItem;
+                this.name = wareHouseItem.drug.name;
+                this.description = wareHouseItem.drug.description;
+            },
+            save: function() {
+                if(this.validFrom > this.validUntil)
+                {
+                    alert("Invalid period");
+                    return;
+                }
+                if(!this.drugPrice || !this.validFrom || !this.validUntil)
+                {
+                    return;
+                }
+                let drugPriceRequest = { price: this.drugPrice, priceStartDate: this.validFrom, priceEndDate: this.validUntil, wareHouseItemId: this.warehouseitem.id };
 
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.post("api/warehouseitem/drugprice", drugPriceRequest, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            console.log(response.data);
+                            alert("Successfully added drug price");
+                        })
+                        .catch(response => {
+                            console.log("Failed to add drugprice", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
+                this.dialog = false;
+                this.description = '';
+                this.drugPrice = '';
+                this.name = '';
+                this.validFrom = '';
+                this.validUntil = '';
+            },
+            cancel: function() {
+                this.dialog = false;
+                this.description = '';
+                this.drugPrice = '';
+                this.name = '';
+                this.validFrom = '';
+                this.validUntil = '';
             },
         },
         mounted() {
@@ -90,7 +255,7 @@
         width: 100vw;
         min-height: 100vh;
     }
-    #edit-card {
+    #define-card {
         display:grid;
         grid-template-columns:auto;
         margin: 0 auto;

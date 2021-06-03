@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.pharmacies.controller;
 
+import com.schnabel.schnabel.drugs.dto.DrugPriceRequest;
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemRequest;
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemUpdateRequest;
@@ -78,6 +79,13 @@ public class WareHouseItemController
     @PostMapping
     public ResponseEntity<String> addWareHouseItem(@RequestBody WareHouseItemRequest wareHouseItemRequest, @RequestHeader("Authorization") String authHeader) {
         return service.addWareHouseItem(wareHouseItemRequest) ?
+            ResponseEntity.ok("Added")
+            : ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("drugprice")
+    public ResponseEntity<String> addDrugPrice(@RequestBody DrugPriceRequest drugPriceRequest, @RequestHeader("Authorization") String authHeader) {
+        return service.addDrugPrice(drugPriceRequest) ?
             ResponseEntity.ok("Added")
             : ResponseEntity.badRequest().build();
     }
