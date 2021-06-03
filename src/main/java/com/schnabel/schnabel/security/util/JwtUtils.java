@@ -3,8 +3,6 @@ package com.schnabel.schnabel.security.util;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.schnabel.schnabel.security.service.SchnabelUserDetails;
 
 import org.slf4j.Logger;
@@ -63,6 +61,10 @@ public class JwtUtils {
 
     public String getEmailFromJws(String jws) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jws).getBody().getSubject();
+    }
+
+    public String getEmailFromAuth(String authHeader) {
+        return getEmailFromJws(parseJwtFromAuthorizationHeader(authHeader));
     }
 
     public boolean validateJws(String jws) {

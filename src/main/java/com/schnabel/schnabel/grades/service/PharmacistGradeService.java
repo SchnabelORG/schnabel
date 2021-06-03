@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PharmacistGradeService extends JpaService<PharmacistGrade, Long, IPharmacistGradeRepository> implements IPharmacistGradeService
 {
-    public PharmacistGradeService(IPharmacistGradeRepository repository)
-    {
+	public PharmacistGradeService(IPharmacistGradeRepository repository) {
 		super(repository);
 	}
 }
