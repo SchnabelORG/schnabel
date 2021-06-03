@@ -31,7 +31,6 @@ public class PatientDTO extends RepresentationModel<PatientDTO> {
     private Long id;
     private String name;
     private String surname;
-    private LocalDate dateOfBirth;
     private String email;
     private Address address;
 }

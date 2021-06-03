@@ -13,9 +13,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
 /**
- * Appointment JPA service interface
+ * Appointment Service interface
  */
 public interface IAppointmentService extends IJpaService<Appointment, Long> {
+    Optional<AppointmentDTO> getDTO(Long id);
+    PagedModel<AppointmentDTO> getAllbyPharmacist(Pageable pageable, Long pharmacystId);
     Iterable<Appointment> findByFree(boolean isFree);
     boolean scheduleAppointment(Long id, Patient patient);
     boolean cancelAppointment(Long id, Long patientId);
@@ -26,5 +28,6 @@ public interface IAppointmentService extends IJpaService<Appointment, Long> {
     PagedModel<AppointmentDTO> findByPatientId(Long patientId, Pageable pageable);
     Optional<AppointmentDTO> findByIdDTO(Long id);
     PagedModel<AppointmentDTO> findDermApptByPatientId(Long patientId, Pageable pageable);
+    boolean scheduleConsult(Patient patient, Long pharmacistId, LocalDateTime start);
 }
 

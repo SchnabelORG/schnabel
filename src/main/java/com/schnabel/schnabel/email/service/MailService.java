@@ -7,6 +7,7 @@ import javax.mail.internet.MimeMessage;
 import com.schnabel.schnabel.appointment.model.Appointment;
 import com.schnabel.schnabel.email.model.Activation;
 import com.schnabel.schnabel.email.model.Mail;
+import com.schnabel.schnabel.procurement.model.Offer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,6 +116,19 @@ public class MailService implements IMailService {
         sb.append("/email/activate/");
         sb.append(token);
         return sb.toString();
+    }
+
+    @Override
+    public boolean sendOrderClosingMail(String email, String content)
+    {
+        Mail mail = new Mail();
+        mail.setMailFrom(MAIL_FROM);
+        mail.setMailTo(email);
+        mail.setMailSubject("Order is closed");
+        StringBuilder sb = new StringBuilder();
+        sb.append(content);
+        mail.setMailContent(sb.toString());
+        return sendMail(mail);
     }
 
 }

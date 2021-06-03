@@ -2,6 +2,7 @@ package com.schnabel.schnabel.pharmacies.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.schnabel.schnabel.drugs.dto.DrugDTO;
 import com.schnabel.schnabel.drugs.dto.DrugPriceDTO;
 
 import org.springframework.hateoas.RepresentationModel;
@@ -26,5 +27,6 @@ public class WareHouseItemDTO extends RepresentationModel<WareHouseItemDTO>{
     private int quantity;
     private int available;
     private DrugPriceDTO drugPrice;
+    private DrugDTO drug;
     private PharmacyDTO pharmacy;
 }

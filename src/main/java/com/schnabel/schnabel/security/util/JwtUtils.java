@@ -5,16 +5,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.schnabel.schnabel.security.service.SchnabelUserDetails;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -56,17 +52,21 @@ public class JwtUtils {
         }
     }
 
-    private String buildJws(String email, String password, String authoritie) {
+    private String buildJws(String email, String password, String authority) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, jwtExpMin);
         return Jwts.builder()
             .setSubject(email)
             .claim("password", password)
-            .claim("authorities", authoritie)
+            .claim("authorities", authority)
             .setIssuedAt(new Date())
             .setExpiration(calendar.getTime())
             .signWith(SignatureAlgorithm.HS512, jwtSecret)
             .compact();
+    }
+
+    public String getRoleFromJws(String jws) {
+        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jws).getBody().get("authorities", String.class);
     }
 
     public String getEmailFromJws(String jws) {

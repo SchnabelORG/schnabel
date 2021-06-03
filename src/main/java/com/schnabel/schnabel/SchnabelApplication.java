@@ -25,9 +25,12 @@ public class SchnabelApplication {
 		return new WebMvcConfigurer(){
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
+				String allowedOrigin = System.getenv().getOrDefault("SCHNABEL_FRONTEND_ADDR", "http://localhost")
+				+ ":" + System.getenv().getOrDefault("SCHNABEL_FRONTEND_PORT", "8080");
 				registry.addMapping("/**")
 				.allowCredentials(true)
-				.allowedOrigins("http://localhost:8080")
+				.allowedHeaders("*")
+				.allowedOrigins(allowedOrigin)
 				.allowedMethods("GET", "PUT", "POST", "DELETE", "OPTIONS");
 			}
 		};

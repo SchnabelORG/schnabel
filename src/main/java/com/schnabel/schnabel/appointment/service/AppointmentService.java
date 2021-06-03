@@ -12,10 +12,14 @@ import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
 import com.schnabel.schnabel.appointment.dto.AppointmentDTOAssembler;
 import com.schnabel.schnabel.appointment.model.Appointment;
 import com.schnabel.schnabel.appointment.repository.IAppointmentRepository;
+import com.schnabel.schnabel.email.service.IMailService;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.misc.model.Period;
-import com.schnabel.schnabel.users.dto.ShiftDTO;
+import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.users.model.Patient;
+import com.schnabel.schnabel.users.model.Pharmacist;
+import com.schnabel.schnabel.users.service.IPharmacistService;
+import com.schnabel.schnabel.users.dto.ShiftDTO;
 import com.schnabel.schnabel.users.service.IDermatologistService;
 import com.schnabel.schnabel.users.service.IPharmacyAdminService;
 import com.schnabel.schnabel.users.service.IShiftService;
@@ -29,27 +33,33 @@ import org.springframework.stereotype.Service;
 
 
 /**
- * Appointment JPA service implementation
+ * Appointment service implementation
  */
 @Service
-public class AppointmentService extends JpaService<Appointment, Long, IAppointmentRepository> implements IAppointmentService {
+public class AppointmentService  extends JpaService<Appointment, Long, IAppointmentRepository> implements IAppointmentService {
 
     private final AppointmentDTOAssembler dtoAsm;
     private final PagedResourcesAssembler<Appointment> pageAsm;
+    private static final long CONSULT_DURATION_MINUTES = 15;
+    private final IMailService mailService;
+    private final IPharmacistService pharmacistService;
     private final IShiftService shiftService;
     private final IDermatologistService dermatologistService;
     private final IPharmacyAdminService pharmacyAdminService;
 
     @Autowired
-    public AppointmentService(IAppointmentRepository repository, AppointmentDTOAssembler dtoAsm, PagedResourcesAssembler<Appointment> pageAsm, IShiftService shiftService, AppointmentDTOAssembler appointmentDTOAssembler, IDermatologistService dermatologistService, IPharmacyAdminService pharmacyAdminService) {
+    public AppointmentService(IAppointmentRepository repository, AppointmentDTOAssembler dtoAsm, PagedResourcesAssembler<Appointment> pageAsm, IShiftService shiftService, AppointmentDTOAssembler appointmentDTOAssembler, IDermatologistService dermatologistService, IPharmacyAdminService pharmacyAdminService, IMailService mailService, IPharmacistService pharmacistService) {
         super(repository);
         this.dtoAsm = dtoAsm;
         this.pageAsm = pageAsm;
         this.shiftService = shiftService;
         this.dermatologistService = dermatologistService;
         this.pharmacyAdminService = pharmacyAdminService;
+        this.mailService = mailService;
+        this.pharmacistService = pharmacistService;
     }
-    
+
+
     @Override
     public Iterable<Appointment> findByFree(boolean isFree) {
         return repository.findByFree(isFree);
@@ -61,10 +71,27 @@ public class AppointmentService extends JpaService<Appointment, Long, IAppointme
         if(!appointment.isPresent() || !appointment.get().isFree()) {
             return false;
         }
-
         appointment.get().setPatient(patient);
         appointment.get().setFree(false);
-        return update(appointment.get());
+        
+        return update(appointment.get()) && 
+            this.mailService.sendAppointmentConfirmationMail(patient.getEmail(), appointment.get());
+    }
+
+    @Override
+    public boolean scheduleConsult(Patient patient, Long pharmacistId, LocalDateTime start) {
+        Optional<Pharmacist> pharmacist = this.pharmacistService.get(pharmacistId);
+        if(!pharmacist.isPresent()) {
+            return false;
+        }
+        Pharmacy pharmacy = pharmacist.get().getPharmacy();
+        Period period = new Period(start, start.plusMinutes(CONSULT_DURATION_MINUTES));
+        Appointment appointment = new Appointment(pharmacy.getConsultPrice(), patient, pharmacy, pharmacist.get(), false, period);
+        if (repository.checkIfExists(pharmacy.getId(), pharmacist.get().getId(), period.getStartTime(), period.getEndTime())) {
+            return false;
+        }
+        appointment = add(appointment).get();
+        return this.mailService.sendAppointmentConfirmationMail(patient.getEmail(), appointment);
     }
 
     @Override
@@ -131,6 +158,18 @@ public class AppointmentService extends JpaService<Appointment, Long, IAppointme
         }
     }
 
+
+    @Override
+    public Optional<AppointmentDTO> getDTO(Long id) {
+        return Optional.empty();
+    }
+
+    @Override
+    @Transactional
+    public PagedModel<AppointmentDTO> getAllbyPharmacist(Pageable pageable, Long pharmacystId) {
+        Page<Appointment> appointments = repository.findByMedicalEmployeeId(pageable ,pharmacystId);
+        return pageAsm.toModel(appointments, dtoAsm);
+    }
 
     @Override
     @Transactional

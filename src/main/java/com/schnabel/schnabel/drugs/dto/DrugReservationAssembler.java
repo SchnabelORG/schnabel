@@ -6,9 +6,6 @@ import com.schnabel.schnabel.drugs.model.DrugReservation;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 @Component
 public class DrugReservationAssembler extends RepresentationModelAssemblerSupport<DrugReservation, DrugReservationDTO> {
     public DrugReservationAssembler() {
@@ -19,13 +16,12 @@ public class DrugReservationAssembler extends RepresentationModelAssemblerSuppor
     @Override
     public DrugReservationDTO toModel(DrugReservation entity) {
         DrugReservationDTO dto = instantiateModel(entity);
-
-        dto.add(linkTo(methodOn(DrugReservationController.class).get(entity.getId())).withSelfRel());
         dto.setId(entity.getId());
         dto.setDrugName(entity.getDrug().getName());
         dto.setQuantity(entity.getQuantity());
-        dto.setReservationDate(entity.getReservationDate());
-        dto.setEndOfReservation(entity.getEndOfReservation());
+        dto.setReservationDate(entity.getPeriod().getStartTime());
+        dto.setEndOfReservation(entity.getPeriod().getEndTime());
+        dto.setPharmacyId(entity.getPharmacy().getId());
         dto.setPatientName(entity.getPatient().getName());
         dto.setPatientSurname(entity.getPatient().getSurname());
         dto.setPatientEmail(entity.getPatient().getEmail());
