@@ -24,7 +24,7 @@ import javax.validation.constraints.Min;
  * Pharmacy grade
  */
 @Entity
-@Table(name = "pharmacygrades")
+@Table(name = "pharmacy_grades")
 @Getter
 @Setter
 @NoArgsConstructor

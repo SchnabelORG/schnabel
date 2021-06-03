@@ -1,6 +1,5 @@
 package com.schnabel.schnabel.users.service;
 
-import java.time.LocalTime;
 import java.util.Optional;
 
 import javax.transaction.Transactional;

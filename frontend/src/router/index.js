@@ -47,6 +47,12 @@ const routes = [
   },
 
   {
+    path: '/rating',
+    name: 'Rating',
+    component: () => import( /* webpackChunkName: "rating" */ '../views/Rating.vue'),
+  },
+
+  {
     path: '/dermappointment/:pharmacyname',
     beforeEnter: (to, from, next) => {
       // Validate pharmacy exists

@@ -7,7 +7,6 @@ import com.schnabel.schnabel.users.model.PharmacyAdmin;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;

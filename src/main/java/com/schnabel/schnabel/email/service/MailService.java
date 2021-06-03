@@ -7,7 +7,6 @@ import javax.mail.internet.MimeMessage;
 import com.schnabel.schnabel.appointment.model.Appointment;
 import com.schnabel.schnabel.email.model.Activation;
 import com.schnabel.schnabel.email.model.Mail;
-import com.schnabel.schnabel.procurement.model.Offer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

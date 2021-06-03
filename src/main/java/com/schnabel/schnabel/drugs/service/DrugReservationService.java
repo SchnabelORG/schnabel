@@ -13,6 +13,7 @@ import com.schnabel.schnabel.pharmacies.service.IWareHouseItemService;
 import com.schnabel.schnabel.users.dto.DrugReservationRequest;
 import com.schnabel.schnabel.users.model.Patient;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -29,6 +30,7 @@ public class DrugReservationService extends JpaService<DrugReservation, Long, ID
     private final IDrugService drugService;
     private final IPharmacyService phService;
 
+    @Autowired
     public DrugReservationService(IDrugReservationRepository drugReservationRepository, DrugReservationAssembler drugReservationAssembler, IWareHouseItemService warehouseService, IDrugService drugService, IPharmacyService phService)
     {
         super(drugReservationRepository);
