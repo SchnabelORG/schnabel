@@ -84,3 +84,7 @@ insert into offers(price, date_of_delivery, order_id, supplier_id, offer_status)
 
 insert into promotions("description", start_time, end_time, pharmacy_id) values ('New promotion!!!', '2021-05-04','2021-06-04', 1);
 
+insert into roles("name") values ('ROLE_PATIENT');
+insert into roles("name") values ('ROLE_ADMIN');
+
+insert into user_roles(role_id, user_id) values (1, 1);

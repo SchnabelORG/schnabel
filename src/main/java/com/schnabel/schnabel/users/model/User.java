@@ -68,5 +68,6 @@ public abstract class User implements IIdentifiable<Long>
         this.password = password;
         this.address = address;
         this.isActivated = isActivated;
+        this.roles = new HashSet<Role>();
     }
 }
