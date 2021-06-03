@@ -88,3 +88,4 @@ insert into roles("name") values ('ROLE_PATIENT');
 insert into roles("name") values ('ROLE_ADMIN');
 
 insert into user_roles(role_id, user_id) values (1, 1);
+insert into user_roles(role_id, user_id) values(2, 8);

@@ -91,7 +91,21 @@
                 });
             },
             deletePharmacist: function(id) {
-                this.id = id;
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.delete("api/pharmacyadmin/removepharmacist/" + id, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            console.log("Successfully removed pharmacist", response.data);
+                            this.getPharmacists();
+                        })
+                        .catch(response => {
+                            console.log("Failed to remove pharmacists", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
             },
             newPharmacist: function() {
                 this.new = true;

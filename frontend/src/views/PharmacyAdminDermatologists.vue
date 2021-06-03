@@ -91,7 +91,21 @@
                 });
             },
             deleteDermatologist: function(id) {
-                this.id = id;
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.delete("api/pharmacyadmin/removedermatologist/" + id, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            console.log("Successfully removed dermatologist", response.data);
+                            this.getDermatologists();
+                        })
+                        .catch(response => {
+                            console.log("Failed to remove dermatologist", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
             },
             newDermatologist: function() {
                 this.new = true;

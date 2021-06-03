@@ -22,6 +22,6 @@ import lombok.*;
 public class Pharmacist extends MedicalEmployee
 {
     @ManyToOne
-    @JoinColumn(name = "pharmacy_id")
+    @JoinColumn(name = "pharmacy_id", nullable = true)
     private Pharmacy pharmacy;
 }

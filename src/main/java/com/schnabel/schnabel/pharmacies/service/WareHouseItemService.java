@@ -9,7 +9,10 @@ import javax.transaction.Transactional;
 import com.schnabel.schnabel.drugs.dto.DrugPriceRequest;
 import com.schnabel.schnabel.drugs.model.Drug;
 import com.schnabel.schnabel.drugs.model.DrugPrice;
+import com.schnabel.schnabel.drugs.model.DrugReservation;
+import com.schnabel.schnabel.drugs.repository.IDrugReservationRepository;
 import com.schnabel.schnabel.drugs.service.IDrugPriceService;
+import com.schnabel.schnabel.drugs.service.IDrugReservationService;
 import com.schnabel.schnabel.drugs.service.IDrugService;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.pharmacies.model.WareHouseItem;
@@ -40,9 +43,10 @@ public class WareHouseItemService extends JpaService<WareHouseItem, Long, IWareH
     private final IDrugService drugService;
     private final IPharmacyService pharmacyService;
     private final IDrugPriceService drugPriceService;
+    private final IDrugReservationRepository drugReservationRepository;
 
     @Autowired
-    public WareHouseItemService(IWareHouseItemRepository repository, WareHouseItemDTOAssembler dtoAssembler, PagedResourcesAssembler<WareHouseItem> pageAsm, IDrugService drugService, IPharmacyService pharmacyService, IDrugPriceService drugPriceService)
+    public WareHouseItemService(IWareHouseItemRepository repository, WareHouseItemDTOAssembler dtoAssembler, PagedResourcesAssembler<WareHouseItem> pageAsm, IDrugService drugService, IPharmacyService pharmacyService, IDrugPriceService drugPriceService, IDrugReservationRepository drugReservationRepository)
     {
         super(repository);
         this.dtoAssembler = dtoAssembler;
@@ -50,6 +54,7 @@ public class WareHouseItemService extends JpaService<WareHouseItem, Long, IWareH
         this.drugService = drugService;
         this.pharmacyService = pharmacyService;
         this.drugPriceService = drugPriceService;
+        this.drugReservationRepository = drugReservationRepository;
     }
 
     @Override
@@ -96,6 +101,10 @@ public class WareHouseItemService extends JpaService<WareHouseItem, Long, IWareH
     @Override
     public boolean deleteWareHouseItem(Long id) 
     {
+        List<DrugReservation> drugReservations = drugReservationRepository.findNotTakenByDrugAndPharmacy(get(id).get().getDrug().getId(), get(id).get().getPharmacy().getId());
+        if(!drugReservations.isEmpty()) {
+            return false;
+        }
         List<DrugPrice> drugPrices = drugPriceService.findAllByWareHouseItemId(id);
         for (DrugPrice drugPrice : drugPrices) {
             drugPriceService.remove(drugPrice.getId());

@@ -7,6 +7,7 @@ import com.schnabel.schnabel.misc.interfaces.IJpaService;
 import com.schnabel.schnabel.users.dto.DrugReservationRequest;
 import com.schnabel.schnabel.users.model.Patient;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
