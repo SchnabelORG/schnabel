@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class DoesHaveDrugDTO {
     private Long drugId;
     private int quantity;
-    private Long pahramcyId;
+    private Long pharmacyId;
 }

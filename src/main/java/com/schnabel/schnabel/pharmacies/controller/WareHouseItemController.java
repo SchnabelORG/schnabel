@@ -46,8 +46,8 @@ public class WareHouseItemController
     @PostMapping("doeshave")
     public ResponseEntity<Boolean> getAllByPharmacyId(@RequestBody DoesHaveDrugDTO drugDTO)
     {
-        //Optional<WareHouseItem> wareHouseItem = wareHouseItemService.findWareHouseItemByPharmacyAndDrugId(drugDTO.getDrugId(), drugDTO.getPahramcyId());
-        Optional<WareHouseItem> wareHouseItem = wareHouseItemService.findWareHouseItemByPharmacyAndDrugId(1L, 1L);
+
+        Optional<WareHouseItem> wareHouseItem = wareHouseItemService.findWareHouseItemByPharmacyAndDrugId(drugDTO.getDrugId(), drugDTO.getPharmacyId());
         if(wareHouseItem.isPresent() && wareHouseItem.get().getAvailable() >= drugDTO.getQuantity()){
             return new ResponseEntity<>(Boolean.TRUE, HttpStatus.OK);
         }
