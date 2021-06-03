@@ -20,7 +20,7 @@ public interface IPatientRepository extends JpaRepository<Patient, Long>
         + " FROM appointments a"
         + " WHERE a.patient_id = :patient_id"
         + " AND a.pharmacy_id = :pharmacy_id"
-        + " AND a.end_time <= CURRENT_DATE",
+        + " AND a.end_time <= CURRENT_TIMESTAMP",
         nativeQuery = true)
     boolean hasHadAppointment(@Param("patient_id") Long patientId, @Param("pharmacy_id") Long pharmacyId);
 
@@ -29,8 +29,17 @@ public interface IPatientRepository extends JpaRepository<Patient, Long>
         + " FROM drug_reservations dr"
         + " WHERE dr.reservation_patient_id = :patient_id"
         + " AND dr.pharmacy_reservation_id = :pharmacy_id"
-        + " AND dr.end_time <= CURRENT_DATE"
+        + " AND dr.end_time <= CURRENT_TIMESTAMP"
         + " AND dr.taken = 'T'",
         nativeQuery = true)
     boolean hasPickedUpDrugs(@Param("patient_id") Long patientId, @Param("pharmacy_id") Long pharmacyId);
+
+    @Query(value = "SELECT CASE WHEN COUNT(a) > 0"
+        + " THEN true ELSE false END"
+        + " FROM appointments a"
+        + " WHERE a.patient_id = :patient_id"
+        + " AND a.medical_employee_id = :employee_id"
+        + " AND a.end_time <= CURRENT_TIMESTAMP",
+        nativeQuery = true)
+    boolean hasHadEmployeeAppointment(@Param("patient_id") Long patientId, @Param("employee_id") Long employeeId);
 }

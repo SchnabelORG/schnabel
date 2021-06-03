@@ -23,5 +23,5 @@ import lombok.NoArgsConstructor;
 @JsonInclude(Include.NON_NULL)
 public class MedicalEmployeeDTO extends RepresentationModel<MedicalEmployeeDTO> {
     private String name;
-    // TODO(Jovan): Rating
+    private double score;
 }

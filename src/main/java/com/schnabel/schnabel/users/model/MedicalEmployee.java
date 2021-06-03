@@ -6,6 +6,7 @@ import lombok.*;
 import java.util.List;
 
 @Entity
+@Table(name = "medical_employees")
 @Getter
 @Setter
 public class MedicalEmployee extends User
@@ -15,4 +16,6 @@ public class MedicalEmployee extends User
 
     @OneToMany(mappedBy = "medicalEmployee")
     private List<Shift> shifts;
+
+    private double score;
 }
