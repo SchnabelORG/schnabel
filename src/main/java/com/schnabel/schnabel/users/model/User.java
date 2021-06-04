@@ -33,7 +33,7 @@ import java.util.Set;
 public abstract class User implements IIdentifiable<Long>
 {
     @Id
-    @SequenceGenerator(name = "user_seq_gen", sequenceName = "user_seq", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "user_seq_gen", sequenceName = "user_seq", initialValue = 100, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_gen")
     private Long id;
     

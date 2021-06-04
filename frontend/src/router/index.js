@@ -38,13 +38,18 @@ const routes = [
   {
     path: '/redirect',
     beforeEnter: (to, from, next) => {
-      axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + localStorage.jws}})
+      axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + window.localStorage.getItem('jwt')}})
         .then(r => {
           if(r.data == 'ROLE_PATIENT') {
             next({name: 'Home'});
           } else if (r.data == 'ROLE_ADMIN') {
             next({name: 'PharmacyAdminHome'});
-          } else {
+          } else if (r.data == 'ROLE_PHARMACIST') {
+            next({name: 'PharmacistHome'}); 
+          } else if (r.data == 'ROLE_DERMATOLOGIST') {
+            next({name: 'DermatologistHome'}); 
+          }
+          else {
             next({name: 'Home'});
           }
         })
@@ -179,6 +184,26 @@ const routes = [
         path: 'medicationReservations',
         name: 'MedicationReservations',
         component: () => import(/* webpackChunkName: "pharmacist" */ '../views/MedicationReservations.vue'),
+      },
+    ],
+  },
+
+
+  //Dermatologist
+  {
+    path: "/dermatologist",
+    name: 'DermatologistPanel',
+    component: () => import(/* webpackChunkName: "dermatologist" */ '../views/DermatologistPanel.vue'),
+    children:[
+      {
+        path: '',
+        name: 'DermatologistHome',
+        component: () => import(/* webpackChunkName: "dermatologist" */ '../views/DermatologistHome.vue'),
+      },
+      {
+        path: 'dermatologistacc',
+        name: 'DermatologistAccount',
+        component: () => import(/* webpackChunkName: "dermatologist" */ '../views/DermatologistAccount.vue'),
       },
     ],
   },
