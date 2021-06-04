@@ -43,7 +43,7 @@ const routes = [
           if(r.data == 'ROLE_PATIENT') {
             next({name: 'Home'});
           } else if (r.data == 'ROLE_ADMIN') {
-            next({name: 'PharmacyAdminPanel'});
+            next({name: 'PharmacyAdminHome'});
           } else {
             next({name: 'Home'});
           }

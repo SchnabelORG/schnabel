@@ -88,3 +88,10 @@ insert into roles("name") values ('ROLE_PATIENT');
 insert into roles("name") values ('ROLE_ADMIN');
 
 insert into user_roles(role_id, user_id) values (1, 1);
+insert into user_roles(role_id, user_id) values (2, 8);
+
+insert into vacations(start_time, end_time, pharmacy_id, medical_employee_id, vacation_status) values ('2021-07-08', '2021-07-28', 1, 3, 'CREATED');
+insert into vacations(start_time, end_time, pharmacy_id, medical_employee_id, vacation_status) values ('2021-07-20', '2021-07-31', 1, 6, 'CREATED');
+insert into vacations(start_time, end_time, pharmacy_id, medical_employee_id, vacation_status) values ('2021-07-09', '2021-07-25', 1, 5, 'CREATED');
+insert into vacations(start_time, end_time, pharmacy_id, medical_employee_id, vacation_status) values ('2021-08-15', '2021-08-31', 1, 7, 'CREATED');
+insert into vacations(start_time, end_time, pharmacy_id, medical_employee_id, vacation_status) values ('2021-06-01', '2021-06-11', 1, 3, 'ACCEPTED');
