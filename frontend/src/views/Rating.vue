@@ -38,15 +38,52 @@
                                     min="0"
                                     max="5"
                                     thumb-label
-                                    ticks></v-slider>
+                                    ticks
+                                    :append-icon="pharmacyRating"></v-slider>
                                 </v-card-text>
                                 <v-card-actions>
                                     <v-btn plain>Cancel</v-btn>
                                     <v-spacer></v-spacer>
-                                    <v-btn color="accent" depressed @click="gradePharmacy">Submit</v-btn>
+                                    <v-btn :disabled="!pharmacyRating" color="accent" depressed @click="gradePharmacy">Submit</v-btn>
                                 </v-card-actions>
                             </v-card>
                             </v-dialog>
+                        </v-tab-item>
+                        <v-tab-item>
+                            <v-data-table
+                            :headers="employeeHeaders"
+                            :items="employees"
+                            @click:row="selectEmployee">
+
+                            </v-data-table>
+                            <v-dialog
+                            v-model="employeeDialog"
+                            width="500">
+                                <div v-if="success" id="success-form">
+                                    <p id="success-icon"><i class="fa fa-check"></i></p>
+                                    <p>Thank you for your feedback!</p>
+                                </div>
+                                <v-card v-else>
+                                    <v-card-title>{{selectedEmployee.name}}</v-card-title>
+                                    <v-card-text>
+                                        <h3>Submit your rating</h3>
+                                        <v-slider
+                                        v-model="employeeRating"
+                                        step="1"
+                                        min="0"
+                                        max="5"
+                                        thumb-label
+                                        :append-icon="employeeRating">
+                                        </v-slider>
+                                    </v-card-text>
+                                    <v-card-actions>
+                                        <v-btn plain>Cancel</v-btn>
+                                        <v-spacer></v-spacer>
+                                        <v-btn :disabled="!employeeRating" color="accent" depressed @click="gradeEmployee">Submit</v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
+
                         </v-tab-item>
                     </v-tabs-items>
                 </v-card-text>
@@ -59,6 +96,18 @@
 export default {
     data() {
         return {
+
+            //
+            employeeDialog: false,
+            selectedEmployee: {},
+            employeeRating: 0,
+            employeeHeaders: [
+                { text: 'Name', value: 'name' },
+                { text: 'Surname', value: 'surname' },
+                { text: 'Rating', value: 'score' },
+            ],
+            employees: [],
+            //
             pharmacyDialog: false,
             selectedPharmacy: {},
             pharmacyRating: 0,
@@ -76,6 +125,44 @@ export default {
     },
 
     methods: {
+        gradeEmployee: function() {
+            this.refreshToken()
+                .then(rr => {
+                    localStorage.jws = rr.data;
+                    let request = {
+                        targetId: this.selectedEmployee.id,
+                        value: this.employeeRating,
+                    }
+                    this.axios.post('api/grade/employee', request, {headers: this.getAHeader()})
+                        .then(() => {
+                            this.success = true;
+                            this.employeeDialog = false;
+                        })
+                }).catch(() => this.$router.push('/'));
+        },
+
+        selectEmployee: function(item, event) {
+            this.success = false;
+            // eslint-disable-next-line no-unused-vars
+            event
+            this.selectedEmployee = item;
+            this.employeeDialog = true;
+        },
+
+        getEmployees: function() {
+            this.refreshToken()
+                .then(rr => {
+                    localStorage.jws = rr.data;
+                    this.axios.get('api/grade/patient/gradeable_employees', {headers: this.getAHeader()})
+                        .then(r => {
+                            if(r.data._embedded) {
+                                this.employees = r.data._embedded.employees;
+                            } else {
+                                this.employees = [];
+                            }
+                        });
+                }).catch(() => this.$router.push('/'));
+        },
         gradePharmacy: function() {
             this.success = false;
             this.refreshToken()
@@ -119,6 +206,7 @@ export default {
 
     mounted() {
         this.getPharmacies();
+        this.getEmployees();
     },
 }
 </script>

@@ -20,7 +20,9 @@ public class MedicalEmployeeDTOAssembler extends RepresentationModelAssemblerSup
     public MedicalEmployeeDTO toModel(MedicalEmployee entity) {
         MedicalEmployeeDTO dto = instantiateModel(entity);
         dto.add(linkTo(methodOn(MedicalEmployeeController.class).get(entity.getId())).withSelfRel());
+        dto.setId(entity.getId());
         dto.setName(entity.getName());
+        dto.setSurname(entity.getSurname());
         dto.setScore(entity.getScore());
         return dto;
     }

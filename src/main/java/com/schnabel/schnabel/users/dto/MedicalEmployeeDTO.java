@@ -18,10 +18,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@JsonRootName("appointment")
-@Relation(collectionRelation = "appointment")
+@JsonRootName("employee")
+@Relation(collectionRelation = "employees")
 @JsonInclude(Include.NON_NULL)
 public class MedicalEmployeeDTO extends RepresentationModel<MedicalEmployeeDTO> {
+    private Long id;
     private String name;
+    private String surname;
     private double score;
 }
