@@ -35,4 +35,10 @@ public class Drug implements IIdentifiable<Long>
     @Column(nullable = false) 
     private String description;
 
+    public Drug(String name, String description)
+    {
+        this.name = name;
+        this.description = description;
+    }
+
 }

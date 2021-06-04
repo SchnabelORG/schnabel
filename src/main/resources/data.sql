@@ -13,12 +13,15 @@ insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 
 insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 20, 3, 1);
 insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 20, 4, 1);
 insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 20, 5, 1);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 20, 3, 2);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 20, 4, 2);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 20, 5, 2);
 
-insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2022-06-01', '2020-01-01', 1);
-insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2022-06-01', '2020-01-01', 2);
-insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2022-06-01', '2020-01-01', 3);
-insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2022-06-01', '2020-01-01', 4);
-insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2022-06-01', '2020-01-01', 5);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2021-06-12', '2020-01-01', 1);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(200, '2021-06-20', '2020-01-01', 2);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(300, '2022-06-01', '2020-01-01', 3);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(250, '2022-06-01', '2020-01-01', 4);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(200, '2022-06-01', '2020-01-01', 5);
 
 insert into patients(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated, phone_no) values (1, 'Jovan', 'Ivosevic', 'ivos.jovan@protonmail.ch', '$2a$10$IevzxrzynxfElyhc1zuUferMhXfAWbDRsob0cXmCc6jEETM7xhCiG', '21000', 'Novi Sad', 'Balzakova', '69', true, '0607671370'); --password:Sifra1337
 insert into patients(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated, phone_no) values (2, 'Mile', 'Knezevic', 'lemara98@gmail.com', '$2y$10$VS2RQAcHBqO.aLSEGlaYGe2b2605tXpUxAKCeZfXYTnMGriXGguoy', '21000', 'Novi Sad', 'Bulevar Oslobodjenja', '42', true, '0631931345'); --password:Sifra1337
@@ -27,11 +30,11 @@ insert into pharmacists(id, "name", surname, email, "password", city, postcode, 
 insert into pharmacists(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (4, 'Marina', 'Ludajic', 'madrina@gmail.com', '$2y$10$leO4PmaV5fPPfuEMVNCVjOqUwOHWrsLB5Ylnoyhs3MFewSFLZssGy', '371136', 'Kikinda', 'Generala Milutinovica', '5', 2, true);--password:Sifra1337
 insert into pharmacists(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (5, 'Sanja', 'Dudas', 'sanjaa.d98@gmail.com', '$2y$10$vzEuI84K9v1pnVnDGmdcZOw35RPpcvn.dYymkbc0mvfuonWGOSx1y', '21315', 'Lug', 'Marsala Tita 48', '5', 1, true);--password:Sifra1337
 
-insert into dermatologists(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated) values (6, 'Marija', 'Maric', 'marija@gmail.com', '$2y$10$TmwHZ68VGAFjrozSbdbFce3AS0uB9Bnj2.AkMrPXhG27z1QpJrb9y', '11000', 'Beograd', 'Jurija Gagarina', '4', true);--password:Sifra1337
-insert into dermatologists(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated) values (7, 'Milan', 'Milanovic', 'milan@gmail.com', '$2y$10$XbX38l.s9p1k2cPZrSQQSe657AajL.n..RVmXlDrmm4Bg3E.1Au8i', '11000', 'Beograd', 'Jurija Gagarina', '4', true);--password:Sifra1337
+insert into dermatologists(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated) values (6, 'Marija', 'Maric', 'marija@gmail.com', '$2y$10$TmwHZ68VGAFjrozSbdbFce3AS0uB9Bnj2.AkMrPXhG27z1QpJrb9y', 'Beograd', '11000', 'Jurija Gagarina', '4', true);--password:Sifra1337
+insert into dermatologists(id, "name", surname, email, "password", city, postcode, street, street_no, is_activated) values (7, 'Milan', 'Milanovic', 'milan@gmail.com', '$2y$10$XbX38l.s9p1k2cPZrSQQSe657AajL.n..RVmXlDrmm4Bg3E.1Au8i', 'Beograd', '11000', 'Jurija Gagarina', '4', true);--password:Sifra1337
 
-insert into pharmacyadmins(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (8, 'Mika', 'Mikic', 'jankovicpharmacy@gmail.com', '$2y$10$XX.wKVB2GvZA024rrB672OUXfZZ9c9Whqbp8qAqCTiIfVEM8h9buK', '11000', 'Beograd', 'Bulevar', '1', 1, true); --password: Mikamikic123
-insert into pharmacyadmins(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (11, 'Zoran', 'Zoranovic', 'zoran@gmail.com', '$2y$10$XX.wKVB2GvZA024rrB672OUXfZZ9c9Whqbp8qAqCTiIfVEM8h9buK', '11000', 'Beograd', 'Bulevar', '1', 1, true); --password: Mikamikic123
+insert into pharmacyadmins(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (8, 'Mika', 'Mikic', 'jankovicpharmacy@gmail.com', '$2y$10$XX.wKVB2GvZA024rrB672OUXfZZ9c9Whqbp8qAqCTiIfVEM8h9buK', 'Beograd', '11000', 'Bulevar', '1', 1, true); --password: Mikamikic123
+insert into pharmacyadmins(id, "name", surname, email, "password", city, postcode, street, street_no, pharmacy_id, is_activated) values (11, 'Zoran', 'Zoranovic', 'zoran@gmail.com', '$2y$10$XX.wKVB2GvZA024rrB672OUXfZZ9c9Whqbp8qAqCTiIfVEM8h9buK', 'Beograd', '11000', 'Bulevar', '1', 1, true); --password: Mikamikic123
 
 insert into suppliers(id, "name", surname, email, "password", city, postcode, street, street_no, firm, is_activated) values (9, 'Zoki', 'Zokic', 'zoki@gmail.com', '$2y$10$pTN2xTyuOLd3pyReU4QlGecab7eTQxgEevZrdbVYRYKqiU0timsga ', '11000', 'Beograd', 'Carlija Caplina', '12', 'Dobavljac Zoki', true);--password:Sifra1337
 insert into suppliers(id, "name", surname, email, "password", city, postcode, street, street_no, firm, is_activated) values (10, 'Jovan', 'Jovanovic', 'jovan@gmail.com', '$2y$10$ll2ULAuxZbDQUg7mCVhTF.aa2Xx7Al2BNaFMyhmlOVxDoRurB52ji ', '21000', 'Novi Sad', 'Bulevar Oslobodjenja', '14a', 'Jova trans', true);--password:Sifra1337
@@ -60,9 +63,9 @@ insert into appointments("free", end_time, start_time, price, patient_id, medica
 insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-06-10 16:45:00', '2021-06-10 16:15:00', 6000, 1, 3, 2);
 insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-06-04 09:45:00', '2021-06-04 09:15:00', 6000, 1, 3, 2);
 
-insert into drugs_reservations(end_reservation, quantity, reservation_date, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values('2021-05-20', 2, '2021-05-04', true, 1, 1, 1);
-insert into drugs_reservations(end_reservation, quantity, reservation_date, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values('2020-05-20', 2, '2020-05-04', false, 1, 1, 1);
-insert into drugs_reservations(end_reservation, quantity, reservation_date, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values('2021-07-20', 2, '2021-05-04', false, 1, 1, 1);
+insert into drug_reservations(end_time, start_time, quantity, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values('2021-05-20', '2021-05-04', 2, true, 1, 1, 1);
+insert into drug_reservations(end_time, start_time, quantity, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values('2020-05-20', '2020-05-04', 2, false, 1, 1, 1);
+insert into drug_reservations(end_time, start_time, quantity, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values('2021-07-20', '2021-05-04', 2, false, 1, 1, 1);
 
 insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('08:00:00', '14:00:00', 1, 2);
 insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('15:00:00', '16:00:00', 2, 2);
@@ -86,5 +89,19 @@ insert into offers(price, date_of_delivery, order_id, supplier_id, offer_status)
 
 insert into promotions("description", start_time, end_time, pharmacy_id) values ('New promotion!!!', '2021-05-04','2021-06-04', 1);
 
+
 insert into allergies(allergy_type, allergy_drug_id, patient_id) values ('Anafilakticki sok', 1, 1);
 insert into allergies(allergy_type, allergy_drug_id, patient_id) values ('Anafilakticki sok', 3, 1);
+
+insert into roles("name") values ('ROLE_PATIENT');
+insert into roles("name") values ('ROLE_ADMIN');
+
+insert into user_roles(role_id, user_id) values (1, 1);
+insert into user_roles(role_id, user_id) values (2, 8);
+
+insert into vacations(start_time, end_time, pharmacy_id, medical_employee_id, vacation_status) values ('2021-07-08', '2021-07-28', 1, 3, 'CREATED');
+insert into vacations(start_time, end_time, pharmacy_id, medical_employee_id, vacation_status) values ('2021-07-20', '2021-07-31', 1, 6, 'CREATED');
+insert into vacations(start_time, end_time, pharmacy_id, medical_employee_id, vacation_status) values ('2021-07-09', '2021-07-25', 1, 5, 'CREATED');
+insert into vacations(start_time, end_time, pharmacy_id, medical_employee_id, vacation_status) values ('2021-08-15', '2021-08-31', 1, 7, 'CREATED');
+insert into vacations(start_time, end_time, pharmacy_id, medical_employee_id, vacation_status) values ('2021-06-01', '2021-06-11', 1, 3, 'ACCEPTED');
+

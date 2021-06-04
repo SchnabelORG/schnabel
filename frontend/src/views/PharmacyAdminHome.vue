@@ -39,6 +39,7 @@
                 <div class="footer-divider"></div>
                 <ul class="footer-column-list unstyled-list">
                 <li><router-link to="/pharmacyadmin/drug">Drugs</router-link></li>
+                <li><router-link to="/pharmacyadmin/pricelist">Pricelist</router-link></li>
                 <li><router-link to="/pharmacyadmin/makeorder">New order</router-link></li>
                 <li><router-link to="/pharmacyadmin/order">Orders</router-link></li>
                 <li><router-link to="/pharmacyadmin/promotion">New promotion</router-link></li>

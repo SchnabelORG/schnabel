@@ -34,6 +34,30 @@ const routes = [
     },
   },
 
+  // NOTE(Jovan): Redirect based on role
+  {
+    path: '/redirect',
+    beforeEnter: (to, from, next) => {
+      axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + localStorage.jws}})
+        .then(r => {
+          if(r.data == 'ROLE_PATIENT') {
+            next({name: 'Home'});
+          } else if (r.data == 'ROLE_ADMIN') {
+            next({name: 'PharmacyAdminHome'});
+          } else {
+            next({name: 'Home'});
+          }
+        })
+        .catch(() => next({name: 'Home'}));
+    },
+  },
+
+  {
+    path:'/drugsearch',
+    name: 'DrugSearch',
+    component: () => import( /* webpackChunkName: "drugsearch" */ '../views/DrugSearch.vue'),
+  },
+
   {
     path: '/consult',
     name: 'ScheduleConsult',
@@ -208,6 +232,11 @@ const routes = [
         path: 'defineappointment',
         name: 'PharmacyAdminDefineAppointment',
         component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminDefineAppointment.vue'),
+      },
+      {
+        path: 'pricelist',
+        name: 'PriceList',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PriceList.vue'),
       },
     ],
   },

@@ -22,6 +22,8 @@ import lombok.NoArgsConstructor;
 @Relation(collectionRelation = "appointment")
 @JsonInclude(Include.NON_NULL)
 public class MedicalEmployeeDTO extends RepresentationModel<MedicalEmployeeDTO> {
+    private Long id;
     private String name;
+    private String surname;
     // TODO(Jovan): Rating
 }

@@ -58,18 +58,21 @@ export default {
             };
             this.axios.post("api/auth/login", dto)
                 .then(r => {
-                    console.log(r);
                     this.$store.state.jws = r.data;
-                    window.localStorage.jwt = r.data;
-                    this.$router.push("pharmacist");
+
+                    // window.localStorage.jwt = r.data;
+                    // this.$router.push("pharmacist");
 
                     // this.$store.state.jws = r.data;
                     //localStorage.jws = r.data; // TODO(Jovan): TEMP!
                     //this.$router.push("user");
                    // this.$router.push("pharmacyadmin");
+
+                    localStorage.jws = r.data; // TODO(Jovan): TEMP!
+                    this.$router.push("redirect");
+
                 })
-                .catch(r => {
-                    console.log(r);
+                .catch(() => {
                     this.error = "Bad credentials";
                 });
         },
