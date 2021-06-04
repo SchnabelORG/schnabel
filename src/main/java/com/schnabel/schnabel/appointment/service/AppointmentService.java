@@ -18,11 +18,13 @@ import com.schnabel.schnabel.misc.model.Period;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.model.Pharmacist;
+import com.schnabel.schnabel.users.model.Vacation;
 import com.schnabel.schnabel.users.service.IPharmacistService;
 import com.schnabel.schnabel.users.dto.ShiftDTO;
 import com.schnabel.schnabel.users.service.IDermatologistService;
 import com.schnabel.schnabel.users.service.IPharmacyAdminService;
 import com.schnabel.schnabel.users.service.IShiftService;
+import com.schnabel.schnabel.users.service.IVacationService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,9 +48,10 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
     private final IShiftService shiftService;
     private final IDermatologistService dermatologistService;
     private final IPharmacyAdminService pharmacyAdminService;
+    private final IVacationService vacationService;
 
     @Autowired
-    public AppointmentService(IAppointmentRepository repository, AppointmentDTOAssembler dtoAsm, PagedResourcesAssembler<Appointment> pageAsm, IShiftService shiftService, AppointmentDTOAssembler appointmentDTOAssembler, IDermatologistService dermatologistService, IPharmacyAdminService pharmacyAdminService, IMailService mailService, IPharmacistService pharmacistService) {
+    public AppointmentService(IAppointmentRepository repository, AppointmentDTOAssembler dtoAsm, PagedResourcesAssembler<Appointment> pageAsm, IShiftService shiftService, AppointmentDTOAssembler appointmentDTOAssembler, IDermatologistService dermatologistService, IPharmacyAdminService pharmacyAdminService, IMailService mailService, IPharmacistService pharmacistService, IVacationService vacationService) {
         super(repository);
         this.dtoAsm = dtoAsm;
         this.pageAsm = pageAsm;
@@ -57,6 +60,7 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
         this.pharmacyAdminService = pharmacyAdminService;
         this.mailService = mailService;
         this.pharmacistService = pharmacistService;
+        this.vacationService = vacationService;
     }
 
 
@@ -137,6 +141,13 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
     {
         Optional<ShiftDTO> shift = shiftService.getShiftMedicalEmployeePharmacy(dermatologistId, pharmacyId);
         List<Appointment> appointments = getAllByDermatologistForDay(dermatologistId, startTime);
+        List<Vacation> vacations = vacationService.findByMedicalEmployeeId(dermatologistId);
+
+        for (Vacation vacation : vacations) {
+            if(startTime.isAfter(vacation.getPeriod().getStartTime()) && endTime.isBefore(vacation.getPeriod().getEndTime())) {
+                return false;
+            }
+        }
 
         if (startTime.toLocalTime().isAfter(shift.get().getStartTime()) && endTime.toLocalTime().isBefore(shift.get().getEndTime()))
         {

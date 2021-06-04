@@ -2,7 +2,7 @@ package com.schnabel.schnabel.users.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.schnabel.schnabel.misc.model.Period;
 
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
@@ -18,12 +18,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@JsonRootName("appointment")
-@Relation(collectionRelation = "appointment")
-@JsonInclude(Include.NON_NULL)
-public class MedicalEmployeeDTO extends RepresentationModel<MedicalEmployeeDTO> {
+@JsonRootName("vacation")
+@Relation(collectionRelation = "vacations")
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class VacationDTO extends RepresentationModel<VacationDTO> {
     private Long id;
-    private String name;
-    private String surname;
-    // TODO(Jovan): Rating
+    private Period period;
+    private MedicalEmployeeDTO medicalEmployee;
 }
