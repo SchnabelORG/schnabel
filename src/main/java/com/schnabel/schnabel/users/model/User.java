@@ -70,4 +70,13 @@ public abstract class User implements IIdentifiable<Long>
         this.isActivated = isActivated;
         this.roles = new HashSet<Role>();
     }
+
+    public User(String name, String surname, String email, String password, Address address)
+    {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+    }
 }
