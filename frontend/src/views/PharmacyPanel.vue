@@ -1,7 +1,7 @@
 <template>
     <div id="pharmacist-main">
         <main-navigation>
-            <router-link to="/pharmacy/">Home</router-link>
+            <router-link :to="'/pharmacy/' + this.$route.params.id">Home</router-link>
         </main-navigation>
         <div id="main-content">
             <router-view/>

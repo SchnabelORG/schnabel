@@ -98,7 +98,7 @@ const routes = [
 
   //Pharmacy
   {
-    path: '/pharmacy',
+    path: '/pharmacy/:id',
     name: 'PharmacyPanel',
     component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacyPanel.vue'),
     children:[

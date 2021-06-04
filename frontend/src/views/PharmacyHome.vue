@@ -2,7 +2,7 @@
   <div id="main-home">
     <div id="cover-home">
       <div id="cover-text">
-        <h2 id="cover-header">Pharmacy {{this.pharmacyName}}</h2>
+        <h2 id="cover-header">Pharmacy {{ this.pharmacy.name }}</h2>
       </div>
       <img src="../assets/plaguedoctorcovid.png">
     </div>
@@ -66,7 +66,7 @@
             <div class="footer-divider"></div>
             <ul class="footer-column-list unstyled-list">
               <li><router-link to="">Reserve drug</router-link></li>
-              <li><router-link to="/pharmacy/drug">Our drugs</router-link></li>
+              <li><router-link :to="'/pharmacy/'+ id + '/drug'">Our drugs</router-link></li>
             </ul>
           </div>
           <div class="footer-column">
@@ -74,7 +74,7 @@
             <div class="footer-divider"></div>
             <ul class="footer-column-list unstyled-list">
               <li><router-link to="">Make examination</router-link></li>
-              <li><router-link to="/pharmacy/dermatologist">Our dermatologists</router-link></li>
+              <li><router-link :to="'/pharmacy/'+ id + '/dermatologist'">Our dermatologists</router-link></li>
             </ul>
           </div>
           <div class="footer-column">
@@ -82,7 +82,7 @@
             <div class="footer-divider"></div>
             <ul class="footer-column-list unstyled-list">
               <li><router-link to="">Make consulting</router-link></li>
-              <li><router-link to="/pharmacy/pharmacist">Our pharmacists</router-link></li>
+              <li><router-link :to="'/pharmacy/'+ id + '/pharmacist'">Our pharmacists</router-link></li>
             </ul>
           </div>
           <div class="footer-column">
@@ -95,7 +95,7 @@
                 </div>
                 <div class="space-between info--text">
                     <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <span>{{this.address}}</span>
+                    <span> {{this.pharmacy.address.street}} {{this.pharmacy.address.streetNo}}, {{this.pharmacy.address.city}}</span>
                 </div>
                 <div class="space-between info--text">
                 </div>
@@ -140,21 +140,39 @@
     export default {
         data() {
             return {
-                address: 'Balzakova 48, Novi Sad',
-                avarageGrade: '4.5',
+                id: '',
+                pharmacy: '',
+                avarageGrade: '',
                 pharmacyName: 'Schnabel Liman',
                 zoom: 12,
                 center: [19.882, 45.254],
                 rotation: 0,
-                lat: '',
-                att: '',
                 geolocPosition: undefined,
                 overlayCoordinate: [19.882, 45.254],
             }
         },
         methods: {
           getPharmacy: function() {
-            
+            this.id = this.$route.params.id;
+            console.log(this.id);
+            this.axios.get("api/pharmacy/" + this.id)
+                .then(response => {
+                    this.pharmacy = response.data;
+                    this.overlayCoordinate = [this.pharmacy.address.longitude, this.pharmacy.address.latitude];
+                    this.getPharmacyGrade();
+                })
+                .catch(response => {
+                    console.log("Failed to get pharmacy", response.data);
+                });
+          },
+          getPharmacyGrade: function() {
+              this.axios.get("api/grade/pharmacy/avarage/" + this.id)
+                .then(response => {
+                    this.avarageGrade = response.data;
+                })
+                .catch(response => {
+                    console.log("Failed to get avarage grade", response.data);
+                });
           },
         },
         mounted() {
