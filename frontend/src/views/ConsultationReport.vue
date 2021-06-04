@@ -273,6 +273,7 @@
                                 v-if="termsToShow.length > 0"
                                     v-model="time"
                                     column>
+                                    <!-- :label="`${new Date(item.start).getHours()}:${new Date(item.start).getMinutes()}-${item.end.toISOString().substr(11, 5)} (${item.start.toISOString().substr(0, 10)})`" -->
                                      <v-radio
                                         :label="`none`"
                                         color="primary"
@@ -280,20 +281,13 @@
                                     <v-radio
                                         v-for="item in termsToShow"
                                         :key="item"
-                                        :label="`${item.start.toISOString().substr(11, 5)}-${item.end.toISOString().substr(11, 5)} (${item.start.toISOString().substr(0, 10)})`"
+                                        :label="getLabel(item)"
                                         color="primary"
                                     ></v-radio>
 
                                 </v-radio-group>
                             </v-col>
                         </v-row>
-
-                        <v-alert
-                            dense
-                            v-if="(time != null) && (date != null)"
-                            type="info">
-                            Choosen term is 20.03.2021 at 12:30
-                        </v-alert>
                     </v-card>
 
                     <v-row>
@@ -347,6 +341,7 @@
                     required: value => !!value || 'Required.',
                 },
                 range: [1, 12],
+                time: ''
 
             }
         },
@@ -542,7 +537,8 @@
                         if(response.data != -1){
                             this.addMedicationsToReport(response.data);
                         }
-                        this.reset();
+                        this.scheduleNewAppointment();
+                        //this.reset();
                     })
                     .catch(response =>
                     {
@@ -561,6 +557,7 @@
                 this.axios.post("api/recommendedmed/addmed/" + reportId, meds,{headers:{"Authorization": "Bearer " + jws}})
                     .then(response =>
                     {
+                        console.log("aaa");
                         console.log(response.data);
                     })
                     .catch(response =>
@@ -569,6 +566,56 @@
                     });
 
             },
+            scheduleNewAppointment: function(){
+                if(this.time === 0){
+                    console.log("Nista")
+                }else{
+                    let jws = window.localStorage.getItem('jwt');
+                    let newApp= {pharmacistId: this.pharmacist.id, patientId:this.chosenAppointment.patient.id, 
+                                pharmacyId: this.pharmacist.pharmacy.id, startTime: this.termsToShow[this.time - 1].start, endTime: this.termsToShow[this.time - 1].end }
+                    this.axios.post("api/appointment/pharmacist/newapp", newApp,{headers:{"Authorization": "Bearer " + jws}})
+                    .then(response =>
+                    {
+                        console.log(response.data);
+                    })
+                    .catch(response =>
+                    {
+                        console.log(response.data);
+                    });
+
+                }
+            },
+            getLabel: function(item){
+                var label = '';
+                if(new Date(item.start).getHours()< 10)
+                    label += "0" + new Date(item.start).getHours();
+                else
+                    label +=  new Date(item.start).getHours();
+
+                label += ":"
+
+                if(new Date(item.start).getMinutes()< 10)
+                    label += "0" + new Date(item.start).getMinutes();
+                else
+                    label +=  new Date(item.start).getMinutes();
+
+                label += "-"
+
+                if(new Date(item.end).getHours()< 10)
+                    label += "0" + new Date(item.end).getHours();
+                else
+                    label +=  new Date(item.end).getHours();
+
+                label += ":"
+
+                if(new Date(item.end).getMinutes()< 10)
+                    label += "0" + new Date(item.end).getMinutes();
+                else
+                    label +=  new Date(item.end).getMinutes();
+
+                label += " ("+item.start.toISOString().substr(0, 10)+")"
+                return label;
+            }
         },
         mounted(){
             this.getPharmacist();

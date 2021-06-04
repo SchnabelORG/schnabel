@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
+import com.schnabel.schnabel.appointment.dto.NewAppointmentDTO;
 import com.schnabel.schnabel.appointment.model.Appointment;
 import com.schnabel.schnabel.misc.interfaces.IJpaService;
 import com.schnabel.schnabel.users.model.Patient;
@@ -29,5 +30,7 @@ public interface IAppointmentService extends IJpaService<Appointment, Long> {
     Optional<AppointmentDTO> findByIdDTO(Long id);
     PagedModel<AppointmentDTO> findDermApptByPatientId(Long patientId, Pageable pageable);
     boolean scheduleConsult(Patient patient, Long pharmacistId, LocalDateTime start);
+
+    Boolean makeNewAppAsPharmacist(NewAppointmentDTO newAppointment, Patient patient);
 }
 

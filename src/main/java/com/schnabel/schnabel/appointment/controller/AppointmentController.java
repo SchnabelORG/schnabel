@@ -1,8 +1,11 @@
 package com.schnabel.schnabel.appointment.controller;
 import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
 import com.schnabel.schnabel.appointment.dto.AppointmentRequest;
+import com.schnabel.schnabel.appointment.dto.NewAppointmentDTO;
 import com.schnabel.schnabel.appointment.service.IAppointmentService;
 import com.schnabel.schnabel.security.util.JwtUtils;
+import com.schnabel.schnabel.users.model.Patient;
+import com.schnabel.schnabel.users.service.IPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
@@ -16,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 /**
  * Appointment REST controller
  */
@@ -24,11 +29,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class AppointmentController {
 
     private final IAppointmentService service;
+    private final IPatientService patientService;
     private final JwtUtils jwtUtils;
 
     @Autowired
-    public AppointmentController(IAppointmentService service, JwtUtils jwtUtils) {
+    public AppointmentController(IAppointmentService service, IPatientService patientService, JwtUtils jwtUtils) {
         this.service = service;
+        this.patientService = patientService;
         this.jwtUtils = jwtUtils;
     }
 
@@ -66,6 +73,15 @@ public class AppointmentController {
         return service.defineAppointment(req.getStartTime(), req.getEndTime(), req.getPrice(), req.getDermatologistId(), jwtUtils.getEmailFromJws(jws)) ?
             ResponseEntity.ok("Added")
             : ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("pharmacist/newapp")
+    public ResponseEntity<Boolean> defineAppointment(@RequestBody NewAppointmentDTO newAppointment)
+    {
+        Optional<Patient> patient = patientService.get(newAppointment.getPatientId());
+        Boolean isSuccess = service.makeNewAppAsPharmacist(newAppointment, patient.get());
+
+        return  ResponseEntity.ok(isSuccess);
     }
 
 }
