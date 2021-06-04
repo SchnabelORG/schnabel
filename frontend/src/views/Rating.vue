@@ -83,7 +83,40 @@
                                     </v-card-actions>
                                 </v-card>
                             </v-dialog>
+                        </v-tab-item>
+                        <v-tab-item>
+                            <v-data-table
+                            :headers="drugHeaders"
+                            :items="drugs"
+                            @click:row="selectDrug">
 
+                            </v-data-table>
+                            <v-dialog
+                            v-model="drugDialog"
+                            width="500">
+                                <div v-if="success" id="success-form">
+                                    <p id="success-icon"><i class="fa fa-check"></i></p>
+                                    <p>Thank you for your feedback!</p>
+                                </div>
+                                <v-card v-else>
+                                    <v-card-title>{{selectedDrug.name}}</v-card-title>
+                                    <v-card-text>
+                                        <h3>Submit your rating</h3>
+                                        <v-slider
+                                        v-model="drugRating"
+                                        min="0"
+                                        max="5"
+                                        thumb-label
+                                        :append-icon="drugRating">
+                                        </v-slider>
+                                    </v-card-text>
+                                    <v-card-actions>
+                                        <v-btn plain>Cancel</v-btn>
+                                        <v-spacer></v-spacer>
+                                        <v-btn :disabled="!drugRating" color="accent" depressed @click="gradeDrug">Submit</v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
                         </v-tab-item>
                     </v-tabs-items>
                 </v-card-text>
@@ -96,7 +129,14 @@
 export default {
     data() {
         return {
-
+            drugDialog: false,
+            selectedDrug: {},
+            drugRating: 0,
+            drugHeaders: [
+                { text: 'Name', value: 'name' },
+                { text: 'Rating', value: 'score' },
+            ],
+            drugs: [],
             //
             employeeDialog: false,
             selectedEmployee: {},
@@ -125,6 +165,8 @@ export default {
     },
 
     methods: {
+        get
+
         gradeEmployee: function() {
             this.refreshToken()
                 .then(rr => {
