@@ -21,4 +21,5 @@ public interface IDrugService extends IJpaService<Drug, Long>
     Optional<DrugDTO> findByIdDTO(Long id);
     PagedModel<DrugDTO> findAllDTO(Pageable pageable);
     PagedModel<DrugDTO> filteredSearch(Map<String, String> params, Pageable pageable);
+    PagedModel<DrugDTO> findGradeable(Long patientId, Pageable pageable);
 }

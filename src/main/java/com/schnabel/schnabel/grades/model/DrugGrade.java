@@ -1,14 +1,7 @@
 package com.schnabel.schnabel.grades.model;
 
-import com.schnabel.schnabel.pharmacies.model.Pharmacy;
-import com.schnabel.schnabel.users.model.Patient;
-import com.schnabel.schnabel.misc.model.IIdentifiable;
-
-import lombok.*;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,38 +12,37 @@ import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+import com.schnabel.schnabel.drugs.model.Drug;
+import com.schnabel.schnabel.misc.model.IIdentifiable;
+import com.schnabel.schnabel.users.model.Patient;
 
-/**
- * Pharmacy grade
- */
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 @Entity
-@Table(name = "pharmacy_grades")
-@Getter
-@Setter
+@Table(name = "drug_grades")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class PharmacyGrade implements IIdentifiable<Long>
-{
+public class DrugGrade implements IIdentifiable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(nullable = false)
     @Min(0)
     @Max(5)
-    private int value;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pharmacy_id")
-    private Pharmacy pharmacy;
-    
+    private double value;
     @OneToOne(fetch = FetchType.LAZY)
     private Patient patient;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "drug_id")
+    private Drug drug;
 
-    public PharmacyGrade(int value, Pharmacy pharmacy, Patient patient) {
+    public DrugGrade(double value, Patient patient, Drug drug) {
         this.value = value;
-        this.pharmacy = pharmacy;
         this.patient = patient;
+        this.drug = drug;
     }
 }

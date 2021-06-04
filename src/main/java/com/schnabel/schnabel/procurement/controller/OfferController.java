@@ -1,12 +1,9 @@
 package com.schnabel.schnabel.procurement.controller;
 
-import java.util.Optional;
 
 import com.schnabel.schnabel.procurement.dto.OfferCreationDTO;
 import com.schnabel.schnabel.procurement.dto.OfferDTO;
-import com.schnabel.schnabel.procurement.model.Offer;
 import com.schnabel.schnabel.procurement.service.IOfferService;
-import com.schnabel.schnabel.procurement.service.IOrderService;
 import com.schnabel.schnabel.security.util.JwtUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +12,6 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 
 

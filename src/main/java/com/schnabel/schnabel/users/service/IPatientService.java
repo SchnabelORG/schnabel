@@ -26,4 +26,7 @@ public interface IPatientService extends IJpaService<Patient, Long>
     PagedModel<AppointmentDTO> findDermAppts(String email, Pageable pageable);
     boolean scheduleConsult(ConsultRequest req, String email);
     boolean reserveDrug(DrugReservationRequest req, String email);
+    boolean isAllowedToGradePharmacy(Long patientId, Long pharmacyId);
+    boolean isAllowedToGradeEmployee(Long patientId, Long employeeId);
+    boolean isAllowedToGradeDrug(Long patientId, Long drugId);
 }

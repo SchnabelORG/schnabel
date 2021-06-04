@@ -40,4 +40,28 @@ public interface IPharmacyRepository extends JpaRepository<Pharmacy, Long>, JpaS
         + " GROUP BY ph.id",
         nativeQuery = true)
     Page<Pharmacy> findWithStock(@Param("drug_id") Long drugId, Pageable pageable);
+
+    @Query(value = "SELECT ph.*"
+        + " FROM pharmacies ph"
+        + " INNER JOIN pharmacy_grades pg"
+        + " ON pg.pharmacy_id = ph.id"
+        + " WHERE pg.patient_id = :patient_id",
+        nativeQuery = true)
+    Page<Pharmacy> findGraded(@Param("patient_id") Long patientId, Pageable pageable);
+
+    @Query(value = "SELECT ph.*"
+        + " FROM pharmacies ph"
+        + " WHERE EXISTS (SELECT NULL"
+        + " FROM appointments a"
+        + " WHERE a.pharmacy_id = ph.id"
+        + " AND a.patient_id = :patient_id"
+        + " AND a.end_time <= CURRENT_TIMESTAMP)"
+        + " OR EXISTS (SELECT NULL"
+        + " FROM drug_reservations dr"
+        + " WHERE dr.pharmacy_reservation_id = ph.id"
+        + " AND dr.reservation_patient_id = :patient_id"
+        + " AND dr.end_time <= CURRENT_TIMESTAMP)"
+        + " GROUP BY ph.id",
+        nativeQuery = true)
+    Page<Pharmacy> findGradeable(@Param("patient_id") Long patientId, Pageable pageable);
 }

@@ -52,4 +52,10 @@ public class DrugService extends JpaService<Drug, Long, IDrugRepository> impleme
         Page<Drug> drugs = getAll(pageable);
         return pageAsm.toModel(drugs, dtoAsm);
     }
+    
+    @Override
+    public PagedModel<DrugDTO> findGradeable(Long patientId, Pageable pageable) {
+        Page<Drug> drugs = repository.findGradeable(patientId, pageable);
+        return pageAsm.toModel(drugs, dtoAsm);
+    }
 }

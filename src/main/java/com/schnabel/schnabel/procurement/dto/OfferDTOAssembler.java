@@ -1,7 +1,6 @@
 package com.schnabel.schnabel.procurement.dto;
 
 import com.schnabel.schnabel.procurement.controller.OfferController;
-import com.schnabel.schnabel.procurement.controller.OrderController;
 import com.schnabel.schnabel.procurement.model.Offer;
 import com.schnabel.schnabel.procurement.model.Order;
 import com.schnabel.schnabel.procurement.model.OrderItem;
