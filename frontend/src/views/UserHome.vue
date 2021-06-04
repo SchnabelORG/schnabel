@@ -1,8 +1,8 @@
 <template>
     <div id="uhome-main" class="secondary">
-        <main-navigation>
+        <search-navigation>
             <router-link to="/">Home</router-link>
-        </main-navigation>
+        </search-navigation>
         <div id="uhome-container">
             <div id="uhome-info">
                 <div id="info-container">
@@ -21,26 +21,6 @@
             </div>
             <div id="uhome-panel">
                 <div id="panel-container">
-                    <v-card tile>
-                        <v-card-title class="primary white--text">
-                            Pharmacies
-                        </v-card-title>
-                        <v-card-text>
-                            <v-text-field
-                            v-model="pharmacySearch"
-                            label="Search"
-                            append-icon="fa-search"
-                            single-line
-                            hide-details
-                            />
-                            <v-data-table
-                            :headers="pharmacyHeaders"
-                            :items="pharmacies"
-                            :items-per-page="5"
-                            :search="pharmacySearch">
-                            </v-data-table>
-                        </v-card-text>
-                    </v-card>
                     <v-card tile>
                         <v-card-title class="primary white--text">Active appointments</v-card-title>
                         <v-card-text>
@@ -125,7 +105,6 @@
                                     @click:event="showEvent"
                                     @click:more="viewDay"
                                     @click:date="viewDay"
-                                    @change="updateRange"
                                   ></v-calendar>
                                   <v-menu
                                     v-model="selectedOpen"
@@ -142,26 +121,27 @@
                                         :color="selectedEvent.color"
                                         dark
                                       >
-                                        <v-btn icon>
-                                          <v-icon>mdi-pencil</v-icon>
-                                        </v-btn>
                                         <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-                                        <v-spacer></v-spacer>
-                                        <v-btn icon>
-                                          <v-icon>mdi-heart</v-icon>
-                                        </v-btn>
-                                        <v-btn icon>
-                                          <v-icon>mdi-dots-vertical</v-icon>
-                                        </v-btn>
                                       </v-toolbar>
-                                      <v-card-text>
-                                        <span v-html="selectedEvent.details"></span>
+                                      <v-card-text id="appt-preview-container">
+                                        <div id="appt-preview">
+                                            <p class="info--text">Start:</p>
+                                            <p>{{selectedEvent.appt.start}}</p>
+                                            <p class="info--text">Duration:</p>
+                                            <p>{{selectedEvent.appt.duration}} min</p>
+                                        </div>
+                                        <div id="appt-preview-emp">
+                                            <v-img src="../assets/placeholder-profile-sq.jpg" height="64px" width="64px"></v-img>
+                                            <p>{{selectedEvent.appt.medicalEmployee.name}}</p>
+                                            <p><span class="info--text">Rating: </span>{{selectedEvent.appt.dermatologistRating}}</p>
+                                        </div>
                                       </v-card-text>
                                       <v-card-actions>
                                         <v-btn
                                           text
-                                          color="secondary"
-                                          @click="selectedOpen = false"
+                                          color="accent"
+                                          @click="cancelAppt"
+                                          :disabled="!isCancellable(selectedEvent.start)"
                                         >
                                           Cancel
                                         </v-btn>
@@ -298,7 +278,11 @@ export default {
                 week: 'Week',
                 day: 'Day',
             },
-            selectedEvent: {},
+            selectedEvent: {
+                appt: {
+                    medicalEmployee: {},
+                },
+            },
             selectedElement: null,
             selectedOpen: false,
             events: [],
@@ -324,48 +308,92 @@ export default {
 
     methods: {
 
-      getPharmacies: function() {
-        this.axios.get("api/pharmacy")
-          .then(r => {
-            this.pharmacies = r.data._embedded.pharmacies;
-            console.log("Pharmacies", this.pharmacies);
-          })
-          .catch(r => {
-            console.log(r.data);
-          });
-      },
+        getAppointments: function() {
+            this.events = [];
+            this.getDermAppts();
+            // TODO(Jovan): Get pharmacy appointments
+        },
 
-      refreshToken: async function() {
-          let jws = this.$store.state.jws;
-          if(!jws) {
-              this.$router.push("/");
-          }
-          return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + jws}});
-      },
+        addDaysToDate: function(date, days) {
+            let result = new Date(date);
+            result.setDate(result.getDate() + days);
+            return result;
+        },
+
+        cancelAppt: function() {
+            this.selectedOpen = false;
+            this.refreshToken()
+                .then(rr => {
+                    localStorage.jws = rr.data;
+                    this.axios.post('api/patient/appointemnt/cancel',
+                        this.selectedEvent.appt.id,
+                        { headers : {
+                            'Content-Type' : 'application/json',
+                            'Authorization' : 'Bearer ' + localStorage.jws,
+                        }})
+                        .then(() => {
+                            this.getAppointments();
+                        });
+                })
+                .catch(() => {
+                    this.$router.push("/");
+                })
+        },
+
+        getDermAppts: function() {
+            this.refreshToken()
+                .then(rr => {
+                    localStorage.jws = rr.data;
+                    this.axios.get("api/patient/apptderm", { headers: { 'Authorization' : 'Bearer ' + localStorage.jws } })
+                        .then(r => {
+                            if(r.data._embedded) {
+                                r.data._embedded.appointments.forEach(a => {
+                                    let startDate = this.getDateTimeFromString(a.date, a.start);
+                                    this.events.push({
+                                        name: 'Derm. appt.',
+                                        start: startDate,
+                                        end: new Date(startDate.getTime() + a.duration * 60000),
+                                        color: this.colors[1],
+                                        timed: true,
+                                        appt: a,
+                                    });
+                                });
+                                this.$refs.calendar.checkChange()
+                            }
+                        })
+                })
+                .catch(() => {
+                    this.$router.push("/");
+                })
+        },
+
+        getPharmacies: function() {
+        this.axios.get("api/pharmacy")
+            .then(r => {
+                this.pharmacies = r.data._embedded.pharmacies;
+            })
+        },
 
       getProfileImg: function() {
           return require('../assets/placeholder-profile-sq.jpg')
       },
 
       getUser: function() {
-          console.log("Getting user");
-          let jws = this.$store.state.jws;
-          this.axios.get("api/patient", {headers:{"Authorization": "Bearer " + jws}})
-              .then(r => {
-                  this.patient = r.data;
-              })
-              .catch(r => {
-                  console.log("Failed to get patient", r.data);
-                  this.refreshToken()
-                      .then(r => {
-                          this.$store.state.jws = r.data;
-                          this.$router.go();
-                      })
-                      .catch(r => {
-                          console.log(r.data);
-                          this.$router.push("/");
-                      });
-              });
+          this.refreshToken()
+            .then(rr => {
+                localStorage.jws = rr.data;
+                this.axios.get("api/patient", {headers:{"Authorization": "Bearer " + localStorage.jws}})
+                    .then(r => {
+                        this.patient = r.data;
+                    })
+                    .catch(() => {
+                        this.$router.push("/");
+                    });
+            })
+            .catch(() => {
+                this.$router.push("/");
+            });
+        //   let jws = this.$store.state.jws;
       },
         //
         viewDay ({ date }) {
@@ -429,20 +457,24 @@ export default {
       rnd (a, b) {
         return Math.floor((b - a + 1) * Math.random()) + a
       },
+        isCancellable: function(start) {
+            return start >= this.addDaysToDate(new Date(), 1);
+        }
+    },
+
+    computed: {
     },
 
     mounted() {
-        // this.getUser();
+        this.getUser();
         this.$refs.calendar.checkChange()
         this.getPharmacies();
+        this.getAppointments();
     },
 }
 </script>
 
 <style scoped>
-    #uhome-main {
-        /* background: #dedede; */
-    }
 
     #uhome-container {
         display: flex;
@@ -487,5 +519,10 @@ export default {
         background: #fbfbfb;
         border-bottom: 1px solid #eee;
         padding: 10px;
+    }
+
+    #appt-preview-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
     }
 </style>

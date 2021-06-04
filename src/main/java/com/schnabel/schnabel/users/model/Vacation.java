@@ -31,4 +31,11 @@ public class Vacation implements IIdentifiable<Long>
     @ManyToOne
     @JoinColumn(name = "medical_employee_id")
     private MedicalEmployee medicalEmployee;
+
+    @Enumerated(EnumType.STRING)
+    @Column
+    private VacationStatus vacationStatus;
+
+    @Column
+    private String reasonOfRejection;
 }

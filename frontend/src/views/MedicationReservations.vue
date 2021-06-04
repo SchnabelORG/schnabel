@@ -6,56 +6,45 @@
                 Medication Reservations
             </v-card-title>
             <v-card-text>
-                <v-row>
+                <v-row id="reservation-number-row">
                     <v-text-field
                         id="reservation-number-field"
                         v-model="reservationsNumber"
                         label="Reservation number"
-                    
                     ></v-text-field>
-                    <v-btn id="search-reservation-btn" elevation="2" @click="addMedication" class="accent white--text">
-                        <v-icon left>
-                            mdi-database-search
-                        </v-icon>
+                    <v-btn id="search-reservation-btn" elevation="2" @click="getReservation" class="accent white--text">
+                         <i class="fa fa-database fa-fw"></i>
                         Search
                     </v-btn>
                 </v-row>
-                <v-alert v-if="false"
-                    dense
-                    type="warning">
-                    Wrong reservation number! Please search again
-                </v-alert>
                 <v-alert
                     dense
-                    type="success">
-                    Reservation found
+                    :type=alertType>
+                    {{alertMessage}}
                 </v-alert>
-                <table style="width:100%">
+                <table v-if="doesReservationExists" style="width:100%">
                     <tr>
                         <td><b>Medication:</b></td>
-                        <td>Brufen</td>
+                        <td>{{drugReservation.drugName}}</td>
                         <td><b>Name:</b></td>
-                        <td>Radovan</td>
+                        <td>{{drugReservation.patientName}}</td>
                     </tr>
                     <tr>
-                        <td><b>Dosage:</b></td>
-                        <td>400mg</td>
+                        <td><b>Reservation date:</b></td>
+                        <td>{{drugReservation.reservationDate.slice(0, 10)}}</td>
                         <td><b> Surname:</b></td>
-                        <td>Zupunski</td>
+                        <td>{{drugReservation.patientSurname}}</td>
                     </tr>
                     <tr>
                         <td><b>Quantity:</b></td>
-                        <td>5</td>
+                        <td>{{drugReservation.quantity}}</td>
                         <td><b>Email:</b></td>
-                        <td>radovan.zupunski@gmail.com</td>
+                        <td>{{drugReservation.patientEmail}}</td>
                     </tr>
                 </table>     
             </v-card-text>
             <v-card-actions>
-                <v-btn id="dispensing-medication" elevation="2" @click="dispensing" class="accent white--text">
-                        <v-icon left>
-                            mdi-hand-heart
-                        </v-icon>
+                <v-btn id="dispensing-medication" :disabled="!doesReservationExists" elevation="2" @click="dispensing()" class="accent white--text">
                         Dispensing
                     </v-btn>
             </v-card-actions>
@@ -68,8 +57,91 @@
         data() {
             return {
                 reservationsNumber: '',
+                drugReservation: {},
+                doesReservationExists: false,
+                pharmacist: {},
+                alertType: 'info',
+                alertTypes: ['info', 'warning', 'success'],
+                alertMessage: 'Search for drug reservation',
             }
         },
+        methods: {
+            refreshToken: async function() {
+                let jws = window.localStorage.getItem('jwt');
+                if(!jws) {
+                    this.$router.push("/");
+                }
+                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + jws}});
+            },
+             getPharmacist: function() {
+                console.log("Getting pharmacist");
+                let jws = window.localStorage.getItem('jwt');
+                console.log(jws)
+                this.axios.get("api/pharmacist", {headers:{"Authorization": "Bearer " + jws}})
+                    .then(response => {
+                        console.log(response.data);
+                        this.pharmacist = response.data;
+                    })
+                    .catch(response => {
+                        console.log("Failed to get patient", response.data);
+                        this.refreshToken()
+                            .then(response => {
+                                window.localStorage.jwt = response.data;
+                                this.$router.go();
+                            })
+                            .catch(response => {
+                                console.log(response.data);
+                                this.$router.push("/");
+                            });
+                    });
+            },
+            getReservation: function(){
+                let jws = window.localStorage.getItem('jwt');
+                this.axios.get("api/dreservation/" + this.reservationsNumber + "/" +this.pharmacist.pharmacy.id, {headers: {"Authorization": "Bearer " + jws}})
+                    .then(response =>
+                    {
+                        this.drugReservation = response.data;
+                        var today = new Date();
+                        var date = new Date(this.drugReservation.endOfReservation);
+                        if(today < date){
+                            this.doesReservationExists = true;
+                            this.alertType = 'success';
+                            this.alertMessage = 'Reservation found';
+                        }else{
+                            this.alertType = 'warning';
+                            this.alertMessage = 'Wrong reservation number! Please try again!';
+                        }
+                    })
+                    .catch(response =>
+                    {
+                        this.alertType = 'warning';
+                        this.alertMessage = 'Wrong reservation number! Please try again!';
+                        console.log(response.data);
+                    });
+            },
+            dispensing: function(){
+                let jws = window.localStorage.getItem('jwt');
+                this.axios.get("api/dreservation/dispensing/" + this.drugReservation.id, {headers: {"Authorization": "Bearer " + jws}})
+                    .then(response =>
+                    {
+                        console.log(response.data)
+                        this.reservationsNumber = '';
+                        this.doesReservationExists = false;
+                        this.alertType = 'success';
+                        this.alertMessage = 'Reservation number ' + this.drugReservation.id + ' successfully dispensed';
+                        this.drugReservation = {};
+                    })
+                    .catch(response =>
+                    {
+                        console.log(response.data);
+                        this.alertType = 'warning';
+                        this.alertMessage = 'Something went wrong! Please try again!';
+                    });
+            }
+        },
+        mounted(){
+            this.getPharmacist();
+        }
     }
 
 </script>
@@ -89,6 +161,10 @@
     }
     #reservation-number-field{
         width: 80%;
+    }
+    #reservation-number-row{
+        margin-top: 1%;
+
     }
     #dispensing-medication{
          width: 100%;

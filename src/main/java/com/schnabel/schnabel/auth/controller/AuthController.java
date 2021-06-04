@@ -47,9 +47,7 @@ public class AuthController {
         if (token.isBlank() || !refreshTokenService.validate(token)) {
             return ResponseEntity.badRequest().build();
         }
-        
-        String newJws = jwtUtils.generateJws(jwtUtils.getUPAT(oldJws));
-        return ResponseEntity.ok(newJws);
+        return ResponseEntity.ok(jwtUtils.regenerateJws(jwtUtils.parseJwtFromAuthorizationHeader(oldJws)));
     }
 
     @PostMapping("login")
@@ -72,6 +70,11 @@ public class AuthController {
         response.addCookie(cookie);
 
         return ResponseEntity.ok(jws);
+    }
+
+    @GetMapping("role")
+    public ResponseEntity<String> getRole(@RequestHeader("Authorization") String auth) {
+        return ResponseEntity.ok(jwtUtils.getRoleFromJws(jwtUtils.parseJwtFromAuthorizationHeader(auth)));
     }
 
 

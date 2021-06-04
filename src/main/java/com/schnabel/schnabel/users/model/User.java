@@ -33,8 +33,8 @@ import java.util.Set;
 public abstract class User implements IIdentifiable<Long>
 {
     @Id
-    @SequenceGenerator(name = "seqGen", sequenceName = "seq", initialValue = 100, allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqGen")
+    @SequenceGenerator(name = "user_seq_gen", sequenceName = "user_seq", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_gen")
     private Long id;
     
     @Column(nullable = false)
@@ -68,5 +68,6 @@ public abstract class User implements IIdentifiable<Long>
         this.password = password;
         this.address = address;
         this.isActivated = isActivated;
+        this.roles = new HashSet<Role>();
     }
 }

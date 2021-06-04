@@ -3,7 +3,11 @@ package com.schnabel.schnabel.drugs.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+
+import com.schnabel.schnabel.misc.model.IIdentifiable;
+import com.schnabel.schnabel.pharmacies.model.WareHouseItem;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "drugprice")
@@ -12,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class DrugPrice {
+public class DrugPrice implements IIdentifiable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,12 +25,12 @@ public class DrugPrice {
     private double price;
 
     @Column(name = "price_start_date", nullable = false)
-    private LocalDateTime priceStartDate;
+    private LocalDate priceStartDate;
 
     @Column(name = "price_end_date", nullable = true)
-    private LocalDateTime priceEndDate;
+    private LocalDate priceEndDate;
 
-    @ManyToOne
-    @JoinColumn(name = "drug_id")
-    private Drug drug;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "warehouseitem_id")
+    private WareHouseItem wareHouseItem;
 }

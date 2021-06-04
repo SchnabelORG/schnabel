@@ -3,6 +3,8 @@ package com.schnabel.schnabel.pharmacies.model;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
@@ -37,19 +39,22 @@ public class Pharmacy implements IIdentifiable<Long>
     @Embedded
     private Address address;
 
-    @OneToOne(mappedBy = "pharmacy")
-    private WareHouse wareHouse;
-
-    @ManyToMany(mappedBy = "pharmacies")
+    @ManyToMany(mappedBy = "pharmacies", fetch = FetchType.LAZY)
     private List<Dermatologist> dermatologists;
 
-    @OneToMany(mappedBy = "pharmacy")
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY)
     private List<Pharmacist> pharmacists;
 
-    public Pharmacy(Long id, String name, Address address)
+    @Min(0)
+    @Max(5)
+    private int score;
+    private double consultPrice;
+
+    public Pharmacy(Long id, String name, Address address, int score)
     {
         this.id = id;
         this.address = address;
         this.name = name;
+        this.score = score;
     }
 }

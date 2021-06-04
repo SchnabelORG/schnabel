@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.schnabel.schnabel.users.model.User;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -24,7 +23,6 @@ import lombok.EqualsAndHashCode;
 public class SchnabelUserDetails implements UserDetails {
 
     private Long id;
-    @JsonIgnore
     private String password;
     private String email;
     private Collection<? extends GrantedAuthority> authorities;

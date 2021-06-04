@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javax.mail.internet.MimeMessage;
 
+import com.schnabel.schnabel.appointment.model.Appointment;
 import com.schnabel.schnabel.email.model.Activation;
 import com.schnabel.schnabel.email.model.Mail;
 
@@ -22,6 +23,8 @@ public class MailService implements IMailService {
     private final IActivationService activationService;
     private static final Logger logger = LoggerFactory.getLogger(MailService.class);
     private static final String MAIL_FROM = "schnabel.isaproj@gmail.com";
+    private static final String GREETING = "Greetings from The Schnabel Team,/n/n";
+    private static final String CLOSING = "\n\nKind regards,\nSchnabel Team";
     @Value("${custom.addr}")
     private String ADDR;
     @Value("${custom.fport}")
@@ -58,25 +61,16 @@ public class MailService implements IMailService {
         mail.setMailTo(email);
         mail.setMailSubject("Account activation");
         StringBuilder sb = new StringBuilder();
-        sb.append("Greetings from The Schnabel Team,/n/nIn order to activate your account, go to the following address:\n");
+        sb.append(GREETING);
+        sb.append("In order to activate your account, go to the following address:\n");
         Activation activation = new Activation(email);
         if(activationService.add(activation).isPresent()) {
             sb.append(getActivationLink(email, activation.getId()));
-            sb.append("\n\nKind regards,\nSchnabel Team");
+            sb.append(CLOSING);
             mail.setMailContent(sb.toString());
             return sendMail(mail);
         }
         return false;
-    }
-
-    private String getActivationLink(String email, String token) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(ADDR);
-        sb.append(":");
-        sb.append(PORT);
-        sb.append("/email/activate/");
-        sb.append(token);
-        return sb.toString();
     }
 
     @Override
@@ -90,5 +84,63 @@ public class MailService implements IMailService {
             activation.get().getEmail()
             : "";
     }
-    
+
+    @Override
+    public boolean sendAppointmentConfirmationMail(String email, Appointment appointment) {
+        Mail mail = new Mail();
+        mail.setMailFrom(MAIL_FROM);
+        mail.setMailTo(email);
+        mail.setMailSubject("Appointment confirmation");
+        StringBuilder sb = new StringBuilder();
+        sb.append(GREETING);
+        sb.append("Your appointment has been scheduled!\n");
+        sb.append("Appointment id: ");
+        sb.append(appointment.getId());
+        sb.append("\nPatient: ");
+        sb.append(appointment.getPatient().getName() + " " + appointment.getPatient().getSurname());
+        sb.append("\nEmployee: ");
+        sb.append(appointment.getMedicalEmployee().getName() + " " + appointment.getMedicalEmployee().getSurname());
+        sb.append("\nDate: ");
+        sb.append(appointment.getPeriod().getStartTime().toString());
+        mail.setMailContent(sb.toString());
+        return sendMail(mail);
+        
+    }
+
+    private String getActivationLink(String email, String token) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(ADDR);
+        sb.append(":");
+        sb.append(PORT);
+        sb.append("/email/activate/");
+        sb.append(token);
+        return sb.toString();
+    }
+
+    @Override
+    public boolean sendOrderClosingMail(String email, String content)
+    {
+        Mail mail = new Mail();
+        mail.setMailFrom(MAIL_FROM);
+        mail.setMailTo(email);
+        mail.setMailSubject("Order is closed");
+        StringBuilder sb = new StringBuilder();
+        sb.append(content);
+        mail.setMailContent(sb.toString());
+        return sendMail(mail);
+    }
+
+    @Override
+    public boolean sendVacationMedicalEmployee(String email, String content)
+    {
+        Mail mail = new Mail();
+        mail.setMailFrom(MAIL_FROM);
+        mail.setMailTo(email);
+        mail.setMailSubject("Vacation reviewed");
+        StringBuilder sb = new StringBuilder();
+        sb.append(content);
+        mail.setMailContent(sb.toString());
+        return sendMail(mail);
+    }
+
 }
