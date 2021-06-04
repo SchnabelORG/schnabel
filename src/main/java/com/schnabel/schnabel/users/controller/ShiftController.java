@@ -76,22 +76,4 @@ public class ShiftController
     {
         return new ResponseEntity<>(shiftService.getShiftMedicalEmployeePharmacy(medicalEmployeeId, pharmacyId), HttpStatus.OK);
     }
-
-    @PostMapping("dermatologist")
-    public ResponseEntity<String> defineDermatologistShift(@RequestBody ShiftRequest shiftRequest, @RequestHeader("Authorization") String authHeader)
-    {
-        String email = jwtUtils.getEmailFromJws(jwtUtils.parseJwtFromAuthorizationHeader(authHeader));
-        return shiftService.defineDermatologistShift(shiftRequest, email) ?
-            ResponseEntity.ok("Added")
-            : ResponseEntity.badRequest().build();
-    }
-
-    @PostMapping("pharmacist")
-    public ResponseEntity<String> definePharmacistShift(@RequestBody ShiftRequest shiftRequest, @RequestHeader("Authorization") String authHeader)
-    {
-        String email = jwtUtils.getEmailFromJws(jwtUtils.parseJwtFromAuthorizationHeader(authHeader));
-        return shiftService.definePharmacistShift(shiftRequest, email) ?
-            ResponseEntity.ok("Added")
-            : ResponseEntity.badRequest().build();
-    }
 }

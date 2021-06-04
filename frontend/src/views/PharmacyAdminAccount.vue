@@ -13,48 +13,48 @@
             <v-card-text>
                 <v-form id="ph-add" v-model="valid">
                     <v-text-field
-                    v-model="name"
+                    v-model="pharmacyAdmin.name"
                     :rules="[rules.required]"
                     label="Name"
                     :disabled="!editMode"
                     ></v-text-field>
                     <v-text-field
-                    v-model="surname"
+                    v-model="pharmacyAdmin.surname"
                     :rules="[rules.required]"
                     label="Surname"
                     :disabled="!editMode"
                     ></v-text-field>
                     <v-text-field
-                    v-model="email"
+                    v-model="pharmacyAdmin.email"
                     :rules="[rules.required]"
                     label="Email"
                     :disabled="true"
                     ></v-text-field>
                     <v-text-field
-                    v-model="city"
+                    v-model="pharmacyAdmin.address.city"
                     :rules="[rules.required]"
                     label="City"
                     :disabled="!editMode"
                     ></v-text-field>
                     <v-text-field
-                    v-model="postcode"
+                    v-model="pharmacyAdmin.address.postcode"
                     :rules="[rules.required]"
                     label="Postcode"
                     :disabled="!editMode"
                     ></v-text-field>
                     <v-text-field
-                    v-model="street"
+                    v-model="pharmacyAdmin.address.street"
                     :rules="[rules.required]"
                     label="Street"
                     :disabled="!editMode"
                     ></v-text-field>
                      <v-text-field
-                    v-model="number"
+                    v-model="pharmacyAdmin.address.streetNo"
                     :rules="[rules.required, rules.isNmb]"
                     label="Street number"
                     :disabled="!editMode"
                     ></v-text-field>
-                    <v-text-field
+                    <!--<v-text-field
                     v-model="password"
                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                     :rules="[rules.required, rules.min]"
@@ -75,8 +75,8 @@
                     hint="At least 8 characters"
                     counter
                     @click:append="show2 = !show2"
-                    ></v-text-field>
-                    <v-btn :disabled="!valid" id="save-btn"  v-if="editMode" class="accent white--text" @click="save">
+                    ></v-text-field>-->
+                    <v-btn :disabled="!valid" id="save-btn"  v-if="editMode" class="accent white--text" @click="save()">
                         Save changes
                     </v-btn>
                 </v-form>
@@ -90,15 +90,9 @@
         data() {
             return {
                 editMode: false,
-                password: 'blablabla',
-                name: 'Petar',
-                surname: 'Petrovic',
-                city: 'Novi Sad',
-                postcode: '21000',
-                street: 'Slobodana Bajica',
-                number: 17,
-                email: 'pera@gmail.com',
-                confirmPassword: '',
+                pharmacyAdmin: {},
+                pharmacyAdminCopy: {},
+                //confirmPassword: '',
                 show1: false,
                 show2: false,
                 valid: false,
@@ -109,10 +103,57 @@
                 },
             }
         },
-        computed:{
+        /*computed:{
             passwordConfirmationRule: function() {
                 return () => (this.password === this.confirmPassword) || 'Password must match'
             },
+        }*/
+        methods: {
+            getPharmacyAdmin: function() {
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.get("api/pharmacyadmin", {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            this.pharmacyAdmin = response.data;
+                            this.pharmacyAdminCopy = JSON.parse(JSON.stringify(response.data));
+                        })
+                        .catch(response => {
+                            console.log("Failed to get pharmacy admin", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
+            },
+            editModeChange: function(){
+            this.editMode = !this.editMode;
+                //this.confirmPassword = this.pharmacistCopy.password;
+                this.pharmacyAdmin = JSON.parse(JSON.stringify(this.pharmacyAdminCopy));
+            },
+            save: function(){
+                 this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.put("api/pharmacyadmin", this.pharmacyAdmin, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response =>
+                        {
+                            this.pharmacyAdminCopy = response.data;
+                            this.editModeChange();
+
+                        })
+                        .catch(response =>
+                        {
+                            console.log(response.data);
+                        });
+                    })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
+            },
+        },
+        mounted() {
+            this.getPharmacyAdmin();
         }
     }
 

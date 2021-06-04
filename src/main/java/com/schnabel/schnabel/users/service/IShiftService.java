@@ -1,11 +1,13 @@
 package com.schnabel.schnabel.users.service;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
 import com.schnabel.schnabel.misc.interfaces.IJpaService;
+import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.users.dto.ShiftDTO;
-import com.schnabel.schnabel.users.dto.ShiftRequest;
+import com.schnabel.schnabel.users.model.MedicalEmployee;
 import com.schnabel.schnabel.users.model.Shift;
 
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,6 @@ public interface IShiftService extends IJpaService<Shift, Long>
     PagedModel<ShiftDTO> getAllDTO(Pageable pageable);
     List<Shift> getAllByMedicalEmployee(Long medicalEmployeeId);
     Optional<ShiftDTO> getShiftMedicalEmployeePharmacy(Long medicalEmployeeId, Long pharmacyId);
-    boolean defineDermatologistShift(ShiftRequest shiftRequest, String email);
-    boolean definePharmacistShift(ShiftRequest shiftRequest, String email);
+    boolean defineDermatologistShift(LocalTime startTime, LocalTime endTime, MedicalEmployee medicalEmployee, Pharmacy pharmacy);
+    boolean definePharmacistShift(LocalTime startTime, LocalTime endTime, MedicalEmployee medicalEmployee, Pharmacy pharmacy);
 }

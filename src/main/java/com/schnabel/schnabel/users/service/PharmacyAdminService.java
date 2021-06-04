@@ -8,11 +8,13 @@ import com.schnabel.schnabel.appointment.model.Appointment;
 import com.schnabel.schnabel.appointment.repository.IAppointmentRepository;
 import com.schnabel.schnabel.appointment.service.IAppointmentService;
 import com.schnabel.schnabel.misc.implementations.JpaService;
+import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.pharmacies.service.IWareHouseItemService;
 import com.schnabel.schnabel.users.dto.DermatologistDTO;
 import com.schnabel.schnabel.users.dto.PharmacistDTO;
+import com.schnabel.schnabel.users.dto.PharmacistRequest;
 import com.schnabel.schnabel.users.model.Dermatologist;
 import com.schnabel.schnabel.users.model.Pharmacist;
 import com.schnabel.schnabel.users.model.PharmacyAdmin;
@@ -31,15 +33,17 @@ public class PharmacyAdminService extends JpaService<PharmacyAdmin, Long, IPharm
     private final IPharmacistService pharmacistService;
     private final IWareHouseItemService wareHouseItemService;
     private final IAppointmentRepository appointmentRepository;
+    private final IShiftService shiftService;
 
     @Autowired
-    public PharmacyAdminService(IPharmacyAdminRepository pharmacyAdminRepository, IDermatologistService dermatologistService, IPharmacistService pharmacistService, IWareHouseItemService wareHouseItemService, IAppointmentRepository appointmentRepository)
+    public PharmacyAdminService(IPharmacyAdminRepository pharmacyAdminRepository, IDermatologistService dermatologistService, IPharmacistService pharmacistService, IWareHouseItemService wareHouseItemService, IAppointmentRepository appointmentRepository, IShiftService shiftService)
     {
         super(pharmacyAdminRepository);
         this.dermatologistService = dermatologistService;
         this.pharmacistService = pharmacistService;
         this.wareHouseItemService = wareHouseItemService;
         this.appointmentRepository = appointmentRepository;
+        this.shiftService = shiftService;
     }
 
     @Override
@@ -89,21 +93,8 @@ public class PharmacyAdminService extends JpaService<PharmacyAdmin, Long, IPharm
                 return false;
             }
         }
-        //Dermatologist dermatologist = dermatologistService.get(id).get();
-        /*List<Pharmacy> pharmacies = dermatologist.getPharmacies();
-        for (Pharmacy pharmacy : pharmacies) {
-            System.out.println("pharmacy " + pharmacy.getId());
-        }*/
         return true;
     }
-
-    /*@Override
-    public PagedModel<DermatologistDTO> getDermatologistToAdd(Long pharmacyId, Pageable pageable) 
-    {
-        Page<Dermatologist> dermatologists = repository.getDermatologistsNotPharmacy(pharmacyId, pageable);
-        return offerPagedResourcesAssembler.toModel(offers, offerDTOAssembler);
-        getDermatologistsNotPharmacy(pharmacyId, pageable);
-    }*/
 
     @Override
     public List<Dermatologist> getDermatologistNotPharmacy(Long pharmacyId, Pageable pageable)
@@ -111,5 +102,18 @@ public class PharmacyAdminService extends JpaService<PharmacyAdmin, Long, IPharm
         return repository.getDermatologistsNotPharmacy(pharmacyId, pageable);
     }
 
+    @Override
+    public boolean addPharmacist(PharmacistRequest pharmacistRequest, String email) 
+    {
+        Pharmacist newPharmacist = new Pharmacist(pharmacistRequest.getName(), pharmacistRequest.getSurname(), pharmacistRequest.getEmail(), pharmacistRequest.getPassword(), new Address(pharmacistRequest.getPostcode(), pharmacistRequest.getCity(), pharmacistRequest.getStreet(), pharmacistRequest.getStreetNo()), findByEmail(email).get().getPharmacy());
+        System.out.println("konstruktor");
+        Optional<Pharmacist> pharmacist = pharmacistService.add(newPharmacist);
+        System.out.println("usao");
+        if(!pharmacist.isPresent()) {
+            System.out.println("usao1");
+            return false;
+        }
+        return shiftService.definePharmacistShift(pharmacistRequest.getStartTime(), pharmacistRequest.getEndTime(), pharmacist.get(), findByEmail(email).get().getPharmacy());
+    }
 
 }

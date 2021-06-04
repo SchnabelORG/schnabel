@@ -7,9 +7,11 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import com.schnabel.schnabel.misc.implementations.JpaService;
+import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.users.dto.ShiftDTO;
 import com.schnabel.schnabel.users.dto.ShiftDTOAssembler;
 import com.schnabel.schnabel.users.dto.ShiftRequest;
+import com.schnabel.schnabel.users.model.MedicalEmployee;
 import com.schnabel.schnabel.users.model.Shift;
 import com.schnabel.schnabel.users.repository.IShiftRepository;
 
@@ -28,19 +30,13 @@ public class ShiftService extends JpaService<Shift, Long, IShiftRepository> impl
 {
     private final ShiftDTOAssembler shiftDTOAssembler;
     private final PagedResourcesAssembler<Shift> shiftPagedResourcesAssembler;
-    private final IPharmacyAdminService pharmacyAdminService;
-    private final IPharmacistService pharmacistService;
-    private final IDermatologistService dermatologistService;
 
     @Autowired
-    public ShiftService(IShiftRepository repository, ShiftDTOAssembler shiftDTOAssembler, PagedResourcesAssembler<Shift> shiftPagedResourcesAssembler, IPharmacyAdminService pharmacyAdminService, IPharmacistService pharmacistService, IDermatologistService dermatologistService)
+    public ShiftService(IShiftRepository repository, ShiftDTOAssembler shiftDTOAssembler, PagedResourcesAssembler<Shift> shiftPagedResourcesAssembler)
     {
         super(repository);
         this.shiftDTOAssembler = shiftDTOAssembler;
         this.shiftPagedResourcesAssembler = shiftPagedResourcesAssembler;
-        this.pharmacyAdminService = pharmacyAdminService;
-        this.pharmacistService = pharmacistService;
-        this.dermatologistService = dermatologistService;
     }
 
     @Override
@@ -72,23 +68,23 @@ public class ShiftService extends JpaService<Shift, Long, IShiftRepository> impl
     }
 
     @Override
-    public boolean defineDermatologistShift(ShiftRequest shiftRequest, String email) 
+    public boolean defineDermatologistShift(LocalTime startTime, LocalTime endTime, MedicalEmployee medicalEmployee, Pharmacy pharmacy) 
     {
-        List<Shift> shifts = getAllByMedicalEmployee(shiftRequest.getMedicalEmployeeId());
+        List<Shift> shifts = getAllByMedicalEmployee(medicalEmployee.getId());
         for (Shift s : shifts) {
-            if(s.getStartTime().isBefore(shiftRequest.getEndTime()) && shiftRequest.getStartTime().isBefore(s.getEndTime())) {
+            if(s.getStartTime().isBefore(endTime) && startTime.isBefore(s.getEndTime())) {
                 return false;
             }
         }
-        Shift newShift = new Shift(shiftRequest.getStartTime(), shiftRequest.getEndTime(), dermatologistService.get(shiftRequest.getMedicalEmployeeId()).get(), pharmacyAdminService.findByEmail(email).get().getPharmacy());
+        Shift newShift = new Shift(startTime, endTime, medicalEmployee, pharmacy);
         Optional<Shift> shift = add(newShift);
         return shift.isPresent();
     }
 
     @Override
-    public boolean definePharmacistShift(ShiftRequest shiftRequest, String email) 
+    public boolean definePharmacistShift(LocalTime startTime, LocalTime endTime, MedicalEmployee medicalEmployee, Pharmacy pharmacy) 
     {
-        Shift newShift = new Shift(shiftRequest.getStartTime(), shiftRequest.getEndTime(), pharmacistService.get(shiftRequest.getMedicalEmployeeId()).get(), pharmacyAdminService.findByEmail(email).get().getPharmacy());
+        Shift newShift = new Shift(startTime, endTime, medicalEmployee, pharmacy);
         Optional<Shift> shift = add(newShift);
         return shift.isPresent();
     }
