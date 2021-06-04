@@ -46,6 +46,7 @@ public class PharmacistController
         return new ResponseEntity<>(service.findAllDTO(pageable), HttpStatus.OK);
     }
 
+    @GetMapping("jwt")
     public ResponseEntity<PharmacistDTO> getByJws(@RequestHeader("Authorization") String authHeader) {
         String jws;
         if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {

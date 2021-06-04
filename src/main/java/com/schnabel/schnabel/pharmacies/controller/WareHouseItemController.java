@@ -1,9 +1,14 @@
 package com.schnabel.schnabel.pharmacies.controller;
 
+import com.schnabel.schnabel.pharmacies.dto.DoesHaveDrugDTO;
+import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
+import com.schnabel.schnabel.pharmacies.model.WareHouseItem;
+
 import com.schnabel.schnabel.drugs.dto.DrugPriceRequest;
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemRequest;
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemUpdateRequest;
+
 import com.schnabel.schnabel.pharmacies.service.IWareHouseItemService;
 import com.schnabel.schnabel.security.util.JwtUtils;
 
@@ -12,6 +17,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,6 +63,17 @@ public class WareHouseItemController
         return new ResponseEntity<>(service.findAllByPharmacyId(pharmacyId, pageable), HttpStatus.OK);
     }
 
+
+    @PostMapping("doeshave")
+    public ResponseEntity<Boolean> getAllByPharmacyId(@RequestBody DoesHaveDrugDTO drugDTO)
+    {
+
+        Optional<WareHouseItem> wareHouseItem = service.findWareHouseItemByPharmacyAndDrugId(drugDTO.getDrugId(), drugDTO.getPharmacyId());
+        if(wareHouseItem.isPresent() && wareHouseItem.get().getAvailable() >= drugDTO.getQuantity()){
+            return new ResponseEntity<>(Boolean.TRUE, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(Boolean.FALSE, HttpStatus.OK);
+    }
     /**
      * Get stock of drug at specific pharmacy
      */

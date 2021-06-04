@@ -58,6 +58,10 @@ insert into appointments("free", end_time, start_time, price, patient_id, medica
 insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-05-24 09:45:00', '2021-05-24 09:15:00', 1000, 2, 4, 2);
 insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-05-24 08:45:00', '2021-05-24 08:15:00', 12000, 2, 4, 2);
 insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-05-25 08:45:00', '2021-05-25 08:15:00', 6000, 1, 4, 2);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-06-02 08:45:00', '2021-06-02 08:15:00', 6000, 1, 3, 2);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-06-04 08:45:00', '2021-06-04 08:15:00', 6000, 1, 3, 2);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-06-10 16:45:00', '2021-06-10 16:15:00', 6000, 1, 3, 2);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-06-04 09:45:00', '2021-06-04 09:15:00', 6000, 1, 3, 2);
 
 insert into drug_reservations(end_time, start_time, quantity, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values('2021-05-20', '2021-05-04', 2, true, 1, 1, 1);
 insert into drug_reservations(end_time, start_time, quantity, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values('2020-05-20', '2020-05-04', 2, false, 1, 1, 1);
@@ -66,6 +70,7 @@ insert into drug_reservations(end_time, start_time, quantity, taken, reserved_dr
 insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('08:00:00', '14:00:00', 1, 2);
 insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('15:00:00', '16:00:00', 2, 2);
 insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('08:00:00', '17:00:00', 1, 6);
+insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('08:00:00', '17:00:00', 1, 3);
 
 insert into orders(deadline, "description", pharmacyadmin_id, pharmacy_id, order_status) values ('2021-05-10', 'Urgent order!', 8, 1, 'CREATED');
 insert into orders(deadline, "description", pharmacyadmin_id, pharmacy_id, order_status) values ('2021-08-12', 'Bensedin order!', 8, 1, 'CREATED');
@@ -83,6 +88,10 @@ insert into offers(price, date_of_delivery, order_id, supplier_id, offer_status)
 insert into offers(price, date_of_delivery, order_id, supplier_id, offer_status) values (900, '2021-08-03', 2, 10, 'CREATED');
 
 insert into promotions("description", start_time, end_time, pharmacy_id) values ('New promotion!!!', '2021-05-04','2021-06-04', 1);
+
+
+insert into allergies(allergy_type, allergy_drug_id, patient_id) values ('Anafilakticki sok', 1, 1);
+insert into allergies(allergy_type, allergy_drug_id, patient_id) values ('Anafilakticki sok', 3, 1);
 
 insert into roles("name") values ('ROLE_PATIENT');
 insert into roles("name") values ('ROLE_ADMIN');

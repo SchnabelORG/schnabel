@@ -10,14 +10,20 @@ import javax.persistence.NoResultException;
 
 import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
 import com.schnabel.schnabel.appointment.dto.AppointmentDTOAssembler;
+import com.schnabel.schnabel.appointment.dto.NewAppointmentDTO;
 import com.schnabel.schnabel.appointment.model.Appointment;
 import com.schnabel.schnabel.appointment.repository.IAppointmentRepository;
 import com.schnabel.schnabel.email.service.IMailService;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.misc.model.Period;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
+import com.schnabel.schnabel.pharmacies.service.IPharmacyService;
+import com.schnabel.schnabel.users.model.MedicalEmployee;
 import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.model.Pharmacist;
+import com.schnabel.schnabel.users.service.*;
+import com.schnabel.schnabel.users.dto.ShiftDTO;
+
 import com.schnabel.schnabel.users.model.Vacation;
 import com.schnabel.schnabel.users.service.IPharmacistService;
 import com.schnabel.schnabel.users.dto.ShiftDTO;
@@ -25,6 +31,7 @@ import com.schnabel.schnabel.users.service.IDermatologistService;
 import com.schnabel.schnabel.users.service.IPharmacyAdminService;
 import com.schnabel.schnabel.users.service.IShiftService;
 import com.schnabel.schnabel.users.service.IVacationService;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -48,10 +55,13 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
     private final IShiftService shiftService;
     private final IDermatologistService dermatologistService;
     private final IPharmacyAdminService pharmacyAdminService;
+
+    private final IPharmacyService pharmacyService;
+
     private final IVacationService vacationService;
 
     @Autowired
-    public AppointmentService(IAppointmentRepository repository, AppointmentDTOAssembler dtoAsm, PagedResourcesAssembler<Appointment> pageAsm, IShiftService shiftService, AppointmentDTOAssembler appointmentDTOAssembler, IDermatologistService dermatologistService, IPharmacyAdminService pharmacyAdminService, IMailService mailService, IPharmacistService pharmacistService, IVacationService vacationService) {
+    public AppointmentService(IAppointmentRepository repository, AppointmentDTOAssembler dtoAsm, PagedResourcesAssembler<Appointment> pageAsm, IShiftService shiftService, AppointmentDTOAssembler appointmentDTOAssembler, IDermatologistService dermatologistService, IPharmacyAdminService pharmacyAdminService, IMailService mailService,IPharmacyService pharmacyService, IPharmacistService pharmacistService, IVacationService vacationService) {
         super(repository);
         this.dtoAsm = dtoAsm;
         this.pageAsm = pageAsm;
@@ -60,6 +70,7 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
         this.pharmacyAdminService = pharmacyAdminService;
         this.mailService = mailService;
         this.pharmacistService = pharmacistService;
+        this.pharmacyService = pharmacyService;
         this.vacationService = vacationService;
     }
 
@@ -96,6 +107,28 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
         }
         appointment = add(appointment).get();
         return this.mailService.sendAppointmentConfirmationMail(patient.getEmail(), appointment);
+    }
+
+    @Override
+    public Boolean makeNewAppAsPharmacist(NewAppointmentDTO newAppointment, Patient patient) {
+        Appointment appointment = new Appointment();
+        Period period = new Period();
+        period.setStartTime(newAppointment.getStartTime());
+        period.setEndTime(newAppointment.getEndTime());
+        appointment.setPeriod(period);
+        appointment.setPatient(patient);
+        MedicalEmployee medicalEmployee = (MedicalEmployee) pharmacistService.get(newAppointment.getPharmacistId()).get();
+        appointment.setMedicalEmployee(medicalEmployee);
+        Pharmacy pharmacy = pharmacyService.get(newAppointment.getPharmacyId()).get();
+        appointment.setPharmacy(pharmacy);
+        appointment.setFree(false);
+        Optional<Appointment> app = add(appointment);
+        if (app.isPresent()){
+            this.mailService.sendAppointmentConfirmationMail(patient.getEmail(), app.get());
+            return true;
+        }
+        return false;
+
     }
 
     @Override
@@ -241,5 +274,6 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
             return PagedModel.empty();
         }
     }
+
 
 }
