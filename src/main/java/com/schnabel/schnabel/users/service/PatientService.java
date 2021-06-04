@@ -143,4 +143,20 @@ public class PatientService extends JpaService<Patient, Long, IPatientRepository
         return drugResService.reserveDrug(req, patient.get());
     }
 
+    @Override
+    public boolean isAllowedToGradePharmacy(Long patientId, Long pharmacyId) {
+        return repository.hasHadAppointment(patientId, pharmacyId)
+            || repository.hasPickedUpDrugs(patientId, pharmacyId);
+    }
+
+    @Override
+    public boolean isAllowedToGradeEmployee(Long patientId, Long employeeId) {
+        return repository.hasHadEmployeeAppointment(patientId, employeeId);
+    }
+
+    @Override
+    public boolean isAllowedToGradeDrug(Long patientId, Long drugId) {
+        return repository.hasPickedUpDrug(patientId, drugId);
+    }
+
 }

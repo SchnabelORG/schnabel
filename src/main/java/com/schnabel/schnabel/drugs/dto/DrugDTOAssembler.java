@@ -24,6 +24,7 @@ public class DrugDTOAssembler extends RepresentationModelAssemblerSupport<Drug, 
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setDescription(entity.getDescription());
+        dto.setScore(entity.getScore());
 
         return dto;
     }

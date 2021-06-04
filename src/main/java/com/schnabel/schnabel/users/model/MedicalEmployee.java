@@ -9,11 +9,10 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Table(name = "medical_employees")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 public class MedicalEmployee extends User
 {
     @OneToMany(mappedBy = "medicalEmployee")
@@ -22,6 +21,7 @@ public class MedicalEmployee extends User
     @OneToMany(mappedBy = "medicalEmployee")
     private List<Shift> shifts;
 
+    private double score;
     public MedicalEmployee(String name, String surname, String email, String password, Address address) {
         super(name, surname, email, password, address);
     }

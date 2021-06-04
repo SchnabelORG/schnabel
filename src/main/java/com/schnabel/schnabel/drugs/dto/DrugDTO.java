@@ -27,4 +27,5 @@ public class DrugDTO extends RepresentationModel<DrugDTO>{
     private Long id;
     private String name;
     private String description;
+    private double score;
 }

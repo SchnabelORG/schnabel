@@ -73,6 +73,10 @@ public class JwtUtils {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jws).getBody().getSubject();
     }
 
+    public String getEmailFromAuth(String authHeader) {
+        return getEmailFromJws(parseJwtFromAuthorizationHeader(authHeader));
+    }
+
     public boolean validateJws(String jws) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jws);
