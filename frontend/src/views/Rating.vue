@@ -1,9 +1,14 @@
 <template>
   <div id="rating-main">
     <div id="rating-container">
+      <p>Ratings</p>
+      <h2>Rate pharmacies, employees and drugs</h2>
       <v-card id="ratings">
         <v-card-title>
-          <v-tabs v-model="tab" color="primary">
+          <v-tabs 
+          v-model="tab" 
+          color="primary"
+          fixed-tabs>
             <v-tab>Pharmacies</v-tab>
             <v-tab>Employees</v-tab>
             <v-tab>Drugs</v-tab>
@@ -34,7 +39,7 @@
                       max="5"
                       thumb-label
                       ticks
-                      :append-icon="pharmacyRating"
+                      :append-icon="pharmacyRating.toString()"
                     ></v-slider>
                   </v-card-text>
                   <v-card-actions>
@@ -73,7 +78,7 @@
                       min="0"
                       max="5"
                       thumb-label
-                      :append-icon="employeeRating"
+                      :append-icon="employeeRating.toString()"
                     >
                     </v-slider>
                   </v-card-text>
@@ -112,7 +117,7 @@
                       min="0"
                       max="5"
                       thumb-label
-                      :append-icon="drugRating"
+                      :append-icon="drugRating.toString()"
                     >
                     </v-slider>
                   </v-card-text>
@@ -185,15 +190,13 @@ export default {
             targetId: this.selectedDrug.id,
             value: this.drugRating,
           };
-          this.axos
-            .post("api/grade/drug", request, { headers: this.getAHeader() })
+          this.axios.post("api/grade/drug", request, { headers: this.getAHeader() })
             .then(() => {
               this.success = true;
               this.drugDialog = false;
               this.getDrugs();
-            });
-        })
-        .catch(() => this.$router.push("/"));
+            }).catch(r => console.log(r));
+        }).catch(() => this.$router.push('/'));
     },
 
     selectDrug: function(item, event) {
@@ -209,7 +212,7 @@ export default {
         .then(rr => {
           localStorage.jws = rr.data;
           this.axios
-            .get("api/grade/patient/gradeable_drgus", {
+            .get("api/grade/patient/gradeable_drugs", {
               headers: this.getAHeader(),
             })
             .then(r => {
@@ -325,6 +328,24 @@ export default {
 </script>
 
 <style scoped>
+  #rating-main {
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    background: #fafafa;
+  }
+
+  #rating-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+
+  #ratings {
+    margin-top: 20px;
+  }
+
 #success-form {
   background: #fff;
   text-align: center;
