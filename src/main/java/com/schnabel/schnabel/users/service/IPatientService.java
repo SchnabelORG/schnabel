@@ -28,4 +28,5 @@ public interface IPatientService extends IJpaService<Patient, Long>
     boolean reserveDrug(DrugReservationRequest req, String email);
     boolean isAllowedToGradePharmacy(Long patientId, Long pharmacyId);
     boolean isAllowedToGradeEmployee(Long patientId, Long employeeId);
+    boolean isAllowedToGradeDrug(Long patientId, Long drugId);
 }

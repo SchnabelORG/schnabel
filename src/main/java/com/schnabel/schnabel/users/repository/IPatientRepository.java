@@ -42,4 +42,14 @@ public interface IPatientRepository extends JpaRepository<Patient, Long>
         + " AND a.end_time <= CURRENT_TIMESTAMP",
         nativeQuery = true)
     boolean hasHadEmployeeAppointment(@Param("patient_id") Long patientId, @Param("employee_id") Long employeeId);
+
+    @Query(value = "SELECT CASE WHEN COUNT(dr) > 0"
+        + " THEN true ELSE false END"
+        + " FROM drug_reservations dr"
+        + " WHERE dr.reservation_patient_id = :patient_id"
+        + " AND dr.reserved_drug_id = :drug_id"
+        + " AND dr.end_time <= CURRENT_TIMESTAMP"
+        + " AND dr.taken = 'T'",
+        nativeQuery = true)
+    boolean hasPickedUpDrug(@Param("patient_id") Long patientId, @Param("drug_id") Long drugId);
 }

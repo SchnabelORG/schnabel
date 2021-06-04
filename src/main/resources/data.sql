@@ -1,8 +1,8 @@
-insert into drugs("description", "name") values('anestetik', 'Lidokain 50mg');
-insert into drugs("description", "name") values('anestetik', 'Prokain 100mg');
-insert into drugs("description", "name") values('anestetik', 'Tetrakain 100mg');
-insert into drugs("description", "name") values('sedativ', 'Bensedin 100mg');
-insert into drugs("description", "name") values('sedativ', 'Xanax 100mg');
+insert into drugs("description", "name", score) values('anestetik', 'Lidokain 50mg', 0.0);
+insert into drugs("description", "name", score) values('anestetik', 'Prokain 100mg', 0.0);
+insert into drugs("description", "name", score) values('anestetik', 'Tetrakain 100mg', 0.0);
+insert into drugs("description", "name", score) values('sedativ', 'Bensedin 100mg', 0.0);
+insert into drugs("description", "name", score) values('sedativ', 'Xanax 100mg', 0.0);
 
 insert into pharmacies("name", city, postcode, street, street_no, score, consult_price) values('Schnabel Liman', 'Novi Sad', '21000', 'Balzakova', '24a', 4, 2000);
 insert into pharmacies("name", city, postcode, street, street_no, score, consult_price) values('Schnabel Grbavica', 'Novi Sad', '21000', 'Aleksa Santica', '2', 3, 3000);
