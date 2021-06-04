@@ -36,10 +36,11 @@ public class Shift implements IIdentifiable<Long>
     @JoinColumn(name = "medical_employee_id")
     private MedicalEmployee medicalEmployee;
 
-    public Shift(LocalTime startTime, LocalTime endTime, MedicalEmployee medicalEmployee)
+    public Shift(LocalTime startTime, LocalTime endTime, MedicalEmployee medicalEmployee, Pharmacy pharmacy)
     {
-        this.medicalEmployee = medicalEmployee;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.medicalEmployee = medicalEmployee;
+        this.pharmacy = pharmacy;
     }
 }

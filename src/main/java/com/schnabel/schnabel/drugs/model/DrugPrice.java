@@ -33,4 +33,12 @@ public class DrugPrice implements IIdentifiable<Long> {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "warehouseitem_id")
     private WareHouseItem wareHouseItem;
+
+    public DrugPrice(double price, LocalDate priceStartDate, LocalDate priceEndDate, WareHouseItem wareHouseItem) 
+    {
+        this.price = price;
+        this.priceStartDate = priceStartDate;
+        this.priceEndDate = priceEndDate;
+        this.wareHouseItem = wareHouseItem;
+    }
 }

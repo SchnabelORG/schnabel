@@ -54,6 +54,7 @@ public class WareHouseItemDTOAssembler extends RepresentationModelAssemblerSuppo
         dto.setDrug(DrugDTO.builder()
             .id(drug.getId())
             .name(drug.getName())
+            .description(drug.getDescription())
             .build()
             .add(linkTo(methodOn(DrugController.class).get(drug.getId())).withSelfRel()));
         Pharmacy pharmacy = entity.getPharmacy();

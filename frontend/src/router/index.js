@@ -233,6 +233,11 @@ const routes = [
         name: 'PharmacyAdminDefineAppointment',
         component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminDefineAppointment.vue'),
       },
+      {
+        path: 'pricelist',
+        name: 'PriceList',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PriceList.vue'),
+      },
     ],
   },
 ]
