@@ -114,6 +114,12 @@ public class PatientController
             : ResponseEntity.badRequest().build();
     }
 
+    @GetMapping("consult")
+    public ResponseEntity<PagedModel<AppointmentDTO>> getConsults(Pageable pageable, @RequestHeader("Authorization") String auth) {
+        String email = jwtUtils.getEmailFromAuth(auth);
+        return ResponseEntity.ok(service.findConsults(email, pageable));
+    }
+
     /**
      * Schedules pharmacist consult
      */

@@ -1,6 +1,5 @@
 package com.schnabel.schnabel.drugs.service;
 
-
 import com.schnabel.schnabel.drugs.dto.DrugReservationAssembler;
 import com.schnabel.schnabel.drugs.dto.DrugReservationDTO;
 import com.schnabel.schnabel.drugs.model.Drug;
@@ -13,9 +12,15 @@ import com.schnabel.schnabel.pharmacies.service.IWareHouseItemService;
 import com.schnabel.schnabel.users.dto.DrugReservationRequest;
 import com.schnabel.schnabel.users.model.Patient;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
 import java.util.Optional;
 
 /**
@@ -24,24 +29,27 @@ import java.util.Optional;
 @Service
 public class DrugReservationService extends JpaService<DrugReservation, Long, IDrugReservationRepository> implements IDrugReservationService {
 
-    private final DrugReservationAssembler drugReservationAssembler;
+    private final DrugReservationAssembler dtoAsm;
+    private final PagedResourcesAssembler<DrugReservation> pageAsm;
     private final IWareHouseItemService warehouseService;
     private final IDrugService drugService;
     private final IPharmacyService phService;
 
-    public DrugReservationService(IDrugReservationRepository drugReservationRepository, DrugReservationAssembler drugReservationAssembler, IWareHouseItemService warehouseService, IDrugService drugService, IPharmacyService phService)
+    @Autowired
+    public DrugReservationService(IDrugReservationRepository drugReservationRepository, DrugReservationAssembler drugReservationAssembler, PagedResourcesAssembler<DrugReservation> drugReservationPagedResourcesAssembler, IWareHouseItemService warehouseService, IDrugService drugService, IPharmacyService phService)
     {
         super(drugReservationRepository);
-        this.drugReservationAssembler = drugReservationAssembler;
+        this.dtoAsm = drugReservationAssembler;
         this.warehouseService = warehouseService;
         this.drugService = drugService;
         this.phService = phService;
+        this.pageAsm = drugReservationPagedResourcesAssembler;
     }
 
     @Override
     @Transactional
     public Optional<DrugReservationDTO> getDTO(Long id) {
-        return get(id).map(drugReservationAssembler::toModel);
+        return get(id).map(dtoAsm::toModel);
     }
 
     @Override
@@ -55,4 +63,13 @@ public class DrugReservationService extends JpaService<DrugReservation, Long, ID
         return warehouseService.reserveDrug(req, patient)
             && add(res).isPresent();
     }
+
+    @Override
+    @Transactional
+    public PagedModel<DrugReservationDTO> findHistory(Long patientId, Pageable pageable) {
+
+        Page<DrugReservation> reservations = repository.findHistory(patientId, pageable);
+        return pageAsm.toModel(reservations, dtoAsm);
+    }
+
 }

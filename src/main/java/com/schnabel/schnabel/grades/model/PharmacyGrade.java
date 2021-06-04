@@ -7,20 +7,24 @@ import com.schnabel.schnabel.misc.model.IIdentifiable;
 import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 
 /**
  * Pharmacy grade
  */
 @Entity
-@Table(name = "pharmacygrades")
+@Table(name = "pharmacy_grades")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -33,13 +37,20 @@ public class PharmacyGrade implements IIdentifiable<Long>
     private Long id;
     
     @Column(nullable = false)
+    @Min(0)
+    @Max(5)
     private int value;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pharmacy_id")
     private Pharmacy pharmacy;
     
-    @ManyToOne
-    @JoinColumn(name = "patient_id")
+    @OneToOne(fetch = FetchType.LAZY)
     private Patient patient;
+
+    public PharmacyGrade(int value, Pharmacy pharmacy, Patient patient) {
+        this.value = value;
+        this.pharmacy = pharmacy;
+        this.patient = patient;
+    }
 }

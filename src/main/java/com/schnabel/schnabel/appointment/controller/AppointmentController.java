@@ -1,8 +1,13 @@
 package com.schnabel.schnabel.appointment.controller;
+import java.util.Optional;
+
 import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
 import com.schnabel.schnabel.appointment.dto.AppointmentRequest;
 import com.schnabel.schnabel.appointment.service.IAppointmentService;
 import com.schnabel.schnabel.security.util.JwtUtils;
+import com.schnabel.schnabel.users.model.Patient;
+import com.schnabel.schnabel.users.service.IPatientService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
@@ -24,12 +29,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class AppointmentController {
 
     private final IAppointmentService service;
+    private final IPatientService patientService;
     private final JwtUtils jwtUtils;
 
     @Autowired
-    public AppointmentController(IAppointmentService service, JwtUtils jwtUtils) {
+    public AppointmentController(IAppointmentService service, JwtUtils jwtUtils, IPatientService patientService) {
         this.service = service;
         this.jwtUtils = jwtUtils;
+        this.patientService = patientService;
     }
 
     @GetMapping("appbyemployee/{id}")
@@ -73,7 +80,25 @@ public class AppointmentController {
      */
     @GetMapping("patient/dermatology")
     public ResponseEntity<PagedModel<AppointmentDTO>> getDermatologyHistory(@RequestHeader("Authorization") String auth, Pageable pageable) {
-        return ResponseEntity.ok(service.findDermHistory(auth, pageable));
+        String email = jwtUtils.getEmailFromAuth(auth);
+        Optional<Patient> patient = patientService.findByEmail(email);
+        if(!patient.isPresent()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(service.findDermHistory(patient.get().getId(), pageable));
+    }
+
+    /**
+     * Get patient's pharmacy appt. history
+     */
+    @GetMapping("patient/consult")
+    public ResponseEntity<PagedModel<AppointmentDTO>> getConsultHistory(@RequestHeader("Authorization") String auth, Pageable pageable) {
+        String email = jwtUtils.getEmailFromAuth(auth);
+        Optional<Patient> patient = patientService.findByEmail(email);
+        if(!patient.isPresent()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(service.findConsultHistory(patient.get().getId(), pageable));
     }
 
 }

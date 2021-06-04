@@ -77,4 +77,16 @@ public class PharmacyService extends JpaService<Pharmacy, Long, IPharmacyReposit
         return pageAsm.toModel(pharmacies, dtoAsm);
     }
 
+    @Override
+    public PagedModel<PharmacyDTO> findGraded(Long patientId, Pageable pageable) {
+        Page<Pharmacy> pharmacies = repository.findGraded(patientId, pageable);
+        return pageAsm.toModel(pharmacies, dtoAsm);
+    }
+
+    @Override
+    public PagedModel<PharmacyDTO> findGradeable(Long patientId, Pageable pageable) {
+        Page<Pharmacy> pharmacies = repository.findGradeable(patientId, pageable);
+        return pageAsm.toModel(pharmacies, dtoAsm);
+    }
+
 }

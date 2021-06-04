@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.drugs.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.schnabel.schnabel.drugs.dto.DrugPriceDTO;
@@ -29,5 +30,10 @@ public class DrugPriceService extends JpaService<DrugPrice, Long, IDrugPriceRepo
     @Override
     public Optional<DrugPriceDTO> findByIdDTO(Long id) {
         return get(id).map(dtoAssembler::toModel);
+    }
+
+    @Override
+    public List<DrugPrice> findAllByWareHouseItemId(Long id) {
+        return repository.findAllByWareHouseItemId(id);
     }
 }

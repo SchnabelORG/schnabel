@@ -45,7 +45,7 @@
                                       @click="prev"
                                     >
                                       <v-icon small>
-                                        mdi-chevron-left
+                                        fa-angle-left
                                       </v-icon>
                                     </v-btn>
                                     <v-btn
@@ -56,7 +56,7 @@
                                       @click="next"
                                     >
                                       <v-icon small>
-                                        mdi-chevron-right
+                                        fa-angle-right
                                       </v-icon>
                                     </v-btn>
                                     <v-toolbar-title v-if="$refs.calendar">
@@ -76,7 +76,7 @@
                                         >
                                           <span>{{ typeToLabel[type] }}</span>
                                           <v-icon right>
-                                            mdi-menu-down
+                                            fa-angle-down
                                           </v-icon>
                                         </v-btn>
                                       </template>
@@ -242,10 +242,13 @@
 export default {
     data() {
         return {
+          //
           drugReservations: [],
           drugReservationSearch: '',
           drugReservationHeaders: [
-
+            { text: 'Reserved date', value: 'reservationDate' },
+            { text: 'Pickup date', value: 'endOfReservation' },
+            { text: 'Status', value: 'status' },
           ],
           //
           ePresc: [],
@@ -259,16 +262,20 @@ export default {
           dermApptHistorySearch: '',
           dermApptHistoryHeaders: [
             { text: 'Date', value: 'date' },
+            { text: 'Start', value: 'start' }, 
             { text: 'Price', value: 'price' },
-            { text: 'Duration', value: 'duration' },
+            { text: 'Duration (min.)', value: 'duration' },
+            { text: 'Derm.', value: 'medicalEmployee.name' },
           ],
           //
           consultHistory: [],
           consultHistorySearch: '',
           consultHistoryHeaders: [
             { text: 'Date', value: 'date' },
+            { text: 'Start', value: 'start' },
             { text: 'Price', value: 'price' },
-            { text: 'Duration', value: 'duration' },
+            { text: 'Duration (min.)', value: 'duration' },
+            { text: 'Pharmacist', value: 'medicalEmployee.name' },
           ],
           //
             focus: '',
@@ -307,11 +314,84 @@ export default {
     },
 
     methods: {
+        getConsultAppts: function() {
+          this.refreshToken()
+            .then(rr => {
+              localStorage.jws = rr.data;
+              this.axios.get('api/patient/consult', {headers: this.getAHeader()})
+                .then(r => {
+                  if(r.data._embedded) {
+                    r.data._embedded.appointments.forEach(a => {
+                        let startDate = this.getDateTimeFromString(a.date, a.start);
+                        this.events.push({
+                            name: 'Pharm. consult.',
+                            start: startDate,
+                            end: new Date(startDate.getTime() + a.duration * 60000),
+                            color: this.colors[0],
+                            timed: true,
+                            appt: a,
+                        });
+                    });
+                    this.$refs.calendar.checkChange()
+                  }
+                })
+            })
+        },
+
+        getDrugHistory: function() {
+          this.refreshToken()
+            .then(rr => {
+              localStorage.jws = rr.data;
+              this.axios.get('api/dreservation/patient', {headers: this.getAHeader()})
+                .then(r => {
+                  if(r.data._embedded) {
+                    this.drugReservations = r.data._embedded.drugs_reservations;
+                    this.drugReservations.forEach(dr => {
+                      dr.reservationDate = dr.reservationDate.substr(0, 10);
+                      dr.endOfReservation = dr.endOfReservation.substr(0, 10);
+                      dr.status = dr.taken ? 'Picked up' : 'Not picked up';
+                    });
+                  } else {
+                    this.drugReservations = [];
+                  }
+                })
+            })
+        },
+
+        getConsultHistory: function() {
+          this.refreshToken()
+            .then(rr => {
+              localStorage.jws = rr.data;
+              this.axios.get('api/appointment/patient/consult', {headers: this.getAHeader()})
+                .then(r => {
+                  if(r.data._embedded) {
+                    this.consultHistory = r.data._embedded.appointments;
+                  } else {
+                    this.consultHistory = [];
+                  }
+                })
+            }).catch(() => this.$router.push('/'));
+        },
+
+        getDermHistory: function() {
+          this.refreshToken()
+            .then(rr => {
+              localStorage.jws = rr.data;
+              this.axios.get('api/appointment/patient/dermatology', {headers: this.getAHeader()})
+                .then(r => {
+                  if(r.data._embedded) {
+                    this.dermApptHistory = r.data._embedded.appointments;
+                  } else {
+                    this.dermApptHistory = [];
+                  }
+                })
+            }).catch(() => this.$router.push('/'));
+        },
 
         getAppointments: function() {
             this.events = [];
             this.getDermAppts();
-            // TODO(Jovan): Get pharmacy appointments
+            this.getConsultAppts();
         },
 
         addDaysToDate: function(date, days) {
@@ -467,9 +547,12 @@ export default {
 
     mounted() {
         this.getUser();
-        this.$refs.calendar.checkChange()
         this.getPharmacies();
         this.getAppointments();
+        this.getDermHistory();
+        this.getConsultHistory();
+        this.getDrugHistory();
+        this.$refs.calendar.checkChange()
     },
 }
 </script>

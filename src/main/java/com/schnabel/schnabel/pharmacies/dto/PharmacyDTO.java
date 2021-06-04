@@ -33,6 +33,6 @@ public class PharmacyDTO extends RepresentationModel<PharmacyDTO> {
     private String name;
     private Address address;
     private double consultPrice;
-    private int score;
+    private double score;
     private List<PharmacistDTO> pharmacists;
 }

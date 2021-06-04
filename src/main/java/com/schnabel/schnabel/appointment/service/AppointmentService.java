@@ -16,7 +16,6 @@ import com.schnabel.schnabel.email.service.IMailService;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.misc.model.Period;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
-import com.schnabel.schnabel.security.util.JwtUtils;
 import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.model.Pharmacist;
 import com.schnabel.schnabel.users.model.Vacation;
@@ -50,10 +49,9 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
     private final IDermatologistService dermatologistService;
     private final IPharmacyAdminService pharmacyAdminService;
     private final IVacationService vacationService;
-    private final JwtUtils jwtUtils;
 
     @Autowired
-    public AppointmentService(IAppointmentRepository repository, AppointmentDTOAssembler dtoAsm, PagedResourcesAssembler<Appointment> pageAsm, IShiftService shiftService, AppointmentDTOAssembler appointmentDTOAssembler, IDermatologistService dermatologistService, IPharmacyAdminService pharmacyAdminService, IMailService mailService, IPharmacistService pharmacistService, IVacationService vacationService, JwtUtils jwtUtils) {
+    public AppointmentService(IAppointmentRepository repository, AppointmentDTOAssembler dtoAsm, PagedResourcesAssembler<Appointment> pageAsm, IShiftService shiftService, AppointmentDTOAssembler appointmentDTOAssembler, IDermatologistService dermatologistService, IPharmacyAdminService pharmacyAdminService, IMailService mailService, IPharmacistService pharmacistService, IVacationService vacationService) {
         super(repository);
         this.dtoAsm = dtoAsm;
         this.pageAsm = pageAsm;
@@ -63,7 +61,6 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
         this.mailService = mailService;
         this.pharmacistService = pharmacistService;
         this.vacationService = vacationService;
-        this.jwtUtils = jwtUtils;
     }
 
 
@@ -247,9 +244,23 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
 
 
     @Override
-    public PagedModel<AppointmentDTO> findDermHistory(String authHeader, Pageable pageable) {
-        // String email = jwtUtils.emai
-        Page<Appointment> appts = repository.findDermHistory();
+    public PagedModel<AppointmentDTO> findDermHistory(Long patientId, Pageable pageable) {
+        Page<Appointment> appts = repository.findDermHistory(patientId, pageable);
+        return pageAsm.toModel(appts, dtoAsm);
+    }
+
+
+    @Override
+    public PagedModel<AppointmentDTO> findConsultHistory(Long patientId, Pageable pageable) {
+        Page<Appointment> appts = repository.findConsultHistory(patientId, pageable);
+        return pageAsm.toModel(appts, dtoAsm);
+    }
+
+
+    @Override
+    public PagedModel<AppointmentDTO> findConsultByPatientId(Long patientId, Pageable pageable) {
+        Page<Appointment> consults = repository.findConsultByPatientId(patientId, pageable);
+        return pageAsm.toModel(consults, dtoAsm);
     }
 
 }

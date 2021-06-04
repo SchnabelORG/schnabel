@@ -82,6 +82,12 @@ const routes = [
   },
 
   {
+    path: '/rating',
+    name: 'Rating',
+    component: () => import( /* webpackChunkName: "rating" */ '../views/Rating.vue'),
+  },
+
+  {
     path: '/dermappointment/:pharmacyname',
     beforeEnter: (to, from, next) => {
       // Validate pharmacy exists
@@ -253,6 +259,11 @@ const routes = [
         path: 'defineappointment',
         name: 'PharmacyAdminDefineAppointment',
         component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminDefineAppointment.vue'),
+      },
+      {
+        path: 'pricelist',
+        name: 'PriceList',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PriceList.vue'),
       },
     ],
   },

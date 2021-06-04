@@ -34,5 +34,13 @@ public class Drug implements IIdentifiable<Long>
     private String name;
     @Column(nullable = false) 
     private String description;
+    @Column(nullable = false)
+    private double score;
+
+    public Drug(String name, String description)
+    {
+        this.name = name;
+        this.description = description;
+    }
 
 }
