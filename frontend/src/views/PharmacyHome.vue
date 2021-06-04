@@ -3,11 +3,9 @@
     <div id="cover-home">
       <div id="cover-text">
         <h2 id="cover-header">Pharmacy {{this.pharmacyName}}</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur facilis facere aut expedita delectus ducimus natus, obcaecati nihil sapiente!</p>
       </div>
       <img src="../assets/plaguedoctorcovid.png">
     </div>
-
     <div id="cards-home">
       <div id="cards-container">
         <div class="card">
@@ -58,7 +56,7 @@
         <div id="footer-main">
           <div id="footer-title">
             <h3 class="primary--text">Schnabel</h3>
-            <p class="info--text">Ipsum animi fugiat ab suscipit quidem obcaecati, repellendus ipsa alias, deserunt deleniti voluptas dicta distinctio dolore recusandae rem dignissimos laudantium perferendis. Sunt!</p>
+            <p class="info--text">The pharmacy that cares for the wellbeing of you and your family.</p>
           </div>
         </div>
 
@@ -67,24 +65,24 @@
             <h4 class="primary--text">Drug</h4>
             <div class="footer-divider"></div>
             <ul class="footer-column-list unstyled-list">
-              <li><a href="">Reserve drug</a></li>
-              <li><a href="/pharmacy/drug">Our drugs</a></li>
+              <li><router-link to="">Reserve drug</router-link></li>
+              <li><router-link to="/pharmacy/drug">Our drugs</router-link></li>
             </ul>
           </div>
           <div class="footer-column">
             <h4 class="primary--text">Dermatology</h4>
             <div class="footer-divider"></div>
             <ul class="footer-column-list unstyled-list">
-              <li><a href="">Make examination</a></li>
-              <li><a href="/pharmacy/dermatologist">Our dermatologists</a></li>
+              <li><router-link to="">Make examination</router-link></li>
+              <li><router-link to="/pharmacy/dermatologist">Our dermatologists</router-link></li>
             </ul>
           </div>
           <div class="footer-column">
             <h4 class="primary--text">Pharmacology</h4>
             <div class="footer-divider"></div>
             <ul class="footer-column-list unstyled-list">
-              <li><a href="">Make consulting</a></li>
-              <li><a href="/pharmacy/pharmacist">Our pharmacists</a></li>
+              <li><router-link to="">Make consulting</router-link></li>
+              <li><router-link to="/pharmacy/pharmacist">Our pharmacists</router-link></li>
             </ul>
           </div>
           <div class="footer-column">
@@ -100,15 +98,41 @@
                     <span>{{this.address}}</span>
                 </div>
                 <div class="space-between info--text">
-                    <i class="fa fa-envelope" aria-hidden="true"></i>
-                    <span>Support Available 24/7</span>
                 </div>
-              <a href="">support@email.com</a>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <div>
+    <vl-map :load-tiles-while-animating="true" :load-tiles-while-interacting="true"
+             data-projection="EPSG:4326" style="height: 400px">
+      <vl-view :zoom.sync="zoom" :center.sync="center" :rotation.sync="rotation"></vl-view>
+
+      <vl-geoloc @update:position="geolocPosition = $event">
+        <template slot-scope="geoloc">
+          <vl-feature v-if="geoloc.position" id="position-feature">
+            <vl-geom-point :coordinates="geoloc.position"></vl-geom-point>
+            <vl-style-box>
+              <vl-style-icon src="_media/marker.png" :scale="0.4" :anchor="[0.5, 1]"></vl-style-icon>
+            </vl-style-box>
+          </vl-feature>
+        </template>
+      </vl-geoloc>
+
+		<vl-overlay id="overlay" :position="overlayCoordinate">
+      <template>
+        <div class="overlay-content">
+          <i class="fa fa-map-marker" aria-hidden="true"></i>
+        </div>
+      </template>
+    </vl-overlay>
+
+      <vl-layer-tile id="osm">
+        <vl-source-osm></vl-source-osm>
+      </vl-layer-tile>
+    </vl-map>
+  </div>
   </div>
 </template>
 
@@ -119,7 +143,22 @@
                 address: 'Balzakova 48, Novi Sad',
                 avarageGrade: '4.5',
                 pharmacyName: 'Schnabel Liman',
+                zoom: 12,
+                center: [19.882, 45.254],
+                rotation: 0,
+                lat: '',
+                att: '',
+                geolocPosition: undefined,
+                overlayCoordinate: [19.882, 45.254],
             }
+        },
+        methods: {
+          getPharmacy: function() {
+            
+          },
+        },
+        mounted() {
+          this.getPharmacy();
         },
     }
 </script>
@@ -241,6 +280,10 @@
     justify-content: space-between;
     max-width: 80vw;
     margin: auto;
+  }
+
+  #map-container {
+    position: relative;
   }
 
   #footer-main h3 {
