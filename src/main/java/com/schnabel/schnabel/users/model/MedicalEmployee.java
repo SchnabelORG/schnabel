@@ -7,8 +7,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "medical_employees")
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class MedicalEmployee extends User
 {
     @OneToMany(mappedBy = "medicalEmployee")
