@@ -72,5 +72,10 @@ public class AuthController {
         return ResponseEntity.ok(jws);
     }
 
+    @GetMapping("role")
+    public ResponseEntity<String> getRole(@RequestHeader("Authorization") String auth) {
+        return ResponseEntity.ok(jwtUtils.getRoleFromJws(jwtUtils.parseJwtFromAuthorizationHeader(auth)));
+    }
+
 
 }
