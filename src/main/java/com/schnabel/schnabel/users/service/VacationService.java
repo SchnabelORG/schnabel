@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.schnabel.schnabel.email.service.IMailService;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.users.dto.VacationDTO;
 import com.schnabel.schnabel.users.dto.VacationDTOAssembler;
@@ -29,14 +30,16 @@ public class VacationService extends JpaService<Vacation, Long, IVacationReposit
     private final VacationDTOAssembler vacationDTOAssembler;
     private final PagedResourcesAssembler<Vacation> vacationPagedResourcesAssembler;
     private final IPharmacyAdminService pharmacyAdminService;
+    private final IMailService mailService;
 
     @Autowired
-    public VacationService(IVacationRepository repository, VacationDTOAssembler vacationDTOAssembler, PagedResourcesAssembler<Vacation> vacationPagedResourcesAssembler, IPharmacyAdminService pharmacyAdminService)
+    public VacationService(IVacationRepository repository, VacationDTOAssembler vacationDTOAssembler, PagedResourcesAssembler<Vacation> vacationPagedResourcesAssembler, IPharmacyAdminService pharmacyAdminService, IMailService mailService)
     {
         super(repository);
         this.vacationDTOAssembler = vacationDTOAssembler;
         this.vacationPagedResourcesAssembler = vacationPagedResourcesAssembler;
         this.pharmacyAdminService = pharmacyAdminService;
+        this.mailService = mailService;
     }
 
     @Override
@@ -67,7 +70,11 @@ public class VacationService extends JpaService<Vacation, Long, IVacationReposit
     {
         Vacation vacation = get(id).get();
         vacation.setVacationStatus(VacationStatus.ACCEPTED);
-        return update(vacation);
+        if (update(vacation)) {
+            mailService.sendVacationMedicalEmployee(vacation.getMedicalEmployee().getEmail(), "Your vacation from " + vacation.getPeriod().getStartTime().toLocalDate() + " to " + vacation.getPeriod().getEndTime().toLocalDate() + " is ACCEPTED!");
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -76,7 +83,11 @@ public class VacationService extends JpaService<Vacation, Long, IVacationReposit
         Vacation vacation = get(vacationRequest.getId()).get();
         vacation.setVacationStatus(VacationStatus.REJECTED);
         vacation.setReasonOfRejection(vacationRequest.getReason());
-        return update(vacation);
+        if(update(vacation)) {
+            mailService.sendVacationMedicalEmployee(vacation.getMedicalEmployee().getEmail(), "Your vacation from " + vacation.getPeriod().getStartTime().toLocalDate() + " to " + vacation.getPeriod().getEndTime().toLocalDate() + " is REJECTED! Reason: " + vacation.getReasonOfRejection());
+            return true;
+        }
+        return false;
     }
 
     @Override
