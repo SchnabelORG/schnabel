@@ -141,7 +141,7 @@
                 console.log("Getting pharmacist");
                 let jws = window.localStorage.getItem('jwt');
                 console.log(jws)
-                this.axios.get("api/pharmacist", {headers:{"Authorization": "Bearer " + jws}})
+                this.axios.get("api/pharmacist/jwt", {headers:{"Authorization": "Bearer " + jws}})
                     .then(response => {
                         console.log(response.data);
                         this.pharmacist = response.data;
@@ -162,6 +162,7 @@
             },
             getAllAppointments: function(){
                 let jws = window.localStorage.getItem('jwt');
+                console.log(this.pharmacist.id)
                 this.axios.get("api/appointment/appbyemployee/" + this.pharmacist.id, {headers:{"Authorization": "Bearer " + jws}})
                     .then(response =>
                     {

@@ -10,6 +10,8 @@ import com.schnabel.schnabel.drugs.repository.DrugSpecification;
 import com.schnabel.schnabel.drugs.repository.IDrugRepository;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 
+import com.schnabel.schnabel.users.dto.PharmacistDTO;
+import com.schnabel.schnabel.users.model.Pharmacist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,6 +47,12 @@ public class DrugService extends JpaService<Drug, Long, IDrugRepository> impleme
         return pageAsm.toModel(drugs, dtoAsm);
     }
 
+    @Override
+    public PagedModel<DrugDTO> findAllDTO(Pageable pageable) {
+        Page<Drug> drugs = getAll(pageable);
+        return pageAsm.toModel(drugs, dtoAsm);
+    }
+    
     @Override
     public PagedModel<DrugDTO> findGradeable(Long patientId, Pageable pageable) {
         Page<Drug> drugs = repository.findGradeable(patientId, pageable);

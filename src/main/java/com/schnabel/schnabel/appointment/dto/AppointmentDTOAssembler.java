@@ -1,9 +1,13 @@
 package com.schnabel.schnabel.appointment.dto;
 import com.schnabel.schnabel.appointment.controller.AppointmentController;
 import com.schnabel.schnabel.appointment.model.Appointment;
+import com.schnabel.schnabel.procurement.dto.OrderItemDTO;
+import com.schnabel.schnabel.procurement.model.OrderItem;
 import com.schnabel.schnabel.users.controller.PatientController;
+import com.schnabel.schnabel.users.dto.AllergyDTO;
 import com.schnabel.schnabel.users.dto.MedicalEmployeeDTO;
 import com.schnabel.schnabel.users.dto.PatientDTO;
+import com.schnabel.schnabel.users.model.Allergy;
 import com.schnabel.schnabel.users.model.MedicalEmployee;
 import com.schnabel.schnabel.users.model.Patient;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
@@ -11,6 +15,9 @@ import org.springframework.stereotype.Component;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Assembles AppointmentDTO
@@ -55,7 +62,21 @@ public class AppointmentDTOAssembler extends RepresentationModelAssemblerSupport
                 .surname(patient.getSurname())
                 .email(patient.getEmail())
                 .address(patient.getAddress())
+                .allergies(getAllergies(patient.getAllergies()))
                 .build()
                 .add(linkTo(methodOn(PatientController.class).get(patient.getId())).withSelfRel());
+    }
+    private List<AllergyDTO> getAllergies(List<Allergy> allergies)
+    {
+        if(allergies.isEmpty())
+            return Collections.emptyList();
+
+        return allergies.stream()
+                .map(a -> AllergyDTO.builder()
+                        .id(a.getId())
+                        .type(a.getAllergyType())
+                        .drugId(a.getDrug().getId())
+                        .build())
+                .collect(Collectors.toList());
     }
 }
