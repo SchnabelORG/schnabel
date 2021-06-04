@@ -30,6 +30,9 @@ public class RecommendedMed implements IIdentifiable<Long> {
     @Column
     private int takePerDay;
 
+    @Column
+    private int quantity;
+
     @ManyToOne
     @JoinColumn(name = "rec_med_drug_id")
     private Drug drug;

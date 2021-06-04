@@ -433,10 +433,6 @@
                             if((dates[j].startTime.getTime() > startApp && dates[j].startTime.getTime() < endApp)||
                                (dates[j].endTime.getTime() > startApp && dates[j].endTime.getTime() < endApp)||
                                (dates[j].startTime.getTime() < startApp && dates[j].endTime.getTime() > endApp)){
-                                    console.log(startApp)
-                                    console.log(endApp)
-                                    console.log(dates[j].startTime.getTime())
-                                    console.log(dates[j].endTime.getTime())
                                     dates.splice(j,1);
                                     j--;
                                }
@@ -445,7 +441,6 @@
                     }
                     this.freeTerms.push(JSON.parse(JSON.stringify(dates)));
                 }
-                console.log(this.freeTerms);
             },
             getTodaysAppointments: function(){
                 
@@ -476,7 +471,6 @@
             },
             getAllMedications: function(){
                 let jws = window.localStorage.getItem('jwt');
-                console.log(this.pharmacist.id)
                 this.axios.get("api/drug", {headers:{"Authorization": "Bearer " + jws}})
                     .then(response =>
                     {
@@ -502,7 +496,6 @@
             },
             addMedication: function(){
                 this.dosage[this.choosenMedication.id] = {perDay: 1, howManyDays: 1, quantity: 1};
-                console.log(this.dosage);
                 this.prescripedMedication.push(this.choosenMedication);
                 this.choosenMedication = null;
                 this.haveMedication = '';
@@ -510,7 +503,6 @@
 
             },
             checkForMedication: function(){
-                console.log(this.prescripedMedication)
                 let jws = window.localStorage.getItem('jwt');
                 for(var i = 0; i < this.prescripedMedication.length; i++){
                     let dto = {drugId: this.prescripedMedication[i].id, quantity: this.dosage[this.prescripedMedication[i].id].quantity, pharmacyId: this.pharmacist.pharmacy.id}
@@ -541,12 +533,41 @@
                     console.log(this.termsToShow)
                 }
             },
-            getAllowedDates: function(val){
-                if (this.allowedDates.indexOf(val) !== -1) {
-                    return true
-                } else {
-                    return false
+            finish: function(){
+                let jws = window.localStorage.getItem('jwt');
+                this.axios.post("api/reportappointment/addreport/" + this.chosenAppointment.id, this.consultationInfo,{headers:{"Authorization": "Bearer " + jws}})
+                    .then(response =>
+                    {
+                        console.log(response.data);
+                        if(response.data != -1){
+                            this.addMedicationsToReport(response.data);
+                        }
+                        this.reset();
+                    })
+                    .catch(response =>
+                    {
+                        console.log(response.data);
+                    });
+            },
+            addMedicationsToReport: function(reportId){
+                var meds = [];
+                for(var i = 0; i < this.prescripedMedication.length; i++){
+                    meds.push({durationInDays: this.dosage[this.prescripedMedication[i].id].howManyDays, 
+                    takePerDay: this.dosage[this.prescripedMedication[i].id].howManyDays, 
+                    quantity: this.dosage[this.prescripedMedication[i].id].howManyDays, 
+                    drug: this.prescripedMedication[i]});
                 }
+                let jws = window.localStorage.getItem('jwt');
+                this.axios.post("api/recommendedmed/addmed/" + reportId, meds,{headers:{"Authorization": "Bearer " + jws}})
+                    .then(response =>
+                    {
+                        console.log(response.data);
+                    })
+                    .catch(response =>
+                    {
+                        console.log(response.data);
+                    });
+
             },
         },
         mounted(){
