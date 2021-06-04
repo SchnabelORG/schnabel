@@ -69,6 +69,7 @@ insert into drug_reservations(end_time, start_time, quantity, taken, reserved_dr
 insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('08:00:00', '14:00:00', 1, 2);
 insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('15:00:00', '16:00:00', 2, 2);
 insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('08:00:00', '17:00:00', 1, 6);
+insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('08:00:00', '17:00:00', 1, 3);
 
 insert into orders(deadline, "description", pharmacyadmin_id, pharmacy_id, order_status) values ('2021-05-10', 'Urgent order!', 8, 1, 'CREATED');
 insert into orders(deadline, "description", pharmacyadmin_id, pharmacy_id, order_status) values ('2021-08-12', 'Bensedin order!', 8, 1, 'CREATED');
@@ -86,6 +87,10 @@ insert into offers(price, date_of_delivery, order_id, supplier_id, offer_status)
 insert into offers(price, date_of_delivery, order_id, supplier_id, offer_status) values (900, '2021-08-03', 2, 10, 'CREATED');
 
 insert into promotions("description", start_time, end_time, pharmacy_id) values ('New promotion!!!', '2021-05-04','2021-06-04', 1);
+
+
+insert into allergies(allergy_type, allergy_drug_id, patient_id) values ('Anafilakticki sok', 1, 1);
+insert into allergies(allergy_type, allergy_drug_id, patient_id) values ('Anafilakticki sok', 3, 1);
 
 insert into roles("name") values ('ROLE_PATIENT');
 insert into roles("name") values ('ROLE_ADMIN');

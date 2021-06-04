@@ -3,11 +3,11 @@ import java.util.Optional;
 
 import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
 import com.schnabel.schnabel.appointment.dto.AppointmentRequest;
+import com.schnabel.schnabel.appointment.dto.NewAppointmentDTO;
 import com.schnabel.schnabel.appointment.service.IAppointmentService;
 import com.schnabel.schnabel.security.util.JwtUtils;
 import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.service.IPatientService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
@@ -33,10 +33,10 @@ public class AppointmentController {
     private final JwtUtils jwtUtils;
 
     @Autowired
-    public AppointmentController(IAppointmentService service, JwtUtils jwtUtils, IPatientService patientService) {
+    public AppointmentController(IAppointmentService service, IPatientService patientService, JwtUtils jwtUtils) {
         this.service = service;
-        this.jwtUtils = jwtUtils;
         this.patientService = patientService;
+        this.jwtUtils = jwtUtils;
     }
 
     @GetMapping("appbyemployee/{id}")
@@ -99,6 +99,15 @@ public class AppointmentController {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(service.findConsultHistory(patient.get().getId(), pageable));
+    }
+
+    @PostMapping("pharmacist/newapp")
+    public ResponseEntity<Boolean> defineAppointment(@RequestBody NewAppointmentDTO newAppointment)
+    {
+        Optional<Patient> patient = patientService.get(newAppointment.getPatientId());
+        Boolean isSuccess = service.makeNewAppAsPharmacist(newAppointment, patient.get());
+
+        return  ResponseEntity.ok(isSuccess);
     }
 
 }
