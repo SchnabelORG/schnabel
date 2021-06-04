@@ -1,5 +1,5 @@
 <template>
-    <div id="uhome-main" class="secondary">
+    <div id="uhome-main" class="info">
         <search-navigation>
             <router-link to="/">Home</router-link>
         </search-navigation>
@@ -16,6 +16,13 @@
                             <span class="info--text">Penalties: <b class="accent--text">{{user.penalties}}</b></span>
                             <router-link to="/user/about">Profile info</router-link>
                         </div>
+                    </div>
+                    <div class="info-card">
+                      <h3 class="info--text">Appointments</h3>
+                      <div class="d-flex flex-column align-start">
+                        <v-btn plain to="/consult">&#62; Schedule a consult</v-btn>
+                        <v-btn plain to="/pharmacysearch">&#62; Schedule a derm. appt.</v-btn>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -251,7 +258,13 @@ export default {
             { text: 'Status', value: 'status' },
           ],
           //
-          ePresc: [],
+          ePresc: [
+            { med: 'Cyclopentanoperhydrophenanthrene' ,date: '2021-05-10', status: 'Parsed' },
+            { med: 'Vicodin' ,date: '2021-05-29', status: 'Rejected' },
+            { med: 'Vicodin' ,date: '2021-06-1', status: 'Rejected' },
+            { med: 'Cyclomicin' ,date: '2021-06-3', status: 'New' },
+            { med: 'Vicodin' ,date: '2021-06-4', status: 'New' },
+          ],
           ePrescSearch: '',
           ePrescHeaders: [
             { text: 'Date', value: 'date' },
@@ -558,6 +571,10 @@ export default {
 </script>
 
 <style scoped>
+
+  #uhome-main {
+    /* background: #eee */
+  }
 
     #uhome-container {
         display: flex;
