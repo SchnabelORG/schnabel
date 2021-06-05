@@ -256,6 +256,7 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
     }
 
     @Override
+    @Transactional
     public PagedModel<AppointmentDTO> findByPatientId(Long patientId, Pageable pageable) {
         try {
             Page<Appointment> appointments = repository.findByPatientId(patientId, pageable);
@@ -266,6 +267,7 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
     }
 
     @Override
+    @Transactional
     public PagedModel<AppointmentDTO> findDermApptByPatientId(Long patientId, Pageable pageable) {
         try {
             Page<Appointment> appointments = repository.findDermApptByPatientId(patientId, pageable);
@@ -275,5 +277,28 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
         }
     }
 
+
+    @Override
+    @Transactional
+    public PagedModel<AppointmentDTO> findDermHistory(Long patientId, Pageable pageable) {
+        Page<Appointment> appts = repository.findDermHistory(patientId, pageable);
+        return pageAsm.toModel(appts, dtoAsm);
+    }
+
+
+    @Override
+    @Transactional
+    public PagedModel<AppointmentDTO> findConsultHistory(Long patientId, Pageable pageable) {
+        Page<Appointment> appts = repository.findConsultHistory(patientId, pageable);
+        return pageAsm.toModel(appts, dtoAsm);
+    }
+
+
+    @Override
+    @Transactional
+    public PagedModel<AppointmentDTO> findConsultByPatientId(Long patientId, Pageable pageable) {
+        Page<Appointment> consults = repository.findConsultByPatientId(patientId, pageable);
+        return pageAsm.toModel(consults, dtoAsm);
+    }
 
 }

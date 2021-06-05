@@ -22,7 +22,7 @@ public class PharmacySpecification {
     public static Specification<Pharmacy> filteredQuery(Map<String, String> params) {
 
         return (root, query, cb) -> {
-            return cb.and(getPredicates(params, root, cb).toArray(new Predicate[0])); 
+            return cb.and(getPredicates(params, root, cb).toArray(Predicate[]::new)); 
         };
     }
 
@@ -46,7 +46,7 @@ public class PharmacySpecification {
         }
 
         if(params.containsKey("score")) {
-            predicates.add(cb.greaterThanOrEqualTo(root.get(Pharmacy_.SCORE), params.get("score")));
+            predicates.add(cb.greaterThanOrEqualTo(root.get(Pharmacy_.SCORE), Double.parseDouble(params.get("score"))));
         }
 
         return predicates;

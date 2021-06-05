@@ -45,6 +45,6 @@ custom:
   fport: ${SCHNABEL_FRONTEND_PORT}
   port: ${SCHNABEL_BACKEND_PORT}
   jwtSecret: ${SCHNABEL_JWT_SECRET}
-  jwtExpMin: 60
+  jwtExpMin: 1
   refSecret: ${SCHNABEL_REF_SECRET}
   refExpMonth: 6

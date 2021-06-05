@@ -8,8 +8,25 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    beforeEnter: (to, from, next) => {
+      axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + localStorage.jws}})
+        .then(r => {
+          if(r.data == 'ROLE_PATIENT') {
+            next({name: 'UserHome'});
+          } else if (r.data == 'ROLE_ADMIN') {
+            next({name: 'PharmacyAdminHome'});
+          } else {
+            next({name: 'Home'});
+          }
+        })
+        .catch(() => next({name: 'Home'}));
+    },
+  },
+
+  {
+    path: '/index',
     name: 'Home',
-    component: Home
+    component: Home,
   },
 
   {
@@ -41,7 +58,7 @@ const routes = [
       axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + localStorage.jws}})
         .then(r => {
           if(r.data == 'ROLE_PATIENT') {
-            next({name: 'Home'});
+            next({name: 'UserHome'});
           } else if (r.data == 'ROLE_ADMIN') {
             next({name: 'PharmacyAdminHome'});
           } else {
@@ -89,9 +106,13 @@ const routes = [
   },
 
   // PharmacySearch
-
   {
     path: '/pharmacysearch',
+    name: 'PharmacySearch',
+    component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacySearch.vue'),
+  },
+  {
+    path: '/pharmacysearch/:name',
     name: 'PharmacySearch',
     component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacySearch.vue'),
   },

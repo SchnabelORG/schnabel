@@ -17,6 +17,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+/**
+ * Pharmacy DTO for JSON representation
+ */
 @Data
 @Builder
 @NoArgsConstructor

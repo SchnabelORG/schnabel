@@ -19,5 +19,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface IWareHouseItemRepository extends JpaRepository<WareHouseItem, Long> 
 {
     Page<WareHouseItem> findByPharmacyId(Long pharmacyId, Pageable pageable);
-    Optional<WareHouseItem> findByPharmacyIdAndDrugId(Long drugId, Long pharmacyId);
+    Optional<WareHouseItem> findByPharmacyIdAndDrugId(Long pharmacyId, Long drugId);
 }
