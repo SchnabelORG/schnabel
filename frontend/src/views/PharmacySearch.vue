@@ -37,7 +37,10 @@
                       <v-card-title>
                         <router-link :to="'/pharmacy/' + result.id">{{result.name}} &#62;</router-link>
                       </v-card-title>
-                      <v-card-subtitle>{{result.address.street}} {{result.address.streetNo}}, {{result.address.city}}</v-card-subtitle>
+                      <v-card-subtitle>
+                        <p>{{result.address.street}} {{result.address.streetNo}}, {{result.address.city}}</p>
+                        <p><span class="info--text">Rating: </span>{{result.score}}</p>
+                      </v-card-subtitle>
                         <v-spacer></v-spacer>
                         <div class="d-flex flex-row justify-start">
                           <v-btn plain color="primary" :to="'/dermappointment/' + result.name">Schedule derm.</v-btn>
@@ -115,10 +118,16 @@
                         <v-divider></v-divider>
                         <div id="score-filters" class="filter-container">
                           <h3>Score</h3>
-                          <v-text-field
-                          label="Minimum score"
-                          v-model="filters[1].value"
-                          />
+                          <v-slider
+                            v-model="filters[1].value"
+                            label="Min. score"
+                            step="1"
+                            min="0"
+                            max="5"
+                            thumb-label
+                            ticks
+                            :append-icon="filters[1].value.toString()"
+                          ></v-slider>
                         </div>
                       </v-card-text>
                       <v-divider style="width:100%"></v-divider>
@@ -291,7 +300,6 @@ export default {
           } else {
             this.results = [];
           }
-          console.log(r.data._embedded.pharmacies);
         })
         .catch(r => {
           console.log(r);

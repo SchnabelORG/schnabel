@@ -1,8 +1,12 @@
 <template>
-    <div id="search-main">
+    <div>
+        <main-navigation>
+            <router-link to="/">Home</router-link>
+        </main-navigation>
+    <div id="search-main" class="info">
         <div id="search-container">
-            <p>Buy meds</p>
-            <h2>Find your drug and reserve it</h2>
+            <!-- <p>Buy meds</p>
+            <h2>Find your drug and reserve it</h2> -->
             <div v-if="success" id="success-form">
                 <p id="success-icon"><i class="fa fa-check"></i></p>
                 <p>Drug reserved!</p>
@@ -134,6 +138,7 @@
             </v-stepper>
         </div>
     </div>
+    </div>
 </template>
 
 <script>
@@ -238,8 +243,7 @@ export default {
                                 this.drugs = [];
                             }
                         })
-                })
-                .catch(() => this.router.push("/"));
+                }).catch(() => this.$router.push("/"));
         },
     },
 
@@ -254,7 +258,7 @@ export default {
     #search-main {
         display: grid;
         place-items: center;
-        height: 100vh;
+        height: 92vh;
         background: #fafafa;
     }
 

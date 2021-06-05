@@ -24,12 +24,16 @@
                         <v-btn plain to="/pharmacysearch">&#62; Schedule a derm. appt.</v-btn>
                       </div>
                     </div>
+                    <div class="info-card">
+                      <h3 class="info--text">Drugs</h3>
+                        <v-btn plain to="/drugsearch">&#62; Make drug reservation</v-btn>
+                    </div>
                 </div>
             </div>
             <div id="uhome-panel">
                 <div id="panel-container">
                     <v-card tile>
-                        <v-card-title class="primary white--text">Active appointments</v-card-title>
+                        <v-card-title class="primary white--text">Appointments and consults</v-card-title>
                         <v-card-text>
                             <div id="active-app-container">
                                 <v-sheet height="64">
