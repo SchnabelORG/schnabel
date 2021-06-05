@@ -35,5 +35,6 @@ public interface IAppointmentService extends IJpaService<Appointment, Long> {
     PagedModel<AppointmentDTO> findConsultByPatientId(Long patientId, Pageable pageable);
 
     Boolean makeNewAppAsPharmacist(NewAppointmentDTO newAppointment, Patient patient);
+    PagedModel<AppointmentDTO> findFreeDermatologistAppointmentsByPharmacy(Long pharmacyId, Pageable pageable);
 }
 

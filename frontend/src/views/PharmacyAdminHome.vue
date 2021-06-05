@@ -13,7 +13,7 @@
             <div id="footer-main">
             <div id="footer-title">
                 <h3 class="primary--text">Schnabel</h3>
-                <p class="info--text">Avarage grade: {{this.pharmacy.score}}</p>
+                <p class="info--text">The pharmacy that cares for the wellbeing of you and your family.</p>
             </div>
             </div>
 
@@ -22,12 +22,11 @@
                 <h4 class="primary--text">Employees</h4>
                 <div class="footer-divider"></div>
                 <ul class="footer-column-list unstyled-list">
-                <li><router-link to="/pharmacyadmin/dermatologistsearch">Search dermatologists</router-link></li>
-                <li><router-link to="/pharmacyadmin/dermatologist">Dermatologists</router-link></li>
                 <li><router-link to="/pharmacyadmin/pharmacistsearch">Search pharmacists</router-link></li>
                 <li><router-link to="/pharmacyadmin/pharmacist">Pharmacists</router-link></li>
+                <li><router-link to="/pharmacyadmin/dermatologistsearch">Search dermatologists</router-link></li>
+                <li><router-link to="/pharmacyadmin/dermatologist">Dermatologists</router-link></li>
                 <li><router-link to="/pharmacyadmin/vacation">Vacations</router-link></li>
-                <li><router-link to="/pharmacyadmin/defineappointment">Define appointment</router-link></li>
                 </ul>
             </div>
             <div class="footer-column">
@@ -36,11 +35,36 @@
                 <ul class="footer-column-list unstyled-list">
                 <li><router-link to="/pharmacyadmin/drug">Drugs</router-link></li>
                 <li><router-link to="/pharmacyadmin/pricelist">Pricelist</router-link></li>
-                <li><router-link to="/pharmacyadmin/makeorder">New order</router-link></li>
                 <li><router-link to="/pharmacyadmin/order">Orders</router-link></li>
+                <li><router-link to="/pharmacyadmin/makeorder">New order</router-link></li>
                 <li><router-link to="/pharmacyadmin/promotion">New promotion</router-link></li>
+
                 </ul>
             </div>
+            <div class="footer-column">
+                <h4 class="primary--text">Appointments</h4>
+                <div class="footer-divider"></div>
+                <ul class="footer-column-list unstyled-list">
+                <li><router-link to="/pharmacyadmin/defineappointment">Define appointment</router-link></li>
+                <li><router-link to="/pharmacyadmin/freedermatologistappointment">Free dermatologist appointments</router-link></li>
+                </ul>
+            </div>
+             <div class="footer-column">
+            <h4 class="primary--text">General info</h4>
+            <div class="footer-divider"></div>
+            <div id="contact-info">
+                <div class="space-between info--text">
+                    <i class="fa fa-diamond" aria-hidden="true"></i>
+                    <span>Avarage grade: {{this.pharmacy.score}}</span>
+                </div>
+                <div class="space-between info--text">
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    <span> {{this.pharmacy.address.street}} {{this.pharmacy.address.streetNo}}, {{this.pharmacy.address.city}}</span>
+                </div>
+                <div class="space-between info--text">
+                </div>
+            </div>
+          </div>
             </div>
         </div>
         </div>

@@ -110,4 +110,9 @@ public class AppointmentController {
         return  ResponseEntity.ok(isSuccess);
     }
 
+    @GetMapping("/dermatology/pharmacy/{id}")
+    public ResponseEntity<PagedModel<AppointmentDTO>> getDermatologicalApptsByPharmacy(@PathVariable("id") Long id, Pageable pageable) {
+        return new ResponseEntity<>(service.findFreeDermatologistAppointmentsByPharmacy(id, pageable), HttpStatus.OK);
+    }
+
 }

@@ -246,6 +246,7 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
     }
 
     @Override
+    @Transactional
     public PagedModel<AppointmentDTO> findFreeDermatologistAppointments(Pageable pageable) {
         try{
             Page<Appointment> appointments = repository.findFreeDermatologistAppointments(pageable);
@@ -299,6 +300,18 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
     public PagedModel<AppointmentDTO> findConsultByPatientId(Long patientId, Pageable pageable) {
         Page<Appointment> consults = repository.findConsultByPatientId(patientId, pageable);
         return pageAsm.toModel(consults, dtoAsm);
+    }
+
+    @Override
+    @Transactional
+    public PagedModel<AppointmentDTO> findFreeDermatologistAppointmentsByPharmacy(Long pharmacyId, Pageable pageable)
+    {
+        try{
+            Page<Appointment> appointments = repository.findFreeDermatologistAppointmentsByPharmacy(pharmacyId, pageable);
+            return pageAsm.toModel(appointments, dtoAsm);
+        } catch (NoResultException ignore) {
+            return PagedModel.empty();
+        }
     }
 
 }

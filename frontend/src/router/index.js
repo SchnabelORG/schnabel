@@ -287,6 +287,11 @@ const routes = [
         name: 'PharmacyAdminDermatologistSearch',
         component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminDermatologistSearch.vue'),
       },
+      {
+        path: 'freedermatologistappointment',
+        name: 'PharmacyAdminFreeAppointments',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminFreeAppointments.vue'),
+      },
     ],
   },
 ]
