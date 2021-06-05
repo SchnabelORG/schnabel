@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -79,5 +80,10 @@ public class GradeController
     @GetMapping("patient/gradeable_drugs")
     public ResponseEntity<PagedModel<DrugDTO>> getGradeableDrugs(@RequestHeader("Authorization") String auth, Pageable pageable) {
         return ResponseEntity.ok(drugService.findGradeable(auth, pageable));
+    }
+    
+    @GetMapping("pharmacy/avarage/{id}")
+    public ResponseEntity<Double> getPharmacyAvarageGrade(@PathVariable("id") Long pharmacyId) {
+        return ResponseEntity.ok(pharmacyService.findAvg(pharmacyId));
     }
 }

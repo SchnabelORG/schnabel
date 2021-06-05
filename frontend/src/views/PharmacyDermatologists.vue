@@ -35,8 +35,13 @@
         },
         methods: {
             getDermatologists: function() {
-                
-
+                this.axios.get("api/dermatologist/pharmacy/1")
+                    .then(response => {
+                        this.dermatologists = response.data._embedded.dermatologists;
+                    })
+                    .catch(response => {
+                        console.log("Failed to get dermatologists", response.data);
+                    });
             },
         },
         mounted() {

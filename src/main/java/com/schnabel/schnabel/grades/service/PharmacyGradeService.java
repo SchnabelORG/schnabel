@@ -86,4 +86,10 @@ public class PharmacyGradeService extends JpaService<PharmacyGrade, Long, IPharm
 		}
 		return pharmacyService.findGradeable(patient.get().getId(), pageable);
 	}
+
+	@Override
+	public double findAvg(Long pharmacyId)
+	{
+		return repository.findAvg(pharmacyId);
+	}
 }
