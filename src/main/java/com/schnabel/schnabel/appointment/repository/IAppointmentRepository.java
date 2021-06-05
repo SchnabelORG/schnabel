@@ -36,7 +36,7 @@ public interface IAppointmentRepository extends JpaRepository<Appointment, Long>
     Page<Appointment> findFreeDermatologistAppointments(Pageable pageable);
     Page<Appointment> findByPatientId(Long patientId, Pageable pageable);
 
-    @Query(value = "SELECT a.id, a.price, a.start_time, a.end_time, a.free, a.medical_employee_id, a.pharmacy_id, a.patient_id"
+    @Query(value = "SELECT a.*"
         + " FROM appointments a"
         + " INNER JOIN dermatologists"
         + " ON a.medical_employee_id = dermatologists.id AND a.patient_id = :patient_id",
@@ -51,4 +51,26 @@ public interface IAppointmentRepository extends JpaRepository<Appointment, Long>
             + " AND a.end_time >= :end",
         nativeQuery = true)
     boolean checkIfExists(@Param("pharmacy_id") Long pharmacyId, @Param("pharmacist_id") Long pharmacistId, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+    @Query(value = "SELECT a.*"
+        + " FROM appointments a"
+        + " WHERE a.patient_id = :patient_id"
+        + " AND a.end_time <= CURRENT_TIMESTAMP",
+        nativeQuery = true)
+    Page<Appointment> findDermHistory(@Param("patient_id") Long patientId, Pageable pageable);
+
+    @Query(value = "SELECT a.*"
+        + " FROM appointments a"
+        + " WHERE a.patient_id = :patient_id"
+        + " AND a.end_time <= CURRENT_TIMESTAMP",
+        nativeQuery = true)
+    Page<Appointment> findConsultHistory(@Param("patient_id") Long patientId, Pageable pageable);
+
+    @Query(value = "SELECT a.*"
+        + " FROM pharmacists p"
+        + " INNER JOIN appointments a"
+        + " ON p.id = a.medical_employee_id"
+        + " WHERE a.patient_id = :patient_id",
+        nativeQuery = true)
+    Page<Appointment> findConsultByPatientId(@Param("patient_id") Long patientId, Pageable pageable);
 }

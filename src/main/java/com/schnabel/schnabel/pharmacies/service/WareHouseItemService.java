@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.pharmacies.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,7 +60,7 @@ public class WareHouseItemService extends JpaService<WareHouseItem, Long, IWareH
 
     @Override
     public Optional<WareHouseItem> findWareHouseItemByPharmacyAndDrugId(Long drugId, Long pharmacyId) {
-        Optional<WareHouseItem> wareHouseItem = repository.findByPharmacyIdAndDrugId(drugId, pharmacyId);
+        Optional<WareHouseItem> wareHouseItem = repository.findByPharmacyIdAndDrugId(pharmacyId, drugId);
         return wareHouseItem;
     }
 

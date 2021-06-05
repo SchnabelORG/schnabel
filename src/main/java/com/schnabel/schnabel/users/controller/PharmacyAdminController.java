@@ -39,15 +39,13 @@ public class PharmacyAdminController
 {
     private final IPharmacyAdminService pharmacyAdminService;
     private final PharmacyAdminDTOAssembler pharmacyAdminDTOAsm;
-    private final PagedResourcesAssembler<PharmacyAdmin> pharmacyAdminPageAsm;
     private final JwtUtils jwtUtils;
 
     @Autowired
-    public PharmacyAdminController(IPharmacyAdminService pharmacyAdminService, PharmacyAdminDTOAssembler pharmacyAdminDTOAsm, PagedResourcesAssembler<PharmacyAdmin> pharmacyAdminPageAsm, JwtUtils jwtUtils)
+    public PharmacyAdminController(IPharmacyAdminService pharmacyAdminService, PharmacyAdminDTOAssembler pharmacyAdminDTOAsm, JwtUtils jwtUtils)
     {
         this.pharmacyAdminService = pharmacyAdminService;
         this.pharmacyAdminDTOAsm = pharmacyAdminDTOAsm;
-        this.pharmacyAdminPageAsm = pharmacyAdminPageAsm;
         this.jwtUtils = jwtUtils;
     }
 

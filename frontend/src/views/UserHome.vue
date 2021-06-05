@@ -1,8 +1,8 @@
 <template>
-    <div id="uhome-main" class="secondary">
-        <main-navigation>
+    <div id="uhome-main" class="info">
+        <search-navigation>
             <router-link to="/">Home</router-link>
-        </main-navigation>
+        </search-navigation>
         <div id="uhome-container">
             <div id="uhome-info">
                 <div id="info-container">
@@ -17,32 +17,23 @@
                             <router-link to="/user/about">Profile info</router-link>
                         </div>
                     </div>
+                    <div class="info-card">
+                      <h3 class="info--text">Appointments</h3>
+                      <div class="d-flex flex-column align-start">
+                        <v-btn plain to="/consult">&#62; Schedule a consult</v-btn>
+                        <v-btn plain to="/pharmacysearch">&#62; Schedule a derm. appt.</v-btn>
+                      </div>
+                    </div>
+                    <div class="info-card">
+                      <h3 class="info--text">Drugs</h3>
+                        <v-btn plain to="/drugsearch">&#62; Make drug reservation</v-btn>
+                    </div>
                 </div>
             </div>
             <div id="uhome-panel">
                 <div id="panel-container">
                     <v-card tile>
-                        <v-card-title class="primary white--text">
-                            Pharmacies
-                        </v-card-title>
-                        <v-card-text>
-                            <v-text-field
-                            v-model="pharmacySearch"
-                            label="Search"
-                            append-icon="fa-search"
-                            single-line
-                            hide-details
-                            />
-                            <v-data-table
-                            :headers="pharmacyHeaders"
-                            :items="pharmacies"
-                            :items-per-page="5"
-                            :search="pharmacySearch">
-                            </v-data-table>
-                        </v-card-text>
-                    </v-card>
-                    <v-card tile>
-                        <v-card-title class="primary white--text">Active appointments</v-card-title>
+                        <v-card-title class="primary white--text">Appointments and consults</v-card-title>
                         <v-card-text>
                             <div id="active-app-container">
                                 <v-sheet height="64">
@@ -65,7 +56,7 @@
                                       @click="prev"
                                     >
                                       <v-icon small>
-                                        mdi-chevron-left
+                                        fa-angle-left
                                       </v-icon>
                                     </v-btn>
                                     <v-btn
@@ -76,7 +67,7 @@
                                       @click="next"
                                     >
                                       <v-icon small>
-                                        mdi-chevron-right
+                                        fa-angle-right
                                       </v-icon>
                                     </v-btn>
                                     <v-toolbar-title v-if="$refs.calendar">
@@ -96,7 +87,7 @@
                                         >
                                           <span>{{ typeToLabel[type] }}</span>
                                           <v-icon right>
-                                            mdi-menu-down
+                                            fa-angle-down
                                           </v-icon>
                                         </v-btn>
                                       </template>
@@ -241,6 +232,9 @@
                             :items="drugReservations"
                             :items-per-page="5"
                             :search="drugReservationSearch">
+                            <template v-slot:item.cancel="props">
+                              <v-btn :disabled="!isCancellable(new Date(props.item.endOfReservation))" plain @click="cancelDrugReservation(props.item)">Cancel</v-btn>
+                            </template>
                             </v-data-table>
                         </v-card-text>
                     </v-card>
@@ -262,13 +256,23 @@
 export default {
     data() {
         return {
+          //
           drugReservations: [],
           drugReservationSearch: '',
           drugReservationHeaders: [
-
+            { text: 'Reserved date', value: 'reservationDate' },
+            { text: 'Pickup date', value: 'endOfReservation' },
+            { text: 'Status', value: 'status' },
+            { text: '', value: 'cancel'},
           ],
           //
-          ePresc: [],
+          ePresc: [
+            { med: 'Cyclopentanoperhydrophenanthrene' ,date: '2021-05-10', status: 'Parsed' },
+            { med: 'Vicodin' ,date: '2021-05-29', status: 'Rejected' },
+            { med: 'Vicodin' ,date: '2021-06-1', status: 'Rejected' },
+            { med: 'Cyclomicin' ,date: '2021-06-3', status: 'New' },
+            { med: 'Vicodin' ,date: '2021-06-4', status: 'New' },
+          ],
           ePrescSearch: '',
           ePrescHeaders: [
             { text: 'Date', value: 'date' },
@@ -279,16 +283,20 @@ export default {
           dermApptHistorySearch: '',
           dermApptHistoryHeaders: [
             { text: 'Date', value: 'date' },
+            { text: 'Start', value: 'start' }, 
             { text: 'Price', value: 'price' },
-            { text: 'Duration', value: 'duration' },
+            { text: 'Duration (min.)', value: 'duration' },
+            { text: 'Derm.', value: 'medicalEmployee.name' },
           ],
           //
           consultHistory: [],
           consultHistorySearch: '',
           consultHistoryHeaders: [
             { text: 'Date', value: 'date' },
+            { text: 'Start', value: 'start' },
             { text: 'Price', value: 'price' },
-            { text: 'Duration', value: 'duration' },
+            { text: 'Duration (min.)', value: 'duration' },
+            { text: 'Pharmacist', value: 'medicalEmployee.name' },
           ],
           //
             focus: '',
@@ -327,11 +335,93 @@ export default {
     },
 
     methods: {
+        cancelDrugReservation: function(item) {
+          this.refreshToken()
+            .then(rr => {
+              localStorage.jws = rr.data;
+              this.axios.delete('api/dreservation/' + item.id, {headers: this.getAHeader()})
+                .then(() => this.getDrugHistory())
+            }).catch(() => this.$router.push('/'));
+        },
+
+        getConsultAppts: function() {
+          this.refreshToken()
+            .then(rr => {
+              localStorage.jws = rr.data;
+              this.axios.get('api/patient/consult', {headers: this.getAHeader()})
+                .then(r => {
+                  if(r.data._embedded) {
+                    r.data._embedded.appointments.forEach(a => {
+                        let startDate = this.getDateTimeFromString(a.date, a.start);
+                        this.events.push({
+                            name: 'Pharm. consult.',
+                            start: startDate,
+                            end: new Date(startDate.getTime() + a.duration * 60000),
+                            color: this.colors[0],
+                            timed: true,
+                            appt: a,
+                        });
+                    });
+                    this.$refs.calendar.checkChange()
+                  }
+                })
+            })
+        },
+
+        getDrugHistory: function() {
+          this.refreshToken()
+            .then(rr => {
+              localStorage.jws = rr.data;
+              this.axios.get('api/dreservation/patient', {headers: this.getAHeader()})
+                .then(r => {
+                  if(r.data._embedded) {
+                    this.drugReservations = r.data._embedded.drugs_reservations;
+                    this.drugReservations.forEach(dr => {
+                      dr.reservationDate = dr.reservationDate.substr(0, 10);
+                      dr.endOfReservation = dr.endOfReservation.substr(0, 10);
+                      dr.status = dr.taken ? 'Picked up' : 'Not picked up';
+                    });
+                  } else {
+                    this.drugReservations = [];
+                  }
+                })
+            })
+        },
+
+        getConsultHistory: function() {
+          this.refreshToken()
+            .then(rr => {
+              localStorage.jws = rr.data;
+              this.axios.get('api/appointment/patient/consult', {headers: this.getAHeader()})
+                .then(r => {
+                  if(r.data._embedded) {
+                    this.consultHistory = r.data._embedded.appointments;
+                  } else {
+                    this.consultHistory = [];
+                  }
+                })
+            }).catch(() => this.$router.push('/'));
+        },
+
+        getDermHistory: function() {
+          this.refreshToken()
+            .then(rr => {
+              localStorage.jws = rr.data;
+              this.axios.get('api/appointment/patient/dermatology', {headers: this.getAHeader()})
+                .then(r => {
+                  if(r.data._embedded) {
+                    this.dermApptHistory = r.data._embedded.appointments;
+                  } else {
+                    this.dermApptHistory = [];
+                  }
+                })
+            }).catch(() => this.$router.push('/'));
+        },
 
         getAppointments: function() {
             this.events = [];
             this.getDermAppts();
-            // TODO(Jovan): Get pharmacy appointments
+            this.getConsultAppts();
         },
 
         addDaysToDate: function(date, days) {
@@ -487,17 +577,21 @@ export default {
 
     mounted() {
         this.getUser();
-        this.$refs.calendar.checkChange()
         this.getPharmacies();
         this.getAppointments();
+        this.getDermHistory();
+        this.getConsultHistory();
+        this.getDrugHistory();
+        this.$refs.calendar.checkChange()
     },
 }
 </script>
 
 <style scoped>
-    #uhome-main {
-        /* background: #dedede; */
-    }
+
+  #uhome-main {
+    /* background: #eee */
+  }
 
     #uhome-container {
         display: flex;

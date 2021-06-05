@@ -1,11 +1,16 @@
 <template>
-    <div id="search-main">
+    <div>
+        <main-navigation>
+            <router-link to="/">Home</router-link>
+        </main-navigation>
+    <div id="search-main" class="info">
         <div id="search-container">
-            <p>Buy meds</p>
-            <h2>Find your drug and reserve it</h2>
+            <!-- <p>Buy meds</p>
+            <h2>Find your drug and reserve it</h2> -->
             <div v-if="success" id="success-form">
                 <p id="success-icon"><i class="fa fa-check"></i></p>
                 <p>Drug reserved!</p>
+                <v-btn plain @click="steps = 1; success=false" color="accent">Reserve another drug</v-btn>
             </div>
             <v-stepper
             v-else
@@ -51,6 +56,9 @@
                                     <v-card-text>
                                         <p>{{drug.description}}</p>
                                     </v-card-text>
+                                    <v-card-actions>
+                                        <v-btn plain>&#62;</v-btn>
+                                    </v-card-actions>
                                 </v-card>
                             </div>
                         </div>
@@ -74,6 +82,7 @@
                             <div id="date-and-amount">
                                 <div>
                                 <v-date-picker
+                                full-width
                                 v-model="resDate"
                                 :min="new Date().toISOString().substr(0, 10)">
                                 </v-date-picker>
@@ -128,6 +137,7 @@
                 </v-stepper-items>
             </v-stepper>
         </div>
+    </div>
     </div>
 </template>
 
@@ -233,9 +243,12 @@ export default {
                                 this.drugs = [];
                             }
                         })
-                })
-                .catch(() => this.router.push("/"));
+                }).catch(() => this.$router.push("/"));
         },
+    },
+
+    mounted() {
+        this.searchDrugs();
     },
 }
 </script>
@@ -245,7 +258,7 @@ export default {
     #search-main {
         display: grid;
         place-items: center;
-        height: 100vh;
+        height: 92vh;
         background: #fafafa;
     }
 
@@ -267,8 +280,9 @@ export default {
     }
 
     .result {
-        display: flex;
-        flex-direction: row;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        place-items: center;
     }
 
     #date-and-amount {

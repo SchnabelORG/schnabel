@@ -159,4 +159,13 @@ public class PatientService extends JpaService<Patient, Long, IPatientRepository
         return repository.hasPickedUpDrug(patientId, drugId);
     }
 
+    @Override
+    public PagedModel<AppointmentDTO> findConsults(String email, Pageable pageable) {
+        Optional<Patient> patient = findByEmail(email);
+        if(!patient.isPresent()) {
+            return PagedModel.empty();
+        }
+        return appointmentService.findConsultByPatientId(patient.get().getId(), pageable);
+    }
+
 }

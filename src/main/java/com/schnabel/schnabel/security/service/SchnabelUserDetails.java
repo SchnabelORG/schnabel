@@ -23,7 +23,6 @@ import lombok.EqualsAndHashCode;
 public class SchnabelUserDetails implements UserDetails {
 
     private Long id;
-    // @JsonIgnore
     private String password;
     private String email;
     private Collection<? extends GrantedAuthority> authorities;

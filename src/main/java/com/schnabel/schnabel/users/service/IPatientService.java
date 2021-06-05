@@ -12,6 +12,7 @@ import com.schnabel.schnabel.users.model.Patient;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
+
 /**
  * Patient service interface
  */
@@ -29,4 +30,5 @@ public interface IPatientService extends IJpaService<Patient, Long>
     boolean isAllowedToGradePharmacy(Long patientId, Long pharmacyId);
     boolean isAllowedToGradeEmployee(Long patientId, Long employeeId);
     boolean isAllowedToGradeDrug(Long patientId, Long drugId);
+    PagedModel<AppointmentDTO> findConsults(String email, Pageable pageable);
 }
