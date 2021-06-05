@@ -26,226 +26,267 @@
                     </div>
                     <div class="info-card">
                       <h3 class="info--text">Drugs</h3>
-                        <v-btn plain to="/drugsearch">&#62; Make drug reservation</v-btn>
+                      <v-btn plain to="/drugsearch">&#62; Make drug reservation</v-btn>
+                    </div>
+                    <div class="info-card">
+                      <h3 class="info--text">Feedback</h3>
+                      <div class="d-flex flex-column align-start">
+                        <v-btn plain to="/rating">&#62; Leave a rating</v-btn>
+                        <v-btn plain to="/">&#62; Submit a complaint</v-btn>
+                      </div>
                     </div>
                 </div>
             </div>
             <div id="uhome-panel">
                 <div id="panel-container">
-                    <v-card tile>
-                        <v-card-title class="primary white--text">Appointments and consults</v-card-title>
-                        <v-card-text>
-                            <div id="active-app-container">
-                                <v-sheet height="64">
-                                  <v-toolbar
-                                    flat
-                                  >
-                                    <v-btn
-                                      outlined
-                                      class="mr-4"
-                                      color="grey darken-2"
-                                      @click="setToday"
-                                    >
-                                      Today
-                                    </v-btn>
-                                    <v-btn
-                                      fab
-                                      text
-                                      small
-                                      color="grey darken-2"
-                                      @click="prev"
-                                    >
-                                      <v-icon small>
-                                        fa-angle-left
-                                      </v-icon>
-                                    </v-btn>
-                                    <v-btn
-                                      fab
-                                      text
-                                      small
-                                      color="grey darken-2"
-                                      @click="next"
-                                    >
-                                      <v-icon small>
-                                        fa-angle-right
-                                      </v-icon>
-                                    </v-btn>
-                                    <v-toolbar-title v-if="$refs.calendar">
-                                      {{ $refs.calendar.title }}
-                                    </v-toolbar-title>
-                                    <v-spacer></v-spacer>
-                                    <v-menu
-                                      bottom
-                                      right
-                                    >
-                                      <template v-slot:activator="{ on, attrs }">
-                                        <v-btn
-                                          outlined
-                                          color="grey darken-2"
-                                          v-bind="attrs"
-                                          v-on="on"
-                                        >
-                                          <span>{{ typeToLabel[type] }}</span>
-                                          <v-icon right>
-                                            fa-angle-down
-                                          </v-icon>
-                                        </v-btn>
-                                      </template>
-                                      <v-list>
-                                        <v-list-item @click="type = 'day'">
-                                          <v-list-item-title>Day</v-list-item-title>
-                                        </v-list-item>
-                                        <v-list-item @click="type = 'week'">
-                                          <v-list-item-title>Week</v-list-item-title>
-                                        </v-list-item>
-                                        <v-list-item @click="type = 'month'">
-                                          <v-list-item-title>Month</v-list-item-title>
-                                        </v-list-item>
-                                      </v-list>
-                                    </v-menu>
-                                  </v-toolbar>
-                                </v-sheet>
-                                <v-sheet height="600">
-                                  <v-calendar
-                                    ref="calendar"
-                                    v-model="focus"
-                                    color="primary"
-                                    :events="events"
-                                    :event-color="getEventColor"
-                                    :type="type"
-                                    @click:event="showEvent"
-                                    @click:more="viewDay"
-                                    @click:date="viewDay"
-                                  ></v-calendar>
-                                  <v-menu
-                                    v-model="selectedOpen"
-                                    :close-on-content-click="false"
-                                    :activator="selectedElement"
-                                    offset-x
-                                  >
-                                    <v-card
-                                      color="grey lighten-4"
-                                      min-width="350px"
+                  <v-tabs
+                  grow
+                  slider-color="accent"
+                  v-model="tabs">
+                    <v-tab>Overview</v-tab>
+                    <v-tab>Appointments</v-tab>
+                    <v-tab>Drugs</v-tab>
+                    <v-tab>Subscriptions & e-prescriptions</v-tab>
+                  </v-tabs>
+                  <v-tabs-items
+                  v-model="tabs">
+                    <v-tab-item>
+                      <v-card tile>
+                          <v-card-title class="primary white--text">Appointments and consults</v-card-title>
+                          <v-card-text>
+                              <div id="active-app-container">
+                                  <v-sheet height="64">
+                                    <v-toolbar
                                       flat
                                     >
-                                      <v-toolbar
-                                        :color="selectedEvent.color"
-                                        dark
+                                      <v-btn
+                                        outlined
+                                        class="mr-4"
+                                        color="grey darken-2"
+                                        @click="setToday"
                                       >
-                                        <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-                                      </v-toolbar>
-                                      <v-card-text id="appt-preview-container">
-                                        <div id="appt-preview">
-                                            <p class="info--text">Start:</p>
-                                            <p>{{selectedEvent.appt.start}}</p>
-                                            <p class="info--text">Duration:</p>
-                                            <p>{{selectedEvent.appt.duration}} min</p>
-                                        </div>
-                                        <div id="appt-preview-emp">
-                                            <v-img src="../assets/placeholder-profile-sq.jpg" height="64px" width="64px"></v-img>
-                                            <p>{{selectedEvent.appt.medicalEmployee.name}}</p>
-                                            <p><span class="info--text">Rating: </span>{{selectedEvent.appt.dermatologistRating}}</p>
-                                        </div>
-                                      </v-card-text>
-                                      <v-card-actions>
-                                        <v-btn
-                                          text
-                                          color="accent"
-                                          @click="cancelAppt"
-                                          :disabled="!isCancellable(selectedEvent.start)"
+                                        Today
+                                      </v-btn>
+                                      <v-btn
+                                        fab
+                                        text
+                                        small
+                                        color="grey darken-2"
+                                        @click="prev"
+                                      >
+                                        <v-icon small>
+                                          fa-angle-left
+                                        </v-icon>
+                                      </v-btn>
+                                      <v-btn
+                                        fab
+                                        text
+                                        small
+                                        color="grey darken-2"
+                                        @click="next"
+                                      >
+                                        <v-icon small>
+                                          fa-angle-right
+                                        </v-icon>
+                                      </v-btn>
+                                      <v-toolbar-title v-if="$refs.calendar">
+                                        {{ $refs.calendar.title }}
+                                      </v-toolbar-title>
+                                      <v-spacer></v-spacer>
+                                      <v-menu
+                                        bottom
+                                        right
+                                      >
+                                        <template v-slot:activator="{ on, attrs }">
+                                          <v-btn
+                                            outlined
+                                            color="grey darken-2"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                          >
+                                            <span>{{ typeToLabel[type] }}</span>
+                                            <v-icon right>
+                                              fa-angle-down
+                                            </v-icon>
+                                          </v-btn>
+                                        </template>
+                                        <v-list>
+                                          <v-list-item @click="type = 'day'">
+                                            <v-list-item-title>Day</v-list-item-title>
+                                          </v-list-item>
+                                          <v-list-item @click="type = 'week'">
+                                            <v-list-item-title>Week</v-list-item-title>
+                                          </v-list-item>
+                                          <v-list-item @click="type = 'month'">
+                                            <v-list-item-title>Month</v-list-item-title>
+                                          </v-list-item>
+                                        </v-list>
+                                      </v-menu>
+                                    </v-toolbar>
+                                  </v-sheet>
+                                  <v-sheet height="600">
+                                    <v-calendar
+                                      ref="calendar"
+                                      v-model="focus"
+                                      color="primary"
+                                      :events="events"
+                                      :event-color="getEventColor"
+                                      :type="type"
+                                      @click:event="showEvent"
+                                      @click:more="viewDay"
+                                      @click:date="viewDay"
+                                    ></v-calendar>
+                                    <v-menu
+                                      v-model="selectedOpen"
+                                      :close-on-content-click="false"
+                                      :activator="selectedElement"
+                                      offset-x
+                                    >
+                                      <v-card
+                                        color="grey lighten-4"
+                                        min-width="350px"
+                                        flat
+                                      >
+                                        <v-toolbar
+                                          :color="selectedEvent.color"
+                                          dark
                                         >
-                                          Cancel
-                                        </v-btn>
-                                      </v-card-actions>
-                                    </v-card>
-                                  </v-menu>
-                                </v-sheet>
-                            </div>
-                        </v-card-text>
-                    </v-card>
+                                          <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                                        </v-toolbar>
+                                        <v-card-text id="appt-preview-container">
+                                          <div id="appt-preview">
+                                              <p class="info--text">Start:</p>
+                                              <p>{{selectedEvent.appt.start}}</p>
+                                              <p class="info--text">Duration:</p>
+                                              <p>{{selectedEvent.appt.duration}} min</p>
+                                          </div>
+                                          <div id="appt-preview-emp">
+                                              <v-img src="../assets/placeholder-profile-sq.jpg" height="64px" width="64px"></v-img>
+                                              <p>{{selectedEvent.appt.medicalEmployee.name}}</p>
+                                              <p><span class="info--text">Rating: </span>{{selectedEvent.appt.dermatologistRating}}</p>
+                                          </div>
+                                        </v-card-text>
+                                        <v-card-actions>
+                                          <v-btn
+                                            text
+                                            color="accent"
+                                            @click="cancelAppt"
+                                            :disabled="!isCancellable(selectedEvent.start)"
+                                          >
+                                            Cancel appointment
+                                          </v-btn>
+                                        </v-card-actions>
+                                      </v-card>
+                                    </v-menu>
+                                  </v-sheet>
+                              </div>
+                          </v-card-text>
+                      </v-card>
+                    </v-tab-item>
+                    <v-tab-item>
+                      <v-card tile>
+                          <v-card-title class="primary white--text">Pharmacist consult history</v-card-title>
+                          <v-card-text>
+                              <v-text-field
+                              v-model="consultHistorySearch"
+                              label="Search"
+                              append-icon="fa-search"
+                              single-line
+                              hide-details
+                              />
+                              <v-data-table
+                              :headers="consultHistoryHeaders"
+                              :items="consultHistory"
+                              :items-per-page="5"
+                              :search="consultHistorySearch">
+                              </v-data-table>
+                          </v-card-text>
+                      </v-card>
+                      <v-card tile>
+                          <v-card-title class="primary white--text">Dermatologist appointment history</v-card-title>
+                          <v-card-text>
+                              <v-text-field
+                              v-model="dermApptHistorySearch"
+                              label="Search"
+                              append-icon="fa-search"
+                              single-line
+                              hide-details
+                              />
+                              <v-data-table
+                              :headers="dermApptHistoryHeaders"
+                              :items="dermApptHistory"
+                              :items-per-page="5"
+                              :search="dermApptHistorySearch">
+                              </v-data-table>
+                          </v-card-text>
+                      </v-card>
+                    </v-tab-item>
+                    <v-tab-item>
+                      <v-card tile>
+                          <v-card-title class="primary white--text">Drug reservations</v-card-title>
+                          <v-card-text>
+                              <v-text-field
+                              v-model="drugReservationSearch"
+                              label="Search"
+                              append-icon="fa-search"
+                              single-line
+                              hide-details
+                              />
+                              <v-data-table
+                              :headers="drugReservationHeaders"
+                              :items="drugReservations"
+                              :items-per-page="5"
+                              :search="drugReservationSearch">
+                              <template v-slot:item.cancel="props">
+                                <v-btn :disabled="!isCancellable(new Date(props.item.endOfReservation))" plain @click="cancelDrugReservation(props.item)">Cancel</v-btn>
+                              </template>
+                              </v-data-table>
+                          </v-card-text>
+                      </v-card>
+                    </v-tab-item>
+                    <v-tab-item>
+                      <div class="d-flex flex-row justify-space-between">
+                        <v-card tile class="flex-grow-1">
+                            <v-card-title class="primary white--text">E-Prescriptions</v-card-title>
+                            <v-card-text>
+                                <v-text-field
+                                v-model="ePrescSearch"
+                                label="Search"
+                                append-icon="fa-search"
+                                single-line
+                                hide-details
+                                />
+                                <v-data-table
+                                :headers="ePrescHeaders"
+                                :items="ePresc"
+                                :items-per-page="5"
+                                :search="ePrescSearch">
+                                </v-data-table>
+                            </v-card-text>
+                        </v-card>
+                        <v-card tile>
+                            <v-card-title class="primary white--text">E-Prescription drugs</v-card-title>
+                            <v-card-text>
+                              <v-data-table
+                              :headers="eDrugHeaders"
+                              :items="eDrugs">
+
+                              </v-data-table>
+                            </v-card-text>
+                        </v-card>
+                      </div>
                     <v-card tile>
-                        <v-card-title class="primary white--text">Pharmacist consult history</v-card-title>
+                        <v-card-title class="primary white--text">Active pharmacy subscriptions</v-card-title>
                         <v-card-text>
-                            <v-text-field
-                            v-model="consultHistorySearch"
-                            label="Search"
-                            append-icon="fa-search"
-                            single-line
-                            hide-details
-                            />
-                            <v-data-table
-                            :headers="consultHistoryHeaders"
-                            :items="consultHistory"
-                            :items-per-page="5"
-                            :search="consultHistorySearch">
-                            </v-data-table>
+                          <v-data-table
+                          :headers="subHeaders"
+                          :items="subs">
+
+                          </v-data-table>
                         </v-card-text>
                     </v-card>
-                    <v-card tile>
-                        <v-card-title class="primary white--text">Dermatologist appointment history</v-card-title>
-                        <v-card-text>
-                            <v-text-field
-                            v-model="dermApptHistorySearch"
-                            label="Search"
-                            append-icon="fa-search"
-                            single-line
-                            hide-details
-                            />
-                            <v-data-table
-                            :headers="dermApptHistoryHeaders"
-                            :items="dermApptHistory"
-                            :items-per-page="5"
-                            :search="dermApptHistorySearch">
-                            </v-data-table>
-                        </v-card-text>
-                    </v-card>
-                    <v-card tile>
-                        <v-card-title class="primary white--text">E-Prescriptions</v-card-title>
-                        <v-card-text>
-                            <v-text-field
-                            v-model="ePrescSearch"
-                            label="Search"
-                            append-icon="fa-search"
-                            single-line
-                            hide-details
-                            />
-                            <v-data-table
-                            :headers="ePrescHeaders"
-                            :items="ePresc"
-                            :items-per-page="5"
-                            :search="ePrescSearch">
-                            </v-data-table>
-                        </v-card-text>
-                    </v-card>
-                    <v-card tile>
-                        <v-card-title class="primary white--text">Drug reservations</v-card-title>
-                        <v-card-text>
-                            <v-text-field
-                            v-model="drugReservationSearch"
-                            label="Search"
-                            append-icon="fa-search"
-                            single-line
-                            hide-details
-                            />
-                            <v-data-table
-                            :headers="drugReservationHeaders"
-                            :items="drugReservations"
-                            :items-per-page="5"
-                            :search="drugReservationSearch">
-                            <template v-slot:item.cancel="props">
-                              <v-btn :disabled="!isCancellable(new Date(props.item.endOfReservation))" plain @click="cancelDrugReservation(props.item)">Cancel</v-btn>
-                            </template>
-                            </v-data-table>
-                        </v-card-text>
-                    </v-card>
-                    <v-card tile>
-                        <v-card-title>E-Prescription drugs</v-card-title>
-                        <v-card-text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum illo debitis sunt quos recusandae, culpa ducimus magnam qui dicta voluptatibus aperiam similique amet impedit, nostrum consequatur molestias ea reprehenderit sed!</v-card-text>
-                    </v-card>
-                    <v-card tile>
-                        <v-card-title>Active pharmacy subscriptions</v-card-title>
-                        <v-card-text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum illo debitis sunt quos recusandae, culpa ducimus magnam qui dicta voluptatibus aperiam similique amet impedit, nostrum consequatur molestias ea reprehenderit sed!</v-card-text>
-                    </v-card>
+                    </v-tab-item>
+                  </v-tabs-items>
                 </div>
             </div>
         </div>
@@ -256,6 +297,25 @@
 export default {
     data() {
         return {
+          tabs: null,
+          //
+          subHeaders: [
+            { text: 'Pharmacy', value: 'pharmacyName' },
+            { text: 'Valid until', value: 'endTime' },
+          ],
+          subs: [
+            { pharmacyName: 'Liman Schnabel', endTime: '2021-07-02' },
+          ],
+          //
+          eDrugHeaders: [
+            { text: 'Name', value: 'name' },
+            { text: 'Picked up', value: 'pickupDate' },
+          ],
+          eDrugs: [
+            { name: 'Vicodin 5 mg/500 mg', pickupDate: '2021-01-13' },
+            { name: 'Vicodin 5 mg/500 mg', pickupDate: '2021-02-13' },
+            { name: 'Vicodin 5 mg/500 mg', pickupDate: '2021-03-08' },
+          ],
           //
           drugReservations: [],
           drugReservationSearch: '',
@@ -597,6 +657,11 @@ export default {
         display: flex;
         flex-direction: row;
         margin: 20px;
+        min-height: 100vh;
+    }
+
+    #uhome-panel {
+      flex-grow: 1;
     }
 
     #uhome-info {
