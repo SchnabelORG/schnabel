@@ -8,14 +8,14 @@ insert into pharmacies("name", city, postcode, street, street_no, score, consult
 insert into pharmacies("name", city, postcode, street, street_no, score, consult_price) values('Schnabel Grbavica', 'Novi Sad', '21000', 'Aleksa Santica', '2', 3, 3000);
 insert into pharmacies("name", city, postcode, street, street_no, score, consult_price) values('Schnabel Beograd', 'Beograd', '11000', 'Proleterska', '4b', 4, 1570);
 
-insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 20, 1, 1);
-insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 20, 2, 1);
-insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 20, 3, 1);
-insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 20, 4, 1);
-insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 20, 5, 1);
-insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 20, 3, 2);
-insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 20, 4, 2);
-insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 20, 5, 2);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 40, 1, 1);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(40, 40, 2, 1);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 40, 3, 1);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 40, 4, 1);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 40, 5, 1);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 40, 3, 2);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 40, 4, 2);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 40, 5, 2);
 
 insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2021-06-12', '2020-01-01', 1);
 insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(200, '2021-06-20', '2020-01-01', 2);

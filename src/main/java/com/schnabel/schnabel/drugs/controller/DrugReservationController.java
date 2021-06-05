@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
+
+import javax.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("api/dreservation")
@@ -79,12 +82,27 @@ public class DrugReservationController {
     }
 
     @GetMapping("patient")
-    public ResponseEntity<PagedModel<DrugReservationDTO>> getReservationHistor(@RequestHeader("Authorization") String auth, Pageable pageable) {
+    public ResponseEntity<PagedModel<DrugReservationDTO>> getPatientReservations(@RequestHeader("Authorization") String auth, Pageable pageable) {
         String email = jwtUtils.getEmailFromAuth(auth);
         Optional<Patient> patient = patientService.findByEmail(email);
         if(!patient.isPresent()) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(drugReservationService.findHistory(patient.get().getId(), pageable));
+        return ResponseEntity.ok(drugReservationService.findByPatientId(patient.get().getId(), pageable));
     } 
+
+    /**
+     * Cancel drug reservation
+     */
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> cancelReservation(@PathVariable("id") Long resId, @RequestHeader("Authorization") String auth) {
+        String email = jwtUtils.getEmailFromAuth(auth);
+        Optional<Patient> patient = patientService.findByEmail(email);
+        if(!patient.isPresent()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return drugReservationService.cancelReservation(patient.get().getId(), resId) ?
+            ResponseEntity.ok("Cancelled")
+            : ResponseEntity.badRequest().build();
+    }
 }

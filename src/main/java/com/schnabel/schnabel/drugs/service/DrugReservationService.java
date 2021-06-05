@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -66,10 +67,24 @@ public class DrugReservationService extends JpaService<DrugReservation, Long, ID
 
     @Override
     @Transactional
-    public PagedModel<DrugReservationDTO> findHistory(Long patientId, Pageable pageable) {
+    public PagedModel<DrugReservationDTO> findByPatientId(Long patientId, Pageable pageable) {
 
-        Page<DrugReservation> reservations = repository.findHistory(patientId, pageable);
+        Page<DrugReservation> reservations = repository.findByPatientId(patientId, pageable);
         return pageAsm.toModel(reservations, dtoAsm);
+    }
+
+    @Override
+    @Transactional
+    public boolean cancelReservation(Long patientId, Long resId) {
+        Optional<DrugReservation> reservation = get(resId);
+        if(!reservation.isPresent() || !reservation.get().getPatient().getId().equals(patientId)) {
+            return false;
+        }
+        LocalDateTime tomorrow = LocalDateTime.now().plusDays(1);
+        if(reservation.get().getPeriod().getEndTime().compareTo(tomorrow) < 0) {
+            return false;
+        }
+        return remove(reservation.get().getId());
     }
 
 }

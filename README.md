@@ -149,12 +149,12 @@ Status values:
 | 3.9      | User homepage                                     |   ✗    |
 | 3.13     | Dermatologist appointment scheduling as patient   |   ✓    |
 | 3.15     | Cancelling dermatologist appointment              |   ✓    |
-| 3.16     | Pharmacological consultation scheduling           |   ✗    |
-| 3.18     | Cancelling pharmacological consultation           |   ✗    |
+| 3.16     | Pharmacological consultation scheduling           |   ✓    |
+| 3.18     | Cancelling pharmacological consultation           |   ✓    |
 | 3.19     | Medical drug reservation                          |   ✓    |
-| 3.20     | Cancelling drug reservation                       |   ✗    |
+| 3.20     | Cancelling drug reservation                       |   ✓    |
 | 3.31     | Pharmacy search and filtering                     |   ✓    |
-| 3.41     | Rating system                                     |   ✗    |
+| 3.41     | Rating system                                     |   ✓    |
 
 **Kristian Farkaš**
 

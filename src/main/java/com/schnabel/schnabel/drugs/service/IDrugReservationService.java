@@ -18,5 +18,6 @@ import java.util.Optional;
 public interface IDrugReservationService extends IJpaService<DrugReservation, Long> {
     Optional<DrugReservationDTO> getDTO(Long id);
     boolean reserveDrug(DrugReservationRequest req, Patient patient);
-    PagedModel<DrugReservationDTO> findHistory(Long patientId, Pageable pageable);
+    PagedModel<DrugReservationDTO> findByPatientId(Long patientId, Pageable pageable);
+    boolean cancelReservation(Long patientId, Long resId);
 }

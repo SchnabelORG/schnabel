@@ -232,6 +232,9 @@
                             :items="drugReservations"
                             :items-per-page="5"
                             :search="drugReservationSearch">
+                            <template v-slot:item.cancel="props">
+                              <v-btn :disabled="!isCancellable(new Date(props.item.endOfReservation))" plain @click="cancelDrugReservation(props.item)">Cancel</v-btn>
+                            </template>
                             </v-data-table>
                         </v-card-text>
                     </v-card>
@@ -260,6 +263,7 @@ export default {
             { text: 'Reserved date', value: 'reservationDate' },
             { text: 'Pickup date', value: 'endOfReservation' },
             { text: 'Status', value: 'status' },
+            { text: '', value: 'cancel'},
           ],
           //
           ePresc: [
@@ -331,6 +335,15 @@ export default {
     },
 
     methods: {
+        cancelDrugReservation: function(item) {
+          this.refreshToken()
+            .then(rr => {
+              localStorage.jws = rr.data;
+              this.axios.delete('api/dreservation/' + item.id, {headers: this.getAHeader()})
+                .then(() => this.getDrugHistory())
+            }).catch(() => this.$router.push('/'));
+        },
+
         getConsultAppts: function() {
           this.refreshToken()
             .then(rr => {
