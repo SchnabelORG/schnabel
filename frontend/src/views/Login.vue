@@ -60,7 +60,7 @@ export default {
                 .then(r => {
                     this.$store.state.jws = r.data;
 
-                    //window.localStorage.jwt = r.data;
+                    window.localStorage.jwt = r.data;
                     // this.$router.push("pharmacist");
 
                     // this.$store.state.jws = r.data;
