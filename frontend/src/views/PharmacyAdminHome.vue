@@ -2,13 +2,7 @@
     <div id="main-home">
         <div id="cover-home">
         <div id="cover-text">
-            <h2 id="cover-header">Centralized pharmacies information system</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur facilis facere aut expedita delectus ducimus natus, obcaecati nihil sapiente!</p>
-            <div>
-            <router-link to="" v-slot="{href, navigate}">
-                <v-btn color="accent" :href="href" @click="navigate" elevation="1">View reports</v-btn>
-            </router-link>
-            </div>
+            <h2 id="cover-header">Pharmacy {{this.pharmacy.name}}</h2>
         </div>
         <img src="../assets/plaguedoctorcovid.png">
         </div>
@@ -19,7 +13,7 @@
             <div id="footer-main">
             <div id="footer-title">
                 <h3 class="primary--text">Schnabel</h3>
-                <p class="info--text">Ipsum animi fugiat ab suscipit quidem obcaecati, repellendus ipsa alias, deserunt deleniti voluptas dicta distinctio dolore recusandae rem dignissimos laudantium perferendis. Sunt!</p>
+                <p class="info--text">Avarage grade: {{this.pharmacy.score}}</p>
             </div>
             </div>
 
@@ -48,15 +42,85 @@
             </div>
         </div>
         </div>
-    </div>
+        <div>
+        <vl-map :load-tiles-while-animating="true" :load-tiles-while-interacting="true"
+                data-projection="EPSG:4326" style="height: 400px">
+          <vl-view :zoom.sync="zoom" :center.sync="center" :rotation.sync="rotation"></vl-view>
+
+          <vl-geoloc @update:position="geolocPosition = $event">
+            <template slot-scope="geoloc">
+              <vl-feature v-if="geoloc.position" id="position-feature">
+                <vl-geom-point :coordinates="geoloc.position"></vl-geom-point>
+                <vl-style-box>
+                  <vl-style-icon src="_media/marker.png" :scale="0.4" :anchor="[0.5, 1]"></vl-style-icon>
+                </vl-style-box>
+              </vl-feature>
+            </template>
+          </vl-geoloc>
+
+        <vl-overlay id="overlay" :position="overlayCoordinate">
+          <template>
+            <div class="overlay-content">
+              <i class="fa fa-map-marker" aria-hidden="true"></i>
+            </div>
+          </template>
+        </vl-overlay>
+
+          <vl-layer-tile id="osm">
+            <vl-source-osm></vl-source-osm>
+          </vl-layer-tile>
+        </vl-map>
+      </div>
+      </div>
 </template>
 
 <script>
     export default {
         data() {
             return {
-
+              pharmacy: '',
+              pharmacyId: '',
+              avarageGrade: '',
+              pharmacyName: '',
+              zoom: 12,
+              center: [19.882, 45.254],
+              rotation: 0,
+              geolocPosition: undefined,
+              overlayCoordinate: [19.882, 45.254],
             }
+        },
+        methods: {
+          getPharmacyAdmin: function() {
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.get("api/pharmacyadmin", {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            this.pharmacyAdmin = response.data;
+                            this.pharmacyId = this.pharmacyAdmin.pharmacy.id;
+                            this.getPharmacy();
+                        })
+                        .catch(response => {
+                            console.log("Failed to get pharmacy admin", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
+            },
+            getPharmacy: function() {
+              this.axios.get("api/pharmacy/" + this.pharmacyId)
+                  .then(response => {
+                      this.pharmacy = response.data;
+                      this.overlayCoordinate = [this.pharmacy.address.longitude, this.pharmacy.address.latitude];
+                  })
+                  .catch(response => {
+                      console.log("Failed to get pharmacy", response.data);
+                  });
+            },
+        },
+        mounted() {
+          this.getPharmacyAdmin();
         },
     }
 </script>
