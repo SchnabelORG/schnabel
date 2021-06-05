@@ -23,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -141,6 +142,14 @@ public class PenaltyService extends JpaService<Penalty, Long, IPenaltyRepository
         for (Penalty penalty : newDrugReservationPenalties) {
             add(penalty);
         }
+    }
+
+    /**
+     * Deletes all penalties first of every month
+     */
+    @Scheduled(cron="0 0 0 1 1/1 *")
+    private void clearPenalties() {
+        repository.deleteAll();
     }
     
 }
