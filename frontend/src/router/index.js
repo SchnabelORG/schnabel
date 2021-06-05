@@ -158,6 +158,12 @@ const routes = [
     ],
   },
 
+  {
+    path: '/a',
+    name: 'a',
+    component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacyAdminAppointments.vue'),
+  },
+
   // User
   {
     path: '/user',
@@ -291,6 +297,11 @@ const routes = [
         path: 'freedermatologistappointment',
         name: 'PharmacyAdminFreeAppointments',
         component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminFreeAppointments.vue'),
+      },
+      {
+        path: 'appointmentsreport',
+        name: 'PharmacyAdminAppointments',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminAppointments.vue'),
       },
     ],
   },

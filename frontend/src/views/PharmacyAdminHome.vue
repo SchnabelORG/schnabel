@@ -47,6 +47,7 @@
                 <ul class="footer-column-list unstyled-list">
                 <li><router-link to="/pharmacyadmin/defineappointment">Define appointment</router-link></li>
                 <li><router-link to="/pharmacyadmin/freedermatologistappointment">Free dermatologist appointments</router-link></li>
+                <li><router-link to="/pharmacyadmin/appointmentsreport">Appointment report</router-link></li>
                 </ul>
             </div>
              <div class="footer-column">
@@ -97,7 +98,7 @@
           </vl-layer-tile>
         </vl-map>
       </div>
-      </div>
+    </div>
 </template>
 
 <script>

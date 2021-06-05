@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.appointment.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -312,6 +313,75 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
         } catch (NoResultException ignore) {
             return PagedModel.empty();
         }
+    }
+
+    @Override
+    @Transactional
+    public PagedModel<AppointmentDTO> findByPharmacyId(Long pharmacyId, Pageable pageable)
+    {
+        try{
+            Page<Appointment> appointments = repository.findByPharmacyId(pharmacyId, pageable);
+            return pageAsm.toModel(appointments, dtoAsm);
+        } catch (NoResultException ignore) {
+            return PagedModel.empty();
+        }
+    }
+
+    @Override
+    @Transactional
+    public List<Integer> countAppointmentsByMonth(Long pharmacyId, Pageable pageable)
+    {
+        List<Integer> countMonth = new ArrayList<Integer>();
+        List<Appointment> appointments = repository.findByPharmacyId(pharmacyId, pageable).getContent();
+
+        for (int i = 1; i < 13; i++) {
+            countMonth.add(count((i), appointments));
+        }
+        return countMonth;
+    }
+
+    private Integer count(Integer month, List<Appointment> appointments)
+    {
+        int counter = 0;
+        for (Appointment appointment : appointments) {
+            if(appointment.getPeriod().getStartTime().getYear() == LocalDate.now().getYear() && appointment.getPeriod().getStartTime().getMonthValue() == month)
+            {
+                counter++;
+            }
+        }
+        return counter;
+    }
+
+    @Override
+    @Transactional
+    public List<Integer> countAppointmentsByYear(Long pharmacyId, Pageable pageable)
+    {
+        List<Integer> countYear = new ArrayList<Integer>();
+        List<Appointment> appointments = repository.findByPharmacyId(pharmacyId, pageable).getContent();
+
+        for (int i = 0; i < 2; i++) {
+            countYear.add(countYears((i), appointments));
+        }
+        return countYear;
+    }
+
+    private Integer countYears(Integer year, List<Appointment> appointments)
+    {
+        int counter = 0;
+        for (Appointment appointment : appointments) {
+            if(year == 0){
+                if(appointment.getPeriod().getStartTime().getYear() == LocalDate.now().getYear() - 1)
+                {
+                    counter++;
+                }
+            } else {
+                if(appointment.getPeriod().getStartTime().getYear() == LocalDate.now().getYear())
+                {
+                    counter++;
+                }
+            }
+        }
+        return counter;
     }
 
 }

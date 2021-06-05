@@ -1,4 +1,5 @@
 package com.schnabel.schnabel.appointment.controller;
+import java.util.List;
 import java.util.Optional;
 
 import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
@@ -113,6 +114,21 @@ public class AppointmentController {
     @GetMapping("/dermatology/pharmacy/{id}")
     public ResponseEntity<PagedModel<AppointmentDTO>> getDermatologicalApptsByPharmacy(@PathVariable("id") Long id, Pageable pageable) {
         return new ResponseEntity<>(service.findFreeDermatologistAppointmentsByPharmacy(id, pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/pharmacy/{id}")
+    public ResponseEntity<PagedModel<AppointmentDTO>> getAllByPharmacy(@PathVariable("id") Long id, Pageable pageable) {
+        return new ResponseEntity<>(service.findByPharmacyId(id, pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/pharmacymonth/{id}")
+    public ResponseEntity<List<Integer>> getCountMonth(@PathVariable("id") Long id, Pageable pageable) {
+        return new ResponseEntity<>(service.countAppointmentsByMonth(id, pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/pharmacyyear/{id}")
+    public ResponseEntity<List<Integer>> getCountYear(@PathVariable("id") Long id, Pageable pageable) {
+        return new ResponseEntity<>(service.countAppointmentsByYear(id, pageable), HttpStatus.OK);
     }
 
 }

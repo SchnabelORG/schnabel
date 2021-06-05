@@ -37,6 +37,8 @@ public class Period
     }
 
     public long getDurationMinutes() {
+        //return Duration.between(this.startTime, this.endTime).toMinutes();
         return Duration.between(this.startTime, this.endTime).toMinutes();
+
     }
 }

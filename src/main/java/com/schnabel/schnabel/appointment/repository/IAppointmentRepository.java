@@ -80,4 +80,6 @@ public interface IAppointmentRepository extends JpaRepository<Appointment, Long>
         + " ON a.medical_employee_id = dermatologists.id WHERE free = 'T' AND pharmacy_id = :pharmacy_id",
         nativeQuery = true)
     Page<Appointment> findFreeDermatologistAppointmentsByPharmacy(@Param("pharmacy_id") Long pharmacyId, Pageable pageable);
+
+    Page<Appointment> findByPharmacyId(Long pharmacyId, Pageable pageable);
 }

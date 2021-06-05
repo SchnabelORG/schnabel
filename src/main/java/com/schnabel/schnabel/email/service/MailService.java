@@ -143,4 +143,16 @@ public class MailService implements IMailService {
         return sendMail(mail);
     }
 
+    @Override
+    public boolean sendNewPromotion(String email, String content)
+    {
+        Mail mail = new Mail();
+        mail.setMailFrom(MAIL_FROM);
+        mail.setMailTo(email);
+        mail.setMailSubject("New promotion");
+        StringBuilder sb = new StringBuilder();
+        sb.append(content);
+        mail.setMailContent(sb.toString());
+        return sendMail(mail);
+    }
 }

@@ -43,7 +43,7 @@ insert into refresh_tokens(email, token) values('rzupunski@gmail.com', 'eyJhbGci
 insert into refresh_tokens(email, token) values('ivos.jovan@protonmail.ch', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpdm9zLmpvdmFuQHByb3Rvbm1haWwuY2giLCJleHAiOjE2MzgxOTAzOTl9.G_Z0-9Q5keOYK3RuZnrhEAF3a23d8rhYY3fowYV9GbO7owggRkQ1M4A4oq6th9p1UDBDBDl8jFqJpf5K0cyJ1Q');
 insert into refresh_tokens(email, token) values ('jankovicpharmacy@gmail.com', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYW5rb3ZpY3BoYXJtYWN5QGdtYWlsLmNvbSIsImV4cCI6MTYzODExMTM5Mn0.W6yqYsldEUdznOQnXaFb0pe4sUHSC89PcsOdd5cTkDNX8mnJtO5wboT2lflmyuoSquP-vf4Z1pMLJGw1GfgqpA');
 
-insert into dermatologist_pharmacy(dermatologist_id, pharmacy_id) values (6, 1);
+--insert into dermatologist_pharmacy(dermatologist_id, pharmacy_id) values (6, 1);
 insert into dermatologist_pharmacy(dermatologist_id, pharmacy_id) values (6, 2);
 insert into dermatologist_pharmacy(dermatologist_id, pharmacy_id) values (7, 1);
 

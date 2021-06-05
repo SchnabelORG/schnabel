@@ -68,4 +68,10 @@ public class DermatologistController
         return new ResponseEntity<>(dermatologistService.filteredSearch(params, pageable), HttpStatus.OK);
     }
 
+    @GetMapping("notinpharmacy/{id}")
+    public ResponseEntity<PagedModel<DermatologistDTO>> getAllByNotPharmacyId(@PathVariable("id") Long pharmacyId, Pageable pageable) 
+    {
+        return new ResponseEntity<>(dermatologistService.findAllDermatologistNotInPharmacy(pharmacyId, pageable), HttpStatus.OK);
+    }
+
 }

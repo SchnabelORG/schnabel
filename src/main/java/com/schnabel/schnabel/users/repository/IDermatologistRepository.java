@@ -22,4 +22,6 @@ public interface IDermatologistRepository extends JpaRepository<Dermatologist, L
     Optional<Dermatologist> findByEmail(String email);
     @Query("SELECT DISTINCT d FROM Dermatologist d join d.pharmacies p WHERE p.id = :pharmacy_id")
     Page<Dermatologist> findAllDermatologistsPharmacy(@Param("pharmacy_id") Long id, Pageable pageable);
+    @Query(value = "SELECT d.* from dermatologists d inner join dermatologist_pharmacy dp ON d.id = dp.dermatologist_id AND dp.pharmacy_id != :pharmacy_id", nativeQuery = true)
+    Page<Dermatologist> findAllDermatologistNotInPharmacy(@Param("pharmacy_id") Long id, Pageable pageable);
 }

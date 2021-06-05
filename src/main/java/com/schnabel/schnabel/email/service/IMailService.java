@@ -10,4 +10,5 @@ public interface IMailService {
     String activate(String token);
     boolean sendOrderClosingMail(String email, String content);
     boolean sendVacationMedicalEmployee(String email, String content);
+    boolean sendNewPromotion(String email, String content);
 }
