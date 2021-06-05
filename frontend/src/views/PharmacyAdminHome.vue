@@ -22,7 +22,9 @@
                 <h4 class="primary--text">Employees</h4>
                 <div class="footer-divider"></div>
                 <ul class="footer-column-list unstyled-list">
+                <li><router-link to="/pharmacyadmin/dermatologistsearch">Search dermatologists</router-link></li>
                 <li><router-link to="/pharmacyadmin/dermatologist">Dermatologists</router-link></li>
+                <li><router-link to="/pharmacyadmin/pharmacistsearch">Search pharmacists</router-link></li>
                 <li><router-link to="/pharmacyadmin/pharmacist">Pharmacists</router-link></li>
                 <li><router-link to="/pharmacyadmin/vacation">Vacations</router-link></li>
                 <li><router-link to="/pharmacyadmin/defineappointment">Define appointment</router-link></li>
