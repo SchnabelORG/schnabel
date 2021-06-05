@@ -13,7 +13,7 @@
                 <v-stepper-step
                 :complete="e1 > 2"
                 step="2">
-                Consultation info
+                Appointment info
                 </v-stepper-step>
         
                 <v-divider></v-divider>
@@ -29,7 +29,7 @@
                 <v-stepper-step
                 :complete="e1 > 4"
                 step="4">
-                New consultation
+                New appointment
                 </v-stepper-step>
     
             </v-stepper-header>
@@ -45,10 +45,10 @@
                         </div>
                         <div v-if="!chosen">
                             <div v-if="todayAppointments.length == 0">
-                                <h4>No consultation for today</h4>
+                                <h4>No appointments for today</h4>
                             </div>
                             <div v-else>                       
-                                <h2>Choose todays consultation:</h2>
+                                <h2>Choose todays appointment:</h2>
                                 <v-chip class="primary single-chip" v-for="item in todayAppointments" :key="item.id" @click="setAppointment(item)"> 
                                     {{item.patient.name}} {{item.patient.surname}}({{item.period.startTime.slice(11)}} ) 
                                 </v-chip>
@@ -262,24 +262,18 @@
                         height="650px">
                         <v-row>
                             <v-col>
-                                <v-row v-for="item in freeTerms" :key="item">
-                                    <v-chip class="primary date-chip" @click="setDateForTerms(item)"> 
-                                        {{item[0].startTime.slice(0,10)}}
-                                    </v-chip>
-                                </v-row>
-                            </v-col>
-                            <v-col>
                                 <v-radio-group
-                                v-if="termsToShow.length > 0"
+                                v-if="freeTerms.length > 0"
                                     v-model="time"
+                                    class="date-chip"
                                     column>
-                                    <!-- :label="`${new Date(item.start).getHours()}:${new Date(item.start).getMinutes()}-${item.end.toISOString().substr(11, 5)} (${item.start.toISOString().substr(0, 10)})`" -->
                                      <v-radio
+                                        sele
                                         :label="`none`"
                                         color="primary"
                                     ></v-radio>
                                     <v-radio
-                                        v-for="item in termsToShow"
+                                        v-for="item in freeTerms"
                                         :key="item"
                                         :label="getLabel(item)"
                                         color="primary"
@@ -326,7 +320,7 @@
                 todayAppointments: [],
                 futureAppointments: [],
                 freeTerms: [],
-                pharmacist: {},
+                dermatologist: {},
                 chosen: false,
                 chosenAppointment: {},
                 consultationInfo: '',
@@ -353,14 +347,14 @@
                 }
                 return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + jws}});
             },
-             getPharmacist: function() {
-                console.log("Getting pharmacist");
+             getDermatologist: function() {
+                console.log("Getting dermatologist");
                 let jws = window.localStorage.getItem('jwt');
                 console.log(jws)
-                this.axios.get("api/pharmacist/jwt", {headers:{"Authorization": "Bearer " + jws}})
+                this.axios.get("api/dermatologist/jwt", {headers:{"Authorization": "Bearer " + jws}})
                     .then(response => {
                         console.log(response.data);
-                        this.pharmacist = response.data;
+                        this.dermatologist = response.data;
                         this.getAllAppointments()
                     })
                     .catch(response => {
@@ -378,13 +372,13 @@
             },
             getAllAppointments: function(){
                 let jws = window.localStorage.getItem('jwt');
-                console.log(this.pharmacist.id)
-                this.axios.get("api/appointment/appbyemployee/" + this.pharmacist.id, {headers:{"Authorization": "Bearer " + jws}})
+                console.log(this.dermatologist.id)
+                this.axios.get("api/appointment/appbyemployee/" + this.dermatologist.id, {headers:{"Authorization": "Bearer " + jws}})
                     .then(response =>
                     {
                         this.allAppointments = response.data._embedded.appointments;
                         this.getTodaysAppointments();
-                        this.getShift();
+                        //this.getShift();
                         console.log(this.todayAppointments)
                     })
                     .catch(response =>
@@ -392,53 +386,52 @@
                         console.log(response.data);
                     });
             },
-            getShift: function(){
-                let jws = window.localStorage.getItem('jwt');
-                this.axios.get("api/shift/medicalemployeepharmacy/" + this.pharmacist.id + "/" + this.pharmacist.pharmacy.id, {headers:{"Authorization": "Bearer " + jws}})
-                    .then(response =>
-                    {
-                        this.shift = response.data;
-                        console.log(response.data);
-                        this.getFreeTerms();
-                    })
-                    .catch(response =>
-                    {
-                        console.log(response.data);
-                    });
-            },
-            getFreeTerms: function(){
-                let start = parseInt(this.shift.startTime.slice(0,2))
-                let end = parseInt(this.shift.endTime.slice(0,2))
+            // getShift: function(){
+            //     let jws = window.localStorage.getItem('jwt');
+            //     this.axios.get("api/shift/medicalemployeepharmacy/" + this.dermatologist.id + "/" + this.dermatologist.pharmacy.id, {headers:{"Authorization": "Bearer " + jws}})
+            //         .then(response =>
+            //         {
+            //             this.shift = response.data;
+            //             console.log(response.data);
+            //             this.getFreeTerms();
+            //         })
+            //         .catch(response =>
+            //         {
+            //             console.log(response.data);
+            //         });
+            // },
+            // getFreeTerms: function(){
+            //     let start = parseInt(this.shift.startTime.slice(0,2))
+            //     let end = parseInt(this.shift.endTime.slice(0,2))
 
-                var today = new Date();
+            //     var today = new Date();
 
-                for(var i = 0; i < 15; i++){
-                    var dates = [];
-                    start = parseInt(this.shift.startTime.slice(0,2))
-                    for(start; start < end; start++){
-                        dates.push({startTime:  new Date(today.setHours(start, 0, 0, 0)), endTime: new Date(today.setHours(start, 30, 0, 0))});
-                        dates.push({startTime:  new Date(today.setHours(start, 30, 0, 0)), endTime: new Date(today.setHours(start+1, 0, 0, 0))});
-                    }
-                    for(var j = 0; j < dates.length; j++){
-                        dates[j].startTime.setTime( dates[j].startTime.getTime() + (i+1) *86400000);
-                        dates[j].endTime.setTime( dates[j].endTime.getTime() + (i+1) *86400000);
-                        for(var k = 0; k < this.futureAppointments.length; k++){
-                            let startApp = new Date(this.futureAppointments[k].period.startTime).getTime()
-                            let endApp = new Date(this.futureAppointments[k].period.endTime).getTime()
-                            if((dates[j].startTime.getTime() > startApp && dates[j].startTime.getTime() < endApp)||
-                               (dates[j].endTime.getTime() > startApp && dates[j].endTime.getTime() < endApp)||
-                               (dates[j].startTime.getTime() < startApp && dates[j].endTime.getTime() > endApp)){
-                                    dates.splice(j,1);
-                                    j--;
-                               }
-                        }
+            //     for(var i = 0; i < 15; i++){
+            //         var dates = [];
+            //         start = parseInt(this.shift.startTime.slice(0,2))
+            //         for(start; start < end; start++){
+            //             dates.push({startTime:  new Date(today.setHours(start, 0, 0, 0)), endTime: new Date(today.setHours(start, 30, 0, 0))});
+            //             dates.push({startTime:  new Date(today.setHours(start, 30, 0, 0)), endTime: new Date(today.setHours(start+1, 0, 0, 0))});
+            //         }
+            //         for(var j = 0; j < dates.length; j++){
+            //             dates[j].startTime.setTime( dates[j].startTime.getTime() + (i+1) *86400000);
+            //             dates[j].endTime.setTime( dates[j].endTime.getTime() + (i+1) *86400000);
+            //             for(var k = 0; k < this.futureAppointments.length; k++){
+            //                 let startApp = new Date(this.futureAppointments[k].period.startTime).getTime()
+            //                 let endApp = new Date(this.futureAppointments[k].period.endTime).getTime()
+            //                 if((dates[j].startTime.getTime() > startApp && dates[j].startTime.getTime() < endApp)||
+            //                    (dates[j].endTime.getTime() > startApp && dates[j].endTime.getTime() < endApp)||
+            //                    (dates[j].startTime.getTime() < startApp && dates[j].endTime.getTime() > endApp)){
+            //                         dates.splice(j,1);
+            //                         j--;
+            //                    }
+            //             }
                         
-                    }
-                    this.freeTerms.push(JSON.parse(JSON.stringify(dates)));
-                }
-            },
+            //         }
+            //         this.freeTerms.push(JSON.parse(JSON.stringify(dates)));
+            //     }
+            // },
             getTodaysAppointments: function(){
-                
                 var today = new Date();
                 today.setHours(0,0,0,0);
                 var i = 0;
@@ -449,8 +442,8 @@
                         this.todayAppointments.push(this.allAppointments[i]);
                         
                     }
-                    else if (today.getTime() < appDate.getTime()){
-                        this.futureAppointments.push(this.allAppointments[i]);
+                    else if (today.getTime() < appDate.getTime() && this.allAppointments[i].free == true){
+                        this.freeTerms.push(this.allAppointments[i]);
                     }
                     ++i;
                 }
@@ -499,8 +492,9 @@
             },
             checkForMedication: function(){
                 let jws = window.localStorage.getItem('jwt');
+                console.log(this.dermatologist);
                 for(var i = 0; i < this.prescripedMedication.length; i++){
-                    let dto = {drugId: this.prescripedMedication[i].id, quantity: this.dosage[this.prescripedMedication[i].id].quantity, pharmacyId: this.pharmacist.pharmacy.id}
+                    let dto = {drugId: this.prescripedMedication[i].id, quantity: this.dosage[this.prescripedMedication[i].id].quantity, pharmacyId: this.dermatologist.pharmacies[0].id}
                     console.log(this.prescripedMedication[i])
                     this.axios.post("api/warehouseitem/doeshave", dto, {headers:{"Authorization": "Bearer " + jws}})
                         .then(response =>
@@ -521,13 +515,13 @@
                 console.log(this.haveMedication);
                 
             },
-            setDateForTerms: function(item){
-                this.termsToShow = [];
-                for(var i = 0; i < item.length; i++){
-                    this.termsToShow.push({start: new Date(item[i].startTime), end: new Date(item[i].endTime)});
-                    console.log(this.termsToShow)
-                }
-            },
+            // setDateForTerms: function(item){
+            //     this.termsToShow = [];
+            //     for(var i = 0; i < item.length; i++){
+            //         this.termsToShow.push({start: new Date(item[i].startTime), end: new Date(item[i].endTime)});
+            //         console.log(this.termsToShow)
+            //     }
+            // },
             finish: function(){
                 let jws = window.localStorage.getItem('jwt');
                 this.axios.post("api/reportappointment/addreport/" + this.chosenAppointment.id, this.consultationInfo,{headers:{"Authorization": "Bearer " + jws}})
@@ -546,8 +540,8 @@
                     });
             },
             addMedicationsToReport: function(reportId){
-                var meds = [];
                 for(var i = 0; i < this.prescripedMedication.length; i++){
+                    var meds = [];
                     meds.push({durationInDays: this.dosage[this.prescripedMedication[i].id].howManyDays, 
                     takePerDay: this.dosage[this.prescripedMedication[i].id].howManyDays, 
                     quantity: this.dosage[this.prescripedMedication[i].id].howManyDays, 
@@ -567,13 +561,12 @@
 
             },
             scheduleNewAppointment: function(){
+                console.log("Nista" + this.time + "nist a")
                 if(this.time === 0){
                     console.log("Nista")
                 }else{
                     let jws = window.localStorage.getItem('jwt');
-                    let newApp= {pharmacistId: this.pharmacist.id, patientId:this.chosenAppointment.patient.id, 
-                                pharmacyId: this.pharmacist.pharmacy.id, startTime: this.termsToShow[this.time - 1].start, endTime: this.termsToShow[this.time - 1].end }
-                    this.axios.post("api/appointment/pharmacist/newapp", newApp,{headers:{"Authorization": "Bearer " + jws}})
+                    this.axios.get("api/appointment/takeapp/"+this.freeTerms[this.time -1].id+"/"+ this.chosenAppointment.patient.id,{headers:{"Authorization": "Bearer " + jws}})
                     .then(response =>
                     {
                         console.log(response.data);
@@ -587,38 +580,38 @@
             },
             getLabel: function(item){
                 var label = '';
-                if(new Date(item.start).getHours()< 10)
-                    label += "0" + new Date(item.start).getHours();
+                if(new Date(item.period.startTime).getHours()< 10)
+                    label += "0" + new Date(item.period.startTime).getHours();
                 else
-                    label +=  new Date(item.start).getHours();
+                    label +=  new Date(item.period.startTime).getHours();
 
                 label += ":"
 
-                if(new Date(item.start).getMinutes()< 10)
-                    label += "0" + new Date(item.start).getMinutes();
+                if(new Date(item.period.startTime).getMinutes()< 10)
+                    label += "0" + new Date(item.period.startTime).getMinutes();
                 else
-                    label +=  new Date(item.start).getMinutes();
+                    label +=  new Date(item.period.startTime).getMinutes();
 
                 label += "-"
 
                 if(new Date(item.end).getHours()< 10)
-                    label += "0" + new Date(item.end).getHours();
+                    label += "0" + new Date(item.period.endTime).getHours();
                 else
-                    label +=  new Date(item.end).getHours();
+                    label +=  new Date(item.period.endTime).getHours();
 
                 label += ":"
 
-                if(new Date(item.end).getMinutes()< 10)
-                    label += "0" + new Date(item.end).getMinutes();
+                if(new Date(item.period.endTime).getMinutes()< 10)
+                    label += "0" + new Date(item.period.endTime).getMinutes();
                 else
-                    label +=  new Date(item.end).getMinutes();
+                    label +=  new Date(item.period.endTime).getMinutes();
 
-                label += " ("+item.start.toISOString().substr(0, 10)+")"
+                label += " ("+item.period.startTime.substr(0, 10)+")"
                 return label;
             }
         },
         mounted(){
-            this.getPharmacist();
+            this.getDermatologist();
         },
     }
 </script>
@@ -667,7 +660,7 @@
         min-height: 50vh;
     }
     .date-chip{
-        margin-left: 5%;
+        margin-left: 6%;
         margin-top: 3%;
     }
 </style>

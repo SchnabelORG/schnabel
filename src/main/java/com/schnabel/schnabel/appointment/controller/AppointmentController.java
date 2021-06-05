@@ -2,6 +2,7 @@ package com.schnabel.schnabel.appointment.controller;
 import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
 import com.schnabel.schnabel.appointment.dto.AppointmentRequest;
 import com.schnabel.schnabel.appointment.dto.NewAppointmentDTO;
+import com.schnabel.schnabel.appointment.model.Appointment;
 import com.schnabel.schnabel.appointment.service.IAppointmentService;
 import com.schnabel.schnabel.security.util.JwtUtils;
 import com.schnabel.schnabel.users.model.Patient;
@@ -61,6 +62,19 @@ public class AppointmentController {
         return new ResponseEntity<>(service.findFreeDermatologistAppointments(pageable), HttpStatus.OK);
     }
 
+    @GetMapping("/takeapp/{appId}/{patientId}")
+    public ResponseEntity<Boolean> setAppointmenTaken(@PathVariable("appId") Long appId, @PathVariable("patientId") Long patientId) {
+        Optional<Appointment> appointment = service.get(appId);
+        Optional<Patient> patient = patientService.get(patientId);
+        if(appointment.isPresent() && patient.isPresent()){
+            appointment.get().setPatient(patient.get());
+            appointment.get().setFree(false);
+            Boolean isSuccess =  service.update(appointment.get());
+            return ResponseEntity.ok(isSuccess);
+        }
+        return ResponseEntity.ok(Boolean.FALSE);
+    }
+
     /**
      * Create new appointment
      * @param req - Appointment creation request containing required info
@@ -76,7 +90,7 @@ public class AppointmentController {
     }
 
     @PostMapping("pharmacist/newapp")
-    public ResponseEntity<Boolean> defineAppointment(@RequestBody NewAppointmentDTO newAppointment)
+    public ResponseEntity<Boolean> makeNewAppointment(@RequestBody NewAppointmentDTO newAppointment)
     {
         Optional<Patient> patient = patientService.get(newAppointment.getPatientId());
         Boolean isSuccess = service.makeNewAppAsPharmacist(newAppointment, patient.get());

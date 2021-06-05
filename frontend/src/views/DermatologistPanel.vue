@@ -2,6 +2,8 @@
     <div id="dermatologist-main">
         <main-navigation>
             <router-link to="/dermatologist/">Home</router-link>
+            <router-link to="/dermatologist/calendar">Calendar</router-link>
+            <router-link to="/dermatologist/appointmentReport">Appointments</router-link>
             <router-link to="/dermatologist/dermatologistacc">Account</router-link>
         </main-navigation>
 

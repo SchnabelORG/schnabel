@@ -1,6 +1,7 @@
 package com.schnabel.schnabel.appointment.dto;
 import com.schnabel.schnabel.appointment.controller.AppointmentController;
 import com.schnabel.schnabel.appointment.model.Appointment;
+import com.schnabel.schnabel.appointment.model.AppointmentReport;
 import com.schnabel.schnabel.procurement.dto.OrderItemDTO;
 import com.schnabel.schnabel.procurement.model.OrderItem;
 import com.schnabel.schnabel.users.controller.PatientController;
@@ -43,6 +44,11 @@ public class AppointmentDTOAssembler extends RepresentationModelAssemblerSupport
     dto.setDuration(entity.getPeriod().getDurationMinutes());
     dto.setFree(entity.isFree());
     dto.setPatient(toPatientModel(entity.getPatient()));
+    AppointmentReport appointmentReport = entity.getReport();
+    if(appointmentReport == null)
+        dto.setIsFinished(false);
+    else
+        dto.setIsFinished(true);
     // TODO(Jovan): Add link to controller if needed
     MedicalEmployee employee = entity.getMedicalEmployee();
     dto.setMedicalEmployee(MedicalEmployeeDTO.builder()

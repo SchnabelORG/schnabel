@@ -3,7 +3,7 @@
         <main-navigation>
             <router-link to="/pharmacist/">Home</router-link>
             <router-link to="/pharmacist/calendar">Calendar</router-link>
-            <router-link to="/pharmacist/consultationReport">New consultation</router-link>
+            <router-link to="/pharmacist/consultationReport">Consultation</router-link>
             <router-link to="/pharmacist/medicationReservations">Reservations</router-link>
             <router-link to="/pharmacist/pharmacistacc">Account</router-link>
         </main-navigation>
