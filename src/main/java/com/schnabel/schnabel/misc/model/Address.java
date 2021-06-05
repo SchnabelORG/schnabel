@@ -21,6 +21,10 @@ public class Address
     private String street;
     @Column(name = "street_no", nullable = false)
     private String streetNo;
+    @Column
+    private float latitude;
+    @Column
+    private float longitude;
 
     public Address()
     {

@@ -19,4 +19,5 @@ public interface IPharmacyGradeService extends IJpaService<PharmacyGrade, Long> 
     boolean ratePharmacy(GradeRequest req, String authHeader);
     PagedModel<PharmacyDTO> findGraded(String authHeader, Pageable pageable);
     PagedModel<PharmacyDTO> findGradeable(String authHeader, Pageable pageable);
+    double findAvg(Long pharmacyId);
 }

@@ -9,6 +9,7 @@ import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemRequest;
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemUpdateRequest;
 
+
 import com.schnabel.schnabel.pharmacies.service.IWareHouseItemService;
 import com.schnabel.schnabel.security.util.JwtUtils;
 
@@ -60,7 +61,7 @@ public class WareHouseItemController
     @GetMapping("pharmacy/{id}")
     public ResponseEntity<PagedModel<WareHouseItemDTO>> getAllByPharmacyId(@PathVariable("id") Long pharmacyId, Pageable pageable) 
     {
-        return new ResponseEntity<>(service.findAllByPharmacyId(pharmacyId, pageable), HttpStatus.OK);
+        return new ResponseEntity<>(service.findAllByPharmacyId(1l, pageable), HttpStatus.OK);
     }
 
 

@@ -1,7 +1,9 @@
 package com.schnabel.schnabel.pharmacies.repository;
 
+import java.util.List;
 import java.util.Optional;
 
+import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.pharmacies.model.WareHouseItem;
 
 import org.springframework.data.domain.Page;

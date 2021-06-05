@@ -12,7 +12,7 @@
                         <template v-slot:item="row">
                             <tr>
                                 <td>{{row.item.name}}</td>
-                                <td>{{row.item.surname}}</td>                       
+                                <td>{{row.item.surname}}</td>                     
                             </tr>
                         </template>
                     </v-data-table>
@@ -35,8 +35,13 @@
         },
         methods: {
             getPharmacists: function() {
-                
-
+                    this.axios.get("api/pharmacist/pharmacy/1")
+                        .then(response => {
+                            this.pharmacists = response.data._embedded.pharmacists;
+                        })
+                        .catch(response => {
+                            console.log("Failed to get pharmacists", response.data);
+                        });
             },
         },
         mounted() {
