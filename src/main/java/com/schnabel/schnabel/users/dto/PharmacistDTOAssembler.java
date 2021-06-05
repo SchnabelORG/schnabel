@@ -32,6 +32,7 @@ public class PharmacistDTOAssembler extends RepresentationModelAssemblerSupport<
         dto.setEmail(entity.getEmail());
         dto.setPassword(entity.getPassword());
         dto.setAddress(entity.getAddress());
+        dto.setScore(entity.getScore());
         Pharmacy pharmacy = entity.getPharmacy();
         dto.setPharmacy(PharmacyDTO.builder()
             .id(pharmacy.getId())

@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -98,5 +99,10 @@ public class PharmacistController
         }
         service.update(pharmacist.get());
         return service.get(pharmacist.get().getId()).map(pharmacistDTOAssembler::toModel).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("search")
+    public ResponseEntity<PagedModel<PharmacistDTO>> filteredSearch(@RequestParam Map<String, String> params, Pageable pageable) {
+        return new ResponseEntity<>(service.filteredSearch(params, pageable), HttpStatus.OK);
     }
 }

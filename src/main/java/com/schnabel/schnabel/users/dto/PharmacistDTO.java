@@ -28,5 +28,6 @@ public class PharmacistDTO  extends RepresentationModel<PharmacistDTO> {
     private String password;
     private String email;
     private Address address;
+    private double score;
     private PharmacyDTO pharmacy;
 }

@@ -117,6 +117,18 @@ const routes = [
     component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacySearch.vue'),
   },
 
+  {
+    path: '/dermatologistsearch',
+    name: 'DermatologistSearch',
+    component: () => import(/* webpackChunkName: "pharmacy" */ '../views/DermatologistSearch.vue'),
+  },
+
+  {
+    path: '/pharmacistsearch',
+    name: 'PharmacistSearch',
+    component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacistSearch.vue'),
+  },
+
   //Pharmacy
   {
     path: '/pharmacy/:id',
@@ -264,6 +276,16 @@ const routes = [
         path: 'pricelist',
         name: 'PriceList',
         component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PriceList.vue'),
+      },
+      {
+        path: 'pharmacistsearch',
+        name: 'PharmacyAdminPharmacistSearch',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminPharmacistSearch.vue'),
+      },
+      {
+        path: 'dermatologistsearch',
+        name: 'PharmacyAdminDermatologistSearch',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminDermatologistSearch.vue'),
       },
     ],
   },
