@@ -54,7 +54,7 @@ public class AppointmentDTOAssembler extends RepresentationModelAssemblerSupport
     dto.setMedicalEmployee(MedicalEmployeeDTO.builder()
         .name(employee.getName())
         .build());
-    
+    dto.setMissed(entity.isMissed());
     return dto;
     }
 

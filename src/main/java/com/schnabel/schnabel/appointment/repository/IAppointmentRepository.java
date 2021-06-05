@@ -73,4 +73,16 @@ public interface IAppointmentRepository extends JpaRepository<Appointment, Long>
         + " WHERE a.patient_id = :patient_id",
         nativeQuery = true)
     Page<Appointment> findConsultByPatientId(@Param("patient_id") Long patientId, Pageable pageable);
+
+    /**
+     * Find this month's missed appointments for patient
+     */
+    @Query(value = "SELECT a.*"
+        + " FROM appointments a"
+        + " WHERE a.patient_id = :patient_id"
+        + " AND a.missed = 'T'"
+        + " AND a.end_time < CURRENT_TIMESTAMP"
+        + " AND DATE_TRUNC('month', a.end_time) = DATE_TRUNC('month', CURRENT_TIMESTAMP)",
+        nativeQuery = true)
+    List<Appointment> findMissed(@Param("patient_id") Long patientId);
 }
