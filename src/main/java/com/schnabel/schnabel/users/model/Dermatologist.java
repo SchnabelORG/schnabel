@@ -20,7 +20,7 @@ import lombok.*;
 @EqualsAndHashCode
 public class Dermatologist extends MedicalEmployee
 {
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "dermatologist_pharmacy",
     joinColumns = @JoinColumn(name = "dermatologist_id"),
     inverseJoinColumns = @JoinColumn(name = "pharmacy_id"))
