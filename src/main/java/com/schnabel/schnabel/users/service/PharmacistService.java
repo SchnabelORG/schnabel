@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.users.service;
 
+import java.util.Map;
 import java.util.Optional;
 
 import com.schnabel.schnabel.misc.implementations.JpaService;
@@ -8,6 +9,7 @@ import com.schnabel.schnabel.users.dto.PharmacistDTO;
 import com.schnabel.schnabel.users.dto.PharmacistDTOAssembler;
 import com.schnabel.schnabel.users.model.Pharmacist;
 import com.schnabel.schnabel.users.repository.IPharmacistRepository;
+import com.schnabel.schnabel.users.repository.PharmacistSpecification;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -93,6 +95,13 @@ public class PharmacistService extends JpaService<Pharmacist, Long, IPharmacistR
     public PagedModel<PharmacistDTO> getAllDTO(Pageable pageable) {
 
         Page<Pharmacist> pharmacists = getAll(pageable);
+        return pageAsm.toModel(pharmacists, dtoAsm);
+    }
+
+    @Override
+    @Transactional
+    public PagedModel<PharmacistDTO> filteredSearch(Map<String, String> params, Pageable pageable) {
+        Page<Pharmacist> pharmacists = repository.findAll(PharmacistSpecification.filteredQuery(params), pageable);
         return pageAsm.toModel(pharmacists, dtoAsm);
     }
 }

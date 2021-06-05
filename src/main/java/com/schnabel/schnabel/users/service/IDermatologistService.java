@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.users.service;
 
+import java.util.Map;
 import java.util.Optional;
 
 import com.schnabel.schnabel.misc.interfaces.IJpaService;
@@ -18,5 +19,6 @@ public interface IDermatologistService extends IJpaService<Dermatologist, Long>
     PagedModel<DermatologistDTO> getAllDTO(Pageable pageable);
     Optional<Dermatologist> findByEmail(String email);
     PagedModel<DermatologistDTO> findAllByPharmacy(Long pharmacyId, Pageable pageable);
-
+    PagedModel<DermatologistDTO> filteredSearch(Map<String, String> params, Pageable pageable);
+    PagedModel<DermatologistDTO> filteredSearchPharmacyAdmin(Map<String, String> params, Long pharmacyId, Pageable pageable);
 }
