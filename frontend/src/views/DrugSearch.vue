@@ -5,6 +5,7 @@
         </main-navigation>
     <div id="search-main" class="info">
         <div id="search-container">
+            <b class="err">{{error}}</b>
             <!-- <p>Buy meds</p>
             <h2>Find your drug and reserve it</h2> -->
             <div v-if="success" id="success-form">
@@ -131,7 +132,7 @@
                         <div class="d-flex flex-row">
                             <v-btn plain @click="--steps">&#60; Change date or quantity</v-btn>
                             <v-spacer></v-spacer>
-                            <v-btn color="accent" @click="reserveDrug" depressed>Reserve drug</v-btn>
+                            <v-btn color="accent" @click="reserveDrug" :disabled="penaltyCount >= 3" depressed>Reserve drug</v-btn>
                         </div>
                     </v-stepper-content>
                 </v-stepper-items>
@@ -145,6 +146,8 @@
 export default {
     data() {
         return {
+            penaltyCount: 0,
+            //
             amount: 0,
             stock: 0,
             resDate: null,
@@ -178,6 +181,9 @@ export default {
     methods: {
         reserveDrug: function() {
             this.error = '';
+            if(this.penaltyCount >= 3) {
+                return;
+            }
             let currDate = new Date();
             let request = {
                 pharmacyId: this.selectedPharmacy.id,
@@ -212,6 +218,9 @@ export default {
 
         selectDrug: function(drug) {
             this.error = '';
+            if(this.penaltyCount >= 3) {
+                return;
+            }
             this.selectedDrug = drug;
             this.refreshToken()
                 .then(rr => {
@@ -245,6 +254,17 @@ export default {
 
     mounted() {
         this.searchDrugs();
+        this.refreshToken()
+            .then(rr => {
+                localStorage.jws = rr.data;
+                this.axios.get('api/penalty/patient/count', {headers:this.getAHeader()})
+                    .then(r => {
+                        this.penaltyCount = r.data
+                        if(this.penaltyCount >= 3) {
+                            this.error = "3+ penalties, functionality disabled";
+                        }
+                    });
+            }).catch(() => console.log('Not logged in'));
     },
 }
 </script>

@@ -22,13 +22,13 @@ public interface IAppointmentRepository extends JpaRepository<Appointment, Long>
     Page<Appointment> findByMedicalEmployeeId(Pageable pageable, Long id);
     List<Appointment> findByMedicalEmployeeId(Long id);
     Iterable<Appointment> findByFree(boolean isFree);
-    @Query(value = "SELECT a.id, a.price, a.start_time, a.end_time, a.free, a.medical_employee_id, a.pharmacy_id, a.patient_id"
+    @Query(value = "SELECT a.*"
         + " FROM appointments a"
         + " INNER JOIN dermatologists"
         + " ON a.medical_employee_id = dermatologists.id",
         nativeQuery = true)
     Page<Appointment> findDermatologistAppointments(Pageable pageable);
-    @Query(value = "SELECT a.id, a.price, a.start_time, a.end_time, a.free, a.medical_employee_id, a.pharmacy_id, a.patient_id"
+    @Query(value = "SELECT a.*"
         + " FROM appointments a"
         + " INNER JOIN dermatologists"
         + " ON a.medical_employee_id = dermatologists.id AND a.free = 'T'",

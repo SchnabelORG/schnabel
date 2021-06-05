@@ -36,4 +36,12 @@ public class PenaltyController {
         return ResponseEntity.ok(service.findCurrentPenalties(auth, pageable));
     }
 
+    /**
+     * Returns patient's penalty count
+     */
+    @GetMapping("patient/count")
+    public ResponseEntity<Long> getPenaltyCount(@RequestHeader("Authorization") String auth) {
+        return ResponseEntity.ok(service.countByPatient(auth));
+    }
+
 }

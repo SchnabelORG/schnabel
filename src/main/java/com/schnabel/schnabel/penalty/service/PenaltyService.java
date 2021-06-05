@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import com.schnabel.schnabel.appointment.service.IAppointmentService;
 import com.schnabel.schnabel.drugs.service.IDrugReservationService;
 import com.schnabel.schnabel.misc.implementations.JpaService;
@@ -65,6 +67,7 @@ public class PenaltyService extends JpaService<Penalty, Long, IPenaltyRepository
     }
 
     @Override
+    @Transactional
     public PagedModel<PenaltyDTO> findCurrentPenalties(String authHeader, Pageable pageable) {
         Optional<Long> patientId = verifyPatientAndGetId(authHeader);
         if(!patientId.isPresent()) {
@@ -84,6 +87,7 @@ public class PenaltyService extends JpaService<Penalty, Long, IPenaltyRepository
     }
 
     @Override
+    @Transactional
     public boolean generatePenalties(String email) {
         Optional<Patient> patient = patientService.findByEmail(email);
         if(!patient.isPresent()) {
@@ -148,8 +152,18 @@ public class PenaltyService extends JpaService<Penalty, Long, IPenaltyRepository
      * Deletes all penalties first of every month
      */
     @Scheduled(cron="0 0 0 1 1/1 *")
-    private void clearPenalties() {
+    protected void clearPenalties() {
         repository.deleteAll();
+    }
+
+    @Override
+    public Long countByPatient(String authHeader) {
+        Optional<Long> patientId = verifyPatientAndGetId(authHeader);
+        if(!patientId.isPresent()) {
+            return 0L;
+        }
+
+        return repository.countByPatientId(patientId.get());
     }
     
 }

@@ -2,8 +2,6 @@ package com.schnabel.schnabel.appointment.dto;
 import com.schnabel.schnabel.appointment.controller.AppointmentController;
 import com.schnabel.schnabel.appointment.model.Appointment;
 import com.schnabel.schnabel.appointment.model.AppointmentReport;
-import com.schnabel.schnabel.procurement.dto.OrderItemDTO;
-import com.schnabel.schnabel.procurement.model.OrderItem;
 import com.schnabel.schnabel.users.controller.PatientController;
 import com.schnabel.schnabel.users.dto.AllergyDTO;
 import com.schnabel.schnabel.users.dto.MedicalEmployeeDTO;

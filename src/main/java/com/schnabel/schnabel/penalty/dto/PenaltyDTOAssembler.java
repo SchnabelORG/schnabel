@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import java.time.format.DateTimeFormatter;
+
 @Component
 public class PenaltyDTOAssembler extends RepresentationModelAssemblerSupport<Penalty, PenaltyDTO> {
 
@@ -30,7 +32,9 @@ public class PenaltyDTOAssembler extends RepresentationModelAssemblerSupport<Pen
             .surname(patient.getSurname())
             .email(patient.getEmail())
             .address(patient.getAddress()).build());
-        dto.setDate(entity.getDate());
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        dto.setDate(entity.getDate().format(dateFormatter));
+        dto.setReason(entity.getReason());
         return dto;
     }
     

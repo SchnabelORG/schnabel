@@ -19,4 +19,5 @@ public interface IPenaltyService extends IJpaService<Penalty, Long> {
      * Usually called per login. Maybe per refresh?
      */
     boolean generatePenalties(String email);
+    Long countByPatient(String authHeader);
 }

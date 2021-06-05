@@ -1,7 +1,5 @@
 package com.schnabel.schnabel.penalty.dto;
 
-import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -25,12 +23,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@JsonRootName("patient")
-@Relation(collectionRelation = "patients")
+@JsonRootName("penalty")
+@Relation(collectionRelation = "penalties")
 @JsonInclude(Include.NON_NULL)
 public class PenaltyDTO extends RepresentationModel<PenaltyDTO> {
     private Long id;
     private PatientDTO patient;
-    private LocalDateTime date;
+    private String date;
     private EPenaltyReason reason;
 }
