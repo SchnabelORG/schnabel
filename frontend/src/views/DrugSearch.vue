@@ -194,7 +194,7 @@ export default {
                     this.axios.post('api/patient/resdrug', request, {headers: this.getAHeader()})
                         .then(() => this.success = true)
                         .catch(() => this.error = 'Failed to reserve drug');
-                }).catch(() => this.$router.push('/'));
+                }).catch(() => this.$router.push('/login'));
         },
 
         selectPharmacy: function(item, event) {
@@ -207,7 +207,7 @@ export default {
                     this.axios.get('api/warehouseitem/stock?pharmacy_id=' + item.id + '&drug_id=' + this.selectedDrug.id, {headers: this.getAHeader()})
                         .then(r => this.stock = r.data);
                     ++this.steps;
-                }).catch(() => this.$router.push('/'));
+                }).catch(() => this.$router.push('/login'));
         },
 
         selectDrug: function(drug) {
@@ -228,22 +228,18 @@ export default {
                         })
                         .catch(() => this.error = 'No pharmacies found with drug in stock.');
                 })
-                .catch(() => this.$router.push('/'));
+                .catch(() => this.$router.push('/login'));
         },
 
         searchDrugs: function() {
-            this.refreshToken()
-                .then(rr => {
-                    localStorage.jws = rr.data;
-                    this.axios.get('api/drug/search?name=' + this.search, {headers: this.getAHeader()})
-                        .then(r => {
-                            if(r.data._embedded) {
-                                this.drugs = r.data._embedded.drugs;
-                            } else {
-                                this.drugs = [];
-                            }
-                        })
-                }).catch(() => this.$router.push("/"));
+            this.axios.get('api/drug/search?name=' + this.search)
+                .then(r => {
+                    if(r.data._embedded) {
+                        this.drugs = r.data._embedded.drugs;
+                    } else {
+                        this.drugs = [];
+                    }
+                });
         },
     },
 

@@ -1,16 +1,14 @@
 <template>
   <div id="main-home">
-    <main-navigation>
+    <search-navigation>
       <router-link to="/login">Login</router-link>
-    </main-navigation>
+    </search-navigation>
     <div id="cover-home">
       <div id="cover-text">
         <h2 id="cover-header">Centralized pharmacies information system</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur facilis facere aut expedita delectus ducimus natus, obcaecati nihil sapiente!</p>
+        <p>Schedule a dermatologist appointment, pharmacist consult, reserve drugs and more!</p>
         <div>
-          <router-link to="/pswreports" v-slot="{href, navigate}">
-            <v-btn color="accent" :href="href" @click="navigate" elevation="1">View reports</v-btn>
-          </router-link>
+            <v-btn color="accent" to="/signup" depressed>Get started</v-btn>
         </div>
       </div>
       <img src="../assets/plaguedoctorcovid.png">
@@ -21,50 +19,39 @@
           <div class="card-header primary--text">
             <i class="card-icon fa fa-user-md" aria-hidden="true"></i>
             <p class="info--text">24 Hour Service</p>
-            <h3 class="primary--text">Online appointment</h3>
+            <h3 class="primary--text">Online appointments and more</h3>
           </div>
           <div class="card-body">
-            <p class="info--text">Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
+            <p class="info--text">Sign in and enjoy the benefits of 24hr service.</p>
           </div>
           <div class="card-footer">
-            <v-btn class='primary'>Make appointment</v-btn>
+            <v-btn color="primary" to='/login' plain>Sign in &#62;</v-btn>
           </div>
         </div>
         <div class="card">
           <div class="card-header primary--text">
-            <i class="fa fa-clock-o" aria-hidden="true"></i>
-            <p class="info--text">Timing schedule</p>
-            <h3 class="primary--text">Working hours</h3>
+            <i class="fa fa-medkit" aria-hidden="true"></i>
+            <p class="info--text">Online drug repository</p>
+            <h3 class="primary--text">Search drugs</h3>
           </div>
           <div class="card-body">
-            <ul class="w-hours unstyled-list info--text">
-              <li>
-                Sun - Wed:
-                <span>8:00 - 17:00</span>
-              </li>
-              <li>
-                Thu - Fri:
-                <span>9:00 - 17:00</span>
-              </li>
-              <li>
-                Sat - Sun:
-                <span>10:00 - 17:00</span>
-              </li>
-            </ul>
+              <p class="info--text">Find and pick up drugs at your convenience.</p>
           </div>
           <div class="card-footer">
+            <v-btn plain color="primary" to="/drugsearch">Search drugs &#62;</v-btn>
           </div>
         </div>
         <div class="card">
           <div class="card-header primary--text">
-            <i class="fa fa-phone" aria-hidden="true"></i>
-            <p class="info--text">Emergency cases</p>
-            <h3 class="primary--text">1-800-700-6200</h3>
+            <i class="fa fa-hospital-o" aria-hidden="true"></i>
+            <p class="info--text">Pharmacies</p>
+            <h3 class="primary--text">Find your local pharmacy</h3>
           </div>
           <div class="card-body">
-            <p class="info--text">Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
+            <p class="info--text">Find pharmacies near you and see if they have what you need.</p>
           </div>
           <div class="card-footer">
+            <v-btn plain color="primary" to="/pharmacysearch">Search pharmacies &#62;</v-btn>
           </div>
         </div>
       </div>
@@ -313,5 +300,11 @@ export default {
   .space-between {
     display: flex;
     justify-content: space-between;
+  }
+
+  .card-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
   }
 </style>

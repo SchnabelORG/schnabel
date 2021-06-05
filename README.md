@@ -144,7 +144,7 @@ Status values:
 
 | Spec. id | Functionality                                     | Status |
 |----------|---------------------------------------------------|:------:|
-| 3.1      | Unauthenticated user view                         |   ✗    |
+| 3.1      | Unauthenticated user view                         |   ✓    |
 | 3.3      | User profile                                      |   ✗    |
 | 3.9      | User homepage                                     |   ✓    |
 | 3.13     | Dermatologist appointment scheduling as patient   |   ✓    |
