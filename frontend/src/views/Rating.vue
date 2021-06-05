@@ -1,143 +1,148 @@
 <template>
-  <div id="rating-main">
-    <div id="rating-container">
-      <p>Ratings</p>
-      <h2>Rate pharmacies, employees and drugs</h2>
-      <v-card id="ratings">
-        <v-card-title>
-          <v-tabs 
-          v-model="tab" 
-          color="primary"
-          fixed-tabs>
-            <v-tab>Pharmacies</v-tab>
-            <v-tab>Employees</v-tab>
-            <v-tab>Drugs</v-tab>
-          </v-tabs>
-        </v-card-title>
-        <v-card-text>
-          <v-tabs-items v-model="tab">
-            <v-tab-item>
-              <v-data-table
-                :headers="pharmacyHeaders"
-                :items="pharmacies"
-                @click:row="selectPharmacy"
-              >
-              </v-data-table>
-              <v-dialog v-model="pharmacyDialog" width="500">
-                <div v-if="success" id="success-form">
-                  <p id="success-icon"><i class="fa fa-check"></i></p>
-                  <p>Thank you for your feedback!</p>
-                </div>
-                <v-card v-else>
-                  <v-card-title>{{ selectedPharmacy.name }}</v-card-title>
-                  <v-card-text>
-                    <h3>Submit your rating</h3>
-                    <v-slider
-                      v-model="pharmacyRating"
-                      step="1"
-                      min="0"
-                      max="5"
-                      thumb-label
-                      ticks
-                      :append-icon="pharmacyRating.toString()"
-                    ></v-slider>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-btn plain>Cancel</v-btn>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                      :disabled="!pharmacyRating"
-                      color="accent"
-                      depressed
-                      @click="gradePharmacy"
-                      >Submit</v-btn
-                    >
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-            </v-tab-item>
-            <v-tab-item>
-              <v-data-table
-                :headers="employeeHeaders"
-                :items="employees"
-                @click:row="selectEmployee"
-              >
-              </v-data-table>
-              <v-dialog v-model="employeeDialog" width="500">
-                <div v-if="success" id="success-form">
-                  <p id="success-icon"><i class="fa fa-check"></i></p>
-                  <p>Thank you for your feedback!</p>
-                </div>
-                <v-card v-else>
-                  <v-card-title>{{ selectedEmployee.name }}</v-card-title>
-                  <v-card-text>
-                    <h3>Submit your rating</h3>
-                    <v-slider
-                      v-model="employeeRating"
-                      step="1"
-                      min="0"
-                      max="5"
-                      thumb-label
-                      :append-icon="employeeRating.toString()"
-                    >
-                    </v-slider>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-btn plain>Cancel</v-btn>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                      :disabled="!employeeRating"
-                      color="accent"
-                      depressed
-                      @click="gradeEmployee"
-                      >Submit</v-btn
-                    >
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-            </v-tab-item>
-            <v-tab-item>
-              <v-data-table
-                :headers="drugHeaders"
-                :items="drugs"
-                @click:row="selectDrug"
-              >
-              </v-data-table>
-              <v-dialog v-model="drugDialog" width="500">
-                <div v-if="success" id="success-form">
-                  <p id="success-icon"><i class="fa fa-check"></i></p>
-                  <p>Thank you for your feedback!</p>
-                </div>
-                <v-card v-else>
-                  <v-card-title>{{ selectedDrug.name }}</v-card-title>
-                  <v-card-text>
-                    <h3>Submit your rating</h3>
-                    <v-slider
-                      v-model="drugRating"
-                      min="0"
-                      max="5"
-                      thumb-label
-                      :append-icon="drugRating.toString()"
-                    >
-                    </v-slider>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-btn plain>Cancel</v-btn>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                      :disabled="!drugRating"
-                      color="accent"
-                      depressed
-                      @click="gradeDrug"
-                      >Submit</v-btn
-                    >
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-            </v-tab-item>
-          </v-tabs-items>
-        </v-card-text>
-      </v-card>
+  <div>
+    <search-navigation>
+      <router-link to="/">Home</router-link>
+    </search-navigation>
+    <div id="rating-main">
+      <div id="rating-container">
+        <p>Ratings</p>
+        <h2>Rate pharmacies, employees and drugs</h2>
+        <v-card id="ratings">
+          <v-card-title>
+            <v-tabs 
+            v-model="tab" 
+            color="primary"
+            fixed-tabs>
+              <v-tab>Pharmacies</v-tab>
+              <v-tab>Employees</v-tab>
+              <v-tab>Drugs</v-tab>
+            </v-tabs>
+          </v-card-title>
+          <v-card-text>
+            <v-tabs-items v-model="tab">
+              <v-tab-item>
+                <v-data-table
+                  :headers="pharmacyHeaders"
+                  :items="pharmacies"
+                  @click:row="selectPharmacy"
+                >
+                </v-data-table>
+                <v-dialog v-model="pharmacyDialog" width="500">
+                  <div v-if="success" id="success-form">
+                    <p id="success-icon"><i class="fa fa-check"></i></p>
+                    <p>Thank you for your feedback!</p>
+                  </div>
+                  <v-card v-else>
+                    <v-card-title>{{ selectedPharmacy.name }}</v-card-title>
+                    <v-card-text>
+                      <h3>Submit your rating</h3>
+                      <v-slider
+                        v-model="pharmacyRating"
+                        step="1"
+                        min="0"
+                        max="5"
+                        thumb-label
+                        ticks
+                        :append-icon="pharmacyRating.toString()"
+                      ></v-slider>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-btn plain>Cancel</v-btn>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        :disabled="!pharmacyRating"
+                        color="accent"
+                        depressed
+                        @click="gradePharmacy"
+                        >Submit</v-btn
+                      >
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-tab-item>
+              <v-tab-item>
+                <v-data-table
+                  :headers="employeeHeaders"
+                  :items="employees"
+                  @click:row="selectEmployee"
+                >
+                </v-data-table>
+                <v-dialog v-model="employeeDialog" width="500">
+                  <div v-if="success" id="success-form">
+                    <p id="success-icon"><i class="fa fa-check"></i></p>
+                    <p>Thank you for your feedback!</p>
+                  </div>
+                  <v-card v-else>
+                    <v-card-title>{{ selectedEmployee.name }}</v-card-title>
+                    <v-card-text>
+                      <h3>Submit your rating</h3>
+                      <v-slider
+                        v-model="employeeRating"
+                        step="1"
+                        min="0"
+                        max="5"
+                        thumb-label
+                        :append-icon="employeeRating.toString()"
+                      >
+                      </v-slider>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-btn plain>Cancel</v-btn>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        :disabled="!employeeRating"
+                        color="accent"
+                        depressed
+                        @click="gradeEmployee"
+                        >Submit</v-btn
+                      >
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-tab-item>
+              <v-tab-item>
+                <v-data-table
+                  :headers="drugHeaders"
+                  :items="drugs"
+                  @click:row="selectDrug"
+                >
+                </v-data-table>
+                <v-dialog v-model="drugDialog" width="500">
+                  <div v-if="success" id="success-form">
+                    <p id="success-icon"><i class="fa fa-check"></i></p>
+                    <p>Thank you for your feedback!</p>
+                  </div>
+                  <v-card v-else>
+                    <v-card-title>{{ selectedDrug.name }}</v-card-title>
+                    <v-card-text>
+                      <h3>Submit your rating</h3>
+                      <v-slider
+                        v-model="drugRating"
+                        min="0"
+                        max="5"
+                        thumb-label
+                        :append-icon="drugRating.toString()"
+                      >
+                      </v-slider>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-btn plain>Cancel</v-btn>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        :disabled="!drugRating"
+                        color="accent"
+                        depressed
+                        @click="gradeDrug"
+                        >Submit</v-btn
+                      >
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-tab-item>
+            </v-tabs-items>
+          </v-card-text>
+        </v-card>
+      </div>
     </div>
   </div>
 </template>
@@ -331,7 +336,7 @@ export default {
   #rating-main {
     display: grid;
     place-items: center;
-    height: 100vh;
+    height: 92vh;
     background: #fafafa;
   }
 
