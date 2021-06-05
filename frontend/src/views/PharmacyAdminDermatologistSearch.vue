@@ -129,6 +129,25 @@ export default {
       });
     },
 
+    getPharmacyAdmin: function() {
+        this.refreshToken().then(response => {
+            localStorage.jws = response.data;
+            this.axios.get("api/pharmacyadmin", {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                .then(response => {
+                    this.pharmacyId = response.data.pharmacy.id;
+                    console.log(this.pharmacyId);
+                    this.getSearchResults();
+                })
+                .catch(response => {
+                    console.log("Failed to get pharmacy admin", response.data);
+                });
+            })
+            .catch(response => {
+            console.log(response.data);
+            this.$router.push("/");
+        });
+    },
+
     getSearchResults: function() {
       let queryString = '?';
       let first = true;
@@ -138,7 +157,7 @@ export default {
         this.surname = this.nameSurname.substr(this.nameSurname.indexOf(' ')+1);
         queryString = queryString.concat('name=' + this.name + '&');
         queryString = queryString.concat('surname=' + this.surname);
-        this.first = false;
+        first = false;
       }
       this.filters.forEach(f => {
         if(f.on) {
@@ -150,17 +169,24 @@ export default {
         }
       });
 
-      this.axios.get("api/dermatologist/search" + queryString)
-        .then(r => {
-          if(r.data._embedded) {
-            this.dermatologists = r.data._embedded.dermatologists;
-          } else {
-            this.dermatologists = [];
-          }
-          console.log(r.data._embedded.dermatologists);
-        })
-        .catch(r => {
-          console.log(r);
+        this.refreshToken().then(response => {
+            localStorage.jws = response.data;
+            this.axios.get("api/pharmacyadmin/searchdermatologist" + queryString, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                .then(r => {
+                if(r.data._embedded) {
+                    this.dermatologists = r.data._embedded.dermatologists;
+                } else {
+                    this.dermatologists = [];
+                }
+                console.log(r.data._embedded.dermatologists);
+                })
+                .catch(r => {
+                console.log(r);
+                });
+            })
+            .catch(response => {
+            console.log(response.data);
+            this.$router.push("/");
         });
     },
   },
@@ -172,7 +198,7 @@ export default {
   },
 
     mounted() {
-      this.getSearchResults();
+      this.getPharmacyAdmin();
     },
 }
 </script>

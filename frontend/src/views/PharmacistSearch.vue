@@ -39,7 +39,7 @@
                 </div>
                 <div id="pharmacy-filters" class="filter-container">
                     <h3>Pharmacy</h3>
-                    <v-combobox v-model="filters[1].value"
+                    <v-combobox v-model="pharmacy"
                         :items="pharmacies"
                         return-object="true"
                         label="Pharmacy">
@@ -87,7 +87,8 @@
                                 <tr>
                                     <td>{{row.item.name}}</td>
                                     <td>{{row.item.surname}}</td>
-                                    <td>{{row.item.score}}</td>                       
+                                    <td>{{row.item.score}}</td>
+                                    <td>{{row.item.pharmacy.name}}</td>                       
                                 </tr>
                             </template>
                         </v-data-table>
@@ -107,6 +108,7 @@ export default {
             name: '',
             surname: '',
             pharmacies: '',
+            pharmacy: '',
             filters: [
               {
                 id: 0,
@@ -128,12 +130,16 @@ export default {
                     { text: "Name" },
                     { text: "Surname" },
                     { text: "Score" },
+                    { text: "Pharmacy" },
             ],
         }
     },
 
   methods: {
     applyFilters: function() {
+      if(this.pharmacy){
+          this.filters[1].value = this.pharmacy.id;
+      }
       this.filters.forEach(f => {
         if(f.value) {
           f.on = true;
@@ -160,7 +166,7 @@ export default {
         this.surname = this.nameSurname.substr(this.nameSurname.indexOf(' ')+1);
         queryString = queryString.concat('name=' + this.name + '&');
         queryString = queryString.concat('surname=' + this.surname);
-        this.first = false;
+        first = false;
       }
       this.filters.forEach(f => {
         if(f.on) {

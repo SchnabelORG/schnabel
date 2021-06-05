@@ -67,4 +67,5 @@ public class DermatologistController
     public ResponseEntity<PagedModel<DermatologistDTO>> filteredSearch(@RequestParam Map<String, String> params, Pageable pageable) {
         return new ResponseEntity<>(dermatologistService.filteredSearch(params, pageable), HttpStatus.OK);
     }
+
 }

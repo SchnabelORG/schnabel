@@ -20,4 +20,5 @@ public interface IDermatologistService extends IJpaService<Dermatologist, Long>
     Optional<Dermatologist> findByEmail(String email);
     PagedModel<DermatologistDTO> findAllByPharmacy(Long pharmacyId, Pageable pageable);
     PagedModel<DermatologistDTO> filteredSearch(Map<String, String> params, Pageable pageable);
+    PagedModel<DermatologistDTO> filteredSearchPharmacyAdmin(Map<String, String> params, Long pharmacyId, Pageable pageable);
 }

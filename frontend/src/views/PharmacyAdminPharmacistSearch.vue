@@ -59,15 +59,15 @@
             <v-icon>fa-search</v-icon>
             </v-btn>
         </v-toolbar>
-        <div id="dermatologists-main">
+        <div id="pharmacists-main">
             <v-card
-                id="dermatologists-card"
+                id="pharmacists-card"
                 elevation="2">
-                <v-card-title>Dermatologists</v-card-title>
+                <v-card-title>Pharmacists</v-card-title>
                 <v-card-text>
-                    <div id="dermatologists-table">
+                    <div id="pharmacists-table">
                         <v-data-table :headers="headers"
-                                        :items="dermatologists"
+                                        :items="pharmacists"
                                         :search="search">
                             <template v-slot:item="row">
                                 <tr>
@@ -92,6 +92,7 @@ export default {
             nameSurname: '',
             name: '',
             surname: '',
+            pharmacyId: '',
             filters: [
               {
                 id: 0,
@@ -100,8 +101,15 @@ export default {
                 value: '',
                 query: 'score',
               },
+              {
+                id: 1,
+                name: 'Pharmacy',
+                on: false,
+                value: '',
+                query: 'pharmacy',
+              },
             ],
-            dermatologists: [],
+            pharmacists: [],
             headers: [
                     { text: "Name" },
                     { text: "Surname" },
@@ -129,16 +137,37 @@ export default {
       });
     },
 
+    getPharmacyAdmin: function() {
+        this.refreshToken().then(response => {
+            localStorage.jws = response.data;
+            this.axios.get("api/pharmacyadmin", {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                .then(response => {
+                    this.pharmacyId = response.data.pharmacy.id;
+                    console.log(this.pharmacyId);
+                    this.getSearchResults();
+                })
+                .catch(response => {
+                    console.log("Failed to get pharmacy admin", response.data);
+                });
+            })
+            .catch(response => {
+            console.log(response.data);
+            this.$router.push("/");
+        });
+    },
+
     getSearchResults: function() {
       let queryString = '?';
       let first = true;
+      this.filters[1].value = this.pharmacyId;
+      this.filters[1].on = true;
 
       if(this.nameSurname) {
         this.name = this.nameSurname.substr(0,this.nameSurname.indexOf(' '));
         this.surname = this.nameSurname.substr(this.nameSurname.indexOf(' ')+1);
         queryString = queryString.concat('name=' + this.name + '&');
         queryString = queryString.concat('surname=' + this.surname);
-        this.first = false;
+        first = false;
       }
       this.filters.forEach(f => {
         if(f.on) {
@@ -150,14 +179,14 @@ export default {
         }
       });
 
-      this.axios.get("api/dermatologist/search" + queryString)
+      this.axios.get("api/pharmacist/search" + queryString)
         .then(r => {
           if(r.data._embedded) {
-            this.dermatologists = r.data._embedded.dermatologists;
+            this.pharmacists = r.data._embedded.pharmacists;
           } else {
-            this.dermatologists = [];
+            this.pharmacists = [];
           }
-          console.log(r.data._embedded.dermatologists);
+          console.log(r.data._embedded.pharmacists);
         })
         .catch(r => {
           console.log(r);
@@ -172,7 +201,7 @@ export default {
   },
 
     mounted() {
-      this.getSearchResults();
+      this.getPharmacyAdmin();
     },
 }
 </script>
@@ -182,7 +211,7 @@ export default {
     min-height: 100vh;
     background: #fafafa;
   }
-    #dermatologists-main {
+    #pharmacists-main {
         display:grid;
         grid-template-columns:auto;
         place-items: center;

@@ -277,6 +277,16 @@ const routes = [
         name: 'PriceList',
         component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PriceList.vue'),
       },
+      {
+        path: 'pharmacistsearch',
+        name: 'PharmacyAdminPharmacistSearch',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminPharmacistSearch.vue'),
+      },
+      {
+        path: 'dermatologistsearch',
+        name: 'PharmacyAdminDermatologistSearch',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminDermatologistSearch.vue'),
+      },
     ],
   },
 ]

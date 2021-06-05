@@ -42,7 +42,7 @@ public class PharmacistSpecification {
         }
 
         if(params.containsKey("pharmacy")) {
-            predicates.add(cb.equal(root.get(Pharmacist_.PHARMACY).get(Pharmacy_.ID), "%" + params.get("pharmacy_id") + "%"));
+            predicates.add(cb.equal(root.get(Pharmacist_.PHARMACY).get(Pharmacy_.ID), Long.parseLong(params.get("pharmacy"))));
         }
 
         return predicates;

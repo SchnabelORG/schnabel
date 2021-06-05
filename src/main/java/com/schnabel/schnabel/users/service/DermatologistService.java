@@ -1,5 +1,7 @@
 package com.schnabel.schnabel.users.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -16,6 +18,7 @@ import com.schnabel.schnabel.users.repository.IDermatologistRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
@@ -75,6 +78,23 @@ public class DermatologistService extends JpaService<Dermatologist, Long, IDerma
     @Transactional
     public PagedModel<DermatologistDTO> filteredSearch(Map<String, String> params, Pageable pageable) {
         Page<Dermatologist> dermatologists = repository.findAll(DermatologistSpecification.filteredQuery(params), pageable);
+        return dermatologistPagedAsm.toModel(dermatologists, dermatologistDTOAsm);
+    }
+
+    @Override
+    @Transactional
+    public PagedModel<DermatologistDTO> filteredSearchPharmacyAdmin(Map<String, String> params, Long pharmacyId, Pageable pageable) 
+    {
+        List<Dermatologist> derms = new ArrayList<Dermatologist>();
+        List<Dermatologist> dermAll = repository.findAll(DermatologistSpecification.filteredQuery(params), pageable).getContent();
+        List<Dermatologist> dermPharmacy = repository.findAllDermatologistsPharmacy(pharmacyId, pageable).getContent();
+
+        for (Dermatologist dermatologist : dermAll) {
+            if(dermPharmacy.contains(dermatologist)) {
+                derms.add(dermatologist);
+            }
+        }
+        Page<Dermatologist> dermatologists = new PageImpl<>(derms);
         return dermatologistPagedAsm.toModel(dermatologists, dermatologistDTOAsm);
     }
 
