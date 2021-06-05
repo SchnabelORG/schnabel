@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.users.service;
 
+import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -10,6 +11,7 @@ import com.schnabel.schnabel.pharmacies.service.IPharmacyService;
 import com.schnabel.schnabel.users.dto.DermatologistDTO;
 import com.schnabel.schnabel.users.dto.DermatologistDTOAssembler;
 import com.schnabel.schnabel.users.model.Dermatologist;
+import com.schnabel.schnabel.users.repository.DermatologistSpecification;
 import com.schnabel.schnabel.users.repository.IDermatologistRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +68,13 @@ public class DermatologistService extends JpaService<Dermatologist, Long, IDerma
             return null;
         }
         Page<Dermatologist> dermatologists = repository.findAllDermatologistsPharmacy(pharmacyId, pageable);
+        return dermatologistPagedAsm.toModel(dermatologists, dermatologistDTOAsm);
+    }
+
+    @Override
+    @Transactional
+    public PagedModel<DermatologistDTO> filteredSearch(Map<String, String> params, Pageable pageable) {
+        Page<Dermatologist> dermatologists = repository.findAll(DermatologistSpecification.filteredQuery(params), pageable);
         return dermatologistPagedAsm.toModel(dermatologists, dermatologistDTOAsm);
     }
 

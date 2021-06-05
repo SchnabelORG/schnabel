@@ -31,6 +31,7 @@ public class DermatologistDTOAssembler extends RepresentationModelAssemblerSuppo
         dto.setEmail(entity.getEmail());
         dto.setPassword(entity.getPassword());
         dto.setAddress(entity.getAddress());
+        dto.setScore(entity.getScore());
         dto.setPharmacies(toPharmaciesModel(entity.getPharmacies()));
         return dto;
     }

@@ -96,6 +96,18 @@ const routes = [
     component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacySearch.vue'),
   },
 
+  {
+    path: '/dermatologistsearch',
+    name: 'DermatologistSearch',
+    component: () => import(/* webpackChunkName: "pharmacy" */ '../views/DermatologistSearch.vue'),
+  },
+
+  {
+    path: '/pharmacistsearch',
+    name: 'PharmacistSearch',
+    component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacistSearch.vue'),
+  },
+
   //Pharmacy
   {
     path: '/pharmacy',
