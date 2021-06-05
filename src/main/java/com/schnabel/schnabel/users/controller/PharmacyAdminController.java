@@ -1,6 +1,7 @@
 package com.schnabel.schnabel.users.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -139,6 +141,13 @@ public class PharmacyAdminController
         return pharmacyAdminService.addPharmacist(pharmacistRequest, email) ?
             ResponseEntity.ok("Added")
             : ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("searchdermatologist")
+    public ResponseEntity<PagedModel<DermatologistDTO>> filteredSearchPharmacyAdmin(@RequestParam Map<String, String> params, Pageable pageable, @RequestHeader("Authorization") String authHeader) 
+    {
+        String email = jwtUtils.getEmailFromJws(jwtUtils.parseJwtFromAuthorizationHeader(authHeader));
+        return new ResponseEntity<>(pharmacyAdminService.filteredSearchPharmacyAdmin(params, email, pageable), HttpStatus.OK);
     }
 
 }
