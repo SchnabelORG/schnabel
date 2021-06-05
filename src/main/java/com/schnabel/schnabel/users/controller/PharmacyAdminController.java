@@ -1,6 +1,7 @@
 package com.schnabel.schnabel.users.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -39,15 +41,13 @@ public class PharmacyAdminController
 {
     private final IPharmacyAdminService pharmacyAdminService;
     private final PharmacyAdminDTOAssembler pharmacyAdminDTOAsm;
-    private final PagedResourcesAssembler<PharmacyAdmin> pharmacyAdminPageAsm;
     private final JwtUtils jwtUtils;
 
     @Autowired
-    public PharmacyAdminController(IPharmacyAdminService pharmacyAdminService, PharmacyAdminDTOAssembler pharmacyAdminDTOAsm, PagedResourcesAssembler<PharmacyAdmin> pharmacyAdminPageAsm, JwtUtils jwtUtils)
+    public PharmacyAdminController(IPharmacyAdminService pharmacyAdminService, PharmacyAdminDTOAssembler pharmacyAdminDTOAsm, JwtUtils jwtUtils)
     {
         this.pharmacyAdminService = pharmacyAdminService;
         this.pharmacyAdminDTOAsm = pharmacyAdminDTOAsm;
-        this.pharmacyAdminPageAsm = pharmacyAdminPageAsm;
         this.jwtUtils = jwtUtils;
     }
 
@@ -141,6 +141,13 @@ public class PharmacyAdminController
         return pharmacyAdminService.addPharmacist(pharmacistRequest, email) ?
             ResponseEntity.ok("Added")
             : ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("searchdermatologist")
+    public ResponseEntity<PagedModel<DermatologistDTO>> filteredSearchPharmacyAdmin(@RequestParam Map<String, String> params, Pageable pageable, @RequestHeader("Authorization") String authHeader) 
+    {
+        String email = jwtUtils.getEmailFromJws(jwtUtils.parseJwtFromAuthorizationHeader(authHeader));
+        return new ResponseEntity<>(pharmacyAdminService.filteredSearchPharmacyAdmin(params, email, pageable), HttpStatus.OK);
     }
 
 }

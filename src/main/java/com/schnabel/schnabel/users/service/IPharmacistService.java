@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.users.service;
 
+import java.util.Map;
 import java.util.Optional;
 
 import com.schnabel.schnabel.misc.interfaces.IJpaService;
@@ -26,4 +27,6 @@ public interface IPharmacistService extends IJpaService<Pharmacist, Long>
     Optional<Pharmacist> findByEmail(String email);
     Optional<PharmacistDTO> getDTO(Long id);
     PagedModel<PharmacistDTO> getAllDTO(Pageable pageable);
+    PagedModel<PharmacistDTO> filteredSearch(Map<String, String> params, Pageable pageable);
+
 }

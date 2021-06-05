@@ -1,11 +1,16 @@
 <template>
-    <div id="search-main">
+    <div>
+        <main-navigation>
+            <router-link to="/">Home</router-link>
+        </main-navigation>
+    <div id="search-main" class="info">
         <div id="search-container">
-            <p>Buy meds</p>
-            <h2>Find your drug and reserve it</h2>
+            <!-- <p>Buy meds</p>
+            <h2>Find your drug and reserve it</h2> -->
             <div v-if="success" id="success-form">
                 <p id="success-icon"><i class="fa fa-check"></i></p>
                 <p>Drug reserved!</p>
+                <v-btn plain @click="steps = 1; success=false" color="accent">Reserve another drug</v-btn>
             </div>
             <v-stepper
             v-else
@@ -51,6 +56,9 @@
                                     <v-card-text>
                                         <p>{{drug.description}}</p>
                                     </v-card-text>
+                                    <v-card-actions>
+                                        <v-btn plain>&#62;</v-btn>
+                                    </v-card-actions>
                                 </v-card>
                             </div>
                         </div>
@@ -74,6 +82,7 @@
                             <div id="date-and-amount">
                                 <div>
                                 <v-date-picker
+                                full-width
                                 v-model="resDate"
                                 :min="new Date().toISOString().substr(0, 10)">
                                 </v-date-picker>
@@ -128,6 +137,7 @@
                 </v-stepper-items>
             </v-stepper>
         </div>
+    </div>
     </div>
 </template>
 
@@ -184,7 +194,7 @@ export default {
                     this.axios.post('api/patient/resdrug', request, {headers: this.getAHeader()})
                         .then(() => this.success = true)
                         .catch(() => this.error = 'Failed to reserve drug');
-                }).catch(() => this.$router.push('/'));
+                }).catch(() => this.$router.push('/login'));
         },
 
         selectPharmacy: function(item, event) {
@@ -197,7 +207,7 @@ export default {
                     this.axios.get('api/warehouseitem/stock?pharmacy_id=' + item.id + '&drug_id=' + this.selectedDrug.id, {headers: this.getAHeader()})
                         .then(r => this.stock = r.data);
                     ++this.steps;
-                }).catch(() => this.$router.push('/'));
+                }).catch(() => this.$router.push('/login'));
         },
 
         selectDrug: function(drug) {
@@ -218,24 +228,23 @@ export default {
                         })
                         .catch(() => this.error = 'No pharmacies found with drug in stock.');
                 })
-                .catch(() => this.$router.push('/'));
+                .catch(() => this.$router.push('/login'));
         },
 
         searchDrugs: function() {
-            this.refreshToken()
-                .then(rr => {
-                    localStorage.jws = rr.data;
-                    this.axios.get('api/drug/search?name=' + this.search, {headers: this.getAHeader()})
-                        .then(r => {
-                            if(r.data._embedded) {
-                                this.drugs = r.data._embedded.drugs;
-                            } else {
-                                this.drugs = [];
-                            }
-                        })
-                })
-                .catch(() => this.router.push("/"));
+            this.axios.get('api/drug/search?name=' + this.search)
+                .then(r => {
+                    if(r.data._embedded) {
+                        this.drugs = r.data._embedded.drugs;
+                    } else {
+                        this.drugs = [];
+                    }
+                });
         },
+    },
+
+    mounted() {
+        this.searchDrugs();
     },
 }
 </script>
@@ -245,7 +254,7 @@ export default {
     #search-main {
         display: grid;
         place-items: center;
-        height: 100vh;
+        height: 92vh;
         background: #fafafa;
     }
 
@@ -267,8 +276,9 @@ export default {
     }
 
     .result {
-        display: flex;
-        flex-direction: row;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        place-items: center;
     }
 
     #date-and-amount {

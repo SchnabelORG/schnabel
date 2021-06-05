@@ -32,6 +32,7 @@
         grid-template-columns: minmax(150px, 15vw) 1fr;
     } */
     #main-content {
+        min-height: 100vh;
         background-color: #fafafa;
     }
 </style>

@@ -14,7 +14,7 @@ public interface IMedicalEmployeeRepository extends JpaRepository<MedicalEmploye
     Optional<MedicalEmployee> findByEmail(String email);
 
     // NOTE(Jovan): Works, don't know why
-    @Query(value = "SELECT ph.id, ph.name, ph.surname, ph.email, ph.password, ph.city, ph.postcode, ph.street, ph.street_no, ph.is_activated, ph.score, 1 as clazz_"
+    @Query(value = "SELECT ph.id, ph.name, ph.surname, ph.email, ph.password, ph.city, ph.postcode, ph.street, ph.street_no, ph.is_activated, ph.score, ph.latitude, ph.longitude, 1 as clazz_"
         + " FROM pharmacists ph"
         + " INNER JOIN appointments a"
         + " ON a.medical_employee_id = ph.id"
@@ -22,7 +22,7 @@ public interface IMedicalEmployeeRepository extends JpaRepository<MedicalEmploye
         + " AND a.end_time <= CURRENT_TIMESTAMP"
         + " GROUP BY ph.id"
         + " UNION"
-        + " SELECT d.id, d.name, d.surname, d.email, d.password, d.city, d.postcode, d.street, d.street_no, d.is_activated, d.score, 2 as clazz_"
+        + " SELECT d.id, d.name, d.surname, d.email, d.password, d.city, d.postcode, d.street, d.street_no, d.is_activated, d.score, d.latitude, d.longitude, 2 as clazz_"
         + " FROM dermatologists d"
         + " INNER JOIN appointments a"
         + " ON a.medical_employee_id = d.id"

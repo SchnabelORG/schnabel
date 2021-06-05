@@ -60,7 +60,7 @@ export default {
                 .then(r => {
                     this.$store.state.jws = r.data;
 
-                    window.localStorage.jwt = r.data;
+                    //window.localStorage.jwt = r.data;
                     // this.$router.push("pharmacist");
 
                     // this.$store.state.jws = r.data;
@@ -71,6 +71,8 @@ export default {
                     //localStorage.jws = r.data; // TODO(Jovan): TEMP!
                     this.$router.push("redirect");
 
+                    localStorage.jws = r.data; // TODO(Jovan): TEMP!
+                    //this.$router.push("/");
                 })
                 .catch(() => {
                     this.error = "Bad credentials";

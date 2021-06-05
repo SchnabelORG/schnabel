@@ -1,11 +1,17 @@
 package com.schnabel.schnabel.users.controller;
 
+
 import com.schnabel.schnabel.security.util.JwtUtils;
 import com.schnabel.schnabel.users.dto.DermatologistDTO;
 import com.schnabel.schnabel.users.dto.DermatologistDTOAssembler;
 import com.schnabel.schnabel.users.dto.PharmacistDTO;
 import com.schnabel.schnabel.users.model.Dermatologist;
 import com.schnabel.schnabel.users.model.Pharmacist;
+
+import java.util.Map;
+
+import com.schnabel.schnabel.users.dto.DermatologistDTO;
+
 import com.schnabel.schnabel.users.service.IDermatologistService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +20,18 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 
 /**
  * Dermatologist REST controller
@@ -55,7 +69,6 @@ public class DermatologistController
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.badRequest().build());
     }
-
     /**
      * Get all dermatologists
      * @return Page of Dermatologist
@@ -100,4 +113,10 @@ public class DermatologistController
         dermatologistService.update(dermatologist.get());
         return dermatologistService.get(dermatologist.get().getId()).map(dermatologistDTOAssembler::toModel).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("search")
+    public ResponseEntity<PagedModel<DermatologistDTO>> filteredSearch(@RequestParam Map<String, String> params, Pageable pageable) {
+        return new ResponseEntity<>(dermatologistService.filteredSearch(params, pageable), HttpStatus.OK);
+    }
+
 }

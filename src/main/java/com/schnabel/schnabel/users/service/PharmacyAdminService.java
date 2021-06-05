@@ -2,6 +2,7 @@ package com.schnabel.schnabel.users.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.schnabel.schnabel.appointment.model.Appointment;
@@ -115,5 +116,12 @@ public class PharmacyAdminService extends JpaService<PharmacyAdmin, Long, IPharm
         }
         return shiftService.definePharmacistShift(pharmacistRequest.getStartTime(), pharmacistRequest.getEndTime(), pharmacist.get(), findByEmail(email).get().getPharmacy());
     }
+
+    @Override
+    public PagedModel<DermatologistDTO> filteredSearchPharmacyAdmin(Map<String, String> params, String email, Pageable pageable)
+    {
+        return dermatologistService.filteredSearchPharmacyAdmin(params, findByEmail(email).get().getPharmacy().getId(), pageable);
+    }
+
 
 }

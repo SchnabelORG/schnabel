@@ -8,8 +8,25 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    beforeEnter: (to, from, next) => {
+      axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + localStorage.jws}})
+        .then(r => {
+          if(r.data == 'ROLE_PATIENT') {
+            next({name: 'UserHome'});
+          } else if (r.data == 'ROLE_ADMIN') {
+            next({name: 'PharmacyAdminHome'});
+          } else {
+            next({name: 'Home'});
+          }
+        })
+        .catch(() => next({name: 'Home'}));
+    },
+  },
+
+  {
+    path: '/index',
     name: 'Home',
-    component: Home
+    component: Home,
   },
 
   {
@@ -41,7 +58,7 @@ const routes = [
       axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + window.localStorage.getItem('jwt')}})
         .then(r => {
           if(r.data == 'ROLE_PATIENT') {
-            next({name: 'Home'});
+            next({name: 'UserHome'});
           } else if (r.data == 'ROLE_ADMIN') {
             next({name: 'PharmacyAdminHome'});
           } else if (r.data == 'ROLE_PHARMACIST') {
@@ -94,16 +111,32 @@ const routes = [
   },
 
   // PharmacySearch
-
   {
     path: '/pharmacysearch',
     name: 'PharmacySearch',
     component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacySearch.vue'),
   },
+  {
+    path: '/pharmacysearch/:name',
+    name: 'PharmacySearch',
+    component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacySearch.vue'),
+  },
+
+  {
+    path: '/dermatologistsearch',
+    name: 'DermatologistSearch',
+    component: () => import(/* webpackChunkName: "pharmacy" */ '../views/DermatologistSearch.vue'),
+  },
+
+  {
+    path: '/pharmacistsearch',
+    name: 'PharmacistSearch',
+    component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacistSearch.vue'),
+  },
 
   //Pharmacy
   {
-    path: '/pharmacy',
+    path: '/pharmacy/:id',
     name: 'PharmacyPanel',
     component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacyPanel.vue'),
     children:[
@@ -278,6 +311,16 @@ const routes = [
         path: 'pricelist',
         name: 'PriceList',
         component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PriceList.vue'),
+      },
+      {
+        path: 'pharmacistsearch',
+        name: 'PharmacyAdminPharmacistSearch',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminPharmacistSearch.vue'),
+      },
+      {
+        path: 'dermatologistsearch',
+        name: 'PharmacyAdminDermatologistSearch',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminDermatologistSearch.vue'),
       },
     ],
   },

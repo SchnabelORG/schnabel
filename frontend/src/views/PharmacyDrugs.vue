@@ -7,12 +7,12 @@
             <v-card-text>
                 <div id="drugs-table">
                     <v-data-table :headers="headers"
-                                    :items="drugs"
+                                    :items="warehouseitems"
                                     :search="search">
                         <template v-slot:item="row">
-                            <tr>
-                                <td>{{row.item.name}}</td>
-                                <td>{{row.item.price}}</td>                    
+                            <tr v-if="row.item.available > 0">
+                                <td>{{row.item.drug.name}}</td>  
+                                <td>{{row.item.drug.description}}</td>                   
                             </tr>
                         </template>
                     </v-data-table>
@@ -26,17 +26,22 @@
     export default {
         data() {
             return {
-                drugs: [],
+                warehouseitems: [],
                 headers: [
                     { text: "Name" },
-                    { text: "Price"}
+                    { text: "Description" },
                 ],
             }
         },
         methods: {
             getDrugs: function() {
-                
-
+                    this.axios.get("api/warehouseitem/pharmacy/1")
+                        .then(response => {
+                            this.warehouseitems = response.data._embedded.warehouseitems;
+                        })
+                        .catch(response => {
+                            console.log("Failed to get drugs", response.data);
+                        });
             },
         },
         mounted() {
@@ -52,5 +57,18 @@
         place-items: center;
         min-height: 92vh;
         background-color: #fbecdd;
+    }
+    #drugs-card {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        width: 40%;
+    }
+    #drugs-main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100vw;
+        min-height: 100vh;
     }
 </style>

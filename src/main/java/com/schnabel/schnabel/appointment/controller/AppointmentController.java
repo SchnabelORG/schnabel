@@ -1,4 +1,6 @@
 package com.schnabel.schnabel.appointment.controller;
+import java.util.Optional;
+
 import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
 import com.schnabel.schnabel.appointment.dto.AppointmentRequest;
 import com.schnabel.schnabel.appointment.dto.NewAppointmentDTO;
@@ -19,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Optional;
 
 /**
  * Appointment REST controller
@@ -87,6 +87,32 @@ public class AppointmentController {
         return service.defineAppointment(req.getStartTime(), req.getEndTime(), req.getPrice(), req.getDermatologistId(), jwtUtils.getEmailFromJws(jws)) ?
             ResponseEntity.ok("Added")
             : ResponseEntity.badRequest().build();
+    }
+
+    /**
+     * Get patient's dermatology appt. history
+     */
+    @GetMapping("patient/dermatology")
+    public ResponseEntity<PagedModel<AppointmentDTO>> getDermatologyHistory(@RequestHeader("Authorization") String auth, Pageable pageable) {
+        String email = jwtUtils.getEmailFromAuth(auth);
+        Optional<Patient> patient = patientService.findByEmail(email);
+        if(!patient.isPresent()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(service.findDermHistory(patient.get().getId(), pageable));
+    }
+
+    /**
+     * Get patient's pharmacy appt. history
+     */
+    @GetMapping("patient/consult")
+    public ResponseEntity<PagedModel<AppointmentDTO>> getConsultHistory(@RequestHeader("Authorization") String auth, Pageable pageable) {
+        String email = jwtUtils.getEmailFromAuth(auth);
+        Optional<Patient> patient = patientService.findByEmail(email);
+        if(!patient.isPresent()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(service.findConsultHistory(patient.get().getId(), pageable));
     }
 
     @PostMapping("pharmacist/newapp")

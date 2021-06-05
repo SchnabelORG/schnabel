@@ -10,6 +10,7 @@ import 'vuelayers/lib/style.css'
 import DatetimePicker from 'vuetify-datetime-picker'
 
 import MainNavigation from './components/MainNavigation'
+import SearchNavigation from './components/SearchNavigation'
 import vuetify from './plugins/vuetify';
 import Sidebar from './components/Sidebar'
 
@@ -29,6 +30,7 @@ Vue.component('main-navigation', MainNavigation)
 Vue.component('sidebar', Sidebar, {
 	props: ["title", "user"],
 })
+Vue.component('search-navigation', SearchNavigation)
 
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = process.env.VUE_APP_API_ENDPOINT;

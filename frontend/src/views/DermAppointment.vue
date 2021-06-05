@@ -103,7 +103,7 @@ export default {
                         });
                 })
                 .catch(() => {
-                    this.$router.push("/");
+                    this.$router.push("/login");
                 });
         },
 
@@ -130,7 +130,7 @@ export default {
 
                 })
                 .catch(() => {
-                    this.$router.push("/");
+                    this.$router.push("/login");
                 });
         },
 
