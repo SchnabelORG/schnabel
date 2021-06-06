@@ -14,6 +14,9 @@
             <div id="footer-title">
                 <h3 class="primary--text">Schnabel</h3>
                 <p class="info--text">The pharmacy that cares for the wellbeing of you and your family.</p>
+                <spacer></spacer>
+                <h4 class="primary--text">Avarage grade: {{this.pharmacy.score}}</h4>
+                <h4  class="primary--text">Address: {{this.pharmacy.address.street}} {{this.pharmacy.address.streetNo}}, {{this.pharmacy.address.city}}</h4>
             </div>
             </div>
 
@@ -47,25 +50,17 @@
                 <ul class="footer-column-list unstyled-list">
                 <li><router-link to="/pharmacyadmin/defineappointment">Define appointment</router-link></li>
                 <li><router-link to="/pharmacyadmin/freedermatologistappointment">Free dermatologist appointments</router-link></li>
-                <li><router-link to="/pharmacyadmin/appointmentsreport">Appointment report</router-link></li>
                 </ul>
             </div>
              <div class="footer-column">
-            <h4 class="primary--text">General info</h4>
-            <div class="footer-divider"></div>
-            <div id="contact-info">
-                <div class="space-between info--text">
-                    <i class="fa fa-diamond" aria-hidden="true"></i>
-                    <span>Avarage grade: {{this.pharmacy.score}}</span>
-                </div>
-                <div class="space-between info--text">
-                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <span> {{this.pharmacy.address.street}} {{this.pharmacy.address.streetNo}}, {{this.pharmacy.address.city}}</span>
-                </div>
-                <div class="space-between info--text">
-                </div>
+                <h4 class="primary--text">Reports</h4>
+                <div class="footer-divider"></div>
+                <ul class="footer-column-list unstyled-list">
+                <li><router-link to="/pharmacyadmin/appointmentsreport">Appointment report</router-link></li>
+                <li><router-link to="/pharmacyadmin/drugusage">Drug usage report</router-link></li>
+                <li><router-link to="/pharmacyadmin/pharmacyincome">Income report</router-link></li>
+                </ul>
             </div>
-          </div>
             </div>
         </div>
         </div>

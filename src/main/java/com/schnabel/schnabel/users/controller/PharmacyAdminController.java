@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
 import com.schnabel.schnabel.security.util.JwtUtils;
 import com.schnabel.schnabel.users.dto.DermatologistDTO;
+import com.schnabel.schnabel.users.dto.DermatologistRequest;
 import com.schnabel.schnabel.users.dto.PharmacistDTO;
 import com.schnabel.schnabel.users.dto.PharmacistRequest;
 import com.schnabel.schnabel.users.dto.PharmacyAdminDTO;
@@ -42,7 +43,7 @@ public class PharmacyAdminController
     private final IPharmacyAdminService pharmacyAdminService;
     private final PharmacyAdminDTOAssembler pharmacyAdminDTOAsm;
     private final JwtUtils jwtUtils;
-
+    
     @Autowired
     public PharmacyAdminController(IPharmacyAdminService pharmacyAdminService, PharmacyAdminDTOAssembler pharmacyAdminDTOAsm, JwtUtils jwtUtils)
     {
@@ -148,6 +149,25 @@ public class PharmacyAdminController
     {
         String email = jwtUtils.getEmailFromJws(jwtUtils.parseJwtFromAuthorizationHeader(authHeader));
         return new ResponseEntity<>(pharmacyAdminService.filteredSearchPharmacyAdmin(params, email, pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/pharmacydrugmonth/{id}")
+    public ResponseEntity<List<Integer>> getCountMonth(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(pharmacyAdminService.countDrugsByMonth(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/pharmacydrugyear/{id}")
+    public ResponseEntity<List<Integer>> getCountYear(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(pharmacyAdminService.countDrugsByYear(id), HttpStatus.OK);
+    }
+
+    @PostMapping("addnewdermatologist")
+    public ResponseEntity<String> addDermatologist(@RequestBody DermatologistRequest dermatologistRequest, @RequestHeader("Authorization") String authHeader) 
+    {
+        String email = jwtUtils.getEmailFromJws(jwtUtils.parseJwtFromAuthorizationHeader(authHeader));
+        return pharmacyAdminService.addDermatologist(dermatologistRequest, email) ?
+            ResponseEntity.ok("Added")
+            : ResponseEntity.badRequest().build();
     }
 
 }

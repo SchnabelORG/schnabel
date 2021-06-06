@@ -55,7 +55,7 @@ const routes = [
   {
     path: '/redirect',
     beforeEnter: (to, from, next) => {
-      axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + window.localStorage.getItem('jwt')}})
+      axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + localStorage.jws}})
         .then(r => {
           if(r.data == 'ROLE_PATIENT') {
             next({name: 'UserHome'});
@@ -337,6 +337,16 @@ const routes = [
         path: 'appointmentsreport',
         name: 'PharmacyAdminAppointments',
         component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminAppointments.vue'),
+      },
+      {
+        path: 'drugusage',
+        name: 'PharmacyAdminDrugUsage',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminDrugUsage.vue'),
+      },
+      {
+        path: 'pharmacyincome',
+        name: 'PharmacyAdminIncome',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminIncome.vue'),
       },
     ],
   },

@@ -145,4 +145,14 @@ public class AppointmentController {
         return new ResponseEntity<>(service.countAppointmentsByYear(id, pageable), HttpStatus.OK);
     }
 
+    @GetMapping("/pharmacyincomemonth/{id}")
+    public ResponseEntity<List<Double>> getIncomeMonth(@PathVariable("id") Long id, Pageable pageable) {
+        return new ResponseEntity<>(service.countIncomeByMonth(id, pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/pharmacyincomeyear/{id}")
+    public ResponseEntity<List<Double>> getIncomeYear(@PathVariable("id") Long id, Pageable pageable) {
+        return new ResponseEntity<>(service.countIncomeByYear(id, pageable), HttpStatus.OK);
+    }
+
 }

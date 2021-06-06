@@ -69,7 +69,7 @@ export default {
                    // this.$router.push("pharmacyadmin");
 
                     //localStorage.jws = r.data; // TODO(Jovan): TEMP!
-                    this.$router.push("redirect");
+                    //this.$router.push("redirect");
 
                     localStorage.jws = r.data; // TODO(Jovan): TEMP!
                     //this.$router.push("/");

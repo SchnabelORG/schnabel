@@ -102,8 +102,17 @@ public class DermatologistService extends JpaService<Dermatologist, Long, IDerma
     @Transactional
     public PagedModel<DermatologistDTO> findAllDermatologistNotInPharmacy(Long pharmacyId, Pageable pageable)
     {
-        Page<Dermatologist> dermatologists = repository.findAllDermatologistNotInPharmacy(pharmacyId, pageable);
-        return dermatologistPagedAsm.toModel(dermatologists, dermatologistDTOAsm);
+        List<Dermatologist> retVal = new ArrayList<Dermatologist>();
+        List<Dermatologist> dermatologists = repository.findAllDermatologistNotInPharmacy(pharmacyId, pageable).getContent();
+        List<Dermatologist> derms = repository.findAllDermatologistsPharmacy(pharmacyId, pageable).getContent();
+
+        for (Dermatologist dermatologist : dermatologists) {
+            if(!derms.contains(dermatologist)) {
+                retVal.add(dermatologist);
+            }
+        }
+        Page<Dermatologist> page = new PageImpl<>(retVal);
+        return dermatologistPagedAsm.toModel(page, dermatologistDTOAsm);
     }
 }
 

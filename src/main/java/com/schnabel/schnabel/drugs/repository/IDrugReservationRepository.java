@@ -21,4 +21,5 @@ public interface IDrugReservationRepository extends JpaRepository<DrugReservatio
     List<DrugReservation> findNotTakenByDrugAndPharmacy(@Param("drug_id") Long drugId,@Param("pharmacy_id") Long pharmacyId);
 
     Page<DrugReservation> findByPatientId(Long patientId, Pageable pageable);
+    List<DrugReservation> findByPharmacyId(Long pharmacyId);
 }

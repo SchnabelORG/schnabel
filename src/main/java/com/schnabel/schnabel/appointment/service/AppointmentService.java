@@ -344,7 +344,7 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
     {
         int counter = 0;
         for (Appointment appointment : appointments) {
-            if(appointment.getPeriod().getStartTime().getYear() == LocalDate.now().getYear() && appointment.getPeriod().getStartTime().getMonthValue() == month)
+            if(appointment.getPeriod().getEndTime().isBefore(LocalDateTime.now()) && appointment.getPeriod().getStartTime().getYear() == LocalDate.now().getYear() && appointment.getPeriod().getStartTime().getMonthValue() == month)
             {
                 counter++;
             }
@@ -370,18 +370,93 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
         int counter = 0;
         for (Appointment appointment : appointments) {
             if(year == 0){
-                if(appointment.getPeriod().getStartTime().getYear() == LocalDate.now().getYear() - 1)
+                if(appointment.getPeriod().getEndTime().isBefore(LocalDateTime.now()) && appointment.getPeriod().getStartTime().getYear() == LocalDate.now().getYear() - 1)
                 {
                     counter++;
                 }
             } else {
-                if(appointment.getPeriod().getStartTime().getYear() == LocalDate.now().getYear())
+                if(appointment.getPeriod().getEndTime().isBefore(LocalDateTime.now()) &&  appointment.getPeriod().getStartTime().getYear() == LocalDate.now().getYear())
                 {
                     counter++;
                 }
             }
         }
         return counter;
+    }
+
+    @Override
+    @Transactional
+    public List<Double> countIncomeByMonth(Long pharmacyId, Pageable pageable)
+    {
+        List<Double> countMonth = new ArrayList<Double>();
+        List<Appointment> appointments = repository.findByPharmacyId(pharmacyId, pageable).getContent();
+
+        for (int i = 1; i < 13; i++) {
+            countMonth.add(countIncomeMonth(i, appointments));
+        }
+
+        System.out.println(countMonth.get(5)+ "------------");
+        return countMonth;
+    }
+
+    private Double countIncomeMonth(Integer month, List<Appointment> appointments)
+    {
+        double counter = 0;
+        for (Appointment appointment : appointments) {
+            if(appointment.getPeriod().getEndTime().isBefore(LocalDateTime.now()) && appointment.getPeriod().getStartTime().getYear() == LocalDate.now().getYear() && appointment.getPeriod().getStartTime().getMonthValue() == month)
+            {
+                counter += appointment.getPrice();
+            }
+        }
+        return counter;
+    }
+
+    @Override
+    @Transactional
+    public List<Double> countIncomeByYear(Long pharmacyId, Pageable pageable)
+    {
+        List<Double> countYear = new ArrayList<Double>();
+        List<Appointment> appointments = repository.findByPharmacyId(pharmacyId, pageable).getContent();
+
+        for (int i = 0; i < 2; i++) {
+            countYear.add(countIncomeYears(i, appointments));
+        }
+        return countYear;
+    }
+
+    private Double countIncomeYears(Integer year, List<Appointment> appointments)
+    {
+        double counter = 0;
+        for (Appointment appointment : appointments) {
+            if(year == 0){
+                if(appointment.getPeriod().getEndTime().isBefore(LocalDateTime.now()) && appointment.getPeriod().getStartTime().getYear() == LocalDate.now().getYear() - 1)
+                {
+                    counter += appointment.getPrice();
+                }
+            } else {
+                if(appointment.getPeriod().getEndTime().isBefore(LocalDateTime.now()) &&  appointment.getPeriod().getStartTime().getYear() == LocalDate.now().getYear())
+                {
+                    counter += appointment.getPrice();
+                }
+            }
+        }
+        return counter;
+    }
+
+    @Override
+    @Transactional
+    public Double calculateIncome(LocalDate start, LocalDate end, Long pharmacyId, Pageable pageable) 
+    {
+        List<Appointment> appointments = repository.findByPharmacyId(pharmacyId, pageable).getContent();
+        double income = 0;
+        for (Appointment appointment : appointments) {
+            if(appointment.getPeriod().getStartTime().toLocalDate().isAfter(start) && appointment.getPeriod().getStartTime().toLocalDate().isBefore(end))
+            {
+                income += appointment.getPrice();
+            }
+        }
+        return income;
+
     }
 
 }

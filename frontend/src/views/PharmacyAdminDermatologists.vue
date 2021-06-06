@@ -128,7 +128,7 @@
                         </v-btn>
                     </v-time-picker>
             </v-menu>
-                <v-btn class="primary" @click="addDermatologist()" :disabled="!name || !surname">
+                <v-btn class="primary" @click="addDermatologist()" :disabled="!dermatologist || !validFrom || !validUntil">
                     Add
                 </v-btn>
                 <v-btn class="accent" @click="cancel()">
@@ -151,6 +151,8 @@
                 surname: '',
                 id: '',
                 pharmacyId: '',
+                validFrom: '',
+                validUntil: '',
                 headers: [
                     { text: "Name" },
                     { text: "Surname" },
@@ -201,7 +203,7 @@
                     localStorage.jws = response.data;
                     this.axios.delete("api/pharmacyadmin/removedermatologist/" + id, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
                         .then(response => {
-                            console.log("Successfully removed dermatologist", response.data);
+                            console.log(response.data);
                             this.getDermatologists();
                         })
                         .catch(response => {
@@ -216,23 +218,49 @@
             getDermatologistsNotInPharmacy: function() {
                 this.axios.get("api/dermatologist/notinpharmacy/" + this.pharmacyId)
                         .then(response => {
-                            this.dermatologistsNotPharmacy = response.data._embedded.dermatologistsNotPharmacy;
+                            this.dermatologistsNotPharmacy = response.data._embedded.dermatologists;
                         })
                         .catch(response => {
                             console.log("Failed to get dermatologists not in pharmacy", response.data);
                         });
             },
+            addDermatologist: function() {
+                if(this.validFrom > this.validUntil) {
+                    alert("Invalid period");
+                    return;
+                }
+                
+                let dermatologistRequest = { id: this.dermatologist.id, pharmacyId: this.pharmacyId, startTime: this.validFrom, endTime: this.validUntil};
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.post("api/pharmacyadmin/addnewdermatologist", dermatologistRequest, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            console.log(response.data);
+                            this.getDermatologists();
+                        })
+                        .catch(response => {
+                            console.log("Failed to add dermatologist", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
+
+                
+                this.new = false;
+                this.dermatologist = '';
+                this.validFrom = '';
+                this.validUntil = '';
+            },
             newDermatologist: function() {
                 this.new = true;
             },
-            addDermatologist: function() {
-                this.new = false;
-
-                this.name = '';
-                this.surname = '';
-            },
             cancel: function() {
                 this.new = false;
+                this.dermatologist = '';
+                this.validFrom = '';
+                this.validUntil = '';
             },
         },
         mounted() {
