@@ -1,19 +1,12 @@
 package com.schnabel.schnabel.users.dto;
 
-import com.schnabel.schnabel.procurement.dto.OrderItemDTO;
-import com.schnabel.schnabel.procurement.model.OrderItem;
 import com.schnabel.schnabel.users.controller.PatientController;
-import com.schnabel.schnabel.users.model.Allergy;
 import com.schnabel.schnabel.users.model.Patient;
 
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.stereotype.Component;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Assembles PatientDTO
@@ -35,6 +28,7 @@ public class PatientDTOAssembler extends RepresentationModelAssemblerSupport<Pat
         dto.setSurname(entity.getSurname());
         dto.setEmail(entity.getEmail());
         dto.setAddress(entity.getAddress());
+        dto.setPhoneNo(entity.getPhoneNo());
 
         return dto;
     }

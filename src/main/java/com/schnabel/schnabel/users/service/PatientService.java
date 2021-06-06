@@ -11,6 +11,7 @@ import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.users.dto.ConsultRequest;
 import com.schnabel.schnabel.users.dto.DrugReservationRequest;
+import com.schnabel.schnabel.users.dto.PatientDTO;
 import com.schnabel.schnabel.users.model.ERole;
 import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.model.Role;
@@ -166,6 +167,16 @@ public class PatientService extends JpaService<Patient, Long, IPatientRepository
             return PagedModel.empty();
         }
         return appointmentService.findConsultByPatientId(patient.get().getId(), pageable);
+    }
+
+    @Override
+    public boolean update(PatientDTO req) {
+        Optional<Patient> patient = get(req.getId());
+        patient.get().setName(req.getName());
+        patient.get().setSurname(req.getSurname());
+        patient.get().setPhoneNo(req.getPhoneNo());
+        patient.get().setAddress(req.getAddress());
+        return update(patient.get());
     }
 
 }

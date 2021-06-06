@@ -7,6 +7,7 @@ import com.schnabel.schnabel.misc.interfaces.IJpaService;
 import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.users.dto.ConsultRequest;
 import com.schnabel.schnabel.users.dto.DrugReservationRequest;
+import com.schnabel.schnabel.users.dto.PatientDTO;
 import com.schnabel.schnabel.users.model.Patient;
 
 import org.springframework.data.domain.Pageable;
@@ -31,4 +32,5 @@ public interface IPatientService extends IJpaService<Patient, Long>
     boolean isAllowedToGradeEmployee(Long patientId, Long employeeId);
     boolean isAllowedToGradeDrug(Long patientId, Long drugId);
     PagedModel<AppointmentDTO> findConsults(String email, Pageable pageable);
+    boolean update(PatientDTO req);
 }
