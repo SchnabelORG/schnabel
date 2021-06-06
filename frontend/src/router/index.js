@@ -253,6 +253,11 @@ const routes = [
         name: 'AppointmentReport',
         component: () => import(/* webpackChunkName: "dermatologist" */ '../views/AppointmentReport.vue'),
       },
+      {
+        path: 'vacations',
+        name: 'DermatologistVacation',
+        component: () => import(/* webpackChunkName: "dermatologist" */ '../views/DermatologistVacation.vue'),
+      },
     ],
   },
 

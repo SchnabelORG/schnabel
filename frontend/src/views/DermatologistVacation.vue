@@ -14,12 +14,23 @@
                     readonly
                     label="Date range"
                     ></v-text-field>
+                    <v-radio-group
+                        v-model="pharmNum"
+                        class="date-chip"
+                        row>
+                        <v-radio
+                            v-for="item in dermatologist.pharmacies"
+                            :key="item.id"
+                            :label="item.name"
+                            color="primary"
+                        ></v-radio>
+                    </v-radio-group>
                      <v-date-picker
                         v-model="dates"
                         range
                         :min="new Date(Date.now() + 5*8640000).toISOString().substr(0, 10)"
                     ></v-date-picker>
-                    <v-btn :disabled="dates.length < 2" id="save-btn" class="accent white--text" @click="makeVacation()">
+                    <v-btn :disabled="dates.length < 2 || pharmNum === ''" id="save-btn" class="accent white--text" @click="makeVacation()">
                         Make vacation request
                     </v-btn>
                 </v-form>
@@ -32,12 +43,13 @@
     export default {
         data() {
             return {
-                pharmacist: {},
+                dermatologist: {},
                 dates: [],
                 valid: false,
                 rules: {
                     required: value => !!value || 'Required.',
                 },
+                pharmNum: '',
             }
         },
         computed: {
@@ -53,17 +65,17 @@
                 }
                 return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + jws}});
             },
-             getPharmacist: function() {
-                console.log("Getting pharmacist");
+             getDermatologist: function() {
+                console.log("Getting dermatologist");
                 let jws = window.localStorage.getItem('jwt');
                 console.log(jws)
-                this.axios.get("api/pharmacist/jwt", {headers:{"Authorization": "Bearer " + jws}})
+                this.axios.get("api/dermatologist/jwt", {headers:{"Authorization": "Bearer " + jws}})
                     .then(response => {
                         console.log(response.data);
-                        this.pharmacist = response.data;
+                        this.dermatologist = response.data;
                     })
                     .catch(response => {
-                        console.log("Failed to get patient", response.data);
+                        console.log("Failed to get dermatologist", response.data);
                         this.refreshToken()
                             .then(response => {
                                 window.localStorage.jwt = response.data;
@@ -85,7 +97,7 @@
                      startTime= new Date(this.dates[1])
                     endTime= new Date(this.dates[0])
                 }
-                let vacation = {startTime: startTime,endTime: endTime , employeeId: this.pharmacist.id, pharmacyId: this.pharmacist.pharmacy.id}
+                let vacation = {startTime: startTime,endTime: endTime , employeeId: this.dermatologist.id, pharmacyId: this.dermatologist.pharmacies[this.pharmNum].id}
                 let jws = window.localStorage.getItem('jwt');
                 this.axios.post("api/vacation/makenew", vacation, {headers:{"Authorization": "Bearer " + jws}})
                     .then(response => {
@@ -98,7 +110,7 @@
             }
         },
         mounted(){
-            this.getPharmacist();
+            this.getDermatologist();
         }
     }
 
@@ -115,5 +127,9 @@
     #save-btn{
         margin-top: 5%;
         min-width: 100%;
+    }
+    .date-chip{
+        margin-left: 6%;
+        margin-top: 3%;
     }
 </style>

@@ -268,7 +268,7 @@
                                     class="date-chip"
                                     column>
                                      <v-radio
-                                        sele
+                                        selected
                                         :label="`none`"
                                         color="primary"
                                     ></v-radio>
