@@ -1,9 +1,12 @@
 package com.schnabel.schnabel.users.controller;
 
+import com.schnabel.schnabel.auth.dto.LoginRequest;
+import com.schnabel.schnabel.users.dto.DermatologistDTO;
 import com.schnabel.schnabel.users.dto.FreePharmacistLookupRequest;
 import com.schnabel.schnabel.security.util.JwtUtils;
 import com.schnabel.schnabel.users.dto.PharmacistDTO;
 import com.schnabel.schnabel.users.dto.PharmacistDTOAssembler;
+import com.schnabel.schnabel.users.model.Dermatologist;
 import com.schnabel.schnabel.users.model.Pharmacist;
 import com.schnabel.schnabel.users.service.IPharmacistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,8 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +33,7 @@ public class PharmacistController
     private final IPharmacistService service;
     private final JwtUtils jwtUtils;
     private final PharmacistDTOAssembler pharmacistDTOAssembler;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public PharmacistController(IPharmacistService service, JwtUtils jwtUtils, PharmacistDTOAssembler pharmacistDTOAssembler, PagedResourcesAssembler<Pharmacist> pharmacistPagedResourcesAssembler)
@@ -35,6 +41,7 @@ public class PharmacistController
         this.service = service;
         this.jwtUtils = jwtUtils;
         this.pharmacistDTOAssembler = pharmacistDTOAssembler;
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     /**
@@ -96,6 +103,16 @@ public class PharmacistController
             pharmacist.get().setAddress(pharmacistDTO.getAddress());
             pharmacist.get().setName(pharmacistDTO.getName());
             pharmacist.get().setSurname(pharmacistDTO.getSurname());
+        }
+        service.update(pharmacist.get());
+        return service.get(pharmacist.get().getId()).map(pharmacistDTOAssembler::toModel).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+    @PutMapping("pass")
+    public ResponseEntity<PharmacistDTO> changePassword(@RequestHeader("Authorization") String authHeader, @RequestBody LoginRequest dto)
+    {
+        Optional<Pharmacist> pharmacist = service.findByEmail(dto.getEmail());
+        if(pharmacist.isPresent()){
+            pharmacist.get().setPassword(passwordEncoder.encode(dto.getPassword()));
         }
         service.update(pharmacist.get());
         return service.get(pharmacist.get().getId()).map(pharmacistDTOAssembler::toModel).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());

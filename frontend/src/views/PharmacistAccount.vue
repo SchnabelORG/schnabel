@@ -5,12 +5,15 @@
             <v-card-title class="info primary--text">
                 <b>Your information</b>
                 <v-spacer></v-spacer>
+                <v-btn v-if="editMode" class="accent white--text" dark @click="changePasswordForm = !changePasswordForm">
+                        Change password
+                   </v-btn>
 					<v-btn class="accent white--text" dark @click="editModeChange()">
                         <div v-if="!editMode"><i class="fa fa-pencil fa-fw" aria-hidden="true"></i> Edit</div>
                         <div v-else><i class="fa fa-ban fa-fw"></i>Cancel</div>
                    </v-btn>
             </v-card-title>
-            <v-card-text>
+            <v-card-text v-if="!changePasswordForm">
                 <v-form id="ph-add" v-model="valid">
                     <v-text-field
                     v-model="pharmacist.name"
@@ -54,19 +57,24 @@
                     label="Street number"
                     :disabled="!editMode"
                     ></v-text-field>
-                   <!-- <v-text-field
-                    v-model="pharmacist.password"
+                    <v-btn :disabled="!valid" id="save-btn"  v-if="editMode" class="accent white--text" @click="save()">
+                        Save changes
+                    </v-btn>
+                </v-form>
+            </v-card-text>
+             <v-card-text v-else>
+                <v-form id="ph-add" v-model="validPassword">
+                   <v-text-field
+                    v-model="password"
                     :append-icon="show1 ? 'fa-eye' : 'fa-eye-slash'"
                     :rules="[rules.required, rules.min]"
                     :type="show1 ? 'text' : 'password'"
-                    label="Password"
+                    label="Change your Password"
                     hint="At least 8 characters"
                     counter
-                    :disabled="!editMode"
                     @click:append="show1 = !show1"
                     ></v-text-field>
                     <v-text-field
-                    v-if="editMode"
                     v-model="confirmPassword"
                     :append-icon="show2 ? 'fa-eye' : 'fa-eye-slash'"
                     :rules="[rules.required, rules.min, passwordConfirmationRule]"
@@ -75,8 +83,8 @@
                     hint="At least 8 characters"
                     counter
                     @click:append="show2 = !show2"
-                    ></v-text-field>-->
-                    <v-btn :disabled="!valid" id="save-btn"  v-if="editMode" class="accent white--text" @click="save()">
+                    ></v-text-field>
+                    <v-btn :disabled="!validPassword" id="save-btn"  v-if="editMode" class="accent white--text" @click="save()">
                         Save changes
                     </v-btn>
                 </v-form>
@@ -92,7 +100,10 @@
                 editMode: false,
                 pharmacist: {},
                 pharmacistCopy: {},
-                //confirmPassword: '',
+                confirmPassword: '',
+                password:'',
+                changePasswordForm: false,
+                validPassword: false,
                 show1: false,
                 show2: false,
                 valid: false,
@@ -103,11 +114,11 @@
                 },
             }
         },
-        // computed:{
-        //     passwordConfirmationRule: function() {
-        //         return () => (this.pharmacist.password === this.confirmPassword) || 'Password must match'
-        //     },
-        // },
+        computed:{
+            passwordConfirmationRule: function() {
+                return () => (this.password === this.confirmPassword) || 'Password must match'
+            },
+        },
          methods: {
              refreshToken: async function() {
                 let jws = window.localStorage.getItem('jwt');
@@ -125,7 +136,6 @@
                         console.log(response.data);
                         this.pharmacist = response.data;
                         this.pharmacistCopy = JSON.parse(JSON.stringify(response.data));
-                        //this.confirmPassword = this.pharmacistCopy.password;
                     })
                     .catch(response => {
                         console.log("Failed to get patient", response.data);
@@ -142,23 +152,41 @@
             },
             editModeChange: function(){
                 this.editMode = !this.editMode;
-                //this.confirmPassword = this.pharmacistCopy.password;
+                this.changePasswordForm = false;
+                this.confirmPassword = '';
+                this.password = '';
                 this.pharmacist = JSON.parse(JSON.stringify(this.pharmacistCopy));
 
             },
             save: function(){
-                let jws = window.localStorage.getItem('jwt');
-                this.axios.put("api/pharmacist", this.pharmacist, {headers:{"Authorization": "Bearer " + jws}})
-                    .then(response =>
-                    {
-                        this.pharmacistCopy = response.data;
-                        this.editModeChange();
+                if(this.changePasswordForm){
+                    let jws = window.localStorage.getItem('jwt');
+                    let dto = {email: this.pharmacist.email, password: this.password}
+                    this.axios.put("api/pharmacist/pass", dto, {headers:{"Authorization": "Bearer " + jws}})
+                        .then(response =>
+                        {
+                            this.pharmacistCopy = response.data;
+                            this.editModeChange();
 
-                    })
-                    .catch(response =>
-                    {
-                        console.log(response.data);
-                    });
+                        })
+                        .catch(response =>
+                        {
+                            console.log(response.data);
+                        });
+                }else{
+                    let jws = window.localStorage.getItem('jwt');
+                    this.axios.put("api/pharmacist", this.pharmacist, {headers:{"Authorization": "Bearer " + jws}})
+                        .then(response =>
+                        {
+                            this.pharmacistCopy = response.data;
+                            this.editModeChange();
+
+                        })
+                        .catch(response =>
+                        {
+                            console.log(response.data);
+                        });
+                }
             }
         },
         mounted(){
