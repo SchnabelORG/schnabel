@@ -1,10 +1,47 @@
-dist: xenial
+sudo: required
 language: java
+jdk: openjdk11
+
+# NOTE(Jovan): Disable email spamming
+notifications:
+  email: false
+
+services:
+  - postgresql
+
+before_install:
+  - chmod +x mvnw
+
+before_script:
+  - psql -c "CREATE DATABASE isadb;" -U postgres
+  - psql -c "CREATE USER isa WITH PASSWORD 'isa';" -U postgres
+
 addons:
   sonarcloud:
-    organization: "hDMn/dQ+3QV7W37JyUKG1nThhF9NwHd5xIiCDhr9xGLLNT0YdXlQEASCZHQh81IS+kCyy4g9BCNQ4iLwHL56VKp3rLc2vTUoNBldkGrJD4a+Q4lpW3eWg8cQoURaLPUs609GASQh99MEOi1uOSoMKvoMQXwzkyj4YOtRpgKQl6UUl5Rytt42wyHQ+uDUF95wUTueAhu5/fvvDZs2Qd0Zdlwo1Pln5YCHTZpkv+enjflvPVFsJR+J998TgDzNGvxtjUy/KX4WAR0OjC7gE76qa+ngO0fCblcLO27TKbyEPWz6ae+Z/faPh9OML/JwJWjMIEPC5VgeIAQ7PMk9em1sQpwyLB8JGIZhZd5e5CulqK/pmIkqOgoYAUVx7eaA1RQ5xEu6iON4FHPQ9YGxEntH5Bw6aQJe/hbomVa+ycufQ2OBVirW3vlgArKoZLEpIzB6frBGkm7TU1ph0Y2x0pKpTH4zETyp4GHK4Hb8vUtjDnlJwUqGrBqtX1vr2QtIU7g4WG27GobJmCHaWPhU4snMY3iIbOF5T7iMWhcnT9/u29JPKqmLteJDMx+PKzUvxwwrPg3IrqsMHbcbtAdqDEzCBn3jZJn/owVUMACu9vVym0ZLnsWl6WAaYxar5J0Ws0ine3BLWdkyTVi7jl4Th9t7X7t7W7XyRdQAoN1w5e7e0uc="
-    token:
-      secure: "Ek8q4rOoVaJXl1cdJoDysJGCWP5sAp6/LbNmN+LYd+NlKWONnneyyh5IHnq+I2ANqzn5gAPeBd3rDyvJiFBT1uSYIlP8ChbkyrIkmr1LxQRG2aRgb0inRyem8E1Wlp09y6i6Dqo4yHr8NfXE1el2u4qYv4KUU2VrtjrHRY8iO7kwM87oRN9RUnLDgcwtS/lV6GWKTptwTT7wDPAMq8zWAWY5lOE0UlNhGB7PxNvx1EE/ONQoiU5tFag94zFRF7jmqaoFrSew8O6VXGomoDObG5pZ93fl84gtm48IV1A/ABh7EFWx34aQd4P9iAZBxcCk8EIBB7riqJFggHU7A4vHyBz+3VvnumqH9zR+092ivrkH1Ea/4ho09lvaSNuYKiA1AsqBRBLZ7qnS8gK1nnDK316jujpUJhNhpaMSxSRv1EJzGw1K4ezbnyGiNEB3FXM15CUdL340QVN2kEdI4odQPutJDNgM8Wmnf0OJdYZCNzh04j0NtaysHxPABu7x7xNQbAey84xt5QA6L9KoF/n92RiyO1JZ/hHWesEKda7a2HQCEMb9DEIgRhYtFqmEMl7x28YikwH+c+flzLC68D8DYyifoDBU3GSwowFtrprO47vIdoxpzZ5Wz25drz/yTvZXIWyCVgF43vdouxCT+pNdzK+DyukFhorY9uEV3RFGigo="
+    organization: "schnabelorg"
+    token: $SONAR_TOKEN
+
+
 script:
-  #-sonar-scanner
-  mvn clean verify sonar:sonar -Pcoverage -Dsonar.projectKey=l4v_schnabel
+  - ./mvnw clean install -DskipTests=false -B
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - ./mvnw sonar:sonar -Dsonar.projectKey=$PROJECT_KEY -Dsonar.organization=schnabelorg -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
+
+    
+# NOTE(Jovan): Send success/failure messages to Discord server
+after_success:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh success $WEBHOOK_URL
+
+after_failure:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh failure $WEBHOOK_URL
+
+dist: trusty
+
+deploy:
+  provider: heroku
+  api_key: $HEROKU_API_KEY
+  app: schnabel
