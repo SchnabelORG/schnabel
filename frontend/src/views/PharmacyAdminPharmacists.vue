@@ -218,7 +218,7 @@
                     localStorage.jws = response.data;
                     this.axios.delete("api/pharmacyadmin/removepharmacist/" + id, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
                         .then(response => {
-                            console.log("Successfully removed pharmacist", response.data);
+                            console.log(response.data);
                             this.getPharmacists();
                         })
                         .catch(response => {

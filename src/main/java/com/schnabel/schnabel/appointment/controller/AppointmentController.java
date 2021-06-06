@@ -1,4 +1,5 @@
 package com.schnabel.schnabel.appointment.controller;
+import java.util.List;
 import java.util.Optional;
 
 import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
@@ -127,12 +128,41 @@ public class AppointmentController {
     @GetMapping("missed/{appId}")
     public ResponseEntity<Boolean> setMissedAppointment( @PathVariable("appId") Long id) {
         Optional<Appointment> appointment = service.get(id);
-        if(appointment.isPresent()){
+        if (appointment.isPresent()) {
             appointment.get().setMissed(true);
             service.update(appointment.get());
-            return  ResponseEntity.ok(Boolean.TRUE);
+            return ResponseEntity.ok(Boolean.TRUE);
         }
-        return  ResponseEntity.ok(Boolean.FALSE);
+        return ResponseEntity.ok(Boolean.FALSE);
+    }
+    @GetMapping("/dermatology/pharmacy/{id}")
+    public ResponseEntity<PagedModel<AppointmentDTO>> getDermatologicalApptsByPharmacy(@PathVariable("id") Long id, Pageable pageable) {
+        return new ResponseEntity<>(service.findFreeDermatologistAppointmentsByPharmacy(id, pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/pharmacy/{id}")
+    public ResponseEntity<PagedModel<AppointmentDTO>> getAllByPharmacy(@PathVariable("id") Long id, Pageable pageable) {
+        return new ResponseEntity<>(service.findByPharmacyId(id, pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/pharmacymonth/{id}")
+    public ResponseEntity<List<Integer>> getCountMonth(@PathVariable("id") Long id, Pageable pageable) {
+        return new ResponseEntity<>(service.countAppointmentsByMonth(id, pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/pharmacyyear/{id}")
+    public ResponseEntity<List<Integer>> getCountYear(@PathVariable("id") Long id, Pageable pageable) {
+        return new ResponseEntity<>(service.countAppointmentsByYear(id, pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/pharmacyincomemonth/{id}")
+    public ResponseEntity<List<Double>> getIncomeMonth(@PathVariable("id") Long id, Pageable pageable) {
+        return new ResponseEntity<>(service.countIncomeByMonth(id, pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/pharmacyincomeyear/{id}")
+    public ResponseEntity<List<Double>> getIncomeYear(@PathVariable("id") Long id, Pageable pageable) {
+        return new ResponseEntity<>(service.countIncomeByYear(id, pageable), HttpStatus.OK);
     }
 
 }

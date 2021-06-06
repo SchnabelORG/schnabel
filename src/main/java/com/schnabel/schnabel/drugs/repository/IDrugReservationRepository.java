@@ -20,6 +20,7 @@ public interface IDrugReservationRepository extends JpaRepository<DrugReservatio
     @Query("SELECT dr FROM DrugReservation dr WHERE reserved_drug_id = :drug_id AND pharmacy_reservation_id = :pharmacy_id AND taken = 'false'")
     List<DrugReservation> findNotTakenByDrugAndPharmacy(@Param("drug_id") Long drugId,@Param("pharmacy_id") Long pharmacyId);
     Page<DrugReservation> findByPatientId(Long patientId, Pageable pageable);
+    List<DrugReservation> findByPharmacyId(Long pharmacyId);
 
     /**
      * Find this month's missed drug_reservations for patient

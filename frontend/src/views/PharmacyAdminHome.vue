@@ -2,13 +2,7 @@
     <div id="main-home">
         <div id="cover-home">
         <div id="cover-text">
-            <h2 id="cover-header">Centralized pharmacies information system</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur facilis facere aut expedita delectus ducimus natus, obcaecati nihil sapiente!</p>
-            <div>
-            <router-link to="" v-slot="{href, navigate}">
-                <v-btn color="accent" :href="href" @click="navigate" elevation="1">View reports</v-btn>
-            </router-link>
-            </div>
+            <h2 id="cover-header">Pharmacy {{this.pharmacy.name}}</h2>
         </div>
         <img src="../assets/plaguedoctorcovid.png">
         </div>
@@ -19,7 +13,10 @@
             <div id="footer-main">
             <div id="footer-title">
                 <h3 class="primary--text">Schnabel</h3>
-                <p class="info--text">Ipsum animi fugiat ab suscipit quidem obcaecati, repellendus ipsa alias, deserunt deleniti voluptas dicta distinctio dolore recusandae rem dignissimos laudantium perferendis. Sunt!</p>
+                <p class="info--text">The pharmacy that cares for the wellbeing of you and your family.</p>
+                <spacer></spacer>
+                <h4 class="primary--text">Avarage grade: {{this.pharmacy.score}}</h4>
+                <h4  class="primary--text">Address: {{this.pharmacy.address.street}} {{this.pharmacy.address.streetNo}}, {{this.pharmacy.address.city}}</h4>
             </div>
             </div>
 
@@ -28,12 +25,11 @@
                 <h4 class="primary--text">Employees</h4>
                 <div class="footer-divider"></div>
                 <ul class="footer-column-list unstyled-list">
-                <li><router-link to="/pharmacyadmin/dermatologistsearch">Search dermatologists</router-link></li>
-                <li><router-link to="/pharmacyadmin/dermatologist">Dermatologists</router-link></li>
                 <li><router-link to="/pharmacyadmin/pharmacistsearch">Search pharmacists</router-link></li>
                 <li><router-link to="/pharmacyadmin/pharmacist">Pharmacists</router-link></li>
+                <li><router-link to="/pharmacyadmin/dermatologistsearch">Search dermatologists</router-link></li>
+                <li><router-link to="/pharmacyadmin/dermatologist">Dermatologists</router-link></li>
                 <li><router-link to="/pharmacyadmin/vacation">Vacations</router-link></li>
-                <li><router-link to="/pharmacyadmin/defineappointment">Define appointment</router-link></li>
                 </ul>
             </div>
             <div class="footer-column">
@@ -42,14 +38,62 @@
                 <ul class="footer-column-list unstyled-list">
                 <li><router-link to="/pharmacyadmin/drug">Drugs</router-link></li>
                 <li><router-link to="/pharmacyadmin/pricelist">Pricelist</router-link></li>
-                <li><router-link to="/pharmacyadmin/makeorder">New order</router-link></li>
                 <li><router-link to="/pharmacyadmin/order">Orders</router-link></li>
+                <li><router-link to="/pharmacyadmin/makeorder">New order</router-link></li>
                 <li><router-link to="/pharmacyadmin/promotion">New promotion</router-link></li>
+                <li><router-link to="/pharmacyadmin/availabilityrequests">Availability requests</router-link></li>
+
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4 class="primary--text">Appointments</h4>
+                <div class="footer-divider"></div>
+                <ul class="footer-column-list unstyled-list">
+                <li><router-link to="/pharmacyadmin/defineappointment">Define appointment</router-link></li>
+                <li><router-link to="/pharmacyadmin/freedermatologistappointment">Free dermatologist appointments</router-link></li>
+                </ul>
+            </div>
+             <div class="footer-column">
+                <h4 class="primary--text">Reports</h4>
+                <div class="footer-divider"></div>
+                <ul class="footer-column-list unstyled-list">
+                <li><router-link to="/pharmacyadmin/appointmentsreport">Appointment report</router-link></li>
+                <li><router-link to="/pharmacyadmin/drugusage">Drug usage report</router-link></li>
+                <li><router-link to="/pharmacyadmin/pharmacyincome">Income report</router-link></li>
                 </ul>
             </div>
             </div>
         </div>
         </div>
+        <div>
+        <vl-map :load-tiles-while-animating="true" :load-tiles-while-interacting="true"
+                data-projection="EPSG:4326" style="height: 400px">
+          <vl-view :zoom.sync="zoom" :center.sync="center" :rotation.sync="rotation"></vl-view>
+
+          <vl-geoloc @update:position="geolocPosition = $event">
+            <template slot-scope="geoloc">
+              <vl-feature v-if="geoloc.position" id="position-feature">
+                <vl-geom-point :coordinates="geoloc.position"></vl-geom-point>
+                <vl-style-box>
+                  <vl-style-icon src="_media/marker.png" :scale="0.4" :anchor="[0.5, 1]"></vl-style-icon>
+                </vl-style-box>
+              </vl-feature>
+            </template>
+          </vl-geoloc>
+
+        <vl-overlay id="overlay" :position="overlayCoordinate">
+          <template>
+            <div class="overlay-content">
+              <i class="fa fa-map-marker" aria-hidden="true"></i>
+            </div>
+          </template>
+        </vl-overlay>
+
+          <vl-layer-tile id="osm">
+            <vl-source-osm></vl-source-osm>
+          </vl-layer-tile>
+        </vl-map>
+      </div>
     </div>
 </template>
 
@@ -57,8 +101,49 @@
     export default {
         data() {
             return {
-
+              pharmacy: '',
+              pharmacyId: '',
+              avarageGrade: '',
+              pharmacyName: '',
+              zoom: 12,
+              center: [19.882, 45.254],
+              rotation: 0,
+              geolocPosition: undefined,
+              overlayCoordinate: [19.882, 45.254],
             }
+        },
+        methods: {
+          getPharmacyAdmin: function() {
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.get("api/pharmacyadmin", {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            this.pharmacyAdmin = response.data;
+                            this.pharmacyId = this.pharmacyAdmin.pharmacy.id;
+                            this.getPharmacy();
+                        })
+                        .catch(response => {
+                            console.log("Failed to get pharmacy admin", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
+            },
+            getPharmacy: function() {
+              this.axios.get("api/pharmacy/" + this.pharmacyId)
+                  .then(response => {
+                      this.pharmacy = response.data;
+                      this.overlayCoordinate = [this.pharmacy.address.longitude, this.pharmacy.address.latitude];
+                  })
+                  .catch(response => {
+                      console.log("Failed to get pharmacy", response.data);
+                  });
+            },
+        },
+        mounted() {
+          this.getPharmacyAdmin();
         },
     }
 </script>

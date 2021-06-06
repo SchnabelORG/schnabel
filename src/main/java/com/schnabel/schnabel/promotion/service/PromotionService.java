@@ -1,8 +1,11 @@
 package com.schnabel.schnabel.promotion.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import com.schnabel.schnabel.email.service.IMailService;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.misc.model.Period;
 import com.schnabel.schnabel.promotion.dto.PromotionDTO;
@@ -22,13 +25,15 @@ public class PromotionService extends JpaService<Promotion, Long, IPromotionRepo
 {
     private final PromotionDTOAssembler dtoAsm;
     private final IPharmacyAdminService pharmacyAdminService;
+    private final IMailService mailService;
 
     @Autowired
-    public PromotionService(IPromotionRepository promotionRepository, PromotionDTOAssembler dtoAsm, IPharmacyAdminService pharmacyAdminService)
+    public PromotionService(IPromotionRepository promotionRepository, PromotionDTOAssembler dtoAsm, IPharmacyAdminService pharmacyAdminService, IMailService mailService)
     {
         super(promotionRepository);
         this.dtoAsm = dtoAsm;
         this.pharmacyAdminService = pharmacyAdminService;
+        this.mailService = mailService;
     }
 
     @Override
@@ -43,9 +48,22 @@ public class PromotionService extends JpaService<Promotion, Long, IPromotionRepo
         Optional<Promotion> promotion = add(newPromotion);
         if(promotion.isPresent())
         {
+            sendMail(promotion.get().getDescription());
             return true;
         }
         return false;
     }
+
+    private void sendMail(String content)
+    {
+        List<String> subscribers = new ArrayList<String>();
+        subscribers.add("jankovicpharmacy@gmail.com");
+        for (String subscriber : subscribers) 
+        {
+            mailService.sendNewPromotion(subscriber, content);
+        }
+    }
+
+
 }
 

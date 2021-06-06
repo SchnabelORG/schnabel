@@ -68,6 +68,13 @@ public class ShiftService extends JpaService<Shift, Long, IShiftRepository> impl
     }
 
     @Override
+    @Transactional
+    public Optional<Shift> getShiftByMedicalEmployeePharmacy(Long medicalEmployeeId, Long pharmacyId)
+    {
+        return repository.findShiftMedicalEmployeePharmacy(medicalEmployeeId, pharmacyId);
+    }
+
+    @Override
     public boolean defineDermatologistShift(LocalTime startTime, LocalTime endTime, MedicalEmployee medicalEmployee, Pharmacy pharmacy) 
     {
         List<Shift> shifts = getAllByMedicalEmployee(medicalEmployee.getId());
