@@ -121,17 +121,17 @@
         },
          methods: {
              refreshToken: async function() {
-                let jws = window.localStorage.getItem('jwt');
-                if(!jws) {
+                //let jws = window.localStorage.getItem('jwt');
+                if(!localStorage.jws) {
                     this.$router.push("/");
                 }
-                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + jws}});
+                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + localStorage.jws}});
             },
             getDermatologist: function() {
                 console.log("Getting dermatologist");
-                let jws = window.localStorage.getItem('jwt');
-                console.log(jws)
-                this.axios.get("api/dermatologist/jwt", {headers:{"Authorization": "Bearer " + jws}})
+                //let jws = window.localStorage.getItem('jwt');
+                console.log(localStorage.jws)
+                this.axios.get("api/dermatologist/jwt", {headers:{"Authorization": "Bearer " + localStorage.jws}})
                     .then(response => {
                         console.log(response.data);
                         this.dermatologist = response.data;
@@ -141,7 +141,7 @@
                         console.log("Failed to get patient", response.data);
                         this.refreshToken()
                             .then(response => {
-                                window.localStorage.jwt = response.data;
+                                localStorage.jws = response.data;
                                 this.$router.go();
                             })
                             .catch(response => {
@@ -160,9 +160,9 @@
             },
             save: function(){
                 if(this.changePasswordForm){
-                    let jws = window.localStorage.getItem('jwt');
+                    //let jws = window.localStorage.getItem('jwt');
                     let dto = {email: this.dermatologist.email, password: this.password}
-                    this.axios.put("api/dermatologist/pass", dto, {headers:{"Authorization": "Bearer " + jws}})
+                    this.axios.put("api/dermatologist/pass", dto, {headers:{"Authorization": "Bearer " + localStorage.jws}})
                         .then(response =>
                         {
                             this.dermatologistCopy = response.data;
@@ -175,8 +175,8 @@
                         });
                 }
                 else{
-                    let jws = window.localStorage.getItem('jwt');
-                    this.axios.put("api/dermatologist", this.dermatologist, {headers:{"Authorization": "Bearer " + jws}})
+                    //let jws = window.localStorage.getItem('jwt');
+                    this.axios.put("api/dermatologist", this.dermatologist, {headers:{"Authorization": "Bearer " + localStorage.jws}})
                         .then(response =>
                         {
                             this.dermatologistCopy = response.data;
