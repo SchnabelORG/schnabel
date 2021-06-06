@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.schnabel.schnabel.auth.dto.LoginRequest;
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
 import com.schnabel.schnabel.security.util.JwtUtils;
 import com.schnabel.schnabel.users.dto.DermatologistDTO;
@@ -33,6 +34,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 /**
  * PharmacyAdmin REST controller
  */
@@ -43,13 +47,15 @@ public class PharmacyAdminController
     private final IPharmacyAdminService pharmacyAdminService;
     private final PharmacyAdminDTOAssembler pharmacyAdminDTOAsm;
     private final JwtUtils jwtUtils;
+    private final PasswordEncoder passwordEncoder;
     
     @Autowired
-    public PharmacyAdminController(IPharmacyAdminService pharmacyAdminService, PharmacyAdminDTOAssembler pharmacyAdminDTOAsm, JwtUtils jwtUtils)
+    public PharmacyAdminController(IPharmacyAdminService pharmacyAdminService, PharmacyAdminDTOAssembler pharmacyAdminDTOAsm, JwtUtils jwtUtils, PasswordEncoder passwordEncoder)
     {
         this.pharmacyAdminService = pharmacyAdminService;
         this.pharmacyAdminDTOAsm = pharmacyAdminDTOAsm;
         this.jwtUtils = jwtUtils;
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     /**
@@ -168,6 +174,17 @@ public class PharmacyAdminController
         return pharmacyAdminService.addDermatologist(dermatologistRequest, email) ?
             ResponseEntity.ok("Added")
             : ResponseEntity.badRequest().build();
+    }
+
+    @PutMapping("pass")
+    public ResponseEntity<PharmacyAdminDTO> changePassword(@RequestHeader("Authorization") String authHeader, @RequestBody LoginRequest dto)
+    {
+        Optional<PharmacyAdmin> pharmacyAdmin = pharmacyAdminService.findByEmail(dto.getEmail());
+        if(pharmacyAdmin.isPresent()){
+            pharmacyAdmin.get().setPassword(passwordEncoder.encode(dto.getPassword()));
+        }
+        pharmacyAdminService.update(pharmacyAdmin.get());
+        return pharmacyAdminService.get(pharmacyAdmin.get().getId()).map(pharmacyAdminDTOAsm::toModel).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
 }
