@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @RestController
@@ -52,6 +53,7 @@ public class DrugReservationController {
      * Get drug reservation by id
      * @return DrugReservationDTO
      */
+    @Transactional
     @GetMapping("{resrvationId}/{pharmacyId}")
     public ResponseEntity<DrugReservationDTO> get(@PathVariable long resrvationId, @PathVariable long pharmacyId)
     {
@@ -64,6 +66,7 @@ public class DrugReservationController {
         return ResponseEntity.notFound().build();
     }
 
+    @Transactional
     @GetMapping("dispensing/{reservationId}")
     public ResponseEntity<String> dispensing(@PathVariable long reservationId)
     {
@@ -83,6 +86,7 @@ public class DrugReservationController {
         return ResponseEntity.notFound().build();
     }
 
+    @Transactional
     @GetMapping("patient")
     public ResponseEntity<PagedModel<DrugReservationDTO>> getPatientReservations(@RequestHeader("Authorization") String auth, Pageable pageable) {
         String email = jwtUtils.getEmailFromAuth(auth);

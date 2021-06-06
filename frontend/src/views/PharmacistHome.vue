@@ -132,17 +132,17 @@
         },
         methods:{
             refreshToken: async function() {
-                let jws = window.localStorage.getItem('jwt');
-                if(!jws) {
+                //let jws = window.localStorage.getItem('jwt');
+                if(!localStorage.jws) {
                     this.$router.push("/");
                 }
-                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + jws}});
+                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + localStorage.jws}});
             },
              getPharmacist: function() {
                 console.log("Getting pharmacist");
-                let jws = window.localStorage.getItem('jwt');
-                console.log(jws)
-                this.axios.get("api/pharmacist/jwt", {headers:{"Authorization": "Bearer " + jws}})
+                //let jws = window.localStorage.getItem('jwt');
+                console.log(localStorage.jws)
+                this.axios.get("api/pharmacist/jwt", {headers:{"Authorization": "Bearer " + localStorage.jws}})
                     .then(response => {
                         console.log(response.data);
                         this.pharmacist = response.data;
@@ -156,7 +156,7 @@
                         console.log("Failed to get patient", response.data);
                         this.refreshToken()
                             .then(response => {
-                                window.localStorage.jwt = response.data;
+                                localStorage.jws = response.data;
                                 this.$router.go();
                             })
                             .catch(response => {
@@ -166,9 +166,9 @@
                     });
             },
             getAllAppointments: function(){
-                let jws = window.localStorage.getItem('jwt');
+                //let jws = window.localStorage.getItem('jwt');
                 console.log(this.pharmacist.id)
-                this.axios.get("api/appointment/appbyemployee/" + this.pharmacist.id, {headers:{"Authorization": "Bearer " + jws}})
+                this.axios.get("api/appointment/appbyemployee/" + this.pharmacist.id, {headers:{"Authorization": "Bearer " + localStorage.jws}})
                     .then(response =>
                     {
                         this.allAppointments = response.data._embedded.appointments;

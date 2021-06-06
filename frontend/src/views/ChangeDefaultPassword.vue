@@ -60,17 +60,17 @@
         },
          methods: {
              refreshToken: async function() {
-                let jws = window.localStorage.getItem('jwt');
-                if(!jws) {
+                //let jws = window.localStorage.getItem('jwt');
+                if(!localStorage.jws) {
                     this.$router.push("/");
                 }
-                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + jws}});
+                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + localStorage.jws}});
             },
             getEmployee: function() {
                 console.log("Getting employee");
-                let jws = window.localStorage.getItem('jwt');
-                console.log(jws)
-                this.axios.get("api/medical_employee/jwt", {headers:{"Authorization": "Bearer " + jws}})
+                //let jws = window.localStorage.getItem('jwt');
+                console.log(localStorage.jws)
+                this.axios.get("api/medical_employee/jwt", {headers:{"Authorization": "Bearer " + localStorage.jws}})
                     .then(response => {
                         console.log(response.data);
                         this.employee = response.data;
@@ -79,7 +79,8 @@
                         console.log("Failed to get patient", response.data);
                         this.refreshToken()
                             .then(response => {
-                                window.localStorage.jwt = response.data;
+                                //window.localStorage.jwt = response.data;
+                                localStorage.jws = response.data;
                                 this.$router.go();
                             })
                             .catch(response => {
@@ -89,10 +90,10 @@
                     });
             },
             save: function(){
-                let jws = window.localStorage.getItem('jwt');
+                //let jws = window.localStorage.getItem('jwt');
                 let dto = {email: this.employee.email, password: this.password}
                 console.log(dto)
-                this.axios.put("api/medical_employee/pass", dto, {headers:{"Authorization": "Bearer " + jws}})
+                this.axios.put("api/medical_employee/pass", dto, {headers:{"Authorization": "Bearer " + localStorage.jws}})
                     .then(response =>
                     {
                         console.log(response.data);

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
+
 /**
  * Pharmacy REST controller
  */
@@ -38,6 +40,7 @@ public class PharmacyController
      * @return OK response with pharmacy with matching <b>id</b> if it exists
      * else NOT_FOUND
      */
+    @Transactional
     @GetMapping("{id}")
     public ResponseEntity<PharmacyDTO> getById(@PathVariable Long id)
     {

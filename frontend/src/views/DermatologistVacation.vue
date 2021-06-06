@@ -59,17 +59,17 @@
         },
          methods: {
              refreshToken: async function() {
-                let jws = window.localStorage.getItem('jwt');
-                if(!jws) {
+                //let jws = window.localStorage.getItem('jwt');
+                if(!localStorage.jws) {
                     this.$router.push("/");
                 }
-                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + jws}});
+                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + localStorage.jws}});
             },
              getDermatologist: function() {
                 console.log("Getting dermatologist");
-                let jws = window.localStorage.getItem('jwt');
-                console.log(jws)
-                this.axios.get("api/dermatologist/jwt", {headers:{"Authorization": "Bearer " + jws}})
+                //let jws = window.localStorage.getItem('jwt');
+                console.log(localStorage.jws)
+                this.axios.get("api/dermatologist/jwt", {headers:{"Authorization": "Bearer " + localStorage.jws}})
                     .then(response => {
                         console.log(response.data);
                         this.dermatologist = response.data;
@@ -78,7 +78,7 @@
                         console.log("Failed to get dermatologist", response.data);
                         this.refreshToken()
                             .then(response => {
-                                window.localStorage.jwt = response.data;
+                                localStorage.jws = response.data;
                                 this.$router.go();
                             })
                             .catch(response => {
@@ -98,8 +98,8 @@
                     endTime= new Date(this.dates[0])
                 }
                 let vacation = {startTime: startTime,endTime: endTime , employeeId: this.dermatologist.id, pharmacyId: this.dermatologist.pharmacies[this.pharmNum].id}
-                let jws = window.localStorage.getItem('jwt');
-                this.axios.post("api/vacation/makenew", vacation, {headers:{"Authorization": "Bearer " + jws}})
+                //let jws = window.localStorage.getItem('jwt');
+                this.axios.post("api/vacation/makenew", vacation, {headers:{"Authorization": "Bearer " + localStorage.jws}})
                     .then(response => {
                         console.log(response.data);
                         this.$router.go();

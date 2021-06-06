@@ -59,11 +59,11 @@ export default {
             this.axios.post("api/auth/login", dto)
                 .then(r => {
                     this.$store.state.jws = r.data;
-
-                    window.localStorage.jwt = r.data;
+                    localStorage.jws = r.data;
+                    //window.localStorage.jwt = r.data;
                     this.$router.push("/redirect");
 
-                    //localStorage.jws = r.data; // TODO(Jovan): TEMP!
+                     // TODO(Jovan): TEMP!
                     //this.$router.push("/");
                 })
                 .catch(() => {

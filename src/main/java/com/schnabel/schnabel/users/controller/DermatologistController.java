@@ -35,6 +35,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
+
 
 /**
  * Dermatologist REST controller
@@ -59,6 +61,7 @@ public class DermatologistController
         this.jwtUtils = jwtUtils;
     }
 
+    @Transactional
     @GetMapping("jwt")
     public ResponseEntity<DermatologistDTO> getByJws(@RequestHeader("Authorization") String authHeader) {
         String jws;
@@ -106,6 +109,7 @@ public class DermatologistController
         return new ResponseEntity<>(dermatologistService.findAllByPharmacy(pharmacyId, pageable), HttpStatus.OK);
     }
 
+    @Transactional
     @PutMapping
     public ResponseEntity<DermatologistDTO> put(@RequestHeader("Authorization") String authHeader, @RequestBody DermatologistDTO dermatologistDTO)
     {
@@ -118,6 +122,7 @@ public class DermatologistController
         dermatologistService.update(dermatologist.get());
         return dermatologistService.get(dermatologist.get().getId()).map(dermatologistDTOAssembler::toModel).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
+    @Transactional
     @PutMapping("pass")
     public ResponseEntity<DermatologistDTO> changePassword(@RequestHeader("Authorization") String authHeader, @RequestBody LoginRequest dto)
     {

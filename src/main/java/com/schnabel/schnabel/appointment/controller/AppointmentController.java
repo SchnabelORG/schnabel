@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
+
 /**
  * Appointment REST controller
  */
@@ -106,6 +108,7 @@ public class AppointmentController {
     /**
      * Get patient's pharmacy appt. history
      */
+    @Transactional
     @GetMapping("patient/consult")
     public ResponseEntity<PagedModel<AppointmentDTO>> getConsultHistory(@RequestHeader("Authorization") String auth, Pageable pageable) {
         String email = jwtUtils.getEmailFromAuth(auth);
@@ -115,7 +118,7 @@ public class AppointmentController {
         }
         return ResponseEntity.ok(service.findConsultHistory(patient.get().getId(), pageable));
     }
-
+    @Transactional
     @PostMapping("pharmacist/newapp")
     public ResponseEntity<Boolean> makeNewAppointment(@RequestBody NewAppointmentDTO newAppointment)
     {
@@ -124,7 +127,7 @@ public class AppointmentController {
 
         return  ResponseEntity.ok(isSuccess);
     }
-
+    @Transactional
     @GetMapping("missed/{appId}")
     public ResponseEntity<Boolean> setMissedAppointment( @PathVariable("appId") Long id) {
         Optional<Appointment> appointment = service.get(id);

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 /**
@@ -28,7 +29,7 @@ public class AppointmentReportController {
         this.appService = appService;
         this.jwtUtils = jwtUtils;
     }
-
+    @Transactional
     @PostMapping("/addreport/{appId}")
     public ResponseEntity<Long> defineAppointment(@PathVariable long appId, @RequestBody String textReport)
     {

@@ -37,8 +37,7 @@ const routes = [
     path: '/logout',
     name: 'Logout',
     beforeEnter: (to, from, next) => {
-      //localStorage.removeItem('jws');
-      window.localStorage.removeItem('jwt');
+      localStorage.removeItem('jws');
       next({name:'Home'});
     },
   },

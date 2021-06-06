@@ -7,7 +7,7 @@
             <router-link to="/pharmacist/medicationReservations">Reservations</router-link>
             <router-link to="/pharmacist/pharmacistacc">Account</router-link>
             <router-link to="/pharmacist/vacations">Vacations</router-link>
-            <router-link to="/logout">Logout</router-link>
+            <!-- <router-link to="/logout">Logout</router-link> -->
         </main-navigation>
 
         <div id="main-content">

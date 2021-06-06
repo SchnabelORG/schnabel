@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.Map;
 import java.util.Optional;
 
@@ -54,6 +55,7 @@ public class PharmacistController
         return new ResponseEntity<>(service.findAllDTO(pageable), HttpStatus.OK);
     }
 
+    @Transactional
     @GetMapping("jwt")
     public ResponseEntity<PharmacistDTO> getByJws(@RequestHeader("Authorization") String authHeader) {
         String jws;
@@ -95,6 +97,7 @@ public class PharmacistController
         return new ResponseEntity<>(service.findByPharmacy(pharmacyId, pageable), HttpStatus.OK);
     }
 
+    @Transactional
     @PutMapping
     public ResponseEntity<PharmacistDTO> put(@RequestHeader("Authorization") String authHeader, @RequestBody PharmacistDTO pharmacistDTO)
     {
@@ -107,6 +110,7 @@ public class PharmacistController
         service.update(pharmacist.get());
         return service.get(pharmacist.get().getId()).map(pharmacistDTOAssembler::toModel).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
+    @Transactional
     @PutMapping("pass")
     public ResponseEntity<PharmacistDTO> changePassword(@RequestHeader("Authorization") String authHeader, @RequestBody LoginRequest dto)
     {
