@@ -454,7 +454,7 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
             }
         }
         return income;
-
+    }
 
 
     @Override
