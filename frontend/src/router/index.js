@@ -68,7 +68,7 @@ const routes = [
   {
     path: '/redirect',
     beforeEnter: (to, from, next) => {
-      axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + window.localStorage.getItem('jwt')}})
+      axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + localStorage.jws}})
         .then(r => {
           if(r.data == 'ROLE_PATIENT') {
             next({name: 'UserHome'});
@@ -173,7 +173,18 @@ const routes = [
         name: 'PharmacyDrugs',
         component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacyDrugs.vue'),
       },
+      {
+        path: 'freedermatologistappointments',
+        name: 'PharmacyFreeDermApp',
+        component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacyFreeDermApp.vue'),
+      },
     ],
+  },
+
+  {
+    path: '/a',
+    name: 'a',
+    component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacyAdminAppointments.vue'),
   },
 
   // User
@@ -334,6 +345,31 @@ const routes = [
         path: 'dermatologistsearch',
         name: 'PharmacyAdminDermatologistSearch',
         component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminDermatologistSearch.vue'),
+      },
+      {
+        path: 'freedermatologistappointment',
+        name: 'PharmacyAdminFreeAppointments',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminFreeAppointments.vue'),
+      },
+      {
+        path: 'appointmentsreport',
+        name: 'PharmacyAdminAppointments',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminAppointments.vue'),
+      },
+      {
+        path: 'drugusage',
+        name: 'PharmacyAdminDrugUsage',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminDrugUsage.vue'),
+      },
+      {
+        path: 'pharmacyincome',
+        name: 'PharmacyAdminIncome',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminIncome.vue'),
+      },
+      {
+        path: 'availabilityrequests',
+        name: 'PharmacyAdminAvailabilityRequests',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminAvailabilityRequests.vue'),
       },
     ],
   },

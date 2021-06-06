@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.appointment.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,14 @@ public interface IAppointmentService extends IJpaService<Appointment, Long> {
     PagedModel<AppointmentDTO> findConsultByPatientId(Long patientId, Pageable pageable);
 
     Boolean makeNewAppAsPharmacist(NewAppointmentDTO newAppointment, Patient patient);
+    PagedModel<AppointmentDTO> findFreeDermatologistAppointmentsByPharmacy(Long pharmacyId, Pageable pageable);
+    PagedModel<AppointmentDTO> findByPharmacyId(Long pharmacyId, Pageable pageable);
+    List<Integer> countAppointmentsByMonth(Long pharmacyId, Pageable pageable);
+    List<Integer> countAppointmentsByYear(Long pharmacyId, Pageable pageable);
+    List<Double> countIncomeByMonth(Long pharmacyId, Pageable pageable);
+    List<Double> countIncomeByYear(Long pharmacyId, Pageable pageable);
+    Double calculateIncome(LocalDate start, LocalDate end, Long pharmacyId, Pageable pageable);
     List<Appointment> findMissed(Long patientId);
+
 }
 

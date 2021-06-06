@@ -27,6 +27,7 @@
         data() {
             return {
                 warehouseitems: [],
+                id: '',
                 headers: [
                     { text: "Name" },
                     { text: "Description" },
@@ -35,7 +36,8 @@
         },
         methods: {
             getDrugs: function() {
-                    this.axios.get("api/warehouseitem/pharmacy/1")
+                this.id = this.$route.params.id;
+                    this.axios.get("api/warehouseitem/pharmacy/" + this.id)
                         .then(response => {
                             this.warehouseitems = response.data._embedded.warehouseitems;
                         })

@@ -55,7 +55,7 @@
                     :disabled="!editMode"
                     ></v-text-field>
                     <!--<v-text-field
-                    v-model="password"
+                    v-model="pharmacyAdmin.password"
                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                     :rules="[rules.required, rules.min]"
                     :type="show1 ? 'text' : 'password'"
@@ -67,7 +67,7 @@
                     ></v-text-field>
                     <v-text-field
                     v-if="editMode"
-                    v-model="confirmPassword"
+                    v-model="pharmacyAdmin.confirmPassword"
                     :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
                     :rules="[rules.required, rules.min, passwordConfirmationRule]"
                     :type="show2 ? 'text' : 'password'"
