@@ -53,24 +53,23 @@ insert into dermatologist_pharmacy(dermatologist_id, pharmacy_id) values (7, 1);
 insert into dermatologist_pharmacy(dermatologist_id, pharmacy_id) values (12, 2);
 insert into dermatologist_pharmacy(dermatologist_id, pharmacy_id) values (13, 2);
 
-insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2020-12-20 12:30:00', '2020-12-20 12:15:00', 3000, 1, 3, 1);
-insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2020-11-20 08:45:00', '2020-11-20 08:15:00', 5000, 1, 3, 1);
-insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2020-06-20 08:45:00', '2020-06-20 08:15:00', 15000, 2, 5, 1);
-insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-03-20 08:45:00', '2021-03-20 08:15:00', 6000, 2, 5, 1);
-
-insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-05-25 09:45:00', '2021-05-25 09:15:00', 5000, 1, 3, 1);
-insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-05-26 09:45:00', '2021-05-26 09:15:00', 5000, 2, 5, 1);
-insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-05-26 10:30:00', '2021-05-26 10:00:00', 5000, 1, 3, 1);
-insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-05-26 11:45:00', '2021-05-26 11:15:00', 5000, 2, 5, 1);
-insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-05-24 09:45:00', '2021-05-24 09:15:00', 1000, 2, 4, 2);
-insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-05-24 08:45:00', '2021-05-24 08:15:00', 12000, 2, 4, 2);
-insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-05-25 08:45:00', '2021-05-25 08:15:00', 6000, 1, 4, 2);
-insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-06-02 08:45:00', '2021-06-02 08:15:00', 6000, 1, 3, 2);
-insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-06-04 08:45:00', '2021-06-04 08:15:00', 6000, 1, 3, 2);
-insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-06-10 16:45:00', '2021-06-10 16:15:00', 6000, 1, 3, 2);
-insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-06-04 09:45:00', '2021-06-04 09:15:00', 6000, 1, 3, 2);
-insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-06-05 09:45:00', '2021-06-05 09:15:00', 6000, 1, 6, 1);
-insert into appointments("free", end_time, start_time, price, medical_employee_id, pharmacy_id) values (true, '2021-06-10 09:45:00', '2021-06-10 09:15:00', 6000,  6, 1);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id, missed) values (false, '2020-12-20 12:30:00', '2020-12-20 12:15:00', 3000, 1, 3, 1, false);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id, missed) values (false, '2020-11-20 08:45:00', '2020-11-20 08:15:00', 5000, 1, 3, 1, false);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id, missed) values (false, '2020-06-20 08:45:00', '2020-06-20 08:15:00', 15000, 2, 5, 1, false);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id, missed) values (false, '2021-03-20 08:45:00', '2021-03-20 08:15:00', 6000, 2, 5, 1, false);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id, missed) values (false, '2021-05-25 09:45:00', '2021-05-25 09:15:00', 5000, 1, 3, 1, false);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id, missed) values (false, '2021-05-26 09:45:00', '2021-05-26 09:15:00', 5000, 2, 5, 1, false);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id, missed) values (false, '2021-05-26 10:30:00', '2021-05-26 10:00:00', 5000, 1, 3, 1, false);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id, missed) values (false, '2021-05-26 11:45:00', '2021-05-26 11:15:00', 5000, 2, 5, 1, false);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id, missed) values (false, '2021-05-24 09:45:00', '2021-05-24 09:15:00', 1000, 2, 4, 2, false);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id, missed) values (false, '2021-05-24 08:45:00', '2021-05-24 08:15:00', 12000, 2, 4, 2, false);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id, missed) values (false, '2021-05-25 08:45:00', '2021-05-25 08:15:00', 6000, 1, 4, 2, true);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id, missed) values (false, '2021-06-02 08:45:00', '2021-06-02 08:15:00', 6000, 1, 3, 2, true);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id, missed) values (false, '2021-06-04 08:45:00', '2021-06-04 08:15:00', 6000, 1, 3, 2, false);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id, missed) values (false, '2021-06-10 16:45:00', '2021-06-10 16:15:00', 6000, 1, 3, 2, false);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id, missed) values (false, '2021-06-04 09:45:00', '2021-06-04 09:15:00', 6000, 1, 3, 2, false);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id, missed) values (false, '2021-06-05 09:45:00', '2021-06-05 09:15:00', 6000, 1, 6, 1, false);
+insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id, missed) values (true, '2021-06-10 09:45:00', '2021-06-10 09:15:00', 6000, null, 6, 1, false);
 
 -- insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-06-01 09:45:00', '2021-06-01 09:15:00', 5000, 1, 3, 1);
 -- insert into appointments("free", end_time, start_time, price, patient_id, medical_employee_id, pharmacy_id) values (false, '2021-06-01 09:45:00', '2021-06-01 09:15:00', 5000, 2, 5, 1);
@@ -86,6 +85,7 @@ insert into appointments("free", end_time, start_time, price, medical_employee_i
 insert into drug_reservations(end_time, start_time, quantity, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values('2021-05-20', '2021-05-04', 2, true, 1, 1, 1);
 insert into drug_reservations(end_time, start_time, quantity, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values('2020-05-20', '2020-05-04', 2, false, 1, 1, 1);
 insert into drug_reservations(end_time, start_time, quantity, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values('2021-07-20', '2021-05-04', 2, false, 1, 1, 1);
+insert into drug_reservations(end_time, start_time, quantity, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values('2021-06-04', '2021-05-04', 2, false, 1, 1, 2);
 
 insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('08:00:00', '14:00:00', 1, 2);
 insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('15:00:00', '16:00:00', 2, 2);

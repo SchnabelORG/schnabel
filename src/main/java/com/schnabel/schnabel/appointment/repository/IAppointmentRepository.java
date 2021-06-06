@@ -22,13 +22,13 @@ public interface IAppointmentRepository extends JpaRepository<Appointment, Long>
     Page<Appointment> findByMedicalEmployeeId(Pageable pageable, Long id);
     List<Appointment> findByMedicalEmployeeId(Long id);
     Iterable<Appointment> findByFree(boolean isFree);
-    @Query(value = "SELECT a.id, a.price, a.start_time, a.end_time, a.free, a.medical_employee_id, a.pharmacy_id, a.patient_id"
+    @Query(value = "SELECT a.*"
         + " FROM appointments a"
         + " INNER JOIN dermatologists"
         + " ON a.medical_employee_id = dermatologists.id",
         nativeQuery = true)
     Page<Appointment> findDermatologistAppointments(Pageable pageable);
-    @Query(value = "SELECT a.id, a.price, a.start_time, a.end_time, a.free, a.medical_employee_id, a.pharmacy_id, a.patient_id"
+    @Query(value = "SELECT a.*"
         + " FROM appointments a"
         + " INNER JOIN dermatologists"
         + " ON a.medical_employee_id = dermatologists.id AND a.free = 'T'",
@@ -82,4 +82,16 @@ public interface IAppointmentRepository extends JpaRepository<Appointment, Long>
     Page<Appointment> findFreeDermatologistAppointmentsByPharmacy(@Param("pharmacy_id") Long pharmacyId, Pageable pageable);
 
     Page<Appointment> findByPharmacyId(Long pharmacyId, Pageable pageable);
+    /**
+     * Find this month's missed appointments for patient
+     */
+    @Query(value = "SELECT a.*"
+        + " FROM appointments a"
+        + " WHERE a.patient_id = :patient_id"
+        + " AND a.missed = 'T'"
+        + " AND a.end_time < CURRENT_TIMESTAMP"
+        + " AND DATE_TRUNC('month', a.end_time) = DATE_TRUNC('month', CURRENT_TIMESTAMP)",
+        nativeQuery = true)
+    List<Appointment> findMissed(@Param("patient_id") Long patientId);
+
 }

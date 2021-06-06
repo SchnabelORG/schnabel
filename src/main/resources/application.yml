@@ -48,3 +48,4 @@ custom:
   jwtExpMin: 1
   refSecret: ${SCHNABEL_REF_SECRET}
   refExpMonth: 6
+  max_penalties: 3

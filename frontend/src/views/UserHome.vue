@@ -13,26 +13,47 @@
                         <div id="profile-info">
                             <h3 class="primary--text">{{patient.name}} {{patient.surname}}</h3>
                             <span class="info--text">Membership: <b class="accent--text">{{user.membershipType}}</b></span>
-                            <span class="info--text">Penalties: <b class="accent--text">{{user.penalties}}</b></span>
+                            <span class="info--text">Penalties: <b class="accent--text">{{penaltyCount}}</b></span>
                             <router-link to="/user/about">Profile info</router-link>
                         </div>
                     </div>
                     <div class="info-card">
-                      <h3 class="info--text">Appointments</h3>
+                      <v-tooltip top v-if="penaltyCount >= 3">
+                        <template v-slot:activator="{ on, attrs }">
+                          <h3 :class="penaltyCount >= 3 ? 'err' : 'info--text'" v-bind="attrs" v-on="on">Appointments</h3>
+                        </template>
+                        <span>Too many penalties, disabled</span>
+                      </v-tooltip>
+                      <h3 v-else class="info--text">Appointments</h3>
                       <div class="d-flex flex-column align-start">
-                        <v-btn plain to="/consult">&#62; Schedule a consult</v-btn>
-                        <v-btn plain to="/pharmacysearch">&#62; Schedule a derm. appt.</v-btn>
+                        <v-btn :disabled="penaltyCount >= 3" plain to="/consult">&#62; Schedule a consult</v-btn>
+                        <v-btn :disabled="penaltyCount >= 3" plain to="/pharmacysearch">&#62; Schedule a derm. appt.</v-btn>
                       </div>
                     </div>
                     <div class="info-card">
-                      <h3 class="info--text">Drugs</h3>
-                      <v-btn plain to="/drugsearch">&#62; Make drug reservation</v-btn>
+                      <v-tooltip top v-if="penaltyCount >= 3">
+                        <template v-slot:activator="{ on, attrs }">
+                          <h3 :class="penaltyCount >= 3 ? 'err' : 'info--text'" v-bind="attrs" v-on="on">Drugs</h3>
+                        </template>
+                        <span>Too many penalties, disabled</span>
+                      </v-tooltip>
+                      <h3 v-else class="info--text">Drugs</h3>
+                        <v-btn :disabled="penaltyCount >= 3" plain to="/drugsearch">&#62; Make drug reservation</v-btn>
                     </div>
                     <div class="info-card">
                       <h3 class="info--text">Feedback</h3>
                       <div class="d-flex flex-column align-start">
                         <v-btn plain to="/rating">&#62; Leave a rating</v-btn>
                         <v-btn plain to="/">&#62; Submit a complaint</v-btn>
+                      </div>
+                    </div>
+                    <div v-if="penalties" class="info-card">
+                      <h3 class="info--text">Penalties</h3>
+                      <div class="d-flex flex-column align-start">
+                        <div v-for="p in penalties" :key="p.id" class="penalty red--text">
+                          <div>{{p.reason}}</div>
+                          <div>{{p.date}}</div>
+                        </div>
                       </div>
                     </div>
                 </div>
@@ -297,6 +318,10 @@
 export default {
     data() {
         return {
+          penaltyCount: 0,
+          penalties: [
+          ],
+          //
           tabs: null,
           //
           subHeaders: [
@@ -389,12 +414,26 @@ export default {
                 name: "Petar",
                 surname: "Petrovic",
                 membershipType: "gold",
-                penalties: 1,
             },
         }
     },
 
     methods: {
+        getPenalties: function() {
+          this.refreshToken()
+            .then(rr => {
+              localStorage.jws = rr.data;
+              this.axios.get('api/penalty/patient', {headers: this.getAHeader()})
+                .then(r => {
+                  if(r.data._embedded) {
+                    this.penalties = r.data._embedded.penalties;
+                  } else {
+                    this.penalties = [];
+                  }
+                })
+            })
+        },
+
         cancelDrugReservation: function(item) {
           this.refreshToken()
             .then(rr => {
@@ -636,6 +675,15 @@ export default {
     },
 
     mounted() {
+        this.refreshToken()
+          .then(rr => {
+            localStorage.jws = rr.data;
+            this.axios.get('api/penalty/patient/count', {headers: this.getAHeader()})
+              .then(r => {
+                this.penaltyCount = r.data;
+              })
+          }).catch(() => this.$router.push('/login'));
+        this.getPenalties();
         this.getUser();
         this.getPharmacies();
         this.getAppointments();
@@ -706,5 +754,12 @@ export default {
     #appt-preview-container {
         display: grid;
         grid-template-columns: 1fr 1fr;
+    }
+
+    .penalty {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
     }
 </style>

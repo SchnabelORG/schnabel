@@ -30,6 +30,15 @@ const routes = [
   },
 
   {
+    path: '/logout',
+    name: 'Logout',
+    beforeEnter: (to, from, next) => {
+      localStorage.removeItem('jws');
+      next({name:'Home'});
+    },
+  },
+
+  {
     path: '/login',
     name: 'Login',
     component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue'),

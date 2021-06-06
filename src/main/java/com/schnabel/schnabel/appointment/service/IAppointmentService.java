@@ -43,5 +43,7 @@ public interface IAppointmentService extends IJpaService<Appointment, Long> {
     List<Double> countIncomeByMonth(Long pharmacyId, Pageable pageable);
     List<Double> countIncomeByYear(Long pharmacyId, Pageable pageable);
     Double calculateIncome(LocalDate start, LocalDate end, Long pharmacyId, Pageable pageable);
+    List<Appointment> findMissed(Long patientId);
+
 }
 

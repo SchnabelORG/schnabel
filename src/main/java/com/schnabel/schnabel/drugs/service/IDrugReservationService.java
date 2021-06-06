@@ -10,6 +10,7 @@ import com.schnabel.schnabel.users.model.Patient;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -20,4 +21,8 @@ public interface IDrugReservationService extends IJpaService<DrugReservation, Lo
     boolean reserveDrug(DrugReservationRequest req, Patient patient);
     PagedModel<DrugReservationDTO> findByPatientId(Long patientId, Pageable pageable);
     boolean cancelReservation(Long patientId, Long resId);
+    /**
+     * Returns missed reservations by patient
+     */
+    List<DrugReservation> findMissed(Long patientId);
 }
