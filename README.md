@@ -175,17 +175,17 @@ Status values:
 
 | Spec. id | Functionality                                     | Status |
 |----------|---------------------------------------------------|:------:|
-| 3.5      | Pharmacist / Dermatologist profile                |   ✗    |
-| 3.10     | Dermatologist homepage                            |   ✗    |
-| 3.11     | Pharmacist homepage                               |   ✗    |
-| 3.14     | Dermatological appointment scheduling as derm.    |   ✗    |
-| 3.17     | Pharmacological consultation scheduling as derm.  |   ✗    |
-| 3.21     | Handing out and acquiring medical drug            |   ✗    |
-| 3.27     | Derm. appointment summary                         |   ✗    |
-| 3.28     | Pharm. appointment summary                        |   ✗    |
-| 3.30     | User search                                       |   ✗    |
-| 3.36     | Pharmacist calendar display                       |   ✗    |
-| 3.37     | Dermatologist calendar display                    |   ✗    |
+| 3.5      | Pharmacist / Dermatologist profile                |   ✓    |
+| 3.10     | Dermatologist homepage                            |   ✓    |
+| 3.11     | Pharmacist homepage                               |   ✓    |
+| 3.14     | Dermatological appointment scheduling as derm.    |   ✓    |
+| 3.17     | Pharmacological consultation scheduling as derm.  |   ✓    |
+| 3.21     | Handing out and acquiring medical drug            |   ✓    |
+| 3.27     | Derm. appointment summary                         |   ✓    |
+| 3.28     | Pharm. appointment summary                        |   ✓    |
+| 3.30     | User search                                       |   ✓    |
+| 3.36     | Pharmacist calendar display                       |   ✓    |
+| 3.37     | Dermatologist calendar display                    |   ✓    |
 
 **Marko Pekez**
 
