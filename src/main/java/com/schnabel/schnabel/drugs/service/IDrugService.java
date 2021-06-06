@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.drugs.service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -22,4 +23,6 @@ public interface IDrugService extends IJpaService<Drug, Long>
     PagedModel<DrugDTO> findAllDTO(Pageable pageable);
     PagedModel<DrugDTO> filteredSearch(Map<String, String> params, Pageable pageable);
     PagedModel<DrugDTO> findGradeable(Long patientId, Pageable pageable);
+    Optional<Drug> findByName(String name);
+    List<DrugDTO> findAllDTO();
 }

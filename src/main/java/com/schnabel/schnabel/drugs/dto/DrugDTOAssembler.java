@@ -7,6 +7,12 @@ import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSuppor
 import org.springframework.stereotype.Component;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @Component
@@ -27,5 +33,12 @@ public class DrugDTOAssembler extends RepresentationModelAssemblerSupport<Drug, 
         dto.setScore(entity.getScore());
 
         return dto;
+    }
+
+    public List<DrugDTO> listModel(Iterable<Drug> drugs) {
+        return StreamSupport.stream(drugs.spliterator(), false)
+            .map(d -> DrugDTO.builder()
+                .id(d.getId())
+                .name(d.getName()).build()).collect(Collectors.toList());
     }
 }
