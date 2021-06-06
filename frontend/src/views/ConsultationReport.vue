@@ -552,7 +552,7 @@
                             this.addMedicationsToReport(response.data);
                         }
                         this.scheduleNewAppointment();
-                        //this.reset();
+                        this.reset();
                     })
                     .catch(response =>
                     {

@@ -68,13 +68,13 @@ public class OfferController
     }
 
     @GetMapping("order/{id}")
-    public ResponseEntity<PagedModel<OfferDTO>> getByOrder(Pageable pageable, @PathVariable long id)
+    public ResponseEntity<PagedModel<OfferDTO>> getByOrder(Pageable pageable, @RequestHeader("Authorization") String authHeader, @PathVariable long id)
     {
         return new ResponseEntity<>(offerService.findByOrder(pageable, id), HttpStatus.OK);
     }
 
     @PostMapping("update")
-    public ResponseEntity<String> updateOffer(@RequestBody OfferDTO dto)
+    public ResponseEntity<String> updateOffer(@RequestBody OfferDTO dto, @RequestHeader("Authorization") String authHeader)
     {
         return offerService.updateOffer(dto.getId(), dto.getPrice(), dto.getDateOfDelivery()) ?
                 ResponseEntity.ok("Updated")
