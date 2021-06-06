@@ -32,6 +32,10 @@
                         <v-tab-item>
                             <div id="settings-container">
                                 <v-text-field
+                                v-model="user.email"
+                                label="E-mail"
+                                disabled></v-text-field>
+                                <v-text-field
                                 v-model="user.name"
                                 label="Name"></v-text-field>
                                 <v-text-field
