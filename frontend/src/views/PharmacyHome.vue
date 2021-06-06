@@ -75,6 +75,7 @@
             <ul class="footer-column-list unstyled-list">
               <li><router-link to="">Make examination</router-link></li>
               <li><router-link :to="'/pharmacy/'+ id + '/dermatologist'">Our dermatologists</router-link></li>
+              <li><router-link :to="'/pharmacy/'+ id + '/freedermatologistappointments'">Free appointments</router-link></li>
             </ul>
           </div>
           <div class="footer-column">

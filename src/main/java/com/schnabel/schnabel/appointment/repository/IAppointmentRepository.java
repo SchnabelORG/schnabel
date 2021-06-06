@@ -74,6 +74,14 @@ public interface IAppointmentRepository extends JpaRepository<Appointment, Long>
         nativeQuery = true)
     Page<Appointment> findConsultByPatientId(@Param("patient_id") Long patientId, Pageable pageable);
 
+    @Query(value = "SELECT a.*"
+        + " FROM appointments a"
+        + " INNER JOIN dermatologists d"
+        + " ON a.medical_employee_id = d.id WHERE a.free = 'T' AND a.pharmacy_id = :pharmacy_id",
+        nativeQuery = true)
+    Page<Appointment> findFreeDermatologistAppointmentsByPharmacy(@Param("pharmacy_id") Long pharmacyId, Pageable pageable);
+
+    Page<Appointment> findByPharmacyId(Long pharmacyId, Pageable pageable);
     /**
      * Find this month's missed appointments for patient
      */
@@ -85,4 +93,5 @@ public interface IAppointmentRepository extends JpaRepository<Appointment, Long>
         + " AND DATE_TRUNC('month', a.end_time) = DATE_TRUNC('month', CURRENT_TIMESTAMP)",
         nativeQuery = true)
     List<Appointment> findMissed(@Param("patient_id") Long patientId);
+
 }

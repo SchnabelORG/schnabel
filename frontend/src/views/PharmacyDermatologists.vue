@@ -12,7 +12,8 @@
                         <template v-slot:item="row">
                             <tr>
                                 <td>{{row.item.name}}</td>
-                                <td>{{row.item.surname}}</td>                       
+                                <td>{{row.item.surname}}</td>
+                                <td>{{row.item.score}}</td>                       
                             </tr>
                         </template>
                     </v-data-table>
@@ -27,15 +28,18 @@
         data() {
             return {
                 dermatologists: [],
+                id: '',
                 headers: [
                     { text: "Name" },
                     { text: "Surname" },
+                    { text: "Score" },
                 ],
             }
         },
         methods: {
             getDermatologists: function() {
-                this.axios.get("api/dermatologist/pharmacy/1")
+                this.id = this.$route.params.id;
+                this.axios.get("api/dermatologist/pharmacy/" + this.id)
                     .then(response => {
                         this.dermatologists = response.data._embedded.dermatologists;
                     })

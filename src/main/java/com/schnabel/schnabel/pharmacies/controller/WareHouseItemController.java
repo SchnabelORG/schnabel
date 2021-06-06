@@ -61,7 +61,7 @@ public class WareHouseItemController
     @GetMapping("pharmacy/{id}")
     public ResponseEntity<PagedModel<WareHouseItemDTO>> getAllByPharmacyId(@PathVariable("id") Long pharmacyId, Pageable pageable) 
     {
-        return new ResponseEntity<>(service.findAllByPharmacyId(1l, pageable), HttpStatus.OK);
+        return new ResponseEntity<>(service.findAllByPharmacyId(pharmacyId, pageable), HttpStatus.OK);
     }
 
 

@@ -24,4 +24,6 @@ public interface IShiftService extends IJpaService<Shift, Long>
     Optional<ShiftDTO> getShiftMedicalEmployeePharmacy(Long medicalEmployeeId, Long pharmacyId);
     boolean defineDermatologistShift(LocalTime startTime, LocalTime endTime, MedicalEmployee medicalEmployee, Pharmacy pharmacy);
     boolean definePharmacistShift(LocalTime startTime, LocalTime endTime, MedicalEmployee medicalEmployee, Pharmacy pharmacy);
+    Optional<Shift> getShiftByMedicalEmployeePharmacy(Long medicalEmployeeId, Long pharmacyId);
+
 }
