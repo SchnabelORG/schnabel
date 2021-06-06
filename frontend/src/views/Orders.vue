@@ -171,24 +171,41 @@
                 });
             },
             getOrders: function() {
-                this.axios.get("api/order/pharmacy/" + this.pharmacyId)
+
+                    this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.get("api/order/pharmacy/" + this.pharmacyId, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
                     .then(response => {
                         this.orders = response.data._embedded.orders;
                     })
                     .catch(response => {
                         console.log("Failed to get orders", response.data);
                     });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
+
+                    
             },
             showOffers: function(o) {
                 this.order = o;
                 this.offers = [];
-                this.axios.get("api/offer/order/" + o.id)
+                this.refreshToken().then(response => {
+                localStorage.jws = response.data;
+                this.axios.get("api/offer/order/" + o.id, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
                     .then(response => {
                         this.offers = response.data._embedded.offers;
                     })
                     .catch(response => {
                         console.log("Failed to get offers", response.data);
                     });
+                })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
                 this.dialog = true;
             },
             acceptOffer: function(offerId) {
@@ -197,12 +214,10 @@
                     this.axios.post("api/offer/acceptoffer", offerId, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
                         .then(response => {
                             console.log(response);
-                            alert("Offer successfully accepted, order closed!");
                             this.getOrders();
                         })
                         .catch(response => {
                             console.log("Failed to accept offer", response.data);
-                            alert("Failed to accept offer");
                         });
                    })
                     .catch(response => {
