@@ -218,6 +218,11 @@ const routes = [
         name: 'MedicationReservations',
         component: () => import(/* webpackChunkName: "pharmacist" */ '../views/MedicationReservations.vue'),
       },
+      {
+        path: 'vacations',
+        name: 'PharmacistVacation',
+        component: () => import(/* webpackChunkName: "pharmacist" */ '../views/PharmacistVacation.vue'),
+      },
     ],
   },
 
