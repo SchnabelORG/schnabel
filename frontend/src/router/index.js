@@ -362,6 +362,11 @@ const routes = [
         name: 'PharmacyAdminIncome',
         component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminIncome.vue'),
       },
+      {
+        path: 'availabilityrequests',
+        name: 'PharmacyAdminAvailabilityRequests',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminAvailabilityRequests.vue'),
+      },
     ],
   },
 ]

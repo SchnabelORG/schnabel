@@ -135,3 +135,6 @@ insert into pharmacy_grades("value", patient_id, pharmacy_id) values (5, 2, 1);
 insert into pharmacy_grades("value", patient_id, pharmacy_id) values (3, 1, 2);
 insert into pharmacy_grades("value", patient_id, pharmacy_id) values (2, 2, 2);
 insert into pharmacy_grades("value", patient_id, pharmacy_id) values (4, 2, 3);
+
+insert into availability_request(quantity, request_pharmacy_id, request_pharmacist_id, request_drug_id) values (2, 1, 3, 1);
+insert into availability_request(quantity, request_pharmacy_id, request_pharmacist_id, request_drug_id) values (1, 1, 5, 2);
