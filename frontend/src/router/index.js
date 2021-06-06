@@ -169,6 +169,11 @@ const routes = [
         name: 'PharmacyDrugs',
         component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacyDrugs.vue'),
       },
+      {
+        path: 'freedermatologistappointments',
+        name: 'PharmacyFreeDermApp',
+        component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacyFreeDermApp.vue'),
+      },
     ],
   },
 

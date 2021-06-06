@@ -74,10 +74,10 @@ public interface IAppointmentRepository extends JpaRepository<Appointment, Long>
         nativeQuery = true)
     Page<Appointment> findConsultByPatientId(@Param("patient_id") Long patientId, Pageable pageable);
 
-    @Query(value = "SELECT a.id, a.price, a.start_time, a.end_time, a.free, a.medical_employee_id, a.pharmacy_id, a.patient_id"
+    @Query(value = "SELECT a.*"
         + " FROM appointments a"
-        + " INNER JOIN dermatologists"
-        + " ON a.medical_employee_id = dermatologists.id WHERE free = 'T' AND pharmacy_id = :pharmacy_id",
+        + " INNER JOIN dermatologists d"
+        + " ON a.medical_employee_id = d.id WHERE a.free = 'T' AND a.pharmacy_id = :pharmacy_id",
         nativeQuery = true)
     Page<Appointment> findFreeDermatologistAppointmentsByPharmacy(@Param("pharmacy_id") Long pharmacyId, Pageable pageable);
 
