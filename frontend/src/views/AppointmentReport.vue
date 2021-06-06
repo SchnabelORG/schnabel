@@ -524,6 +524,9 @@
             // },
             finish: function(){
                 let jws = window.localStorage.getItem('jwt');
+                if (!this.consultationInfo){
+                    this.consultationInfo = 'No description'
+                }
                 this.axios.post("api/reportappointment/addreport/" + this.chosenAppointment.id, this.consultationInfo,{headers:{"Authorization": "Bearer " + jws}})
                     .then(response =>
                     {
