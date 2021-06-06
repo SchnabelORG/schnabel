@@ -52,7 +52,9 @@
                                 <v-chip class="primary single-chip" v-for="item in todayAppointments" :key="item.id" @click="setAppointment(item)"> 
                                     {{item.patient.name}} {{item.patient.surname}}({{item.period.startTime.slice(11)}} ) 
                                 </v-chip>
+                                
                             </div>
+                            
                         </div>
                         
                         <table v-else style="width:100%">
@@ -75,6 +77,15 @@
                              <tr>
                                 <td><b>Time:</b></td>
                                 <td>{{chosenAppointment.period.startTime.slice(11)}}-{{chosenAppointment.period.endTime.slice(11)}}({{chosenAppointment.period.startTime.slice(0,10)}})</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <v-btn text
+                                    class="primary"
+                                    @click="patientDidntCome()">
+                                    Didn't come
+                                    </v-btn>
+                                </td>
                             </tr>
                         </table>         
                     </v-card>
@@ -347,17 +358,17 @@
         },
         methods:{
             refreshToken: async function() {
-                let jws = window.localStorage.getItem('jwt');
-                if(!jws) {
+                //let jws = window.localStorage.getItem('jwt');
+                if(!localStorage.jws) {
                     this.$router.push("/");
                 }
-                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + jws}});
+                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + localStorage.jws}});
             },
              getPharmacist: function() {
                 console.log("Getting pharmacist");
-                let jws = window.localStorage.getItem('jwt');
-                console.log(jws)
-                this.axios.get("api/pharmacist/jwt", {headers:{"Authorization": "Bearer " + jws}})
+                //let jws = window.localStorage.getItem('jwt');
+                console.log(localStorage.jws)
+                this.axios.get("api/pharmacist/jwt", {headers:{"Authorization": "Bearer " + localStorage.jws}})
                     .then(response => {
                         console.log(response.data);
                         this.pharmacist = response.data;
@@ -367,7 +378,7 @@
                         console.log("Failed to get patient", response.data);
                         this.refreshToken()
                             .then(response => {
-                                window.localStorage.jwt = response.data;
+                                localStorage.jws = response.data;
                                 this.$router.go();
                             })
                             .catch(response => {
@@ -377,9 +388,9 @@
                     });
             },
             getAllAppointments: function(){
-                let jws = window.localStorage.getItem('jwt');
+                //let jws = window.localStorage.getItem('jwt');
                 console.log(this.pharmacist.id)
-                this.axios.get("api/appointment/appbyemployee/" + this.pharmacist.id, {headers:{"Authorization": "Bearer " + jws}})
+                this.axios.get("api/appointment/appbyemployee/" + this.pharmacist.id, {headers:{"Authorization": "Bearer " + localStorage.jws}})
                     .then(response =>
                     {
                         this.allAppointments = response.data._embedded.appointments;
@@ -393,8 +404,8 @@
                     });
             },
             getShift: function(){
-                let jws = window.localStorage.getItem('jwt');
-                this.axios.get("api/shift/medicalemployeepharmacy/" + this.pharmacist.id + "/" + this.pharmacist.pharmacy.id, {headers:{"Authorization": "Bearer " + jws}})
+                //let jws = window.localStorage.getItem('jwt');
+                this.axios.get("api/shift/medicalemployeepharmacy/" + this.pharmacist.id + "/" + this.pharmacist.pharmacy.id, {headers:{"Authorization": "Bearer " + localStorage.jws}})
                     .then(response =>
                     {
                         this.shift = response.data;
@@ -445,7 +456,7 @@
                 while(i < this.allAppointments.length){
                     var appDate = new Date(this.allAppointments[i].period.startTime);
                     appDate.setHours(0,0,0,0);
-                    if(today.getTime() === appDate.getTime() && !this.allAppointments[i].isFinished){
+                    if(today.getTime() === appDate.getTime() && !this.allAppointments[i].isFinished && !this.allAppointments[i].missed){
                         this.todayAppointments.push(this.allAppointments[i]);
                         
                     }
@@ -465,8 +476,8 @@
                this.$router.go();
             },
             getAllMedications: function(){
-                let jws = window.localStorage.getItem('jwt');
-                this.axios.get("api/drug", {headers:{"Authorization": "Bearer " + jws}})
+                //let jws = window.localStorage.getItem('jwt');
+                this.axios.get("api/drug", {headers:{"Authorization": "Bearer " + localStorage.jws}})
                     .then(response =>
                     {
                         this.medications = response.data._embedded.drugs;
@@ -498,11 +509,11 @@
 
             },
             checkForMedication: function(){
-                let jws = window.localStorage.getItem('jwt');
+                //let jws = window.localStorage.getItem('jwt');
                 for(var i = 0; i < this.prescripedMedication.length; i++){
                     let dto = {drugId: this.prescripedMedication[i].id, quantity: this.dosage[this.prescripedMedication[i].id].quantity, pharmacyId: this.pharmacist.pharmacy.id}
                     console.log(this.prescripedMedication[i])
-                    this.axios.post("api/warehouseitem/doeshave", dto, {headers:{"Authorization": "Bearer " + jws}})
+                    this.axios.post("api/warehouseitem/doeshave", dto, {headers:{"Authorization": "Bearer " + localStorage.jws}})
                         .then(response =>
                         {
                             console.log(response.data);
@@ -529,8 +540,11 @@
                 }
             },
             finish: function(){
-                let jws = window.localStorage.getItem('jwt');
-                this.axios.post("api/reportappointment/addreport/" + this.chosenAppointment.id, this.consultationInfo,{headers:{"Authorization": "Bearer " + jws}})
+                //let jws = window.localStorage.getItem('jwt');
+                if (!this.consultationInfo){
+                    this.consultationInfo = 'No description'
+                }
+                this.axios.post("api/reportappointment/addreport/" + this.chosenAppointment.id, this.consultationInfo,{headers:{"Authorization": "Bearer " + localStorage.jws}})
                     .then(response =>
                     {
                         console.log(response.data);
@@ -538,7 +552,7 @@
                             this.addMedicationsToReport(response.data);
                         }
                         this.scheduleNewAppointment();
-                        this.reset();
+                        //this.reset();
                     })
                     .catch(response =>
                     {
@@ -553,8 +567,9 @@
                     quantity: this.dosage[this.prescripedMedication[i].id].howManyDays, 
                     drug: this.prescripedMedication[i]});
                 }
-                let jws = window.localStorage.getItem('jwt');
-                this.axios.post("api/recommendedmed/addmed/" + reportId, meds,{headers:{"Authorization": "Bearer " + jws}})
+                console.log(meds)
+                //let jws = window.localStorage.getItem('jwt');
+                this.axios.post("api/recommendedmed/addmed/" + reportId, meds,{headers:{"Authorization": "Bearer " + localStorage.jws}})
                     .then(response =>
                     {
                         console.log("aaa");
@@ -570,10 +585,11 @@
                 if(this.time === 0){
                     console.log("Nista")
                 }else{
-                    let jws = window.localStorage.getItem('jwt');
+                    //let jws = window.localStorage.getItem('jwt');
                     let newApp= {pharmacistId: this.pharmacist.id, patientId:this.chosenAppointment.patient.id, 
-                                pharmacyId: this.pharmacist.pharmacy.id, startTime: this.termsToShow[this.time - 1].start, endTime: this.termsToShow[this.time - 1].end }
-                    this.axios.post("api/appointment/pharmacist/newapp", newApp,{headers:{"Authorization": "Bearer " + jws}})
+                                pharmacyId: this.pharmacist.pharmacy.id, startTime: new Date(this.termsToShow[this.time - 1].start), endTime: new Date(this.termsToShow[this.time - 1].end)}
+                    console.log(newApp)
+                    this.axios.post("api/appointment/pharmacist/newapp", newApp,{headers:{"Authorization": "Bearer " + localStorage.jws}})
                     .then(response =>
                     {
                         console.log(response.data);
@@ -584,6 +600,19 @@
                     });
 
                 }
+            },
+            patientDidntCome: function(){
+                //let jws = window.localStorage.getItem('jwt');
+                this.axios.get("api/appointment/missed/"+ this.chosenAppointment.id, {headers:{"Authorization": "Bearer " + localStorage.jws}})
+                    .then(response =>
+                    {
+                        console.log(response.data);
+                        this.reset()
+                    })
+                    .catch(response =>
+                    {
+                        console.log(response.data);
+                    });
             },
             getLabel: function(item){
                 var label = '';

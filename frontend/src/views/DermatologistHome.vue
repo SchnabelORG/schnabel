@@ -132,26 +132,29 @@
         },
         methods:{
             refreshToken: async function() {
-                let jws = window.localStorage.getItem('jwt');
-                if(!jws) {
+                //let jws = window.localStorage.getItem('jwt');
+                if(!localStorage.jws) {
                     this.$router.push("/");
                 }
-                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + jws}});
+                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + localStorage.jws}});
             },
             getDermatologist: function() {
                 console.log("Getting dermatologist");
-                let jws = window.localStorage.getItem('jwt');
-                this.axios.get("api/dermatologist/jwt", {headers:{"Authorization": "Bearer " + jws}})
+               // let jws = window.localStorage.getItem('jwt');
+                this.axios.get("api/dermatologist/jwt", {headers:{"Authorization": "Bearer " + localStorage.jws}})
                     .then(response => {
                         console.log(response.data);
                         this.dermatologist = response.data;
+                        if(!this.dermatologist.defaultPasswordChanged){
+                            this.$router.push("/defaultpass");
+                        }
                         this.getAllAppointments()
                     })
                     .catch(response => {
                         console.log("Failed to get patient", response.data);
                         this.refreshToken()
                             .then(response => {
-                                window.localStorage.jwt = response.data;
+                                localStorage.jws = response.data;
                                 this.$router.go();
                             })
                             .catch(response => {
@@ -161,8 +164,8 @@
                     });
             },
             getAllAppointments: function(){
-                let jws = window.localStorage.getItem('jwt');
-                this.axios.get("api/appointment/appbyemployee/" + this.dermatologist.id, {headers:{"Authorization": "Bearer " + jws}})
+                //let jws = window.localStorage.getItem('jwt');
+                this.axios.get("api/appointment/appbyemployee/" + this.dermatologist.id, {headers:{"Authorization": "Bearer " + localStorage.jws}})
                     .then(response =>
                     {
                         this.allAppointments = response.data._embedded.appointments;
@@ -186,15 +189,13 @@
                     var appDate = new Date(this.allAppointments[i].period.startTime);
                     appDate.setHours(0,0,0,0);
                     if(today.getTime() === appDate.getTime()){
-                        this.todayAppointments = this.allAppointments.splice(i);
+                        this.todayAppointments.push(this.allAppointments[i]);
                     }
                     else if(appDate.getTime() === date.getTime()){
                         this.previousDayAppointments[j++] = this.allAppointments[i];
-                        ++i;
                     }
-                    else{
-                        ++i;
-                    }
+                    ++i;
+                    
                 }
             },
             getPerviousWorkingDay: function(){

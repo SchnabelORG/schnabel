@@ -5,6 +5,7 @@ import javax.persistence.*;
 import com.schnabel.schnabel.misc.model.Address;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
 
@@ -20,6 +21,10 @@ public class MedicalEmployee extends User
 
     @OneToMany(mappedBy = "medicalEmployee")
     private List<Shift> shifts;
+
+    @ColumnDefault("false")
+    @Column(nullable = true)
+    private boolean isDefaultPasswordChanged;
 
     private double score;
     public MedicalEmployee(String name, String surname, String email, String password, Address address) {

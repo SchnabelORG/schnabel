@@ -88,7 +88,8 @@
                     <v-timeline-item>
                         <v-card>
                             <v-card-title class="justify-center accent white--text">
-                                <div>Previous working day ({{this.perviousWorkingDay.slice(0,10)}})</div>
+                                <div v-if="this.perviousWorkingDay === ''">Nothing here</div>
+                                <div v-else>Previous working day ({{this.perviousWorkingDay.slice(0,10)}})</div>
                             </v-card-title>
                         </v-card>
                     </v-timeline-item>
@@ -131,27 +132,31 @@
         },
         methods:{
             refreshToken: async function() {
-                let jws = window.localStorage.getItem('jwt');
-                if(!jws) {
+                //let jws = window.localStorage.getItem('jwt');
+                if(!localStorage.jws) {
                     this.$router.push("/");
                 }
-                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + jws}});
+                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + localStorage.jws}});
             },
              getPharmacist: function() {
                 console.log("Getting pharmacist");
-                let jws = window.localStorage.getItem('jwt');
-                console.log(jws)
-                this.axios.get("api/pharmacist/jwt", {headers:{"Authorization": "Bearer " + jws}})
+                //let jws = window.localStorage.getItem('jwt');
+                console.log(localStorage.jws)
+                this.axios.get("api/pharmacist/jwt", {headers:{"Authorization": "Bearer " + localStorage.jws}})
                     .then(response => {
                         console.log(response.data);
                         this.pharmacist = response.data;
+                        console.log(this.pharmacist.isDefaultPasswordChanged);
+                        if(!this.pharmacist.defaultPasswordChanged){
+                            this.$router.push("/defaultpass");
+                        }
                         this.getAllAppointments()
                     })
                     .catch(response => {
                         console.log("Failed to get patient", response.data);
                         this.refreshToken()
                             .then(response => {
-                                window.localStorage.jwt = response.data;
+                                localStorage.jws = response.data;
                                 this.$router.go();
                             })
                             .catch(response => {
@@ -161,9 +166,9 @@
                     });
             },
             getAllAppointments: function(){
-                let jws = window.localStorage.getItem('jwt');
+                //let jws = window.localStorage.getItem('jwt');
                 console.log(this.pharmacist.id)
-                this.axios.get("api/appointment/appbyemployee/" + this.pharmacist.id, {headers:{"Authorization": "Bearer " + jws}})
+                this.axios.get("api/appointment/appbyemployee/" + this.pharmacist.id, {headers:{"Authorization": "Bearer " + localStorage.jws}})
                     .then(response =>
                     {
                         this.allAppointments = response.data._embedded.appointments;
@@ -187,15 +192,13 @@
                     var appDate = new Date(this.allAppointments[i].period.startTime);
                     appDate.setHours(0,0,0,0);
                     if(today.getTime() === appDate.getTime()){
-                        this.todayAppointments = this.allAppointments.splice(i);
+                        this.todayAppointments.push(this.allAppointments[i]);
                     }
                     else if(appDate.getTime() === date.getTime()){
                         this.previousDayAppointments[j++] = this.allAppointments[i];
-                        ++i;
                     }
-                    else{
-                        ++i;
-                    }
+                    ++i;
+                    
                 }
                 console.log(this.previousDayAppointments);
             },
@@ -215,8 +218,13 @@
                         tempI = i;
                     }
                 }
-                this.perviousWorkingDay = this.allAppointments[tempI].period.startTime;
-                return this.allAppointments[tempI].period.startTime;
+                if(this.allAppointments.length === 0){
+                    this.perviousWorkingDay = '';
+                    return null;
+                }else{
+                    this.perviousWorkingDay = this.allAppointments[tempI].period.startTime;
+                    return this.allAppointments[tempI].period.startTime;
+                }
             },
             getSparkLineValues: function(){
                 var today = new Date();

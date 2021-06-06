@@ -64,6 +64,7 @@ const routes = [
     },
   },
 
+
   // NOTE(Jovan): Redirect based on role
   {
     path: '/redirect',
@@ -242,9 +243,19 @@ const routes = [
         name: 'MedicationReservations',
         component: () => import(/* webpackChunkName: "pharmacist" */ '../views/MedicationReservations.vue'),
       },
+      {
+        path: 'vacations',
+        name: 'PharmacistVacation',
+        component: () => import(/* webpackChunkName: "pharmacist" */ '../views/PharmacistVacation.vue'),
+      },
     ],
   },
 
+  {
+    path: '/defaultpass',
+    name: 'ChangeDefaultPassword',
+    component: () => import(/* webpackChunkName: "employee" */ '../views/ChangeDefaultPassword.vue'),
+  },
 
   //Dermatologist
   {
@@ -271,6 +282,11 @@ const routes = [
         path: 'appointmentReport',
         name: 'AppointmentReport',
         component: () => import(/* webpackChunkName: "dermatologist" */ '../views/AppointmentReport.vue'),
+      },
+      {
+        path: 'vacations',
+        name: 'DermatologistVacation',
+        component: () => import(/* webpackChunkName: "dermatologist" */ '../views/DermatologistVacation.vue'),
       },
     ],
   },

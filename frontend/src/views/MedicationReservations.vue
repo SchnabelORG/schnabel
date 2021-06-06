@@ -67,17 +67,17 @@
         },
         methods: {
             refreshToken: async function() {
-                let jws = window.localStorage.getItem('jwt');
-                if(!jws) {
+                //let jws = window.localStorage.getItem('jwt');
+                if(!localStorage.jws) {
                     this.$router.push("/");
                 }
-                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + jws}});
+                return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + localStorage.jws}});
             },
              getPharmacist: function() {
                 console.log("Getting pharmacist");
-                let jws = window.localStorage.getItem('jwt');
-                console.log(jws)
-                this.axios.get("api/pharmacist/jwt", {headers:{"Authorization": "Bearer " + jws}})
+                //let jws = window.localStorage.getItem('jwt');
+                //console.log(jws)
+                this.axios.get("api/pharmacist/jwt", {headers:{"Authorization": "Bearer " + localStorage.jws}})
                     .then(response => {
                         console.log(response.data);
                         this.pharmacist = response.data;
@@ -86,7 +86,7 @@
                         console.log("Failed to get patient", response.data);
                         this.refreshToken()
                             .then(response => {
-                                window.localStorage.jwt = response.data;
+                                localStorage.jws = response.data;
                                 this.$router.go();
                             })
                             .catch(response => {
@@ -96,8 +96,8 @@
                     });
             },
             getReservation: function(){
-                let jws = window.localStorage.getItem('jwt');
-                this.axios.get("api/dreservation/" + this.reservationsNumber + "/" +this.pharmacist.pharmacy.id, {headers: {"Authorization": "Bearer " + jws}})
+                //let jws = window.localStorage.getItem('jwt');
+                this.axios.get("api/dreservation/" + this.reservationsNumber + "/" +this.pharmacist.pharmacy.id, {headers: {"Authorization": "Bearer " + localStorage.jws}})
                     .then(response =>
                     {
                         this.drugReservation = response.data;
@@ -120,8 +120,8 @@
                     });
             },
             dispensing: function(){
-                let jws = window.localStorage.getItem('jwt');
-                this.axios.get("api/dreservation/dispensing/" + this.drugReservation.id, {headers: {"Authorization": "Bearer " + jws}})
+                //let jws = window.localStorage.getItem('jwt');
+                this.axios.get("api/dreservation/dispensing/" + this.drugReservation.id, {headers: {"Authorization": "Bearer " + localStorage.jws}})
                     .then(response =>
                     {
                         console.log(response.data)

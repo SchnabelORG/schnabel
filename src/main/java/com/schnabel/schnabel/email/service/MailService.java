@@ -155,4 +155,16 @@ public class MailService implements IMailService {
         mail.setMailContent(sb.toString());
         return sendMail(mail);
     }
+
+    @Override
+    public boolean sendReservationConfirmation(String email, String content) {
+        Mail mail = new Mail();
+        mail.setMailFrom(MAIL_FROM);
+        mail.setMailTo(email);
+        mail.setMailSubject("Reservation Taken");
+        StringBuilder sb = new StringBuilder();
+        sb.append(content);
+        mail.setMailContent(sb.toString());
+        return sendMail(mail);
+    }
 }

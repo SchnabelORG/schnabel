@@ -5,6 +5,8 @@
             <router-link to="/dermatologist/calendar">Calendar</router-link>
             <router-link to="/dermatologist/appointmentReport">Appointments</router-link>
             <router-link to="/dermatologist/dermatologistacc">Account</router-link>
+            <router-link to="/dermatologist/vacations">Vacations</router-link>
+            <!-- <router-link to="/logout">Logout</router-link> -->
         </main-navigation>
 
         <div id="main-content">

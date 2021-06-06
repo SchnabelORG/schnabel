@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ public class RecommendedMedController {
         this.drugService = drugService;
         this.jwtUtils = jwtUtils;
     }
-
+    @Transactional
     @PostMapping("/addmed/{appRepId}")
     public ResponseEntity<Boolean> defineAppointment(@PathVariable long appRepId, @RequestBody List<RecommendedMedicationDTO> medications)
     {

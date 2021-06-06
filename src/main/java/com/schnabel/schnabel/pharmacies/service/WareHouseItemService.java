@@ -60,7 +60,7 @@ public class WareHouseItemService extends JpaService<WareHouseItem, Long, IWareH
 
     @Override
     public Optional<WareHouseItem> findWareHouseItemByPharmacyAndDrugId(Long drugId, Long pharmacyId) {
-        Optional<WareHouseItem> wareHouseItem = repository.findByPharmacyIdAndDrugId(pharmacyId, drugId);
+        Optional<WareHouseItem> wareHouseItem = repository.findByPharmacyIdAndDrugId(drugId, pharmacyId);
         return wareHouseItem;
     }
 
