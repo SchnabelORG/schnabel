@@ -22,14 +22,14 @@ and recieve professional consulting from pharmacists and dermatologists.
 - Maven
 
 ### Environment variables
-**JDBC_DATABASE_URL** - PostgreSQL url, eg: jdbc:postgresql://localhost:5432/isadb
-**JDBC_DATABASE_USERNAME** - DB username, eg: isa
-**JDBC_DATABASE_PASSWORD** - DB password, eg: isa
-**SCHNABEL_FRONTEND_ADDR** - Front addr, eg: http://localhost
-**SCHNABEL_FRONTEND_PORT** - Front port, eg: 8080
-**SCHNABEL_BACKEND_PORT** - Backend port, eg 8081
-**SCHNABEL_JWT_SECRET** - JWT secret, can be anything, for seeded data 'secret' was used
-**SCHNABEL_REF_SECRET** - REF secret, can be anything, for seeded data 'secret' was used
+**JDBC_DATABASE_URL** - PostgreSQL url, eg: jdbc:postgresql://localhost:5432/isadb  
+**JDBC_DATABASE_USERNAME** - DB username, eg: isa  
+**JDBC_DATABASE_PASSWORD** - DB password, eg: isa  
+**SCHNABEL_FRONTEND_ADDR** - Front addr, eg: http://localhost  
+**SCHNABEL_FRONTEND_PORT** - Front port, eg: 8080  
+**SCHNABEL_BACKEND_PORT** - Backend port, eg 8081  
+**SCHNABEL_JWT_SECRET** - JWT secret, can be anything, for seeded data 'secret' was used  
+**SCHNABEL_REF_SECRET** - REF secret, can be anything, for seeded data 'secret' was used  
 
 
 ## Setup Guide
