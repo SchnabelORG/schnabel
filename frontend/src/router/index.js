@@ -9,7 +9,8 @@ const routes = [
   {
     path: '/',
     beforeEnter: (to, from, next) => {
-      axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + localStorage.jws}})
+      if(localStorage.jws) {
+        axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + localStorage.jws}})
         .then(r => {
           if(r.data == 'ROLE_PATIENT') {
             next({name: 'UserHome'});
@@ -20,6 +21,9 @@ const routes = [
           }
         })
         .catch(() => next({name: 'Home'}));
+      } else {
+        next({name: 'Home'});
+      }
     },
   },
 

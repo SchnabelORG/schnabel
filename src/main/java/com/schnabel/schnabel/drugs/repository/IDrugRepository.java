@@ -1,5 +1,7 @@
 package com.schnabel.schnabel.drugs.repository;
 
+import java.util.Optional;
+
 import com.schnabel.schnabel.drugs.model.Drug;
 
 import org.springframework.data.domain.Page;
@@ -25,4 +27,5 @@ public interface IDrugRepository extends JpaRepository<Drug, Long>, JpaSpecifica
         + " AND dr.taken = 'T'",
         nativeQuery = true)
     Page<Drug> findGradeable(@Param("patient_id") Long patientId, Pageable pageable);       
+    Optional<Drug> findByName(String name);
 }

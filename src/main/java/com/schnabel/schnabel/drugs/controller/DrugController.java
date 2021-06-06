@@ -1,11 +1,11 @@
 package com.schnabel.schnabel.drugs.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import com.schnabel.schnabel.drugs.dto.DrugDTO;
 import com.schnabel.schnabel.drugs.service.IDrugService;
 
-import com.schnabel.schnabel.users.dto.PharmacistDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
@@ -43,6 +43,10 @@ public class DrugController
     @GetMapping("search")
     public ResponseEntity<PagedModel<DrugDTO>> search(@RequestParam Map<String, String> params, Pageable pageable) {
         return new ResponseEntity<>(service.filteredSearch(params, pageable), HttpStatus.OK);
+    }
 
+    @GetMapping("allergy")
+    public ResponseEntity<List<DrugDTO>> getAll() {
+        return ResponseEntity.ok(service.findAllDTO());
     }
 }

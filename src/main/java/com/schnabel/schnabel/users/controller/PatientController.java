@@ -100,6 +100,13 @@ public class PatientController
 
     }
 
+    @PostMapping("update")
+    public ResponseEntity<String> updateUser(@RequestBody PatientDTO req) {
+        return service.update(req) ?
+            ResponseEntity.ok("Updated")
+            : ResponseEntity.badRequest().build();
+    }
+
     @GetMapping("apptderm")
     public ResponseEntity<PagedModel<AppointmentDTO>> getAppointments(Pageable pageable, @RequestHeader("Authorization") String auth) {
         String email = jwtUtils.getEmailFromJws(jwtUtils.parseJwtFromAuthorizationHeader(auth));

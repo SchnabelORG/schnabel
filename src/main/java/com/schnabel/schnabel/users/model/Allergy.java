@@ -37,5 +37,9 @@ public class Allergy implements IIdentifiable<Long> {
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
+    public Allergy(Drug drug, Patient patient) {
+        this.drug = drug;
+        this.patient = patient;
+    }
 
 }
