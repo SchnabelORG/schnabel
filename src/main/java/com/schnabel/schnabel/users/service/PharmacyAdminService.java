@@ -91,6 +91,11 @@ public class PharmacyAdminService extends JpaService<PharmacyAdmin, Long, IPharm
                 return false;
             }
         }
+        Optional<Shift> shift = shiftService.getShiftByMedicalEmployeePharmacy(id, pharmacistService.get(id).get().getPharmacy().getId());
+        if(shift.isPresent()){
+            shiftService.remove(shift.get().getId());
+        }
+
         Pharmacist pharmacist = pharmacistService.get(id).get();
         pharmacist.setPharmacy(null);
         return pharmacistService.update(pharmacist);
@@ -105,6 +110,10 @@ public class PharmacyAdminService extends JpaService<PharmacyAdmin, Long, IPharm
             if(appointment.getPeriod().getStartTime().isAfter(LocalDateTime.now()) && !appointment.isFree()) {
                 return false;
             }
+        }
+        Optional<Shift> shift = shiftService.getShiftByMedicalEmployeePharmacy(id, findByEmail(email).get().getPharmacy().getId());
+        if(shift.isPresent()){
+            shiftService.remove(shift.get().getId());
         }
 
         Dermatologist dermatologist = dermatologistService.get(id).get();

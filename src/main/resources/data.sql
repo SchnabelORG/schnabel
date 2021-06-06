@@ -87,11 +87,11 @@ insert into drug_reservations(end_time, start_time, quantity, taken, reserved_dr
 insert into drug_reservations(end_time, start_time, quantity, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values('2021-07-20', '2021-05-04', 2, false, 1, 1, 1);
 insert into drug_reservations(end_time, start_time, quantity, taken, reserved_drug_id, reservation_patient_id, pharmacy_reservation_id) values('2021-06-04', '2021-05-04', 2, false, 1, 1, 2);
 
-insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('08:00:00', '14:00:00', 1, 2);
-insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('15:00:00', '16:00:00', 2, 2);
+insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('08:00:00', '14:00:00', 1, 3);
+insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('08:00:00', '16:00:00', 2, 4);
 insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('08:00:00', '17:00:00', 1, 6);
-insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('08:00:00', '17:00:00', 1, 3);
-insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('14:00:00', '18:00:00', 2, 7);
+insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('14:00:00', '18:00:00', 1, 7);
+insert into shifts(start_time, end_time, pharmacy_id, medical_employee_id) values('08:00:00', '14:00:00', 1, 5);
 
 insert into orders(deadline, "description", pharmacyadmin_id, pharmacy_id, order_status) values ('2021-05-10', 'Urgent order!', 8, 1, 'CREATED');
 insert into orders(deadline, "description", pharmacyadmin_id, pharmacy_id, order_status) values ('2021-08-12', 'Bensedin order!', 8, 1, 'CREATED');
