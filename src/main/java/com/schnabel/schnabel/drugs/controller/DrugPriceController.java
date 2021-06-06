@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
+
 @RestController
 @RequestMapping("api/drugprice")
 public class DrugPriceController 
@@ -21,6 +23,7 @@ public class DrugPriceController
         this.drugPriceService = drugPriceService;
     }
 
+    @Transactional
     @GetMapping("{id}")
     public ResponseEntity<DrugPriceDTO> get(@PathVariable("id") Long id) {
         return drugPriceService.findByIdDTO(id)

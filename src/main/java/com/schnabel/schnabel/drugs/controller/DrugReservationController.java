@@ -5,6 +5,7 @@ import com.schnabel.schnabel.drugs.dto.DrugReservationAssembler;
 import com.schnabel.schnabel.drugs.dto.DrugReservationDTO;
 import com.schnabel.schnabel.drugs.model.DrugReservation;
 import com.schnabel.schnabel.drugs.service.IDrugReservationService;
+import com.schnabel.schnabel.email.service.IMailService;
 import com.schnabel.schnabel.pharmacies.model.WareHouseItem;
 import com.schnabel.schnabel.pharmacies.service.IWareHouseItemService;
 import com.schnabel.schnabel.security.util.JwtUtils;
@@ -23,9 +24,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
-
-import javax.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("api/dreservation")
@@ -36,14 +36,16 @@ public class DrugReservationController {
     private final DrugReservationAssembler drugReservationAssembler;
     private final IPatientService patientService;
     private final JwtUtils jwtUtils;
+    private final IMailService mailService;
 
     @Autowired
-    public DrugReservationController(IDrugReservationService drugReservationService, IWareHouseItemService wareHouseItemService, DrugReservationAssembler drugReservationAssembler, PagedResourcesAssembler<DrugReservation> drugReservationPagedResourcesAssembler, JwtUtils jwtUtils, IPatientService patientService) {
+    public DrugReservationController(IDrugReservationService drugReservationService, IWareHouseItemService wareHouseItemService, DrugReservationAssembler drugReservationAssembler, PagedResourcesAssembler<DrugReservation> drugReservationPagedResourcesAssembler, JwtUtils jwtUtils, IPatientService patientService, IMailService mailService) {
         this.drugReservationService = drugReservationService;
         this.wareHouseItemService = wareHouseItemService;
         this.drugReservationAssembler = drugReservationAssembler;
         this.patientService = patientService;
         this.jwtUtils = jwtUtils;
+        this.mailService = mailService;
     }
 
 
@@ -51,6 +53,7 @@ public class DrugReservationController {
      * Get drug reservation by id
      * @return DrugReservationDTO
      */
+    @Transactional
     @GetMapping("{resrvationId}/{pharmacyId}")
     public ResponseEntity<DrugReservationDTO> get(@PathVariable long resrvationId, @PathVariable long pharmacyId)
     {
@@ -63,6 +66,7 @@ public class DrugReservationController {
         return ResponseEntity.notFound().build();
     }
 
+    @Transactional
     @GetMapping("dispensing/{reservationId}")
     public ResponseEntity<String> dispensing(@PathVariable long reservationId)
     {
@@ -74,6 +78,7 @@ public class DrugReservationController {
                 drugReservationService.update(drugReservation.get());
                 wareHouseItem.get().setQuantity(wareHouseItem.get().getQuantity() - drugReservation.get().getQuantity());
                 wareHouseItemService.update(wareHouseItem.get());
+                mailService.sendReservationConfirmation(drugReservation.get().getPatient().getEmail(), "Reservation number "+reservationId+"successfully taken");
                 return ResponseEntity.ok("Successfully");
             }
             return ResponseEntity.notFound().build();
@@ -81,6 +86,7 @@ public class DrugReservationController {
         return ResponseEntity.notFound().build();
     }
 
+    @Transactional
     @GetMapping("patient")
     public ResponseEntity<PagedModel<DrugReservationDTO>> getPatientReservations(@RequestHeader("Authorization") String auth, Pageable pageable) {
         String email = jwtUtils.getEmailFromAuth(auth);

@@ -160,7 +160,7 @@
 	}
 
 	.nav-container {
-		max-width: 64vw;
+		max-width: 75vw;
 		margin: auto;
 	}
 

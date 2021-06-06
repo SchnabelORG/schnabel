@@ -23,6 +23,8 @@ public class MedicalEmployeeDTOAssembler extends RepresentationModelAssemblerSup
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setSurname(entity.getSurname());
+        dto.setEmail(entity.getEmail());
+        dto.setDefaultPasswordChanged(entity.isDefaultPasswordChanged());
         dto.setScore(entity.getScore());
         return dto;
     }

@@ -26,4 +26,6 @@ public class MedicalEmployeeDTO extends RepresentationModel<MedicalEmployeeDTO> 
     private String name;
     private String surname;
     private double score;
+    private String email;
+    private boolean isDefaultPasswordChanged;
 }
