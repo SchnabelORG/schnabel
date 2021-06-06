@@ -13,6 +13,7 @@ and recieve professional consulting from pharmacists and dermatologists.
     + [Arch](#arch)
     + [Mac](#mac)
   * [Windows](#windows)
+- [Running](#running)
 - [Members and functionalities](#members-and-functionalities)
   * [Optional functionalities](#optional-functionalities)
 
@@ -146,6 +147,17 @@ After installing the necessary packages, clone this repo, cd to /src/main/fronte
 ```bash
 npm install -g @vue/cli
 npm install
+```
+
+## Running
+For backend:  
+```bash
+  ./mvnw spring-boot:run
+```  
+  
+For frontend:
+```bash
+  cd frontend && npm run serve
 ```
 
 ## Members and functionalities
