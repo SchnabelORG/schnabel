@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -85,6 +86,11 @@ public class DrugReservationService extends JpaService<DrugReservation, Long, ID
             return false;
         }
         return remove(reservation.get().getId());
+    }
+
+    @Override
+    public List<DrugReservation> findMissed(Long patientId) {
+        return repository.findMissed(patientId);
     }
 
 }

@@ -1,54 +1,59 @@
 <template>
-    <div id="appt-main">
-        <div id="appt-container">
-            <p>Dermatologist appointments</p>
-            <h2>Schedule an appointment</h2>
-            <div id="appt-form">
-                <b class="err">{{error}}</b>
-                <v-data-table
-                :headers="headers"
-                :items="appointments"
-                @click:row="selectRow">
-                </v-data-table>
-            </div>
-            <v-dialog
-            v-model="dialog"
-            max-width="600px"
-            transition="dialog-bottom-transition"
-            >
-
-                <div v-if="success" id="success-form">
-                    <p id="success-icon"><i class="fa fa-check"></i></p>
-                    <p>Appointment scheduled!</p>
+    <div>
+        <search-navigation>
+            <router-link to="/">Home</router-link>
+        </search-navigation>
+        <div id="appt-main">
+            <div id="appt-container">
+                <p>Dermatologist appointments</p>
+                <h2>Schedule an appointment</h2>
+                <div id="appt-form">
+                    <b class="err">{{error}}</b>
+                    <v-data-table
+                    :headers="headers"
+                    :items="appointments"
+                    @click:row="selectRow">
+                    </v-data-table>
                 </div>
-                <v-card v-else>
-                    <v-card-title class="primary white--text">
-                        Appointment preview
-                        <v-spacer></v-spacer>
-                        {{selected.date}}
-                    </v-card-title>
-                    <v-divider style="width: 100%"></v-divider>
-                    <v-card-text id="appt-preview-container">
-                        <div id="appt-preview-appt">
-                            <p class="info--text">Start:</p>
-                            <p>{{selected.start}}</p>
-                            <p class="info--text">Duration:</p>
-                            <p>{{selected.duration}} min</p>
-                        </div>
-                        <div id="appt-preview-derm">
-                            <v-img src="../assets/placeholder-profile-sq.jpg" height="64px" width="64px"></v-img>
-                            <p>{{selected.medicalEmployee.name}}</p>
-                            <p><span class="info--text">Rating: </span>{{selected.dermatologistRating}}</p>
-                        </div>
-                    </v-card-text>
-                    <v-divider style="width:100%"></v-divider>
-                    <v-card-actions id="appt-preview-actions">
-                        <v-btn plain @click="dialog=false">Cancel</v-btn>
-                        <v-spacer></v-spacer>
-                        <v-btn color="accent" depressed @click="scheduleAppt">Schedule</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
+                <v-dialog
+                v-model="dialog"
+                max-width="600px"
+                transition="dialog-bottom-transition"
+                >
+
+                    <div v-if="success" id="success-form">
+                        <p id="success-icon"><i class="fa fa-check"></i></p>
+                        <p>Appointment scheduled!</p>
+                    </div>
+                    <v-card v-else>
+                        <v-card-title class="primary white--text">
+                            Appointment preview
+                            <v-spacer></v-spacer>
+                            {{selected.date}}
+                        </v-card-title>
+                        <v-divider style="width: 100%"></v-divider>
+                        <v-card-text id="appt-preview-container">
+                            <div id="appt-preview-appt">
+                                <p class="info--text">Start:</p>
+                                <p>{{selected.start}}</p>
+                                <p class="info--text">Duration:</p>
+                                <p>{{selected.duration}} min</p>
+                            </div>
+                            <div id="appt-preview-derm">
+                                <v-img src="../assets/placeholder-profile-sq.jpg" height="64px" width="64px"></v-img>
+                                <p>{{selected.medicalEmployee.name}}</p>
+                                <p><span class="info--text">Rating: </span>{{selected.dermatologistRating}}</p>
+                            </div>
+                        </v-card-text>
+                        <v-divider style="width:100%"></v-divider>
+                        <v-card-actions id="appt-preview-actions">
+                            <v-btn plain @click="dialog=false">Cancel</v-btn>
+                            <v-spacer></v-spacer>
+                            <v-btn color="accent" depressed @click="scheduleAppt" :disabled="penaltyCount >= 3">Schedule</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+            </div>
         </div>
     </div>
 </template>
@@ -57,6 +62,8 @@
 export default {
     data() {
         return {
+            penaltyCount: 0,
+            //
             error: '',
             success: false,
             selected: {
@@ -108,6 +115,9 @@ export default {
         },
 
         scheduleAppt: function() {
+            if(this.penaltyCount >= 3) {
+                return;
+            }
             this.error = '';
             this.success = false;
             this.refreshToken()
@@ -144,6 +154,17 @@ export default {
 
     mounted() {
         this.getAppointments();
+        this.refreshToken()
+            .then(rr => {
+                localStorage.jws = rr.data;
+                this.axios.get('api/penalty/patient', {headers: this.getAHeader()})
+                    .then(r => {
+                        this.penaltyCount = r.data;
+                        if(this.penaltyCount >= 3) {
+                            this.error = "3+ Penalties, functionality disabled";
+                        }
+                    })
+            }).catch(() => this.$router.push('/login'));
     },
 }
 </script>
@@ -154,7 +175,7 @@ export default {
         display: grid;
         place-items: center;
         background: #fafafa;
-        height: 100vh;
+        height: 92vh;
     }
 
     #appt-container {

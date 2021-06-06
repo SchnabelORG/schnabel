@@ -42,4 +42,5 @@ public class AppointmentDTO extends RepresentationModel<AppointmentDTO>{
     private PatientDTO patient;
     private MedicalEmployeeDTO medicalEmployee;
     private Boolean isFinished;
+    private boolean missed;
 }
