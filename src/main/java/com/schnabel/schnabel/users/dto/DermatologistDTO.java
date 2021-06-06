@@ -37,4 +37,5 @@ public class DermatologistDTO extends RepresentationModel<DermatologistDTO> {
     private Address address;
     private double score;
     private List<PharmacyDTO> pharmacies;
+    private boolean isDefaultPasswordChanged;
 }

@@ -30,7 +30,7 @@ public class AppointmentReportController {
     }
 
     @PostMapping("/addreport/{appId}")
-    public ResponseEntity<Boolean> defineAppointment(@PathVariable long appId, @RequestBody String textReport)
+    public ResponseEntity<Long> defineAppointment(@PathVariable long appId, @RequestBody String textReport)
     {
         Optional<Appointment> appointment = appService.get(appId);
         if(appointment.isPresent()){
@@ -39,10 +39,10 @@ public class AppointmentReportController {
             appointmentReport.setText(textReport);
             Optional<AppointmentReport> report = reportService.add(appointmentReport);
             if(report.isPresent()){
-                return ResponseEntity.ok(Boolean.TRUE);
+                return ResponseEntity.ok(report.get().getId());
             }
-            return  ResponseEntity.ok(Boolean.FALSE);
+            return  ResponseEntity.ok(-1L);
         }
-        return  ResponseEntity.ok(Boolean.FALSE);
+        return  ResponseEntity.ok(-1L);
     }
 }

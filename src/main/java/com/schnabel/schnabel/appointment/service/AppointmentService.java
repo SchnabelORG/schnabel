@@ -21,12 +21,10 @@ import com.schnabel.schnabel.pharmacies.service.IPharmacyService;
 import com.schnabel.schnabel.users.model.MedicalEmployee;
 import com.schnabel.schnabel.users.model.Patient;
 import com.schnabel.schnabel.users.model.Pharmacist;
-import com.schnabel.schnabel.users.service.*;
 import com.schnabel.schnabel.users.dto.ShiftDTO;
 
 import com.schnabel.schnabel.users.model.Vacation;
 import com.schnabel.schnabel.users.service.IPharmacistService;
-import com.schnabel.schnabel.users.dto.ShiftDTO;
 import com.schnabel.schnabel.users.service.IDermatologistService;
 import com.schnabel.schnabel.users.service.IPharmacyAdminService;
 import com.schnabel.schnabel.users.service.IShiftService;
@@ -299,6 +297,12 @@ public class AppointmentService  extends JpaService<Appointment, Long, IAppointm
     public PagedModel<AppointmentDTO> findConsultByPatientId(Long patientId, Pageable pageable) {
         Page<Appointment> consults = repository.findConsultByPatientId(patientId, pageable);
         return pageAsm.toModel(consults, dtoAsm);
+    }
+
+
+    @Override
+    public List<Appointment> findMissed(Long patientId) {
+        return repository.findMissed(patientId);
     }
 
 }

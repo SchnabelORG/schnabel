@@ -76,6 +76,15 @@
                                 <td><b>Time:</b></td>
                                 <td>{{chosenAppointment.period.startTime.slice(11)}}-{{chosenAppointment.period.endTime.slice(11)}}({{chosenAppointment.period.startTime.slice(0,10)}})</td>
                             </tr>
+                            <tr>
+                                <td>
+                                    <v-btn text
+                                    class="primary"
+                                    @click="patientDidntCome()">
+                                    Didn't come
+                                    </v-btn>
+                                </td>
+                            </tr>
                         </table>         
                     </v-card>
                      <v-row>
@@ -438,9 +447,8 @@
                 while(i < this.allAppointments.length){
                     var appDate = new Date(this.allAppointments[i].period.startTime);
                     appDate.setHours(0,0,0,0);
-                    if(today.getTime() === appDate.getTime() && !this.allAppointments[i].isFinished){
+                    if(today.getTime() === appDate.getTime() && !this.allAppointments[i].isFinished && !this.allAppointments[i].missed){
                         this.todayAppointments.push(this.allAppointments[i]);
-                        
                     }
                     else if (today.getTime() < appDate.getTime() && this.allAppointments[i].free == true){
                         this.freeTerms.push(this.allAppointments[i]);
@@ -580,6 +588,19 @@
                     });
 
                 }
+            },
+            patientDidntCome: function(){
+                let jws = window.localStorage.getItem('jwt');
+                this.axios.get("api/appointment/missed/"+ this.chosenAppointment.id, {headers:{"Authorization": "Bearer " + jws}})
+                    .then(response =>
+                    {
+                        console.log(response.data);
+                        this.reset()
+                    })
+                    .catch(response =>
+                    {
+                        console.log(response.data);
+                    });
             },
             getLabel: function(item){
                 var label = '';

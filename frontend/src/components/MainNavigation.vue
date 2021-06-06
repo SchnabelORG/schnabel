@@ -9,6 +9,7 @@
 					</div>
 					<div id="nav-links">
 						<slot></slot>
+						<router-link v-if="jws" to="/logout">Logout</router-link>
 					</div>
 				</div>
 			</div>
@@ -41,6 +42,9 @@
 		},
 		computed:
 		{
+			jws: function() {
+				return localStorage.jws;
+			}
 		},
         mounted()
         {
@@ -156,7 +160,7 @@
 	}
 
 	.nav-container {
-		max-width: 64vw;
+		max-width: 70vw;
 		margin: auto;
 	}
 

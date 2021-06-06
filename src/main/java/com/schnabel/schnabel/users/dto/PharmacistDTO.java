@@ -30,4 +30,5 @@ public class PharmacistDTO  extends RepresentationModel<PharmacistDTO> {
     private Address address;
     private double score;
     private PharmacyDTO pharmacy;
+    private boolean isDefaultPasswordChanged;
 }

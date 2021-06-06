@@ -60,6 +60,7 @@ public class Appointment implements IIdentifiable<Long>
 
     @OneToOne(mappedBy = "appointment")
     private AppointmentReport report;
+    private boolean missed;
 
     public Appointment(double price, Patient patient, Pharmacy pharmacy, MedicalEmployee employee, boolean free, Period period) {
         this.price = price;

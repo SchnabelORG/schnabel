@@ -1,140 +1,149 @@
 <template>
-    <div id="appt-main">
-        <div>
-            <div id="appt-container">
-                <p>Get advice</p>
-                <h2>Schedule a pharmacist consult</h2>
-            </div>
-            <div v-if="success" id="success-form">
-                    <p id="success-icon"><i class="fa fa-check"></i></p>
-                    <p>Consult scheduled!</p>
-            </div>
-            <v-stepper
-            v-else 
-            v-model="steps" id="appt-form">
-                <v-stepper-header>
-                    <v-stepper-step
-                    :complete="steps > 1"
-                    step="1">
-                        Select date and time
-                    </v-stepper-step>
-                    <v-stepper-step
-                    :complete="steps > 2"
-                    step="2">
-                        Pick a pharmacy
-                    </v-stepper-step>
-                    <v-stepper-step
-                    :complete="steps > 3"
-                    step="3">
-                        Choose your pharmacist
-                    </v-stepper-step>
-                    <v-stepper-step
-                    step="4">
-                        Confirm details
-                        <!-- Could confirm email? -->
-                    </v-stepper-step>
-                </v-stepper-header>
-                <v-stepper-items>
-                    <v-stepper-content
-                    step="1">
-                        <v-form
-                        class="appt"
-                        v-model="step1"
-                        @submit="findPharmacies">
-                            <div id="date-and-time-form">
-                                <div>
-                                    <v-tabs
-                                    v-model="dateTimeTab"
-                                    class="date-and-time"
-                                    fixed-tabs>
-                                        <v-tab><i class="fa fa-calendar-o"></i></v-tab>
-                                        <v-tab><i class="fa fa-clock-o"></i></v-tab>
-                                    </v-tabs>
-                                    <v-tabs-items v-model="dateTimeTab" class="date-and-time">
-                                        <v-tab-item class="picker">
-                                            <v-date-picker v-model="apptDate" full-width></v-date-picker>
-                                        </v-tab-item>
-                                        <v-tab-item class="picker">
-                                            <v-time-picker v-model="apptTime" full-width format="24hr" :allowed-minutes="allowedMinutes"></v-time-picker>
-                                        </v-tab-item>
-                                    </v-tabs-items>
+    <div>
+        <search-navigation>
+            <router-link to="/">Home</router-link>
+        </search-navigation>
+        <div id="appt-main">
+            <div>
+                <div id="appt-container">
+                    <p>Get advice</p>
+                    <h2>Schedule a pharmacist consult</h2>
+                    <b class="err">{{penaltyError}}</b>
+                </div>
+                <div v-if="success" id="success-form">
+                        <p id="success-icon"><i class="fa fa-check"></i></p>
+                        <p>Consult scheduled!</p>
+                </div>
+                <v-stepper
+                v-else 
+                v-model="steps" id="appt-form">
+                    <v-stepper-header>
+                        <v-stepper-step
+                        :complete="steps > 1"
+                        step="1">
+                            Select date and time
+                        </v-stepper-step>
+                        <v-stepper-step
+                        :complete="steps > 2"
+                        step="2">
+                            Pick a pharmacy
+                        </v-stepper-step>
+                        <v-stepper-step
+                        :complete="steps > 3"
+                        step="3">
+                            Choose your pharmacist
+                        </v-stepper-step>
+                        <v-stepper-step
+                        step="4">
+                            Confirm details
+                            <!-- Could confirm email? -->
+                        </v-stepper-step>
+                    </v-stepper-header>
+                    <v-stepper-items>
+                        <v-stepper-content
+                        step="1">
+                            <v-form
+                            class="appt"
+                            v-model="step1"
+                            @submit="findPharmacies">
+                                <div id="date-and-time-form">
+                                    <div>
+                                        <v-tabs
+                                        v-model="dateTimeTab"
+                                        class="date-and-time"
+                                        fixed-tabs>
+                                            <v-tab><i class="fa fa-calendar-o"></i></v-tab>
+                                            <v-tab><i class="fa fa-clock-o"></i></v-tab>
+                                        </v-tabs>
+                                        <v-tabs-items v-model="dateTimeTab" class="date-and-time">
+                                            <v-tab-item class="picker">
+                                                <v-date-picker
+                                                v-model="apptDate"
+                                                :min="new Date().toISOString().substr(0, 10)"
+                                                full-width></v-date-picker>
+                                            </v-tab-item>
+                                            <v-tab-item class="picker">
+                                                <v-time-picker v-model="apptTime" full-width format="24hr" :allowed-minutes="allowedMinutes"></v-time-picker>
+                                            </v-tab-item>
+                                        </v-tabs-items>
+                                    </div>
+                                    <div id="appt-info">
+                                        <h3>Find an appointment appointment for</h3>
+                                        <div class="appt-info-date-and-time">
+                                            <p class="info--text">Date</p>
+                                            <p class="info--text">Time</p>
+                                            <p v-if="apptDate">{{apptDate}}</p>
+                                            <p v-else class="accent--text" style="font-weight:500">Pick a date</p>
+                                            <p v-if="apptTime">{{apptTime}}</p>
+                                            <p v-else class="accent--text" style="font-weight:500">Pick a time</p>
+                                        </div>
+                                        <v-spacer></v-spacer>
+                                        <b class="err">{{error}}</b>
+                                        <v-btn :disabled="!step1 || penaltyCount >= 3" color="primary" type="submit">Find Pharmacies</v-btn>
+                                        <small class="info--text">Appointments last a maximum of 15 minutes!</small>
+                                    </div>
                                 </div>
-                                <div id="appt-info">
-                                    <h3>Find an appointment appointment for</h3>
+                            </v-form>
+                        </v-stepper-content>
+                        <v-stepper-content
+                        step="2">
+                            <div id="appt-pharmacies">
+                                <h3>Available pharmacies</h3>
+                                <v-data-table
+                                :items="pharmacies"
+                                :headers="pharmacyHeaders"
+                                @click:row="selectAppointment">
+
+                                </v-data-table>
+                                <v-btn @click='--steps' plain>&#60; Choose a different date</v-btn>
+                            </div>
+                        </v-stepper-content>
+                        <v-stepper-content
+                        step="3">
+                            <div id="appt-pharmacists">
+                                <h3>Available pharmacists</h3>
+                                <v-data-table
+                                :items="pharmacists"
+                                :headers="pharmacistHeaders"
+                                @click:row="selectPharmacist">
+                                </v-data-table>
+                                <v-btn @click='--steps' plain>&#60; Choose a different pharmacy</v-btn>
+                            </div>
+                        </v-stepper-content>
+                        <v-stepper-content
+                        step="4">
+                            <div id="appt-preview">
+                                <div id="appt-preview-container">
                                     <div class="appt-info-date-and-time">
                                         <p class="info--text">Date</p>
                                         <p class="info--text">Time</p>
-                                        <p v-if="apptDate">{{apptDate}}</p>
-                                        <p v-else class="accent--text" style="font-weight:500">Pick a date</p>
-                                        <p v-if="apptTime">{{apptTime}}</p>
-                                        <p v-else class="accent--text" style="font-weight:500">Pick a time</p>
+                                        <p>{{apptDate}}</p>
+                                        <p>{{apptTime}}</p>
+                                        <p class="info--text">Duration</p>
+                                        <p class="info--text">Cost</p>
+                                        <p>15 minutes</p>
+                                        <p v-if="selectedPharmacy">{{selectedPharmacy.consultPrice}}</p>
                                     </div>
+                                    <div id="appt-pharmacist-pr">
+                                        <v-img src="../assets/placeholder-profile-sq.jpg" height="64px" width="64px"></v-img>
+                                        <div id="appt-pharmacist-info">
+                                            <p class="info--text">Name</p>
+                                            <p v-if="selectedPharmacist">{{selectedPharmacist.name}} {{selectedPharmacist.surname}}</p>
+                                            <p class="info--text">Rating</p>
+                                            <p v-if="selectedPharmacist">{{selectedPharmacist.rating}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="appt-btns-pr">
+                                    <v-btn plain @click="--steps">&#60; Choose a different pharmacist</v-btn>
                                     <v-spacer></v-spacer>
-                                    <b class="err">{{error}}</b>
-                                    <v-btn :disabled="!step1" color="primary" type="submit">Find Pharmacies</v-btn>
-                                    <small class="info--text">Appointments last a maximum of 15 minutes!</small>
+                                    <v-btn color="accent" @click="scheduleAppt">Schedule appointment</v-btn>
                                 </div>
                             </div>
-                        </v-form>
-                    </v-stepper-content>
-                    <v-stepper-content
-                    step="2">
-                        <div id="appt-pharmacies">
-                            <h3>Available pharmacies</h3>
-                            <v-data-table
-                            :items="pharmacies"
-                            :headers="pharmacyHeaders"
-                            @click:row="selectAppointment">
-
-                            </v-data-table>
-                            <v-btn @click='--steps' plain>&#60; Choose a different date</v-btn>
-                        </div>
-                    </v-stepper-content>
-                    <v-stepper-content
-                    step="3">
-                        <div id="appt-pharmacists">
-                            <h3>Available pharmacists</h3>
-                            <v-data-table
-                            :items="pharmacists"
-                            :headers="pharmacistHeaders"
-                            @click:row="selectPharmacist">
-                            </v-data-table>
-                            <v-btn @click='--steps' plain>&#60; Choose a different pharmacy</v-btn>
-                        </div>
-                    </v-stepper-content>
-                    <v-stepper-content
-                    step="4">
-                        <div id="appt-preview">
-                            <div id="appt-preview-container">
-                                <div class="appt-info-date-and-time">
-                                    <p class="info--text">Date</p>
-                                    <p class="info--text">Time</p>
-                                    <p>{{apptDate}}</p>
-                                    <p>{{apptTime}}</p>
-                                    <p class="info--text">Duration</p>
-                                    <p class="info--text">Cost</p>
-                                    <p>15 minutes</p>
-                                    <p v-if="selectedPharmacy">{{selectedPharmacy.consultPrice}}</p>
-                                </div>
-                                <div id="appt-pharmacist-pr">
-                                    <v-img src="../assets/placeholder-profile-sq.jpg" height="64px" width="64px"></v-img>
-                                    <div id="appt-pharmacist-info">
-                                        <p class="info--text">Name</p>
-                                        <p v-if="selectedPharmacist">{{selectedPharmacist.name}} {{selectedPharmacist.surname}}</p>
-                                        <p class="info--text">Rating</p>
-                                        <p v-if="selectedPharmacist">{{selectedPharmacist.rating}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="appt-btns-pr">
-                                <v-btn plain @click="--steps">&#60; Choose a different pharmacist</v-btn>
-                                <v-spacer></v-spacer>
-                                <v-btn color="accent" @click="scheduleAppt">Schedule appointment</v-btn>
-                            </div>
-                        </div>
-                    </v-stepper-content>
-                </v-stepper-items>
-            </v-stepper>
+                        </v-stepper-content>
+                    </v-stepper-items>
+                </v-stepper>
+            </div>
         </div>
     </div>
 </template>
@@ -143,8 +152,10 @@
 export default {
     data() {
         return {
+            //
             success: false,
-
+            penaltyError: '',
+            penaltyCount: 3,
             //
             selectedPharmacist: null,
             pharmacists: [],
@@ -184,6 +195,9 @@ export default {
     methods: {
 
         scheduleAppt: function() {
+            if(this.penaltyCount >= 3) {
+                return;
+            }
             this.refreshToken()
                 .then(rr => {
                     localStorage.jws = rr.data;
@@ -272,6 +286,20 @@ export default {
             }
         }
     },
+
+    mounted() {
+        this.refreshToken()
+            .then(rr => {
+                localStorage.jws = rr.data;
+                this.axios.get('api/penalty/patient/count', {headers:this.getAHeader()})
+                    .then(r => {
+                        this.penaltyCount = r.data;
+                        if(this.penaltyCount >= 3) {
+                            this.penaltyError = "3+ Penalties, functionality disabled";
+                        }
+                    });
+            }).catch(() => this.$router.push('/login'));
+    },
 }
 </script>
 
@@ -281,7 +309,7 @@ export default {
         display: grid;
         place-items: center;
         background: #fafafa;
-        height: 100vh;
+        height: 92vh;
     }
 
     #appt-container {

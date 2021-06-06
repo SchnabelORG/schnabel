@@ -145,6 +145,9 @@
                     .then(response => {
                         console.log(response.data);
                         this.dermatologist = response.data;
+                        if(!this.dermatologist.defaultPasswordChanged){
+                            this.$router.push("/defaultpass");
+                        }
                         this.getAllAppointments()
                     })
                     .catch(response => {
@@ -186,15 +189,13 @@
                     var appDate = new Date(this.allAppointments[i].period.startTime);
                     appDate.setHours(0,0,0,0);
                     if(today.getTime() === appDate.getTime()){
-                        this.todayAppointments = this.allAppointments.splice(i);
+                        this.todayAppointments.push(this.allAppointments[i]);
                     }
                     else if(appDate.getTime() === date.getTime()){
                         this.previousDayAppointments[j++] = this.allAppointments[i];
-                        ++i;
                     }
-                    else{
-                        ++i;
-                    }
+                    ++i;
+                    
                 }
             },
             getPerviousWorkingDay: function(){

@@ -88,7 +88,8 @@
                     <v-timeline-item>
                         <v-card>
                             <v-card-title class="justify-center accent white--text">
-                                <div>Previous working day ({{this.perviousWorkingDay.slice(0,10)}})</div>
+                                <div v-if="this.perviousWorkingDay === ''">Nothing here</div>
+                                <div v-else>Previous working day ({{this.perviousWorkingDay.slice(0,10)}})</div>
                             </v-card-title>
                         </v-card>
                     </v-timeline-item>
@@ -145,6 +146,10 @@
                     .then(response => {
                         console.log(response.data);
                         this.pharmacist = response.data;
+                        console.log(this.pharmacist.isDefaultPasswordChanged);
+                        if(!this.pharmacist.defaultPasswordChanged){
+                            this.$router.push("/defaultpass");
+                        }
                         this.getAllAppointments()
                     })
                     .catch(response => {
@@ -187,15 +192,13 @@
                     var appDate = new Date(this.allAppointments[i].period.startTime);
                     appDate.setHours(0,0,0,0);
                     if(today.getTime() === appDate.getTime()){
-                        this.todayAppointments = this.allAppointments.splice(i);
+                        this.todayAppointments.push(this.allAppointments[i]);
                     }
                     else if(appDate.getTime() === date.getTime()){
                         this.previousDayAppointments[j++] = this.allAppointments[i];
-                        ++i;
                     }
-                    else{
-                        ++i;
-                    }
+                    ++i;
+                    
                 }
                 console.log(this.previousDayAppointments);
             },
@@ -215,8 +218,13 @@
                         tempI = i;
                     }
                 }
-                this.perviousWorkingDay = this.allAppointments[tempI].period.startTime;
-                return this.allAppointments[tempI].period.startTime;
+                if(this.allAppointments.length === 0){
+                    this.perviousWorkingDay = '';
+                    return null;
+                }else{
+                    this.perviousWorkingDay = this.allAppointments[tempI].period.startTime;
+                    return this.allAppointments[tempI].period.startTime;
+                }
             },
             getSparkLineValues: function(){
                 var today = new Date();

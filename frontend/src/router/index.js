@@ -30,6 +30,16 @@ const routes = [
   },
 
   {
+    path: '/logout',
+    name: 'Logout',
+    beforeEnter: (to, from, next) => {
+      //localStorage.removeItem('jws');
+      window.localStorage.removeItem('jwt');
+      next({name:'Home'});
+    },
+  },
+
+  {
     path: '/login',
     name: 'Login',
     component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue'),
@@ -50,6 +60,7 @@ const routes = [
         });
     },
   },
+
 
   // NOTE(Jovan): Redirect based on role
   {
@@ -226,6 +237,11 @@ const routes = [
     ],
   },
 
+  {
+    path: '/defaultpass',
+    name: 'ChangeDefaultPassword',
+    component: () => import(/* webpackChunkName: "employee" */ '../views/ChangeDefaultPassword.vue'),
+  },
 
   //Dermatologist
   {

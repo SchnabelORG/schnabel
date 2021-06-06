@@ -52,7 +52,9 @@
                                 <v-chip class="primary single-chip" v-for="item in todayAppointments" :key="item.id" @click="setAppointment(item)"> 
                                     {{item.patient.name}} {{item.patient.surname}}({{item.period.startTime.slice(11)}} ) 
                                 </v-chip>
+                                
                             </div>
+                            
                         </div>
                         
                         <table v-else style="width:100%">
@@ -75,6 +77,15 @@
                              <tr>
                                 <td><b>Time:</b></td>
                                 <td>{{chosenAppointment.period.startTime.slice(11)}}-{{chosenAppointment.period.endTime.slice(11)}}({{chosenAppointment.period.startTime.slice(0,10)}})</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <v-btn text
+                                    class="primary"
+                                    @click="patientDidntCome()">
+                                    Didn't come
+                                    </v-btn>
+                                </td>
                             </tr>
                         </table>         
                     </v-card>
@@ -445,7 +456,7 @@
                 while(i < this.allAppointments.length){
                     var appDate = new Date(this.allAppointments[i].period.startTime);
                     appDate.setHours(0,0,0,0);
-                    if(today.getTime() === appDate.getTime() && !this.allAppointments[i].isFinished){
+                    if(today.getTime() === appDate.getTime() && !this.allAppointments[i].isFinished && !this.allAppointments[i].missed){
                         this.todayAppointments.push(this.allAppointments[i]);
                         
                     }
@@ -541,7 +552,7 @@
                             this.addMedicationsToReport(response.data);
                         }
                         this.scheduleNewAppointment();
-                        this.reset();
+                        //this.reset();
                     })
                     .catch(response =>
                     {
@@ -556,6 +567,7 @@
                     quantity: this.dosage[this.prescripedMedication[i].id].howManyDays, 
                     drug: this.prescripedMedication[i]});
                 }
+                console.log(meds)
                 let jws = window.localStorage.getItem('jwt');
                 this.axios.post("api/recommendedmed/addmed/" + reportId, meds,{headers:{"Authorization": "Bearer " + jws}})
                     .then(response =>
@@ -575,7 +587,8 @@
                 }else{
                     let jws = window.localStorage.getItem('jwt');
                     let newApp= {pharmacistId: this.pharmacist.id, patientId:this.chosenAppointment.patient.id, 
-                                pharmacyId: this.pharmacist.pharmacy.id, startTime: this.termsToShow[this.time - 1].start, endTime: this.termsToShow[this.time - 1].end }
+                                pharmacyId: this.pharmacist.pharmacy.id, startTime: new Date(this.termsToShow[this.time - 1].start), endTime: new Date(this.termsToShow[this.time - 1].end)}
+                    console.log(newApp)
                     this.axios.post("api/appointment/pharmacist/newapp", newApp,{headers:{"Authorization": "Bearer " + jws}})
                     .then(response =>
                     {
@@ -587,6 +600,19 @@
                     });
 
                 }
+            },
+            patientDidntCome: function(){
+                let jws = window.localStorage.getItem('jwt');
+                this.axios.get("api/appointment/missed/"+ this.chosenAppointment.id, {headers:{"Authorization": "Bearer " + jws}})
+                    .then(response =>
+                    {
+                        console.log(response.data);
+                        this.reset()
+                    })
+                    .catch(response =>
+                    {
+                        console.log(response.data);
+                    });
             },
             getLabel: function(item){
                 var label = '';

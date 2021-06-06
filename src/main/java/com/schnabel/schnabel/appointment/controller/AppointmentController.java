@@ -124,4 +124,15 @@ public class AppointmentController {
         return  ResponseEntity.ok(isSuccess);
     }
 
+    @GetMapping("missed/{appId}")
+    public ResponseEntity<Boolean> setMissedAppointment( @PathVariable("appId") Long id) {
+        Optional<Appointment> appointment = service.get(id);
+        if(appointment.isPresent()){
+            appointment.get().setMissed(true);
+            service.update(appointment.get());
+            return  ResponseEntity.ok(Boolean.TRUE);
+        }
+        return  ResponseEntity.ok(Boolean.FALSE);
+    }
+
 }

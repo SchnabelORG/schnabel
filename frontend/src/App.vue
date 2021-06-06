@@ -24,7 +24,7 @@
     .err {
         color: #f00;
         font-weight: 500;
-        text-align: center;
+        /* text-align: center; */
     }
 
     h2, h3 {
