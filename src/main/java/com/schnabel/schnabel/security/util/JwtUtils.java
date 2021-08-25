@@ -2,8 +2,8 @@ package com.schnabel.schnabel.security.util;
 
 import java.util.Calendar;
 import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.schnabel.schnabel.security.service.SchnabelUserDetails;
 
@@ -35,34 +35,46 @@ public class JwtUtils {
 
     public String generateJws(Authentication authentication) {
         SchnabelUserDetails userPrincipal = (SchnabelUserDetails) authentication.getPrincipal();
-        return buildJws(userPrincipal.getEmail(), userPrincipal.getPassword());
+        List<String> authorities = userPrincipal.getAuthorities().stream()
+                .map(role -> role.toString())
+                .collect(Collectors.toList());
+        return buildJws(userPrincipal.getEmail(), userPrincipal.getPassword(), authorities.get(0));
     }
 
     public String regenerateJws(String oldJws) {
         Claims claims = null;
         try {
             claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(oldJws).getBody();
-            return buildJws(claims.getSubject(), claims.get("password", String.class));
+            return buildJws(claims.getSubject(), claims.get("password", String.class), claims.get("authorities", String.class));
         } catch (ExpiredJwtException ignore) {
             claims = ignore.getClaims();
-            return buildJws(claims.getSubject(), claims.get("password", String.class));
+            return buildJws(claims.getSubject(), claims.get("password", String.class),  claims.get("authorities", String.class));
         }
     }
 
-    private String buildJws(String email, String password) {
+    private String buildJws(String email, String password, String authority) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, jwtExpMin);
         return Jwts.builder()
             .setSubject(email)
             .claim("password", password)
+            .claim("authorities", authority)
             .setIssuedAt(new Date())
             .setExpiration(calendar.getTime())
             .signWith(SignatureAlgorithm.HS512, jwtSecret)
             .compact();
     }
 
+    public String getRoleFromJws(String jws) {
+        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jws).getBody().get("authorities", String.class);
+    }
+
     public String getEmailFromJws(String jws) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jws).getBody().getSubject();
+    }
+
+    public String getEmailFromAuth(String authHeader) {
+        return getEmailFromJws(parseJwtFromAuthorizationHeader(authHeader));
     }
 
     public boolean validateJws(String jws) {

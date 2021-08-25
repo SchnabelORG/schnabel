@@ -15,14 +15,14 @@ import com.schnabel.schnabel.pharmacies.model.Pharmacy_;
 import org.springframework.data.jpa.domain.Specification;
 
 /**
- * Used for filtered queries
+ * Used for generating complex queries
  */
 public class PharmacySpecification {
 
     public static Specification<Pharmacy> filteredQuery(Map<String, String> params) {
 
         return (root, query, cb) -> {
-            return cb.and(getPredicates(params, root, cb).toArray(new Predicate[0])); 
+            return cb.and(getPredicates(params, root, cb).toArray(Predicate[]::new)); 
         };
     }
 
@@ -30,23 +30,23 @@ public class PharmacySpecification {
         ArrayList<Predicate> predicates = new ArrayList<Predicate>();
         // TODO(Jovan): Ugly, probably better way using reflections?
         if(params.containsKey("name")) {
-            predicates.add(cb.like(root.get(Pharmacy_.NAME), "%" + params.get("name") + "%"));
+            predicates.add(cb.like(cb.lower(root.get(Pharmacy_.NAME)), "%" + params.get("name").toLowerCase() + "%"));
         }
 
         if(params.containsKey("street")) {
-            predicates.add(cb.like(root.get(Pharmacy_.ADDRESS).get(Address_.STREET), "%" + params.get("street") + "%"));
+            predicates.add(cb.like(cb.lower(root.get(Pharmacy_.ADDRESS).get(Address_.STREET)), "%" + params.get("street").toLowerCase() + "%"));
         }
         
         if(params.containsKey("street_no")) {
-            predicates.add(cb.like(root.get(Pharmacy_.ADDRESS).get(Address_.STREET_NO), "%" + params.get("street_no") + "%"));
+            predicates.add(cb.like(cb.lower(root.get(Pharmacy_.ADDRESS).get(Address_.STREET_NO)), "%" + params.get("street_no").toLowerCase() + "%"));
         }
         
         if(params.containsKey("city")) {
-            predicates.add(cb.like(root.get(Pharmacy_.ADDRESS).get(Address_.CITY), "%" + params.get("city") + "%"));
+            predicates.add(cb.like(cb.lower(root.get(Pharmacy_.ADDRESS).get(Address_.CITY)), "%" + params.get("city").toLowerCase() + "%"));
         }
 
         if(params.containsKey("score")) {
-            predicates.add(cb.greaterThanOrEqualTo(root.get(Pharmacy_.SCORE), params.get("score")));
+            predicates.add(cb.greaterThanOrEqualTo(root.get(Pharmacy_.SCORE), Double.parseDouble(params.get("score"))));
         }
 
         return predicates;

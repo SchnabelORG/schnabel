@@ -65,6 +65,14 @@ public class Drug implements IIdentifiable<Long>
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
     private List<Ingredient> ingredients;
+    @Column(nullable = false)
+    private double score;
+
+    public Drug(String name, String description)
+    {
+        this.name = name;
+        this.description = description;
+    }
 
     public Drug(String code, String name, String description, DrugType drugType, DrugState drugState, DrugOrigin drugOrigin, String producer, String dosage, IssuingType issuingType) {
         this.code = code;

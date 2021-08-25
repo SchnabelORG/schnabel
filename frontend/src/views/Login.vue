@@ -5,7 +5,10 @@
                 <img id="logo" src="../assets/logo.png" alt="Logo">
                 <h2>Log in to Schnabel</h2>
             </div>
-            <v-form id="login-form" v-model="isFormValid">
+            <v-form
+            id="login-form"
+            v-model="isFormValid"
+            @submit="login">
                 <b class="err">{{err}}</b>
                 <v-text-field 
                 v-model="email"
@@ -20,7 +23,7 @@
                 :type="showPassword ? 'text' : 'password'"
                 @click:append="showPassword = !showPassword"
                 required/>
-                <v-btn :disabled="!isFormValid" color="accent" @click="login">Log in</v-btn>
+                <v-btn :disabled="!isFormValid" color="accent" type="submit">Log in</v-btn>
             </v-form>
             <div id="register-container">
                 New?
@@ -46,7 +49,8 @@ export default {
     },
     
     methods: {
-        login: function() {
+        login: function(e) {
+            e.preventDefault();
             this.error = '';
             let dto = {
                 email: this.email,
@@ -54,13 +58,15 @@ export default {
             };
             this.axios.post("api/auth/login", dto)
                 .then(r => {
-                    console.log(r);
                     this.$store.state.jws = r.data;
-                    localStorage.jws = r.data; // TODO(Jovan): TEMP!
-                    this.$router.push("user");
+                    localStorage.jws = r.data;
+                    //window.localStorage.jwt = r.data;
+                    this.$router.push("/redirect");
+
+                     // TODO(Jovan): TEMP!
+                    //this.$router.push("/");
                 })
-                .catch(r => {
-                    console.log(r);
+                .catch(() => {
                     this.error = "Bad credentials";
                 });
         },

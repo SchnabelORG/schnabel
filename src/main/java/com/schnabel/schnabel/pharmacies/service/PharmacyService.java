@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.pharmacies.service;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
@@ -27,15 +28,16 @@ import org.springframework.stereotype.Service;
 public class PharmacyService extends JpaService<Pharmacy, Long, IPharmacyRepository> implements IPharmacyService
 {
 
-    private final PharmacyDTOAssembler pharmacyDTOasm;
-    private final PagedResourcesAssembler<Pharmacy> pharmacyPageAsm;
+    private final PharmacyDTOAssembler dtoAsm;
+    private final PagedResourcesAssembler<Pharmacy> pageAsm;
+    private static final long CONSULT_DURATION_MINUTES = 15;
 
     @Autowired
     public PharmacyService(IPharmacyRepository pharmacyRepository, PharmacyDTOAssembler pharmacyDTOasm, PagedResourcesAssembler<Pharmacy> pharmacyPageAsm)
     {
 		  super(pharmacyRepository);
-          this.pharmacyDTOasm = pharmacyDTOasm;
-          this.pharmacyPageAsm = pharmacyPageAsm;
+          this.dtoAsm = pharmacyDTOasm;
+          this.pageAsm = pharmacyPageAsm;
     }
 
     @Override
@@ -46,27 +48,53 @@ public class PharmacyService extends JpaService<Pharmacy, Long, IPharmacyReposit
     }
 
     @Override
+    @Transactional
     public Optional<PharmacyDTO> getDTO(Long id) {
         return get(id)
-            .map(pharmacyDTOasm::toModel);
+            .map(dtoAsm::toModel);
     }
 
     @Override
+    @Transactional
     public PagedModel<PharmacyDTO> getAllDTO(Pageable pageable) {
         Page<Pharmacy> pharmacies = getAll(pageable);
-        return pharmacyPageAsm.toModel(pharmacies, pharmacyDTOasm);
+        return pageAsm.toModel(pharmacies, dtoAsm);
     }
 
     @Override
     @Transactional
     public PagedModel<PharmacyDTO> filteredSearch(Map<String, String> params, Pageable pageable) {
         Page<Pharmacy> pharmacies = repository.findAll(PharmacySpecification.filteredQuery(params), pageable);
-        return pharmacyPageAsm.toModel(pharmacies, pharmacyDTOasm);
+        return pageAsm.toModel(pharmacies, dtoAsm);
     }
 
     @Override
     public Optional<Pharmacy> findByName(String name) {
         return repository.findByName(name);
+    }
+
+    @Override
+    public PagedModel<PharmacyDTO> findByFreePharmacistAppointment(LocalDateTime startTime, Pageable pageable) {
+        Page<Pharmacy> pharmacies = repository.findByFreePharmacistAppointment(startTime, startTime.plusMinutes(CONSULT_DURATION_MINUTES), pageable);
+        return pageAsm.toModel(pharmacies, dtoAsm);
+    }
+
+    @Override
+    public PagedModel<PharmacyDTO> findWithStock(Long drugId, Pageable pageable) {
+        Page<Pharmacy> pharmacies = repository.findWithStock(drugId, pageable);
+        return pageAsm.toModel(pharmacies, dtoAsm);
+    }
+
+    @Override
+    public PagedModel<PharmacyDTO> findGraded(Long patientId, Pageable pageable) {
+        Page<Pharmacy> pharmacies = repository.findGraded(patientId, pageable);
+        return pageAsm.toModel(pharmacies, dtoAsm);
+    }
+
+    @Override
+    public PagedModel<PharmacyDTO> findGradeable(Long patientId, Pageable pageable) {
+        Page<Pharmacy> pharmacies = repository.findGradeable(patientId, pageable);
+        return pageAsm.toModel(pharmacies, dtoAsm);
     }
 
 }

@@ -13,6 +13,7 @@ and recieve professional consulting from pharmacists and dermatologists.
     + [Arch](#arch)
     + [Mac](#mac)
   * [Windows](#windows)
+- [Running](#running)
 - [Members and functionalities](#members-and-functionalities)
   * [Optional functionalities](#optional-functionalities)
 
@@ -20,6 +21,17 @@ and recieve professional consulting from pharmacists and dermatologists.
 - JDK 11 or newer
 - Node.js 14.0.0
 - Maven
+
+### Environment variables
+**JDBC_DATABASE_URL** - PostgreSQL url, eg: jdbc:postgresql://localhost:5432/isadb  
+**JDBC_DATABASE_USERNAME** - DB username, eg: isa  
+**JDBC_DATABASE_PASSWORD** - DB password, eg: isa  
+**SCHNABEL_FRONTEND_ADDR** - Front addr, eg: http://localhost  
+**SCHNABEL_FRONTEND_PORT** - Front port, eg: 8080  
+**SCHNABEL_BACKEND_PORT** - Backend port, eg 8081  
+**SCHNABEL_JWT_SECRET** - JWT secret, can be anything, for seeded data 'secret' was used  
+**SCHNABEL_REF_SECRET** - REF secret, can be anything, for seeded data 'secret' was used  
+
 
 ## Setup Guide
 
@@ -53,8 +65,9 @@ sudo apt install maven
 mvn -version
 ```
 
-After installing the necessary packages, clone this repo, cd to /src/main/frontent/ and run: 
+After installing the necessary packages, clone this repo, cd to frontend/ and run: 
 ```bash
+npm install -g @vue/cli
 npm install
 ```
 
@@ -86,6 +99,7 @@ mvn -version
 
 After installing the necessary packages, clone this repo, cd to /src/main/frontent/ and run: 
 ```bash
+npm install -g @vue/cli
 npm install
 ```
 
@@ -108,6 +122,7 @@ Follow the Official Apache [tutorial](https://maven.apache.org/install.html)
 
 After installing the necessary packages, clone this repo, cd to /src/main/frontent/ and run: 
 ```bash
+npm install -g @vue/cli
 npm install
 ```
 
@@ -130,7 +145,19 @@ Download and install from the Official [website](https://maven.apache.org/instal
 
 After installing the necessary packages, clone this repo, cd to /src/main/frontent/ and run: 
 ```bash
+npm install -g @vue/cli
 npm install
+```
+
+## Running
+For backend:  
+```bash
+  ./mvnw spring-boot:run
+```  
+  
+For frontend:
+```bash
+  cd frontend && npm run serve
 ```
 
 ## Members and functionalities
@@ -144,48 +171,48 @@ Status values:
 
 | Spec. id | Functionality                                     | Status |
 |----------|---------------------------------------------------|:------:|
-| 3.1      | Unauthenticated user view                         |   ✗    |
+| 3.1      | Unauthenticated user view                         |   ✓    |
 | 3.3      | User profile                                      |   ✗    |
-| 3.9      | User homepage                                     |   ✗    |
+| 3.9      | User homepage                                     |   ✓    |
 | 3.13     | Dermatologist appointment scheduling as patient   |   ✓    |
 | 3.15     | Cancelling dermatologist appointment              |   ✓    |
-| 3.16     | Pharmacological consultation scheduling           |   ✗    |
-| 3.18     | Cancelling pharmacological consultation           |   ✗    |
-| 3.19     | Medical drug reservation                          |   ✗    |
-| 3.20     | Cancelling drug reservation                       |   ✗    |
-| 3.31     | Pharmacy search and filtering                     |   ✗    |
-| 3.41     | Rating system                                     |   ✗    |
+| 3.16     | Pharmacological consultation scheduling           |   ✓    |
+| 3.18     | Cancelling pharmacological consultation           |   ✓    |
+| 3.19     | Medical drug reservation                          |   ✓    |
+| 3.20     | Cancelling drug reservation                       |   ✓    |
+| 3.31     | Pharmacy search and filtering                     |   ✓    |
+| 3.41     | Rating system                                     |   ✓    |
 
 **Kristian Farkaš**
 
 | Spec. id | Functionality                                     | Status |
 |----------|---------------------------------------------------|:------:|
-| 3.4      | Pharmacy admin profile                            |   ✗    |
-| 3.8      | Pharmacy profile                                  |   ✗    |
-| 3.12     | Free dermatological appointment creation as admin |   ✗    |
-| 3.22     | Discounts and special offers creation             |   ✗    |
-| 3.24     | Order form creation as admin                      |   ✗    |
-| 3.26     | Order form offer selection as admin               |   ✗    |
-| 3.29     | Price list creation and update                    |   ✗    |
-| 3.32     | Dermatologist search and filtering                |   ✗    |
-| 3.33     | Pharmacist search and filtering                   |   ✗    |
-| 3.38     | Accept or reject vacation or paid leave request   |   ✗    |
+| 3.4      | Pharmacy admin profile                            |   ✓    |
+| 3.8      | Pharmacy profile                                  |   ✓    |
+| 3.12     | Free dermatological appointment creation as admin |   ✓    |
+| 3.22     | Discounts and special offers creation             |   ✓    |
+| 3.24     | Order form creation as admin                      |   ✓    |
+| 3.26     | Order form offer selection as admin               |   ✓    |
+| 3.29     | Price list creation and update                    |   ✓    |
+| 3.32     | Dermatologist search and filtering                |   ✓    |
+| 3.33     | Pharmacist search and filtering                   |   ✓    |
+| 3.38     | Accept or reject vacation or paid leave request   |   ✓    |
 
 **Radovan Župunski**
 
 | Spec. id | Functionality                                     | Status |
 |----------|---------------------------------------------------|:------:|
-| 3.5      | Pharmacist / Dermatologist profile                |   ✗    |
-| 3.10     | Dermatologist homepage                            |   ✗    |
-| 3.11     | Pharmacist homepage                               |   ✗    |
-| 3.14     | Dermatological appointment scheduling as derm.    |   ✗    |
-| 3.17     | Pharmacological consultation scheduling as derm.  |   ✗    |
-| 3.21     | Handing out and acquiring medical drug            |   ✗    |
-| 3.27     | Derm. appointment summary                         |   ✗    |
-| 3.28     | Pharm. appointment summary                        |   ✗    |
-| 3.30     | User search                                       |   ✗    |
-| 3.36     | Pharmacist calendar display                       |   ✗    |
-| 3.37     | Dermatologist calendar display                    |   ✗    |
+| 3.5      | Pharmacist / Dermatologist profile                |   ✓    |
+| 3.10     | Dermatologist homepage                            |   ✓    |
+| 3.11     | Pharmacist homepage                               |   ✓    |
+| 3.14     | Dermatological appointment scheduling as derm.    |   ✓    |
+| 3.17     | Pharmacological consultation scheduling as derm.  |   ✓    |
+| 3.21     | Handing out and acquiring medical drug            |   ✓    |
+| 3.27     | Derm. appointment summary                         |   ✓    |
+| 3.28     | Pharm. appointment summary                        |   ✓    |
+| 3.30     | User search                                       |   ✓    |
+| 3.36     | Pharmacist calendar display                       |   ✓    |
+| 3.37     | Dermatologist calendar display                    |   ✓    |
 
 **Marko Pekez**
 
@@ -209,7 +236,7 @@ Status values:
 
 | Spec. id | Functionality                                     | Status |
 |----------|---------------------------------------------------|:------:|
-|    /     | Grading system with penalization                  |   ✗    |
+|    /     | Grading system with penalization                  |   ✓    |
 | 5.4      | Concurrent database access                        |   ✗    |
 | 5.7      | DevOps (micro) flow                               |   ✗    |
 |    /     | 5 unit and integrational test                     |   ✗    |
@@ -219,7 +246,7 @@ Status values:
 
 | Spec. id | Functionality                                     | Status |
 |----------|---------------------------------------------------|:------:|
-|    /     | Maps and business report display                  |   ✗    |
+|    /     | Maps and business report display                  |   ✓    |
 | 5.4      | Concurrent database access                        |   ✗    |
 | 5.7      | DevOps (micro) flow                               |   ✗    |
 |    /     | 5 unit and integrational test                     |   ✗    |
@@ -229,7 +256,7 @@ Status values:
 
 | Spec. id | Functionality                                     | Status |
 |----------|---------------------------------------------------|:------:|
-|    /     | Calendar display and drug handout / acquisition   |   ✗    |
+|    /     | Calendar display and drug handout / acquisition   |   ✓    |
 | 5.4      | Concurrent database access                        |   ✗    |
 | 5.7      | DevOps (micro) flow                               |   ✗    |
 |    /     | 5 unit and integrational test                     |   ✗    |

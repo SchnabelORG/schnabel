@@ -23,11 +23,15 @@ import lombok.*;
 public class Pharmacist extends MedicalEmployee
 {
     @ManyToOne
-    @JoinColumn(name = "pharmacy_id")
+    @JoinColumn(name = "pharmacy_id", nullable = true)
     private Pharmacy pharmacy;
 
     public Pharmacist(String name, String surname, String email, String encodedPassword, Address address, boolean b) {
         super(name, surname, email, encodedPassword, address, b);
     }
 
+    public Pharmacist(String name, String surname, String email, String password, Address address, Pharmacy pharmacy) {
+        super(name, surname, email, password, address);
+        this.pharmacy = pharmacy;
+    }
 }

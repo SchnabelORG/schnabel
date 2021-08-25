@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.schnabel.schnabel.auth.dto.LoginRequest;
 import com.schnabel.schnabel.auth.model.RefreshToken;
 import com.schnabel.schnabel.auth.service.IRefreshTokenService;
+import com.schnabel.schnabel.penalty.service.IPenaltyService;
 import com.schnabel.schnabel.security.util.JwtUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +35,14 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
     private final IRefreshTokenService refreshTokenService;
+    private final IPenaltyService penaltyService;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, JwtUtils jwtUtils, IRefreshTokenService refreshTokenService) {
+    public AuthController(AuthenticationManager authenticationManager, JwtUtils jwtUtils, IRefreshTokenService refreshTokenService, IPenaltyService penaltyService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
         this.refreshTokenService = refreshTokenService;
+        this.penaltyService = penaltyService;
     }
 
     @GetMapping("refresh")
@@ -63,6 +66,8 @@ public class AuthController {
             return ResponseEntity.badRequest().build();
         }
 
+        penaltyService.generatePenalties(dto.getEmail());
+
         Cookie cookie = new Cookie("email", refreshToken.get().getToken());
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
@@ -70,6 +75,11 @@ public class AuthController {
         response.addCookie(cookie);
 
         return ResponseEntity.ok(jws);
+    }
+
+    @GetMapping("role")
+    public ResponseEntity<String> getRole(@RequestHeader("Authorization") String auth) {
+        return ResponseEntity.ok(jwtUtils.getRoleFromJws(jwtUtils.parseJwtFromAuthorizationHeader(auth)));
     }
 
 

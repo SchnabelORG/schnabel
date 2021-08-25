@@ -11,17 +11,18 @@
                                     :search="search">
                         <template v-slot:item="row">
                             <tr>
-                                <td>{{row.item.Pharmacist}}</td>
-                                <td>{{row.item.Period}}</td>
-                                <td>{{row.item.Period}}</td>                        
+                                <td>{{row.item.medicalEmployee.name}}</td>
+                                <td>{{row.item.medicalEmployee.surname}}</td>
+                                <td>{{new Date(row.item.period.startTime).toISOString().substr(0, 10)}}</td>
+                                <td>{{new Date(row.item.period.endTime).toISOString().substr(0, 10)}}</td>                        
                                 <td>
                                     <v-btn @click="acceptVacation(row.item.id)">
                                         Accept
                                     </v-btn>
                                 </td>
                                 <td>
-                                    <v-btn @click="denyVacation(row.item.id)">
-                                        Deny
+                                    <v-btn @click="rejectVacation(row.item.id)">
+                                        Reject
                                     </v-btn>
                                 </td>
                             </tr>
@@ -32,24 +33,26 @@
         </v-card>
         <v-dialog v-model="this.dialog" persistent>
             <v-card id="reason-card">
-                <v-card-title>Reason for denial</v-card-title>
-                <v-spacer></v-spacer>
-                <v-textarea
-                v-model="reason"
-                color="teal"
-                :rules="[rules.required]"
-                >
-                <template v-slot:label>
-                    <div>
-                        Reason for denial
-                    </div>
+                <v-card-title>Reason for rejection</v-card-title>
+                <template>
+                    <v-spacer></v-spacer>
+                    <v-textarea
+                    v-model="reason"
+                    color="teal"
+                    :rules="[rules.required]"
+                    >
+                    <template v-slot:label>
+                        <div>
+                            Reason for rejection
+                        </div>
+                    </template>
+                    </v-textarea>
+                    <v-spacer></v-spacer>
                 </template>
-                </v-textarea>
-                <v-spacer></v-spacer>
-                <v-btn class='primary' @click="confirmDenial()" :disabled="!reason">
+                <v-btn class='accent' @click="confirmRejection()" :disabled="!reason">
                     Confirm
                 </v-btn>
-                <v-btn class='accent' @click="cancel()">
+                <v-btn class='primary' @click="cancel()">
                     Cancel
                 </v-btn>
             </v-card>
@@ -61,16 +64,17 @@
     export default {
         data() {
             return {
-                vacations: [{Pharmacist: "Pera"}],
+                vacations: [],
                 dialog: false,
-                id: '',
                 reason: '',
+                id: '',
                 headers: [
-                    { text: "Pharmacist" },
+                    { text: "Name" },
+                    { text: "Surname" },
                     { text: "Start date" },
                     { text: "End date" },
                     { text: "Accept" },
-                    { text: "Deny" },
+                    { text: "Reject" },
                 ],
                 rules: {
                     required: value => !!value || 'Required.',
@@ -79,25 +83,62 @@
         },
         methods: {
             getVacations: function() {
-                
-
-
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.get("api/vacation/created", {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            this.vacations = response.data._embedded.vacations;
+                        })
+                        .catch(response => {
+                            console.log("Failed to get vacations", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
             },
             acceptVacation: function(id) {
-                this.id = id;
-
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.put("api/vacation/accept", id, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            console.log("Successfully accepted vacation", response.data);
+                            this.getVacations();
+                        })
+                        .catch(response => {
+                            console.log("Failed to accept vacations", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
             },
-            denyVacation: function(id) {
+            rejectVacation: function(id) {
                 this.id = id;
                 this.dialog = true;
             },
-            confirmDenial: function() {
+            confirmRejection: function() {
+                let vacationRequest = { id: this.id, reason: this.reason };
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.put("api/vacation/reject", vacationRequest, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            console.log("Successfully rejected vacation", response.data);
+                            this.getVacations();
+                        })
+                        .catch(response => {
+                            console.log("Failed to reject vacations", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
                 this.dialog = false;
-
-
-
-                
                 this.reason = '';
+                this.id = '';
             },
             cancel: function() {
                 this.dialog = false;

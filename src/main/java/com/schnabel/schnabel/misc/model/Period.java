@@ -6,6 +6,9 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.schnabel.schnabel.misc.UnixToLocalDateTimeConverter;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -21,8 +24,10 @@ import lombok.Setter;
 public class Period 
 {
     @Column(name = "start_time")
+    @JsonDeserialize(using = UnixToLocalDateTimeConverter.class)
     private LocalDateTime startTime;
     @Column(name = "end_time")
+    @JsonDeserialize(using = UnixToLocalDateTimeConverter.class)
     private LocalDateTime endTime;
 
 
@@ -32,6 +37,8 @@ public class Period
     }
 
     public long getDurationMinutes() {
+        //return Duration.between(this.startTime, this.endTime).toMinutes();
         return Duration.between(this.startTime, this.endTime).toMinutes();
+
     }
 }

@@ -1,211 +1,141 @@
 <template>
     <div id="pricelist-main">
-        <transition name="bounce">
-            <v-card v-if="show && !showadd"
-            id="pricelist-card"
-            elevation="1">
-                <v-card-title>Pricelist</v-card-title>
-                <v-btn class="deep-orange white--text" elevation="0" @click="add()">
-                    Add new drug
-                </v-btn>
-                <div id="pricelist-table">
-                    <v-data-table :headers="headers"
-                                    :items="drugs"
-                                    :search="search">
-                        <template v-slot:item="row">
-                            <tr>
-                                <td>{{row.item.id}}</td>
-                                <td>{{row.item.name}}</td>
-                                <td>{{row.item.price}}</td>
-                                <td>{{row.item.priceDuration.startTime}}</td>
-                                <td>{{row.item.priceDuration.endTime}}</td>
-                                <td>
-                                    <v-btn class="deep-orange white--text" elevation="1" @click="modify(row.item.id)">
-                                        Modify
-                                    </v-btn>
-                                </td>
-                                <td>
-                                    <v-btn class="deep-orange white--text" elevation="1" @click="delete(row.item.id)">
-                                        Delete
-                                    </v-btn>
-                                </td>
-                            </tr>
-                        </template>
-                    </v-data-table>
-                </div>
-            </v-card>
-        </transition>
-        <transition name="bounce">
-            <v-card v-if="!show"
-            id="modify-card"
-            elevation="1">
-                <v-card-title>Modify drug</v-card-title>
-                <div id="modify">
-                   <v-form >
-                       <v-card-subtitle>
-                           Id: {{drug.id}}
-                       </v-card-subtitle>
-                       <v-card-subtitle>
-                           Name: {{drug.name}}
-                       </v-card-subtitle>
-                   </v-form>
-                    <v-form>
-                        <v-text-field
-                        v-model="drug.price"
-                        :rules="nameRules"
-                        label="Price"
-                        ></v-text-field>
-                    </v-form>
-                    <template>
-                    <v-menu
-                        ref="menu"
-                        v-model="menu"
-                        :close-on-content-click="false"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="auto"
-                        >
-                        <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                            v-model="drug.priceDuration.startTime"
-                            label="Price valid from"
-                            prepend-icon="mdi-calendar"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                        ></v-text-field>
-                        </template>
-                        <v-date-picker
-                        ref="picker"
-                        v-model="drug.priceDuration.startTime"
-                        :min="drug.priceDuration.startTime"
-                        @change="save"
-                        ></v-date-picker>
-                    </v-menu>
+        <v-card
+        id="pricelist-card"
+        elevation="1">
+            <v-card-title>Pricelist</v-card-title>
+            <div id="pricelist-table">
+                <v-data-table :headers="headers"
+                                :items="warehouseitems"
+                                :search="search">
+                    <template v-slot:item="row">
+                        <tr>
+                            <td>{{row.item.drug.name}}</td>
+                            <td>{{row.item.drug.description}}</td>
+                            <td>{{row.item.drugPrice.price}}</td>
+                            <td>
+                                <v-btn @click="define(row.item)">
+                                    Define
+                                </v-btn>
+                            </td>
+                        </tr>
                     </template>
-                    <template>
-                    <v-menu
-                        ref="menuto"
-                        v-model="menuto"
-                        :close-on-content-click="false"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="auto"
-                        >
-                        <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                            v-model="drug.priceDuration.endTime"
-                            label="Price valid to"
-                            prepend-icon="mdi-calendar"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                        ></v-text-field>
-                        </template>
-                        <v-date-picker
-                        ref="picker"
-                        v-model="drug.priceDuration.endTime"
-                        :min="drug.priceDuration.startTime"
-                        @change="saveto"
-                        ></v-date-picker>
-                    </v-menu>
-                    </template>
-                    <v-btn class="deep-orange white--text" elevation="0" @click="update" :disabled="!drug.price">
-                            Save
-                    </v-btn>
-                </div>
-            </v-card>
-        </transition>
-        <transition>
-            <v-card v-if="showadd"
-            id="add-card"
-            elevation="1">
-                <v-card-title>Add drug</v-card-title>
-                <div id="add">
-                   <v-form >
-                        <v-text-field
-                        v-model="addname"
-                        :rules="nameRules"
+                </v-data-table>
+            </div>
+        </v-card>
+        <v-dialog v-model="this.dialog" persistent>
+            <v-card id="define-card">
+                <v-card-title>Define drug price</v-card-title>
+                <v-spacer></v-spacer>
+                    <v-text-field
+                        v-model="name"
                         label="Name"
+                        disabled
                         ></v-text-field>
-                   </v-form>
-                   <v-form>
-                       <v-text-field
-                        v-model="adddescription"
-                        :rules="nameRules"
+                    <v-text-field
+                        v-model="description"
                         label="Description"
+                        disabled
                         ></v-text-field>
-                   </v-form>
-                   <v-form>
-                       <v-text-field
-                        v-model="addprice"
-                        :rules="nameRules"
+                    <v-text-field
+                        v-model="drugPrice"
                         label="Price"
-                        ></v-text-field>
-                   </v-form>
-                    <template>
-                    <v-menu
-                        ref="menuadd"
-                        v-model="menuadd"
-                        :close-on-content-click="false"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="auto"
-                        >
-                        <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                            v-model="addperiodDuration[0]"
-                            label="Price valid from"
-                            prepend-icon="mdi-calendar"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                        ></v-text-field>
-                        </template>
-                        <v-date-picker
-                        ref="picker"
-                        v-model="addperiodDuration[0]"
-                        :min="new Date().toISOString().substr(0, 10)"
-                        @change="saveadd"
-                        ></v-date-picker>
-                    </v-menu>
-                    </template>
-                    <template>
-                    <v-menu
-                        ref="menuaddto"
-                        v-model="menuaddto"
-                        :close-on-content-click="false"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="auto"
-                        >
-                        <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                            v-model="addperiodDuration[1]"
-                            label="Price valid to"
-                            prepend-icon="mdi-calendar"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                        ></v-text-field>
-                        </template>
-                        <v-date-picker
-                        ref="picker"
-                        v-model="addperiodDuration[1]"
-                        :min="addperiodDuration[0]"
-                        @change="saveaddto"
-                        ></v-date-picker>
-                    </v-menu>
-                    </template>
-                    <v-btn class="deep-orange white--text" elevation="0" @click="savedrug" :disabled="!addperiodDuration[0] || !addperiodDuration[1] || !addname || !adddescription || !addprice">
-                            Save
+                        type="number"
+                        :rules="[rules.required]"
+                    ></v-text-field>
+            <v-menu
+                ref="menu"
+                v-model="menu"
+                :close-on-content-click="false"
+                :return-value.sync="date"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+            >
+                <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                    v-model="validFrom"
+                    label="Valid from"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                ></v-text-field>
+                </template>
+                <v-date-picker
+                    v-model="validFrom"
+                    no-title
+                    scrollable
+                    :min="new Date().toISOString().substr(0, 10)"
+                >
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        text
+                        color="primary"
+                        @click="menu = false"
+                    >
+                        Cancel
                     </v-btn>
-                    <v-btn class="deep-orange white--text" elevation="0" @click="back">
-                            Back
+                    <v-btn
+                        text
+                        color="primary"
+                        @click="$refs.menu.save(date)"
+                    >
+                        OK
                     </v-btn>
-                </div>
+                </v-date-picker>
+            </v-menu>
+            <v-menu
+                    ref="menu2"
+                    v-model="menu2"
+                    :close-on-content-click="false"
+                    :return-value.sync="date"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                >
+                    <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                        v-model="validUntil"
+                        label="Valid until"
+                        prepend-icon="mdi-calendar"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                    ></v-text-field>
+                    </template>
+                    <v-date-picker
+                        v-model="validUntil"
+                        no-title
+                        scrollable
+                        :min="this.validFrom"
+                    >
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            text
+                            color="primary"
+                            @click="menu2 = false"
+                        >
+                            Cancel
+                        </v-btn>
+                        <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.menu2.save(date)"
+                        >
+                            OK
+                        </v-btn>
+                    </v-date-picker>
+            </v-menu>
+                <v-spacer></v-spacer>
+                <v-btn class="primary" @click="save()" :disabled="!validFrom || !validUntil || !drugPrice">
+                    Save
+                </v-btn>
+                <v-btn class="accent" @click="cancel()">
+                    Cancel
+                </v-btn>
             </v-card>
-        </transition>
+        </v-dialog>
     </div>
 </template>
 
@@ -213,98 +143,89 @@
     export default {
         data() {
             return {
-                drugs: [],
-                drug: '',
-                show: true,
-                showadd: false,
-                addname: '',
-                adaddescription: '',
-                addprice: '',
-                addperiodDuration: [],
-                menu: false,
-                menuto: false,
-                menuadd: false,
-                menuaddto: false,
+                warehouseitem: '',
+                warehouseitems: [],
+                price: '',
+                validUntil: '',
+                name: '',
+                description: '',
+                drugPrice: '',
+                dialog: false,
                 headers: [
-					{ text: "Id",  value: "id"},
-					{ text: "Name",  value: "name"},
-                    { text: "Price",  value: "price"},
-                    { text: "Price valid from",  value: "startTime"},
-                    { text: "Price valid to",  value: "endTime"},
-                    { text: "Modify" },
-                    { text: "Delete" },
+					{ text: "Name" },
+                    { text: "Description" },
+                    { text: "Price" },
+                    { text: "Define" },
                 ],
+                rules: {
+                    required: value => !!value || 'Required.',
+                },
             }
         },
         methods: {
             getDrugs: function () {
-				this.axios.get("/pswapi/drugs")
-					.then(response => {
-						this.drugs = response.data;
-						console.log(response);
-					})
-					.catch(response => {
-						console.log(response);
-					})
-					.finally(function(){
-					})
+				this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.get("api/pharmacyadmin/drug", {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            this.warehouseitems = response.data._embedded.warehouseitems;
+                        })
+                        .catch(response => {
+                            console.log("Failed to get drugs", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
             },
-            modify: function(id) {
-                this.show = !this.show;
-                this.axios.get("/pswapi/drugs/" + id)
-					.then(response => {
-						this.drug = response.data;
-						console.log(response);
-					})
-					.catch(response => {
-						console.log(response);
-					})
-					.finally(function(){
-                    });
-                this.getDrugs();
-
+            define: function(wareHouseItem) {
+                this.dialog = true;
+                this.warehouseitem = wareHouseItem;
+                this.name = wareHouseItem.drug.name;
+                this.description = wareHouseItem.drug.description;
             },
-            update: function() {
-                this.show = !this.show;
-                this.getDrugs();
-            },
-            delete: function() {
-                
-            },
-            add: function() {
-                this.showadd = !this.showadd;
-                this.getDrugs();
-
-            },
-            savedrug: function() {
-                this.showadd = !this.showadd;
-                this.getDrugs();
-                if(typeof this.addprice === 'number')
+            save: function() {
+                if(this.validFrom > this.validUntil)
                 {
-                    let adddrug = {name: this.addname, description: this.adddescription, price: this.addprice, priceDuration: this.addperiodDuration }
-                    alert(adddrug.name);
+                    alert("Invalid period");
+                    return;
                 }
+                if(!this.drugPrice || !this.validFrom || !this.validUntil)
+                {
+                    return;
+                }
+                let drugPriceRequest = { price: this.drugPrice, priceStartDate: this.validFrom, priceEndDate: this.validUntil, wareHouseItemId: this.warehouseitem.id };
 
-                this.addname = '';
-                this.adddescription = '';
-                this.addprice = '';
-                this.addperiodDuration = [];
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.post("api/warehouseitem/drugprice", drugPriceRequest, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            console.log(response.data);
+                            alert("Successfully added drug price");
+                        })
+                        .catch(response => {
+                            console.log("Failed to add drugprice", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
+                this.dialog = false;
+                this.description = '';
+                this.drugPrice = '';
+                this.name = '';
+                this.validFrom = '';
+                this.validUntil = '';
             },
-            back: function() {
-                this.showadd = !this.showadd;
-                this.getDrugs();
-            },
-            save (date) {
-                this.$refs.menu.save(date)
-            },
-            saveto (date) {
-                this.$refs.menuto.saveto(date)
-            },
-            saveadd (date) {
-                this.$refs.menuadd.saveadd(date)
-            },
-            saveaddto (date) {
-                this.$refs.menuaddto.saveaddto(date)
+            cancel: function() {
+                this.dialog = false;
+                this.description = '';
+                this.drugPrice = '';
+                this.name = '';
+                this.validFrom = '';
+                this.validUntil = '';
             },
         },
         mounted() {
@@ -315,7 +236,11 @@
 
 <style scoped>
     #pricelist-main {
-        background: linear-gradient(69deg, rgba(63,81,181,1) 5%, rgba(197,202,233,1) 100%); 
+        display:grid;
+        grid-template-columns:auto;
+        place-items: center;
+        min-height: 92vh;
+        background-color: #fbecdd;
     }
     #pricelist-card {
         display: flex;
@@ -330,17 +255,10 @@
         width: 100vw;
         min-height: 100vh;
     }
-    #modify-card {
-        display: flex;
-        flex-direction: column;
+    #define-card {
+        display:grid;
+        grid-template-columns:auto;
         margin: 0 auto;
         width: 40%;
     }
-     #add-card {
-        display: flex;
-        flex-direction: column;
-        margin: 0 auto;
-        width: 40%;
-    }
-
 </style>

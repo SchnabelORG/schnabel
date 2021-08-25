@@ -8,11 +8,13 @@ import org.springframework.stereotype.Component;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+/**
+ * Assembles SupplierDTO
+ */
 @Component
 public class SupplierDTOAssembler extends RepresentationModelAssemblerSupport<Supplier, SupplierDTO> {
-
-    public SupplierDTOAssembler()
-    {
+    
+    public SupplierDTOAssembler() {
         super(SupplierController.class, SupplierDTO.class);
     }
 
@@ -27,8 +29,8 @@ public class SupplierDTOAssembler extends RepresentationModelAssemblerSupport<Su
         dto.setEmail(entity.getEmail());
         dto.setAddress(entity.getAddress());
         dto.setCompany(entity.getCompany());
+        dto.setFirm(entity.getFirm());
 
         return dto;
-
     }
 }

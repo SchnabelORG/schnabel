@@ -12,6 +12,18 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import com.schnabel.schnabel.users.dto.SupplierDTO;
+import com.schnabel.schnabel.users.service.ISupplierService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * Supplier REST controller
@@ -21,9 +33,6 @@ import org.springframework.http.HttpStatus;
 public class SupplierController 
 {
     private final ISupplierService supplierService;
-    private final SupplierDTOAssembler supplierDTOAssembler;
-    private final PagedResourcesAssembler<Supplier> pagedResourcesAssembler;
-
 
     @Autowired
     public SupplierController(ISupplierService supplierService, SupplierDTOAssembler supplierDTOAssembler, PagedResourcesAssembler<Supplier> pagedResourcesAssembler)
@@ -40,22 +49,19 @@ public class SupplierController
     @GetMapping("{id}")
     public ResponseEntity<SupplierDTO> get(@PathVariable long id)
     {
-        return supplierService.get(id).map(supplierDTOAssembler::toModel).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return supplierService.getDTO(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
      /**
      * Get all suppliers
-     * @return Iterable of Supplier
+     * @return Page of Supplier
      */
     @GetMapping()
     public ResponseEntity<PagedModel<SupplierDTO>> getAll(Pageable pageable)
     {
 //        Iterable<Supplier> suppliers = supplierService.getAll();
 //        return ResponseEntity.ok(suppliers);
-        Page<Supplier> suppliers = supplierService.getAll(pageable);
-        PagedModel<SupplierDTO> collModel = pagedResourcesAssembler.toModel(suppliers, supplierDTOAssembler);
-        return new ResponseEntity<>(collModel, HttpStatus.OK);
-
+        return new ResponseEntity<>(supplierService.getAllDTO(pageable), HttpStatus.OK);
     }
 
     /**

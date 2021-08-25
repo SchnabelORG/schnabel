@@ -10,6 +10,19 @@ import org.springframework.hateoas.server.core.Relation;
 
 import java.time.LocalDate;
 
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.schnabel.schnabel.misc.model.Address;
+import com.schnabel.schnabel.pharmacies.dto.PharmacyDTO;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+
 /**
  * PharmacyAdmin DTO for JSON representation
  */

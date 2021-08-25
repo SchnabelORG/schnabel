@@ -3,19 +3,24 @@
         <v-card
         id="makeorder-card"
         elevation="2">
-            <v-card-title>Make order</v-card-title>
+            <v-card-title>Create order</v-card-title>
+            <b class="err">{{error}}</b>
+            <div v-if="success" id="success-form">
+                <p id="success-icon"><i class="fa fa-check"></i></p>
+                <p>Order created!</p>
+            </div>
             <v-card-text id="drug-card">
                 <v-form id="tenders-add">
                     <v-combobox v-model="drugItem"
-                                :items="drugs"
+                                :items="warehouseitems"
                                 return-object="true"
                                 label="Drug"
                                 :rules="reqMedicationRule">
                         <template slot="selection" slot-scope="data" >
-                            {{ data.item.name }}
+                            {{ data.item.drug.name }}
                         </template>
                         <template slot="item" slot-scope="data">
-                            {{ data.item.name }}
+                            {{ data.item.drug.name }}
                         </template>
                     </v-combobox>
                     <v-text-field v-model="quantity"
@@ -31,10 +36,10 @@
                 <v-card-title>Order</v-card-title>
                 <div id="drug-table">
                     <v-data-table :headers="drugHeaders"
-                                    :items="orderItems">
+                                    :items="showOrderItems">
                         <template v-slot:item="row">
                             <tr>
-                                <td>{{row.item.drug.name}}</td>
+                                <td>{{row.item.drug}}</td>
                                 <td>{{row.item.quantity}}</td>
                             </tr>
                         </template>
@@ -88,10 +93,15 @@
                 description: '',
                 menu: false,
                 drugs: [],
+                warehouseitems: '',
                 drugItem: '',
                 orderItems: [],
+                showOrderItems: [],
                 addedOrderItems: [],
                 neworder: '',
+                pharmacyId: '',
+                pharmacyAdmin: '',
+                success: false,
                 drugHeaders: [
                     { text: "Name"}, 
                     { text: "Quantity" },
@@ -108,79 +118,74 @@
             }
         },
         methods: {
+            getPharmacyAdmin: function() {
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.get("api/pharmacyadmin", {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            this.pharmacyAdmin = response.data;
+                            this.pharmacyId = this.pharmacyAdmin.pharmacy.id;
+                            this.getDrugs();
+                        })
+                        .catch(response => {
+                            console.log("Failed to get pharmacy admin", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
+            },
             getDrugs: function () {
-				/*this.axios.get("/pswapi/drugs")
-					.then(response => {
-						this.drugs = response.data;
-						console.log(response);
-					})
-					.catch(response => {
-						console.log(response);
-					})
-					.finally(function(){
-					})*/
+                this.axios.get("api/warehouseitem/pharmacy/" + this.pharmacyId)
+                    .then(response => {
+                        this.warehouseitems = response.data._embedded.warehouseitems;
+                    })
+                    .catch(response => {
+                        console.log("Failed to get warehouseitems", response.data);
+                    });
             },
             add: function() {
                 
-                this.orderItems.push({ id: '', order: '', drug: this.drugItem, quantity : this.quantity });
+                this.orderItems.push({ drugId: this.drugItem.drug.id, quantity : this.quantity });
+                this.showOrderItems.push({ drug: this.drugItem.drug.name, quantity: this.quantity });
                 
                 this.drugItem = '';
                 this.quantity = '';
 
             },
             makeOrder: function() {
-                let addorder = { id: '', description: this.description, deadline: this.deadline };
-
-                this.axios.post("/api/order", addorder)
-					.then(response => {
-                        this.neworder = response.data;
-						console.log(response);
-
-                        for (var i in this.orderItems) 
+                this.refreshToken().then(response => {
+                    console.log(response.data);
+                    localStorage.jws = response.data;
+                    let orderRequest = { description: this.description, deadline: this.deadline, orderItems: this.orderItems };
+                    this.axios.post("/api/order", orderRequest, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response =>
                         {
-                            this.orderItems[i].order = this.neworder;
-                        }
-
-                        this.axios.post("/api/orderitem", this.orderItems)
-                            .then(response => {
-                                console.log(response);
-                                this.addedOrderItems = response.data;
-                                this.neworder.orderItems = [...this.addedOrderItems];
-                               
-                                this.axios.post("/api/addorder", this.neworder)
-                                .then(response => {
-                                    console.log(response);
-                                    this.order = '';
-                                    this.orderItems = [];
-                                    this.description = '';
-                                    this.deadline = '';
-                                })
-                                .catch(response => {
-                                    console.log(response);
-                                })
-                                .finally(function(){
-                                });
-                            })
-                            .catch(response => {
-                                console.log(response);
-                            })
-                            .finally(function(){
-                            });
-
-					})
-					.catch(response => {
-						console.log(response);
-					})
-					.finally(function(){
-					});
-
+                            console.log(response);
+                            this.success = true;
+                            this.showOrderItems = [];
+                            this.orderItems = [];
+                            this.description = '';
+                            this.deadline = '';
+                        })
+                        .catch(response =>
+                        {
+                            this.error = "Creating new order unsuccessfull";
+                            console.log(response.data);
+                        });
+                })
+               .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
             },
             save (date) {
                 this.$refs.menu.save(date)
             },
         },
         mounted() {
-			this.getDrugs();
+            this.getPharmacyAdmin();
 		}
     }
 </script>

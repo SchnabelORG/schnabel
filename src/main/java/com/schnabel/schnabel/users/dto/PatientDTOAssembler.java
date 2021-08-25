@@ -28,9 +28,12 @@ public class PatientDTOAssembler extends RepresentationModelAssemblerSupport<Pat
         dto.setSurname(entity.getSurname());
         dto.setEmail(entity.getEmail());
         dto.setAddress(entity.getAddress());
+        dto.setPhoneNo(entity.getPhoneNo());
 
         return dto;
     }
+
+
 
     // @Override
     // public CollectionModel<PatientDTO> toCollectionModel(Iterable<? extends Patient> entities) {

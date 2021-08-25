@@ -1,5 +1,9 @@
 package com.schnabel.schnabel.drugs.service;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import com.schnabel.schnabel.drugs.dto.DrugDTO;
 import com.schnabel.schnabel.drugs.model.Drug;
 import com.schnabel.schnabel.drugs.model.enums.DrugOrigin;
@@ -7,13 +11,25 @@ import com.schnabel.schnabel.drugs.model.enums.DrugState;
 import com.schnabel.schnabel.drugs.model.enums.DrugType;
 import com.schnabel.schnabel.drugs.model.enums.IssuingType;
 import com.schnabel.schnabel.misc.interfaces.IJpaService;
+import com.schnabel.schnabel.users.dto.PharmacistDTO;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
-import java.util.Optional;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 
-public interface IDrugService extends IJpaService<Drug, Long> {
-    Optional<DrugDTO> getDTO(Long id);
+/**
+ * Drug JPA service interface
+ */
+public interface IDrugService extends IJpaService<Drug, Long> 
+{
+    Optional<DrugDTO> findByIdDTO(Long id);
+    PagedModel<DrugDTO> findAllDTO(Pageable pageable);
+    PagedModel<DrugDTO> filteredSearch(Map<String, String> params, Pageable pageable);
+    PagedModel<DrugDTO> findGradeable(Long patientId, Pageable pageable);
+    Optional<Drug> findByName(String name);
+    List<DrugDTO> findAllDTO();
+     Optional<DrugDTO> getDTO(Long id);
     PagedModel<DrugDTO> getAllDTO(Pageable pageable);
     boolean registerDrug(String code, String name, String description, DrugState drugState, DrugOrigin drugOrigin, DrugType drugType, String producer, String dosage, IssuingType issuingType);
 }

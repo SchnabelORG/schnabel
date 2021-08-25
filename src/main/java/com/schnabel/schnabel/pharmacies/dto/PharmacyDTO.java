@@ -17,6 +17,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+/**
+ * Pharmacy DTO for JSON representation
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -29,7 +32,7 @@ public class PharmacyDTO extends RepresentationModel<PharmacyDTO> {
     private Long id;
     private String name;
     private Address address;
-    // private WareHouse wareHouse;
-    // private List<Dermatologist> dermatologists;
+    private double consultPrice;
+    private double score;
     private List<PharmacistDTO> pharmacists;
 }

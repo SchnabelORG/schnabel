@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.pharmacies.service;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
@@ -21,4 +22,9 @@ public interface IPharmacyService extends IJpaService<Pharmacy, Long>
     PagedModel<PharmacyDTO> filteredSearch(Map<String, String> params, Pageable pageable);
     boolean registerPharmacy(PharmacyCreationDTO creationDTO);
     Optional<Pharmacy> findByName(String name);
+    PagedModel<PharmacyDTO> findByFreePharmacistAppointment(LocalDateTime startTime, Pageable pageable);
+    PagedModel<PharmacyDTO> findWithStock(Long drugId, Pageable pageable);
+    PagedModel<PharmacyDTO> findGraded(Long patientId, Pageable pageable);
+    PagedModel<PharmacyDTO> findGradeable(Long patientId, Pageable pageable);
 }
+

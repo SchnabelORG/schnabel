@@ -8,8 +8,38 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    beforeEnter: (to, from, next) => {
+      if(localStorage.jws) {
+        axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + localStorage.jws}})
+        .then(r => {
+          if(r.data == 'ROLE_PATIENT') {
+            next({name: 'UserHome'});
+          } else if (r.data == 'ROLE_ADMIN') {
+            next({name: 'PharmacyAdminHome'});
+          } else {
+            next({name: 'Home'});
+          }
+        })
+        .catch(() => next({name: 'Home'}));
+      } else {
+        next({name: 'Home'});
+      }
+    },
+  },
+
+  {
+    path: '/index',
     name: 'Home',
-    component: Home
+    component: Home,
+  },
+
+  {
+    path: '/logout',
+    name: 'Logout',
+    beforeEnter: (to, from, next) => {
+      localStorage.removeItem('jws');
+      next({name:'Home'});
+    },
   },
 
   {
@@ -34,6 +64,48 @@ const routes = [
     },
   },
 
+
+  // NOTE(Jovan): Redirect based on role
+  {
+    path: '/redirect',
+    beforeEnter: (to, from, next) => {
+      axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + localStorage.jws}})
+        .then(r => {
+          if(r.data == 'ROLE_PATIENT') {
+            next({name: 'UserHome'});
+          } else if (r.data == 'ROLE_ADMIN') {
+            next({name: 'PharmacyAdminHome'});
+          } else if (r.data == 'ROLE_PHARMACIST') {
+            next({name: 'PharmacistHome'}); 
+          } else if (r.data == 'ROLE_DERMATOLOGIST') {
+            next({name: 'DermatologistHome'}); 
+          }
+          else {
+            next({name: 'Home'});
+          }
+        })
+        .catch(() => next({name: 'Home'}));
+    },
+  },
+
+  {
+    path:'/drugsearch',
+    name: 'DrugSearch',
+    component: () => import( /* webpackChunkName: "drugsearch" */ '../views/DrugSearch.vue'),
+  },
+
+  {
+    path: '/consult',
+    name: 'ScheduleConsult',
+    component: () => import( /* webpackChunkName: "makeappointment" */ '../views/ScheduleConsult.vue'),
+  },
+
+  {
+    path: '/rating',
+    name: 'Rating',
+    component: () => import( /* webpackChunkName: "rating" */ '../views/Rating.vue'),
+  },
+
   {
     path: '/dermappointment/:pharmacyname',
     beforeEnter: (to, from, next) => {
@@ -53,16 +125,32 @@ const routes = [
   },
 
   // PharmacySearch
-
   {
     path: '/pharmacysearch',
     name: 'PharmacySearch',
     component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacySearch.vue'),
   },
+  {
+    path: '/pharmacysearch/:name',
+    name: 'PharmacySearch',
+    component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacySearch.vue'),
+  },
+
+  {
+    path: '/dermatologistsearch',
+    name: 'DermatologistSearch',
+    component: () => import(/* webpackChunkName: "pharmacy" */ '../views/DermatologistSearch.vue'),
+  },
+
+  {
+    path: '/pharmacistsearch',
+    name: 'PharmacistSearch',
+    component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacistSearch.vue'),
+  },
 
   //Pharmacy
   {
-    path: '/pharmacy',
+    path: '/pharmacy/:id',
     name: 'PharmacyPanel',
     component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacyPanel.vue'),
     children:[
@@ -86,7 +174,18 @@ const routes = [
         name: 'PharmacyDrugs',
         component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacyDrugs.vue'),
       },
+      {
+        path: 'freedermatologistappointments',
+        name: 'PharmacyFreeDermApp',
+        component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacyFreeDermApp.vue'),
+      },
     ],
+  },
+
+  {
+    path: '/a',
+    name: 'a',
+    component: () => import(/* webpackChunkName: "pharmacy" */ '../views/PharmacyAdminAppointments.vue'),
   },
 
   // User
@@ -143,6 +242,51 @@ const routes = [
         path: 'medicationReservations',
         name: 'MedicationReservations',
         component: () => import(/* webpackChunkName: "pharmacist" */ '../views/MedicationReservations.vue'),
+      },
+      {
+        path: 'vacations',
+        name: 'PharmacistVacation',
+        component: () => import(/* webpackChunkName: "pharmacist" */ '../views/PharmacistVacation.vue'),
+      },
+    ],
+  },
+
+  {
+    path: '/defaultpass',
+    name: 'ChangeDefaultPassword',
+    component: () => import(/* webpackChunkName: "employee" */ '../views/ChangeDefaultPassword.vue'),
+  },
+
+  //Dermatologist
+  {
+    path: "/dermatologist",
+    name: 'DermatologistPanel',
+    component: () => import(/* webpackChunkName: "dermatologist" */ '../views/DermatologistPanel.vue'),
+    children:[
+      {
+        path: '',
+        name: 'DermatologistHome',
+        component: () => import(/* webpackChunkName: "dermatologist" */ '../views/DermatologistHome.vue'),
+      },
+      {
+        path: 'dermatologistacc',
+        name: 'DermatologistAccount',
+        component: () => import(/* webpackChunkName: "dermatologist" */ '../views/DermatologistAccount.vue'),
+      },
+      {
+        path: 'calendar',
+        name: 'DermatologistCalendar',
+        component: () => import(/* webpackChunkName: "dermatologist" */ '../views/DermatologistCalendar.vue'),
+      },
+      {
+        path: 'appointmentReport',
+        name: 'AppointmentReport',
+        component: () => import(/* webpackChunkName: "dermatologist" */ '../views/AppointmentReport.vue'),
+      },
+      {
+        path: 'vacations',
+        name: 'DermatologistVacation',
+        component: () => import(/* webpackChunkName: "dermatologist" */ '../views/DermatologistVacation.vue'),
       },
     ],
   },
@@ -210,6 +354,51 @@ const routes = [
         path: 'pharmacist',
         name: 'PharmacyAdminPharmacists',
         component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminPharmacists.vue'),
+      },
+      {
+        path: 'defineappointment',
+        name: 'PharmacyAdminDefineAppointment',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminDefineAppointment.vue'),
+      },
+      {
+        path: 'pricelist',
+        name: 'PriceList',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PriceList.vue'),
+      },
+      {
+        path: 'pharmacistsearch',
+        name: 'PharmacyAdminPharmacistSearch',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminPharmacistSearch.vue'),
+      },
+      {
+        path: 'dermatologistsearch',
+        name: 'PharmacyAdminDermatologistSearch',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminDermatologistSearch.vue'),
+      },
+      {
+        path: 'freedermatologistappointment',
+        name: 'PharmacyAdminFreeAppointments',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminFreeAppointments.vue'),
+      },
+      {
+        path: 'appointmentsreport',
+        name: 'PharmacyAdminAppointments',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminAppointments.vue'),
+      },
+      {
+        path: 'drugusage',
+        name: 'PharmacyAdminDrugUsage',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminDrugUsage.vue'),
+      },
+      {
+        path: 'pharmacyincome',
+        name: 'PharmacyAdminIncome',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminIncome.vue'),
+      },
+      {
+        path: 'availabilityrequests',
+        name: 'PharmacyAdminAvailabilityRequests',
+        component: () => import(/* webpackChunkName: "pharmacyadmin" */ '../views/PharmacyAdminAvailabilityRequests.vue'),
       },
     ],
   },

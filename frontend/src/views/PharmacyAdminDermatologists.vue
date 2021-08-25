@@ -30,20 +30,105 @@
         <v-dialog v-model="this.new" persistent>
             <v-card id="new-card">
                 <v-card-title>Dermatologist</v-card-title>
+                <v-combobox v-model="dermatologist"
+                        :items="dermatologistsNotPharmacy"
+                        return-object="true"
+                        label="Dermatologist"
+                        :rules="[rules.required]">
+                <template slot="selection" slot-scope="data" >
+                    {{ data.item.name }} {{ data.item.surname }}
+                </template>
+                <template slot="item" slot-scope="data">
+                    {{ data.item.name }} {{ data.item.surname }}
+                </template>
+            </v-combobox>
                 <v-spacer></v-spacer>
-                 <v-text-field
-                        v-model="name"
-                        :rules="[rules.required]"
-                        label="Name"
-                        ></v-text-field>
+                <v-card-title>Shift</v-card-title>
                 <v-spacer></v-spacer>
+                <v-menu
+                ref="menu"
+                v-model="menu"
+                :close-on-content-click="false"
+                :return-value.sync="time"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+            >
+                <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                        v-model="surname"
-                        :rules="[rules.required]"
-                        label="Surname"
-                        ></v-text-field>
-                <v-spacer></v-spacer>
-                <v-btn class="primary" @click="addDermatologist()" :disabled="!name || !surname">
+                    v-model="validFrom"
+                    label="Valid from"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                ></v-text-field>
+                </template>
+                <v-time-picker
+                    v-model="validFrom"
+                    no-title
+                    scrollable
+                >
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        text
+                        color="primary"
+                        @click="menu = false"
+                    >
+                        Cancel
+                    </v-btn>
+                    <v-btn
+                        text
+                        color="primary"
+                        @click="$refs.menu.save(time)"
+                    >
+                        OK
+                    </v-btn>
+                </v-time-picker>
+            </v-menu>
+            <v-menu
+                    ref="menu2"
+                    v-model="menu2"
+                    :close-on-content-click="false"
+                    :return-value.sync="time"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                >
+                    <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                        v-model="validUntil"
+                        label="Valid until"
+                        prepend-icon="mdi-calendar"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                    ></v-text-field>
+                    </template>
+                    <v-time-picker
+                        v-model="validUntil"
+                        no-title
+                        scrollable
+                        :min="this.validFrom"
+                    >
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            text
+                            color="primary"
+                            @click="menu2 = false"
+                        >
+                            Cancel
+                        </v-btn>
+                        <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.menu2.save(time)"
+                        >
+                            OK
+                        </v-btn>
+                    </v-time-picker>
+            </v-menu>
+                <v-btn class="primary" @click="addDermatologist()" :disabled="!dermatologist || !validFrom || !validUntil">
                     Add
                 </v-btn>
                 <v-btn class="accent" @click="cancel()">
@@ -59,10 +144,15 @@
         data() {
             return {
                 dermatologists: [],
+                dermatologistsNotPharmacy: [],
+                dermatologist: '',
                 new: false,
                 name: '',
                 surname: '',
                 id: '',
+                pharmacyId: '',
+                validFrom: '',
+                validUntil: '',
                 headers: [
                     { text: "Name" },
                     { text: "Surname" },
@@ -74,27 +164,107 @@
             }
         },
         methods: {
+            getPharmacyAdmin: function() {
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.get("api/pharmacyadmin", {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            this.pharmacyId = response.data.pharmacy.id;
+                            this.getDermatologists();
+                            this.getDermatologistsNotInPharmacy();
+                        })
+                        .catch(response => {
+                            console.log("Failed to get pharmacy admin", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
+            },
             getDermatologists: function() {
-                
+                 this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.get("api/pharmacyadmin/dermatologist", {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            this.dermatologists = response.data._embedded.dermatologists;
+                        })
+                        .catch(response => {
+                            console.log("Failed to get dermatologists", response.data);
+                        });
+                    })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
             },
             deleteDermatologist: function(id) {
-                this.id = id;
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.delete("api/pharmacyadmin/removedermatologist/" + id, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            console.log(response.data);
+                            this.getDermatologists();
+                        })
+                        .catch(response => {
+                            console.log("Failed to remove dermatologist", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
+            },
+            getDermatologistsNotInPharmacy: function() {
+                this.axios.get("api/dermatologist/notinpharmacy/" + this.pharmacyId)
+                        .then(response => {
+                            this.dermatologistsNotPharmacy = response.data._embedded.dermatologists;
+                        })
+                        .catch(response => {
+                            console.log("Failed to get dermatologists not in pharmacy", response.data);
+                        });
+            },
+            addDermatologist: function() {
+                if(this.validFrom > this.validUntil) {
+                    alert("Invalid period");
+                    return;
+                }
+                
+                let dermatologistRequest = { id: this.dermatologist.id, pharmacyId: this.pharmacyId, startTime: this.validFrom, endTime: this.validUntil};
+                this.refreshToken().then(response => {
+                    localStorage.jws = response.data;
+                    this.axios.post("api/pharmacyadmin/addnewdermatologist", dermatologistRequest, {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                        .then(response => {
+                            console.log(response.data);
+                            this.getDermatologists();
+                        })
+                        .catch(response => {
+                            console.log("Failed to add dermatologist", response.data);
+                        });
+                   })
+                    .catch(response => {
+                    console.log(response.data);
+                    this.$router.push("/");
+                });
+
+                
+                this.new = false;
+                this.dermatologist = '';
+                this.validFrom = '';
+                this.validUntil = '';
             },
             newDermatologist: function() {
                 this.new = true;
             },
-            addDermatologist: function() {
-                this.new = false;
-
-                this.name = '';
-                this.surname = '';
-            },
             cancel: function() {
                 this.new = false;
+                this.dermatologist = '';
+                this.validFrom = '';
+                this.validUntil = '';
             },
         },
         mounted() {
-            this.getDermatologists();
+            this.getPharmacyAdmin();
         },
     }
 </script>

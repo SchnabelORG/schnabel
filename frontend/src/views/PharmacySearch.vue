@@ -29,15 +29,22 @@
                 <v-divider></v-divider>
               </div>
               <div v-for="result in results" :key="result.id">
-                <v-card class="result" 
+                <v-card class="result d-flex flex-row" 
+                
                 flat>
                     <v-img src="../assets/pharmacy-placeholder.jpg" max-height="210px" max-width="280px" ></v-img>
-                    <!-- <v-spacer></v-spacer> -->
-                    <div>
+                    <div class="d-flex flex-column">
                       <v-card-title>
-                        {{result.name}}
+                        <router-link :to="'/pharmacy/' + result.id">{{result.name}} &#62;</router-link>
                       </v-card-title>
-                      <v-card-subtitle>{{result.address.street}} {{result.address.streetNo}}, {{result.address.city}}</v-card-subtitle>
+                      <v-card-subtitle>
+                        <p>{{result.address.street}} {{result.address.streetNo}}, {{result.address.city}}</p>
+                        <p><span class="info--text">Rating: </span>{{result.score}}</p>
+                      </v-card-subtitle>
+                        <v-spacer></v-spacer>
+                        <div class="d-flex flex-row justify-start">
+                          <v-btn plain color="primary" :to="'/dermappointment/' + result.name">Schedule derm.</v-btn>
+                        </div>
                     </div>
                 </v-card>
                 <v-divider></v-divider>
@@ -111,10 +118,16 @@
                         <v-divider></v-divider>
                         <div id="score-filters" class="filter-container">
                           <h3>Score</h3>
-                          <v-text-field
-                          label="Minimum score"
-                          v-model="filters[1].value"
-                          />
+                          <v-slider
+                            v-model="filters[1].value"
+                            label="Min. score"
+                            step="1"
+                            min="0"
+                            max="5"
+                            thumb-label
+                            ticks
+                            :append-icon="filters[1].value.toString()"
+                          ></v-slider>
                         </div>
                       </v-card-text>
                       <v-divider style="width:100%"></v-divider>
@@ -241,6 +254,10 @@ export default {
     },
 
   methods: {
+    selectPharmacy: function(pharmacy) {
+      this.$router.push('pharmacy/' + pharmacy.id);
+    },
+
     applyFilters: function() {
       this.filters.forEach(f => {
         if(f.value) {
@@ -283,7 +300,6 @@ export default {
           } else {
             this.results = [];
           }
-          console.log(r.data._embedded.pharmacies);
         })
         .catch(r => {
           console.log(r);
@@ -304,7 +320,9 @@ export default {
       }, err => {
         console.log('Err getting location:', err);
       });
-
+      if(this.$route.params.name) {
+        this.pharmacyName = this.$route.params.name;
+      }
       this.getSearchResults();
     },
 }
@@ -340,10 +358,12 @@ export default {
     max-height: 100vh;
     overflow: auto;
     width: 600px;
+    background: #eee;
   }
 
   #results-header {
     padding: 10px;
+    background: #fff;
   }
 
   #results-header h2 {
@@ -356,7 +376,7 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    padding: 0 0 20px 20px;
+    padding: 20px 20px 20px 20px;
   }
 
   .result img {
