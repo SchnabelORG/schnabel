@@ -81,7 +81,7 @@ public class PharmacyAdminController
      * @param authHeader - Authorization header containing jwt
      * @return PharmacyAdminDTO if exists, else BadRequest
      */
-    @GetMapping()
+    @GetMapping("/all")
     public ResponseEntity<PagedModel<PharmacyAdminDTO>> getAll(Pageable pageable)
     {
         return new ResponseEntity<>(pharmacyAdminService.getAllDTO(pageable), HttpStatus.OK);

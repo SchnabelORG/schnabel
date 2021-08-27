@@ -28,7 +28,6 @@ public class SupplierDTOAssembler extends RepresentationModelAssemblerSupport<Su
         dto.setSurname(entity.getSurname());
         dto.setEmail(entity.getEmail());
         dto.setAddress(entity.getAddress());
-        dto.setCompany(entity.getCompany());
         dto.setFirm(entity.getFirm());
 
         return dto;

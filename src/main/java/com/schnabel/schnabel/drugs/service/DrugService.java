@@ -77,16 +77,6 @@ public class DrugService extends JpaService<Drug, Long, IDrugRepository> impleme
         return dtoAsm.listModel(getAll());
     }
 
-    @Override
-    public Optional<DrugDTO> getDTO(Long id) {
-        return get(id).map(drugDTOAssembler::toModel);
-    }
-
-    @Override
-    public PagedModel<DrugDTO> getAllDTO(Pageable pageable) {
-        Page<Drug> drugs = getAll(pageable);
-        return drugPagedResourcesAssembler.toModel(drugs, drugDTOAssembler);
-    }
 
     @Override
     public boolean registerDrug(String code, String name, String description, DrugState drugState, DrugOrigin drugOrigin, DrugType drugType, String producer, String dosage, IssuingType issuingType) {

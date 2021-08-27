@@ -69,7 +69,7 @@ public class PharmacyController
     @PostMapping("register")
     public ResponseEntity<String> registerPharamcy(@RequestBody PharmacyCreationDTO creationDTO)
     {
-        return pharmacyService.registerPharmacy(creationDTO) ?
+        return service.registerPharmacy(creationDTO) ?
                 ResponseEntity.ok("Registered")
                 : ResponseEntity.badRequest().build();
     }

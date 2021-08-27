@@ -29,8 +29,6 @@ public class MedicalEmployee extends User
         super(name, surname, email, encodedPassword, address, b);
     }
 
-    public MedicalEmployee()
-    {}
 
     private double score;
     public MedicalEmployee(String name, String surname, String email, String password, Address address) {

@@ -35,11 +35,9 @@ public class SupplierController
     private final ISupplierService supplierService;
 
     @Autowired
-    public SupplierController(ISupplierService supplierService, SupplierDTOAssembler supplierDTOAssembler, PagedResourcesAssembler<Supplier> pagedResourcesAssembler)
+    public SupplierController(ISupplierService supplierService)
     {
         this.supplierService = supplierService;
-        this.supplierDTOAssembler = supplierDTOAssembler;
-        this.pagedResourcesAssembler = pagedResourcesAssembler;
     }
 
      /**

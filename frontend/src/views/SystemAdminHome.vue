@@ -13,7 +13,7 @@
                         </v-card-subtitle>
                         <v-card-actions>
                             <v-btn text>
-                                See more
+                                . . .
                             </v-btn>
                         </v-card-actions>
                     </v-card>

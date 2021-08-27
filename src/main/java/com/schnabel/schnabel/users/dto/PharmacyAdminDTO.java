@@ -39,6 +39,7 @@ public class PharmacyAdminDTO extends RepresentationModel<PharmacyAdminDTO> {
     private String name;
     private String surname;
     private String email;
+    private String password;
     private Address address;
     private PharmacyDTO pharmacy;
     private boolean isActive;

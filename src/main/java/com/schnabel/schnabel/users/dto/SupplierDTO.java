@@ -2,23 +2,17 @@ package com.schnabel.schnabel.users.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonRootName;
-<<<<<<< HEAD
+
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
+
 import com.schnabel.schnabel.misc.model.Address;
-import lombok.*;
-import org.springframework.hateoas.RepresentationModel;
-import org.springframework.hateoas.server.core.Relation;
-
-=======
-
-import org.springframework.hateoas.RepresentationModel;
-import org.springframework.hateoas.server.core.Relation;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
->>>>>>> develop
 
 @Data
 @Builder
@@ -34,6 +28,5 @@ public class SupplierDTO extends RepresentationModel<SupplierDTO> {
     private String surname;
     private String email;
     private Address address;
-    private String company;
     private String firm;
 }

@@ -61,7 +61,7 @@ public class PharmacyAdminService extends JpaService<PharmacyAdmin, Long, IPharm
     private final IShiftService shiftService;
 
     @Autowired
-    public PharmacyAdminService(IPharmacyAdminRepository pharmacyAdminRepository, PharmacyAdminDTOAssembler pharmacyAdminDTOAssembler, PagedResourcesAssembler<PharmacyAdmin> pharmacyAdminDtoPagedResourcesAssembler, IPharmacyRepository pharmacyRepository,IPharmacyAdminRepository pharmacyAdminRepository, IDermatologistService dermatologistService, IPharmacistService pharmacistService, IWareHouseItemService wareHouseItemService, IAppointmentRepository appointmentRepository, IShiftService shiftService, IDrugReservationRepository drugReservationRepository)
+    public PharmacyAdminService(IPharmacyAdminRepository pharmacyAdminRepository, PharmacyAdminDTOAssembler pharmacyAdminDTOAssembler, PagedResourcesAssembler<PharmacyAdmin> pharmacyAdminDtoPagedResourcesAssembler, IPharmacyRepository pharmacyRepository, IDermatologistService dermatologistService, IPharmacistService pharmacistService, IWareHouseItemService wareHouseItemService, IAppointmentRepository appointmentRepository, IShiftService shiftService, IDrugReservationRepository drugReservationRepository)
     {
         super(pharmacyAdminRepository);
         this.pharmacyAdminDTOAssembler = pharmacyAdminDTOAssembler;
@@ -75,7 +75,7 @@ public class PharmacyAdminService extends JpaService<PharmacyAdmin, Long, IPharm
         this.shiftService = shiftService;
         this.drugReservationRepository = drugReservationRepository;
     }
-    }
+
 
     @Override
     public Optional<PharmacyAdminDTO> getDTO(Long id) {
