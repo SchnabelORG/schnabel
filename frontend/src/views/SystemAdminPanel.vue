@@ -23,6 +23,7 @@
 
 <style scoped>
     #main-content {
+        min-height: 100vh;
         background-color: #fafafa;
     }
 </style>

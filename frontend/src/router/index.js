@@ -301,6 +301,16 @@ const routes = [
         name: 'SystemAdminHome',
         component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminHome.vue'),
       },
+      {
+        path: 'pharmacies',
+        name: 'SystemAdminPharmacies',
+        component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminPharmacies.vue'),
+      },
+      {
+        path: 'pharmacies/register',
+        name: 'SystemAdminRegisterPharmacy',
+        component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminRegisterPharmacy.vue'),
+      },
     ],
   },
 
