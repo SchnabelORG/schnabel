@@ -17,5 +17,5 @@ public class RegisterSupplierRequest {
     private String password;
     private String email;
     private Address address;
-    private String company;
+    private String firm;
 }

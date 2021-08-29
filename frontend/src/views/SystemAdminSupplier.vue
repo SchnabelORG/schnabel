@@ -3,22 +3,22 @@
         <v-card
         id="pharmacists-card"
         elevation="2">
-            <v-card-title>Dermatologists</v-card-title>
+            <v-card-title>Suppliers</v-card-title>
             <v-card-text>
-                <v-btn @click="newDermatologist()">
+                <v-btn @click="newSupplier()">
                     New
                 </v-btn>
                 <div id="pharmacists-table">
                     <v-data-table :headers="headers"
-                                    :items="dermatologists"
+                                    :items="suppliers"
                                     :search="search">
                         <template v-slot:item="row">
                             <tr>
-                                <td>{{row.item.name}}</td>
-                                <td>{{row.item.surname}}</td>
+                                <td>{{row.item.firm}}</td>
                                 <td>{{row.item.email}}</td>
+                                <td>{{getAddress(row.item.address)}}</td>
                                 <td>
-                                    <v-btn @click="deleteDermatologist(row.item.id)">
+                                    <v-btn @click="deleteSupplier(row.item.id)">
                                         Delete
                                     </v-btn>
                                 </td>                       
@@ -30,19 +30,8 @@
         </v-card>
         <v-dialog v-model="this.new" persistent>
             <v-card id="new-card">
-                <v-card-title>Dermatologist</v-card-title>
+                <v-card-title>Supplier</v-card-title>
                 <v-spacer></v-spacer>
-                 <v-text-field
-                        v-model="name"
-                        :rules="[rules.required]"
-                        label="Name"
-                        ></v-text-field>
-                <v-spacer></v-spacer>
-                <v-text-field
-                        v-model="surname"
-                        :rules="[rules.required]"
-                        label="Surname"
-                        ></v-text-field>
                 <v-text-field
                         v-model="email"
                         :rules="[rules.required]"
@@ -73,9 +62,14 @@
                         :rules="[rules.required]"
                         label="StreetNo"
                         ></v-text-field>
+                <v-text-field
+                        v-model="firm"
+                        :rules="[rules.required]"
+                        label="Firm"
+                        ></v-text-field>
                 <v-spacer></v-spacer>
            
-            <v-btn class="primary" @click="addDermatologist()" :disabled="!name || !surname || !email">
+            <v-btn class="primary" @click="addSupplier()" :disabled="!firm || !street || !email">
                 Add
             </v-btn>
             <v-btn class="accent" @click="cancel()">
@@ -90,11 +84,12 @@
     export default {
         data() {
             return {
-                dermatologists: [],
+                suppliers: [],
                 new: false,
                 name: '',
                 surname: '',
                 email: '',
+                firm: '',
                 password: '',
                 postcode: '',
                 city: '',
@@ -106,9 +101,9 @@
                 id: '',
                 search: '',
                 headers: [
-                    { text: "Name" },
-                    { text: "Surname" },
-                    { text: "Email"},
+                    { text: "Fimr" },
+                    { text: "Email" },
+                    { text: "Adress"},
                     { text: "Delete" },
                 ],
                 rules: {
@@ -117,16 +112,20 @@
             }
         },
         methods: {
-            getDermatologists: function() {
-                this.axios.get("api/dermatologist")
+            getSuppliers: function() {
+                this.axios.get("api/supplier")
                 .then(r =>
                 {
-                    this.dermatologists = r.data._embedded.dermatologists;
+                    this.suppliers = r.data._embedded.suppliers;
                 })
                 .catch(r => 
                 {
                     console.log(r.data);
                 })
+            },
+            getAddress: function(address) {
+                var a = address.street + ' ' + address.streetNo + ', ' + address.city + ', ' + address.postcode; 
+                return a;
             },
             /*
             getDermatologists: function() {
@@ -164,34 +163,34 @@
             },*/
 
             //TODO fix later
-            deleteDermatologist: function(id) {
-                this.axios.delete("api/dermatologist/remove/" + id)
+            deleteSupplier: function(id) {
+                this.axios.delete("api/supplier/remove/" + id)
                 .then(r => 
                 {
-                    console.log(r.data);
-                    this.getDermatologists();
+                    console.log(r);
+                    this.getSuppliers();
                 })
                 .catch(r =>
                 {
-                    console.log("Failed to remove dermatologist", r.data);
+                    console.log("Failed to remove supplier", r.data);
                 })
             },
-            newDermatologist: function() {
+            newSupplier: function() {
                 this.new = true;
             },
 
             //TODO n
             
-            addDermatologist: function() {
+            addSupplier: function() {
                 var adr = {postcode: this.postcode, city: this.city, street: this.street, streetNo: this.streetNo}
-                let request = { name: this.name, surname: this.surname, email: this.email, password: this.password, address: adr, startTime: this.validFrom, endTime: this.validUntil };
-                this.axios.post("api/dermatologist/register", request)
+                let request = { name: this.name, surname: this.surname, email: this.email, password: this.password, address: adr, firm: this.firm };
+                this.axios.post("api/supplier/", request)
                 .then(response => {
-                    console.log("Successfully added dermatologist", response.data);
-                    this.getDermatologists();
+                    console.log("Successfully added supplier", response.data);
+                    this.getSuppliers();
                 })
                 .catch(response => {
-                    console.log("Failed to add pharmacists", response.data);
+                    console.log("Failed to add supplier", response.data);
                 });
                 
                 this.new = false;
@@ -200,6 +199,7 @@
                 this.email = '';
                 this.validFrom = '';
                 this.validUntil = '';
+                this.firm = '';
             },
             cancel: function() {
                 this.new = false;
@@ -208,10 +208,11 @@
                 this.email = '';
                 this.validFrom = '';
                 this.validUntil = '';
+                this.firm = '';
             },
         },
         mounted() {
-            this.getDermatologists();
+            this.getSuppliers();
         },
     }
 </script>

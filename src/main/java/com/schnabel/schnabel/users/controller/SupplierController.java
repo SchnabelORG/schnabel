@@ -70,8 +70,16 @@ public class SupplierController
     @PostMapping
     public ResponseEntity<String> registerSupplier(@RequestBody RegisterSupplierRequest req)
     {
-        return supplierService.registerSupplier(req.getName(), req.getSurname(), req.getEmail(), req.getPassword(), req.getAddress(), req.getCompany()) ?
+        return supplierService.registerSupplier(req.getName(), req.getSurname(), req.getEmail(), req.getPassword(), req.getAddress(), req.getFirm()) ?
                 ResponseEntity.ok("Registered")
                 : ResponseEntity.badRequest().build();
     }
+
+    @DeleteMapping("remove/{id}")
+    public ResponseEntity<String> remove(@PathVariable("id") Long id) {
+        return supplierService.remove(id) ?
+                ResponseEntity.ok("Removed")
+                : ResponseEntity.badRequest().build();
+    }
+
 }

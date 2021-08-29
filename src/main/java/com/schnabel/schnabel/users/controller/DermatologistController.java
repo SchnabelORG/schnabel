@@ -101,7 +101,7 @@ public class DermatologistController
     }
 
     @PostMapping("register")
-    public ResponseEntity<String> registerPharmacyAdmin(@RequestBody RegisterPharmacyEmployeeRequest request)
+    public ResponseEntity<String> registerDermatologist(@RequestBody RegisterPharmacyEmployeeRequest request)
     {
         return dermatologistService.registerDermatologist(request.getName(), request.getSurname(), request.getEmail(), request.getPassword(), request.getAddress()) ?
                 ResponseEntity.ok("Registered")
@@ -151,6 +151,14 @@ public class DermatologistController
     public ResponseEntity<PagedModel<DermatologistDTO>> getAllByNotPharmacyId(@PathVariable("id") Long pharmacyId, Pageable pageable) 
     {
         return new ResponseEntity<>(dermatologistService.findAllDermatologistNotInPharmacy(pharmacyId, pageable), HttpStatus.OK);
+    }
+
+    @DeleteMapping("remove/{id}")
+    public ResponseEntity<String> remove(@PathVariable("id") Long id) {
+        boolean b = dermatologistService.remove(id);
+        return  b ?
+                ResponseEntity.ok("Removed")
+                : ResponseEntity.badRequest().build();
     }
 
 }

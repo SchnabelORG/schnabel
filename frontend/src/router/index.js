@@ -311,6 +311,16 @@ const routes = [
         name: 'SystemAdminRegisterPharmacy',
         component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminRegisterPharmacy.vue'),
       },
+      {
+        path: 'dermatologists',
+        name: 'SystemAdminDermatologists',
+        component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminDermatologists.vue'),
+      },
+      {
+        path: 'suppliers',
+        name: 'SystemAdminSupplier',
+        component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminSupplier.vue'),
+      },
     ],
   },
 
