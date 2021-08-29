@@ -321,6 +321,11 @@ const routes = [
         name: 'SystemAdminSupplier',
         component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminSupplier.vue'),
       },
+      {
+        path: 'drugs',
+        name: 'SystemAdminDrugs',
+        component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminDrugs.vue'),
+      },
     ],
   },
 

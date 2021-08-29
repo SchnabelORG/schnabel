@@ -29,5 +29,11 @@ public interface IDrugService extends IJpaService<Drug, Long>
     PagedModel<DrugDTO> findGradeable(Long patientId, Pageable pageable);
     Optional<Drug> findByName(String name);
     List<DrugDTO> findAllDTO();
-    boolean registerDrug(String code, String name, String description, DrugState drugState, DrugOrigin drugOrigin, DrugType drugType, String producer, String dosage, IssuingType issuingType);
+    boolean registerDrug(String code, String name, String description, DrugState drugState, DrugOrigin drugOrigin, DrugType drugType, String producer, String dosage, IssuingType issuingType, List<Long> substituteDrugs);
+    boolean updateDrug(Long id, String code, String name, String description, DrugState drugState, DrugOrigin drugOrigin, DrugType drugType, String producer, String dosage, IssuingType issuingType, List<Long> substituteDrugs);
+    Enum<DrugType>[] getDrugTypes();
+    Enum<DrugOrigin>[] getDrugOrigin();
+    Enum<DrugState>[] getDrugState();
+    List<DrugDTO> getSubstitute(Long id);
+
 }

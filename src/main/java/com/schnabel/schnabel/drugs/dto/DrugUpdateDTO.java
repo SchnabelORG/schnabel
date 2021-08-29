@@ -7,7 +7,6 @@ import com.schnabel.schnabel.drugs.model.enums.DrugOrigin;
 import com.schnabel.schnabel.drugs.model.enums.DrugType;
 import com.schnabel.schnabel.drugs.model.enums.IssuingType;
 import lombok.*;
-import org.springframework.hateoas.server.core.Relation;
 
 import java.util.List;
 
@@ -16,9 +15,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@JsonRootName("drugregistration")
+@JsonRootName("drugupdate")
 @JsonInclude(JsonInclude.Include.ALWAYS)
-public class DrugRegistrationDTO {
+public class DrugUpdateDTO {
+    private Long id;
     private String code;
     private String name;
     private String description;

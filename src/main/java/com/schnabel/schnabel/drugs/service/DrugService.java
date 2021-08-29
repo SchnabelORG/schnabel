@@ -9,9 +9,9 @@ import com.schnabel.schnabel.drugs.model.enums.DrugType;
 import com.schnabel.schnabel.drugs.model.enums.IssuingType;
 import com.schnabel.schnabel.drugs.repository.IDrugRepository;
 import com.schnabel.schnabel.misc.implementations.JpaService;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.schnabel.schnabel.drugs.dto.DrugDTO;
 import com.schnabel.schnabel.drugs.dto.DrugDTOAssembler;
@@ -26,6 +26,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 /**
  * Drug JPA service implementation
@@ -79,11 +81,59 @@ public class DrugService extends JpaService<Drug, Long, IDrugRepository> impleme
 
 
     @Override
-    public boolean registerDrug(String code, String name, String description, DrugState drugState, DrugOrigin drugOrigin, DrugType drugType, String producer, String dosage, IssuingType issuingType) {
+    public boolean registerDrug(String code, String name, String description, DrugState drugState, DrugOrigin drugOrigin, DrugType drugType, String producer, String dosage, IssuingType issuingType, List<Long> substituteDrugs) {
         Drug newDrug = new Drug(code, name,  description, drugType, drugState, drugOrigin , producer, dosage, issuingType);
+        for(Long id : substituteDrugs){
+            Drug d = repository.findById(id).get();
+            newDrug.getSubstituteDrugs().add(d);
+        }
         Optional<Drug> drug = add(newDrug);
         if(drug.isPresent())
             return true;
         return false;
     }
+
+    @Override
+    public boolean updateDrug(Long id, String code, String name, String description, DrugState drugState, DrugOrigin drugOrigin, DrugType drugType, String producer, String dosage, IssuingType issuingType, List<Long> substituteDrugs) {
+        Optional<Drug> drug = get(id);
+        if(!drug.isPresent()) {
+            return false;
+        }
+        drug.get().setCode(code);
+        drug.get().setName(name);
+        drug.get().setDescription(description);
+        drug.get().setDrugState(drugState);
+        drug.get().setDrugOrigin(drugOrigin);
+        drug.get().setDrugType(drugType);
+        drug.get().setDosage(dosage);
+        drug.get().setProducer(producer);
+        drug.get().setIssuingType(issuingType);
+        drug.get().setSubstituteDrugs(repository.findAllById(substituteDrugs));
+        return update(drug.get());
+    }
+
+    @Override
+    public Enum<DrugType>[] getDrugTypes() {
+        return DrugType.values();
+    }
+
+    @Override
+    public Enum<DrugOrigin>[] getDrugOrigin() {
+        return DrugOrigin.values();
+    }
+
+    @Override
+    public Enum<DrugState>[] getDrugState() {
+        return DrugState.values();
+    }
+
+    @Override
+    @Transactional
+    public List<DrugDTO> getSubstitute(Long id) {
+        return  get(id).get().getSubstituteDrugs().
+                stream().
+                map(dtoAsm::toModel).collect(Collectors.toList());
+    }
+
+
 }

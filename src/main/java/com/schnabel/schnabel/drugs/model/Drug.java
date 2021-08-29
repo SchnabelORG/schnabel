@@ -10,6 +10,7 @@ import com.schnabel.schnabel.misc.model.IIdentifiable;
 
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -84,5 +85,7 @@ public class Drug implements IIdentifiable<Long>
         this.producer = producer;
         this.dosage = dosage;
         this.issuingType = issuingType;
+        this.substituteDrugs = new ArrayList<>();
+        this.ingredients = new ArrayList<>();
     }
 }
