@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.schnabel.schnabel.users.model.User;
 
+import com.schnabel.schnabel.users.model.UserS;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +28,7 @@ public class SchnabelUserDetails implements UserDetails {
     private String email;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public static SchnabelUserDetails build(User user) {
+    public static SchnabelUserDetails build(UserS user) {
         List<GrantedAuthority> authorities = user.getRoles().stream()
             .map(role -> new SimpleGrantedAuthority(role.getName().name()))
             .collect(Collectors.toList());
