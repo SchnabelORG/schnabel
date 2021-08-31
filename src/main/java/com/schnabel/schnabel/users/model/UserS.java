@@ -17,9 +17,8 @@ import java.util.Set;
 @EqualsAndHashCode
 @Table(name = "userss")
 public class UserS implements IIdentifiable<Long> {
-
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
@@ -31,10 +30,16 @@ public class UserS implements IIdentifiable<Long> {
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(	name = "user_roles",
+    @JoinTable(	name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    public UserS(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
 
     @Override
     public Long getId() {
