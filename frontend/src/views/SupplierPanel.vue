@@ -1,8 +1,11 @@
 <template>
     <div id="main-home">
         <main-navigation>
-        <router-link to="/supplier">Home</router-link>
-        <router-link to="/supplier/account">Account</router-link>
+            <router-link to="/supplier">Home</router-link>
+            <router-link to="/supplier/account">Account</router-link>
+            <div v-if="currentUser">
+                <a href @click.prevent="logOut">Logout</a>
+            </div>
         </main-navigation>
         <div id="main-content">
             <router-view/>
@@ -35,6 +38,10 @@
                     console.log(r.data);
                     this.$router.push("/supplier/changepass") ;
                 });
+            },
+            logOut() {
+                this.$store.dispatch('auth/logout');
+                this.$router.push('/login');
             }
         },
         mounted() {

@@ -40,7 +40,7 @@
                                         <td>{{row.item.id}}</td>
                                         <td>{{row.item.price}}</td>
                                         <td>{{row.item.dateOfDelivery}}</td>
-                                        <td>{{row.item.orderStatus}}</td>
+                                        <td>{{row.item.offerStatus}}</td>
                                                               
                                     </tr>
                                 </template>

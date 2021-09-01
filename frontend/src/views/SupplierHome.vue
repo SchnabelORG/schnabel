@@ -4,6 +4,7 @@
             <v-row>
                 <v-col>
                     <v-card color="#385F73"
+                    @click="$router.push('/supplier/orders')"
                     dark>
                         <v-card-title class="text-h6">
                             Orders
@@ -12,7 +13,7 @@
                             See all oreders and make offers
                         </v-card-subtitle>
                         <v-card-actions>
-                            <v-btn text>
+                            <v-btn text >
                                 . . .
                             </v-btn>
                         </v-card-actions>
@@ -20,6 +21,7 @@
                 </v-col>
                 <v-col>
                     <v-card color="#385F73"
+                    @click="$router.push('/supplier/offers')"
                     dark>
                         <v-card-title class="text-h6">
                             Offers
@@ -38,6 +40,8 @@
         </v-container>
     </div>
 </template>
+
+
 
 <style scoped>
     #systemadmin-home-main{
