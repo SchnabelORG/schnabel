@@ -2,6 +2,7 @@ package com.schnabel.schnabel.procurement.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.schnabel.schnabel.users.dto.SupplierDTO;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;

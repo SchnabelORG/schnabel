@@ -46,7 +46,7 @@ public class OrderDTOAssembler extends RepresentationModelAssemblerSupport<Order
         //dto.add(linkTo(methodOn(OfferController.class).getByOrder(Pageable.unpaged(), entity.getId())).withRel("offers"));
         dto.setOrderItems(getOrderItems(entity.getOrderItems()));
         //dto.add(linkTo(methodOn(PharmacyAdminController.class).get(entity.getPharmacyAdmin().getId())).withRel("pharmacyAdmin"));
-        dto.add(linkTo(methodOn(OfferController.class).getByOrder(Pageable.unpaged(), entity.getId())).withRel("offers"));
+        //dto.add(linkTo(methodOn(OfferController.class).getByOrder(Pageable.unpaged(), entity.getId())).withRel("offers"));
         return dto;
     }
 
