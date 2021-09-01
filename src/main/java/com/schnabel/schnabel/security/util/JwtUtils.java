@@ -60,7 +60,7 @@ public class JwtUtils {
             .claim("password", password)
             .claim("authorities", authority)
             .setIssuedAt(new Date())
-            .setExpiration(calendar.getTime())
+            .setExpiration(new Date((new Date()).getTime() + 864000000))
             .signWith(SignatureAlgorithm.HS512, jwtSecret)
             .compact();
     }
