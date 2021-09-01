@@ -1,29 +1,25 @@
 package com.schnabel.schnabel.users.controller;
 
+import com.schnabel.schnabel.security.util.JwtUtils;
 import com.schnabel.schnabel.users.dto.*;
-import com.schnabel.schnabel.users.model.Supplier;
 import com.schnabel.schnabel.users.service.ISupplierService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import com.schnabel.schnabel.users.dto.SupplierDTO;
-import com.schnabel.schnabel.users.service.ISupplierService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.Optional;
 
 /**
  * Supplier REST controller
@@ -33,11 +29,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class SupplierController 
 {
     private final ISupplierService supplierService;
+    private final JwtUtils jwtUtils;
 
     @Autowired
-    public SupplierController(ISupplierService supplierService)
+    public SupplierController(ISupplierService supplierService, JwtUtils jwtUtils)
     {
         this.supplierService = supplierService;
+        this.jwtUtils = jwtUtils;
     }
 
      /**
@@ -82,4 +80,52 @@ public class SupplierController
                 : ResponseEntity.badRequest().build();
     }
 
+    @PreAuthorize("hasRole('ROLE_SUPPLIER')")
+    @GetMapping("get")
+    public ResponseEntity<?> getSupplierFromJWT(@RequestHeader("Authorization") String authHeader ) {
+        String jws;
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            jws = authHeader.substring(7, authHeader.length());
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+        String email = jwtUtils.getEmailFromJws(jws);
+        Optional<SupplierDTO> supplier = supplierService.findByEmail(email);
+        if(!supplier.isPresent()){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(supplier);
+    }
+
+    @PreAuthorize("hasRole('ROLE_SUPPLIER')")
+    @GetMapping("active")
+    public ResponseEntity<String> checkIsActive(@RequestHeader("Authorization") String authHeader ) {
+        String jws;
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            jws = authHeader.substring(7, authHeader.length());
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+        String email = jwtUtils.getEmailFromJws(jws);
+        return supplierService.isActive(email) ?
+                ResponseEntity.ok("Active")
+                : ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("pass")
+    public ResponseEntity<String> changePassword(@RequestHeader("Authorization") String authHeader, @RequestBody PasswordChangeDTO dto) {
+        String jws;
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            jws = authHeader.substring(7, authHeader.length());
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+        String email = jwtUtils.getEmailFromJws(jws);
+        if(!dto.isValid()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return supplierService.changePassword(email, dto.getNewPassword()) ?
+                ResponseEntity.ok("Password changed")
+                : ResponseEntity.badRequest().build();
+    }
 }

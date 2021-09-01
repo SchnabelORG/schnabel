@@ -73,4 +73,30 @@ public class SupplierService extends JpaService<Supplier, Long, ISupplierReposit
         Page<Supplier> suppliers = getAll(pageable);
         return supplierPagedAsm.toModel(suppliers, supplierDTOAssembler);
     }
+
+    @Override
+    public Optional<SupplierDTO> findByEmail(String email) {
+        return repository.findByEmail(email).map(supplierDTOAssembler::toModel);
+    }
+
+    @Override
+    public boolean isActive(String email) {
+        Optional<Supplier> supplier = repository.findByEmail(email);
+        if(!supplier.isPresent()){
+            return false;
+        }
+        return supplier.get().isActivated();
+    }
+
+    @Override
+    public boolean changePassword(String email, String password) {
+        Optional<Supplier> supplier = repository.findByEmail(email);
+        if(!supplier.isPresent()){
+            return false;
+        }
+        supplier.get().setPassword(passwordEncoder.encode(password));
+        supplier.get().setActivated(true);
+        repository.save(supplier.get());
+        return true;
+    }
 }

@@ -43,7 +43,6 @@ public class DrugController
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<PagedModel<DrugDTO>> getAll(Pageable pageable)
     {
         return new ResponseEntity<>(service.findAllDTO(pageable), HttpStatus.OK);

@@ -18,4 +18,7 @@ public interface ISupplierService extends IJpaService<Supplier, Long>
     boolean registerSupplier(String name, String surname, String email, String password, Address address, String company );
     Optional<SupplierDTO> getDTO(Long id);
     PagedModel<SupplierDTO> getAllDTO(Pageable pageable);
+    Optional<SupplierDTO> findByEmail(String email);
+    boolean isActive(String email);
+    boolean changePassword(String email, String password);
 }

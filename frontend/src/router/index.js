@@ -79,6 +79,8 @@ const routes = [
             next({name: 'PharmacistHome'}); 
           } else if (r.data == 'ROLE_DERMATOLOGIST') {
             next({name: 'DermatologistHome'}); 
+          } else if (r.data == 'ROLE_SUPPLIER') {
+            next({name: 'SupplierHome'});
           }
           else {
             next({name: 'Home'});
@@ -326,6 +328,47 @@ const routes = [
         name: 'SystemAdminDrugs',
         component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminDrugs.vue'),
       },
+    ],
+  },
+
+
+  //Supplier
+
+  {
+    path: '/supplier',
+    name: 'SupplierPanel',
+    beforeEnter: (to, from, next) => {
+      const loggedIn = localStorage.getItem('user');
+      axios.get("api/supplier/active/", {headers:{"Authorization": "Bearer " + loggedIn}})
+        .then(r => {
+          console.log(r);
+          next();
+        })
+        .catch(r => {
+          console.log(r);
+          next({name: 'SupplierChangePassword'});
+        });
+
+    },
+    component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SupplierPanel.vue'),
+    children: [
+      {
+        path: '',
+        name: 'SupplierHome',
+        component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SupplierHome.vue'),
+      },
+      {
+        path: 'changepass',
+        name: 'SupplierChangePassword',
+        component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SupplierChangePassword.vue'),
+      },
+      {
+        path: 'orders',
+        name: 'SupplierOrders',
+        component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SupplierOrders.vue'),
+      },
+      
+
     ],
   },
 
