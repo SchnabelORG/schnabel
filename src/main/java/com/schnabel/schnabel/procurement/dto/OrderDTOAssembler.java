@@ -7,6 +7,11 @@ import com.schnabel.schnabel.users.controller.PharmacyAdminController;
 import com.schnabel.schnabel.users.dto.PharmacyAdminDTO;
 import com.schnabel.schnabel.users.model.PharmacyAdmin;
 
+import com.schnabel.schnabel.procurement.controller.OfferController;
+import com.schnabel.schnabel.procurement.controller.OrderController;
+import com.schnabel.schnabel.procurement.model.Order;
+import com.schnabel.schnabel.procurement.model.OrderItem;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -38,8 +43,10 @@ public class OrderDTOAssembler extends RepresentationModelAssemblerSupport<Order
             .build()
             .add(linkTo(methodOn(PharmacyAdminController.class).get(pharmacyAdmin.getId())).withSelfRel()));
 
-        dto.setOrderItems(getOrderItems(entity.getOrderItems()));
         //dto.add(linkTo(methodOn(OfferController.class).getByOrder(Pageable.unpaged(), entity.getId())).withRel("offers"));
+        dto.setOrderItems(getOrderItems(entity.getOrderItems()));
+        //dto.add(linkTo(methodOn(PharmacyAdminController.class).get(entity.getPharmacyAdmin().getId())).withRel("pharmacyAdmin"));
+        dto.add(linkTo(methodOn(OfferController.class).getByOrder(Pageable.unpaged(), entity.getId())).withRel("offers"));
         return dto;
     }
 

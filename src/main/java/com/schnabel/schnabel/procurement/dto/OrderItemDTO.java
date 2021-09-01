@@ -1,7 +1,6 @@
 package com.schnabel.schnabel.procurement.dto;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
-
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;

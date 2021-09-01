@@ -16,6 +16,13 @@ import com.schnabel.schnabel.procurement.repository.IOfferRepository;
 import com.schnabel.schnabel.procurement.repository.IOrderRepository;
 import com.schnabel.schnabel.users.service.IPharmacyAdminService;
 
+import com.schnabel.schnabel.procurement.dto.OfferDTO;
+import com.schnabel.schnabel.procurement.dto.OfferDTOAssembler;
+import com.schnabel.schnabel.procurement.model.Offer;
+import com.schnabel.schnabel.procurement.model.Order;
+import com.schnabel.schnabel.procurement.repository.IOfferRepository;
+
+import com.schnabel.schnabel.procurement.repository.IOrderRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;

@@ -2,8 +2,6 @@ package com.schnabel.schnabel.procurement.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.schnabel.schnabel.users.dto.SupplierDTO;
-
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
@@ -23,4 +21,5 @@ public class OfferDTO extends RepresentationModel<OfferDTO> {
     private Integer price;
     private LocalDate dateOfDelivery;
     private SupplierDTO supplier;
+    //private OrderForOfferDTO order;
 }
