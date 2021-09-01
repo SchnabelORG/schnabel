@@ -112,6 +112,7 @@ public class SupplierController
                 : ResponseEntity.badRequest().build();
     }
 
+    @PreAuthorize("hasRole('ROLE_SUPPLIER')")
     @PostMapping("pass")
     public ResponseEntity<String> changePassword(@RequestHeader("Authorization") String authHeader, @RequestBody PasswordChangeDTO dto) {
         String jws;
@@ -128,4 +129,21 @@ public class SupplierController
                 ResponseEntity.ok("Password changed")
                 : ResponseEntity.badRequest().build();
     }
+
+
+    @PreAuthorize("hasRole('ROLE_SUPPLIER')")
+    @PutMapping
+    public ResponseEntity<SupplierDTO> put(@RequestBody SupplierDTO dto, @RequestHeader("Authorization") String authHeader) {
+        String jws;
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            jws = authHeader.substring(7, authHeader.length());
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+        String email = jwtUtils.getEmailFromJws(jws);
+
+        return supplierService.updateSupplier(dto, email).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+
+    }
+
 }

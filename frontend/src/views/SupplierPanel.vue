@@ -16,6 +16,29 @@
             return {
                 title: "Supplier panel",
             }
+        },
+        computed: {
+            currentUser() {
+                return this.$store.state.auth.user;
+            }
+        },
+        methods: {
+            checkActive: function() {
+                if(!this.currentUser){
+                    this.$router.push("login");
+                }
+                this.axios.get("api/supplier/active", {headers:{"Authorization": "Bearer " + this.currentUser}})
+                .then(r => {
+                    console.log(r.data);
+                })
+                .catch(r => {
+                    console.log(r.data);
+                    this.$router.push("/supplier/changepass") ;
+                });
+            }
+        },
+        mounted() {
+            this.checkActive();
         }
     }
 </script>

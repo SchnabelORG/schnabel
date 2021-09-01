@@ -70,7 +70,7 @@
                 return this.axios.get("/api/auth/refresh", {headers: {"Authorization": "Bearer " + localStorage.jws}});
             },
             getSupplier: function() {
-                this.axios.get("api/supplier/get", {headers:{"Authorization": "Bearer " + this.currentUser()}})
+                this.axios.get("api/supplier/get", {headers:{"Authorization": "Bearer " + this.currentUser}})
                     .then(response => {
                         console.log(response.data);
                         this.supplier = response.data;
@@ -81,8 +81,7 @@
             },
             save: function(){
                 let dto = {newPassword: this.password, repeatedPassword: this.confirmPassword }
-                console.log(dto)
-                this.axios.put("api/supplier/pass", dto, {headers:{"Authorization": "Bearer " + this.currentUser()}})
+                this.axios.post("api/supplier/pass", dto, {headers:{"Authorization": "Bearer " + this.currentUser}})
                     .then(response =>
                     {
                         console.log(response.data);

@@ -59,7 +59,7 @@ public class OrderDTOAssembler extends RepresentationModelAssemblerSupport<Order
                 .map(p -> OrderItemDTO.builder()
                         .id(p.getId())
                         .quantity(p.getQuantity())
-                        .drug(p.getDrug().getName())
+                        .drug(p.getDrug().getName() + ", " + p.getDrug().getDosage())
                         .build())
                 .collect(Collectors.toList());
     }

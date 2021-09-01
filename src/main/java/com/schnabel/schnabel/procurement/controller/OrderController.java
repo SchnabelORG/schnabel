@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -69,16 +71,27 @@ public class OrderController
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PreAuthorize("hasRole('ROLE_SUPPLIER')")
     @GetMapping("active")
     public ResponseEntity<PagedModel<OrderDTO>> getActive(Pageable pageable)
     {
         return new ResponseEntity<>(orderService.getNonExpired(pageable), HttpStatus.OK);
     }
 
-    @GetMapping("new/{id}")
-    public ResponseEntity<PagedModel<OrderDTO>> getNewOrders(Pageable pageable, @PathVariable long id)
+    @PreAuthorize("hasRole('ROLE_SUPPLIER')")
+    @GetMapping("new")
+    public ResponseEntity<PagedModel<OrderDTO>> getNewOrders(Pageable pageable, @RequestHeader("Authorization") String authHeader)
     {
-        return new ResponseEntity<>(orderService.getNewOrders(pageable, id), HttpStatus.OK);
+        String jws;
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            jws = authHeader.substring(7, authHeader.length());
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+
+        String email = jwtUtils.getEmailFromJws(jws);
+
+        return new ResponseEntity<>(orderService.getNewOrders(pageable, email), HttpStatus.OK);
     }
 
     @GetMapping("pharmacy/{id}")

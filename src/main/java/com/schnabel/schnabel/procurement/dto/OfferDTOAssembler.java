@@ -37,6 +37,7 @@ public class OfferDTOAssembler extends RepresentationModelAssemblerSupport<Offer
         dto.setId(entity.getId());
         dto.setPrice(entity.getPrice());
         dto.setDateOfDelivery(entity.getDateOfDelivery());
+        dto.setOfferStatus(entity.getOfferStatus());
         Supplier supplier = entity.getSupplier();
         dto.setSupplier(SupplierDTO.builder()
             .id(supplier.getId())

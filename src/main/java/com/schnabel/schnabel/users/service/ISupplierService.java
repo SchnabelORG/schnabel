@@ -21,4 +21,5 @@ public interface ISupplierService extends IJpaService<Supplier, Long>
     Optional<SupplierDTO> findByEmail(String email);
     boolean isActive(String email);
     boolean changePassword(String email, String password);
+    Optional<SupplierDTO> updateSupplier(SupplierDTO dto, String email);
 }

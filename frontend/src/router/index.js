@@ -10,7 +10,7 @@ const routes = [
     path: '/',
     beforeEnter: (to, from, next) => {
       if(localStorage.jws) {
-        axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + localStorage.jws}})
+        axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + localStorage.getItem('user')}})
         .then(r => {
           if(r.data == 'ROLE_PATIENT') {
             next({name: 'UserHome'});
@@ -69,7 +69,7 @@ const routes = [
   {
     path: '/redirect',
     beforeEnter: (to, from, next) => {
-      axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + localStorage.jws}})
+      axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + JSON.parse(localStorage.getItem('user'))}})
         .then(r => {
           if(r.data == 'ROLE_PATIENT') {
             next({name: 'UserHome'});
@@ -337,19 +337,6 @@ const routes = [
   {
     path: '/supplier',
     name: 'SupplierPanel',
-    beforeEnter: (to, from, next) => {
-      const loggedIn = localStorage.getItem('user');
-      axios.get("api/supplier/active/", {headers:{"Authorization": "Bearer " + loggedIn}})
-        .then(r => {
-          console.log(r);
-          next();
-        })
-        .catch(r => {
-          console.log(r);
-          next({name: 'SupplierChangePassword'});
-        });
-
-    },
     component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SupplierPanel.vue'),
     children: [
       {
@@ -366,6 +353,16 @@ const routes = [
         path: 'orders',
         name: 'SupplierOrders',
         component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SupplierOrders.vue'),
+      },
+      {
+        path: 'offers',
+        name: 'SupplierOffers',
+        component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SupplierOffers.vue'),
+      },
+      {
+        path: 'account',
+        name: 'SupplierAccount',
+        component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SupplierAccount.vue'),
       },
       
 

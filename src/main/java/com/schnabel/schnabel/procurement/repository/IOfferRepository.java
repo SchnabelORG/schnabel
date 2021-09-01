@@ -2,6 +2,7 @@ package com.schnabel.schnabel.procurement.repository;
 
 import com.schnabel.schnabel.procurement.model.Offer;
 
+import com.schnabel.schnabel.procurement.model.OfferStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +16,5 @@ public interface IOfferRepository extends JpaRepository<Offer, Long>
 {
     Page<Offer> findBySupplierId(Pageable pageable, Long id);
     Page<Offer> findByOrderId(Pageable pageable, Long id);
+    Page<Offer> findBySupplierIdAndOfferStatus(Pageable pageable, Long id, OfferStatus offerStatus);
 }

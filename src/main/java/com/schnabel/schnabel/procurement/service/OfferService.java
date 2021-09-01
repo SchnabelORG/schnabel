@@ -14,15 +14,10 @@ import com.schnabel.schnabel.procurement.model.OrderStatus;
 import com.schnabel.schnabel.procurement.repository.IOfferRepository;
 
 import com.schnabel.schnabel.procurement.repository.IOrderRepository;
+import com.schnabel.schnabel.users.model.Supplier;
+import com.schnabel.schnabel.users.repository.ISupplierRepository;
 import com.schnabel.schnabel.users.service.IPharmacyAdminService;
 
-import com.schnabel.schnabel.procurement.dto.OfferDTO;
-import com.schnabel.schnabel.procurement.dto.OfferDTOAssembler;
-import com.schnabel.schnabel.procurement.model.Offer;
-import com.schnabel.schnabel.procurement.model.Order;
-import com.schnabel.schnabel.procurement.repository.IOfferRepository;
-
-import com.schnabel.schnabel.procurement.repository.IOrderRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -47,8 +42,9 @@ public class OfferService extends JpaService<Offer, Long, IOfferRepository> impl
     private final IMailService mailService;
     private final IWareHouseItemService wareHouseItemService;
     private final IOrderItemService orderItemService;
+    private final ISupplierRepository supplierRepository;
 
-    public OfferService(IOfferRepository repository, OfferDTOAssembler offerDTOAssembler, PagedResourcesAssembler<Offer> offerPagedResourcesAssembler, IOrderRepository orderRepository, IPharmacyAdminService pharmacyAdminService, IWareHouseItemService wareHouseItemService, IOrderItemService orderItemService, IMailService mailService)
+    public OfferService(IOfferRepository repository, OfferDTOAssembler offerDTOAssembler, PagedResourcesAssembler<Offer> offerPagedResourcesAssembler, IOrderRepository orderRepository, IPharmacyAdminService pharmacyAdminService, IWareHouseItemService wareHouseItemService, IOrderItemService orderItemService, IMailService mailService, ISupplierRepository supplierRepository)
     {
 		super(repository);
         this.offerDTOAssembler = offerDTOAssembler;
@@ -58,18 +54,21 @@ public class OfferService extends JpaService<Offer, Long, IOfferRepository> impl
         this.wareHouseItemService = wareHouseItemService;
         this.orderItemService = orderItemService;
         this.mailService = mailService;
+        this.supplierRepository = supplierRepository;
     }
 
     @Override
     @Transactional
-    public PagedModel<OfferDTO> findBySupplier(Pageable pageable, Long id) {
-        Page<Offer> offers = repository.findBySupplierId(pageable, id);
+    public PagedModel<OfferDTO> findBySupplier(Pageable pageable, String email) {
+        Optional<Supplier> suppler =  supplierRepository.findByEmail(email);
+        Page<Offer> offers = repository.findBySupplierId(pageable, suppler.get().getId());
         return offerPagedResourcesAssembler.toModel(offers, offerDTOAssembler);
     }
 
+
     @Override
     @Transactional
-    public boolean createOffer(int price, LocalDate dateOfDelivery, long orderId) {
+    public boolean createOffer(int price, LocalDate dateOfDelivery, long orderId, String email) {
         Offer newOffer = new Offer(price, dateOfDelivery);
         Order order = orderRepository.findById(orderId).get();
         if(order==null)
@@ -77,6 +76,11 @@ public class OfferService extends JpaService<Offer, Long, IOfferRepository> impl
         if(order.getDeadline().isBefore(dateOfDelivery))
             return false;
         newOffer.setOrder(order);
+        newOffer.setOfferStatus(OfferStatus.CREATED);
+        Optional<Supplier> suppler =  supplierRepository.findByEmail(email);
+        if(!suppler.isPresent())
+            return false;
+        newOffer.setSupplier(suppler.get());
         Optional<Offer> offer = add(newOffer);
         if(offer.isPresent())
             return true;
@@ -153,6 +157,13 @@ public class OfferService extends JpaService<Offer, Long, IOfferRepository> impl
     {
         Page<Offer> offers = repository.findByOrderId(pageable, orderId);
         return offers.isEmpty();
+    }
+
+    @Override
+    public PagedModel<OfferDTO> findBySupplierFiltered(Pageable pageable, String email, OfferStatus offerStatus) {
+        Optional<Supplier> suppler =  supplierRepository.findByEmail(email);
+        Page<Offer> offers = repository.findBySupplierIdAndOfferStatus(pageable, suppler.get().getId(), offerStatus);
+        return offerPagedResourcesAssembler.toModel(offers, offerDTOAssembler);
     }
 
     private boolean updateWareHouseItems(Offer offer, Order order, Pageable pageable)

@@ -10,6 +10,8 @@ import com.schnabel.schnabel.procurement.model.Order;
 import com.schnabel.schnabel.procurement.model.OrderItem;
 import com.schnabel.schnabel.procurement.model.OrderStatus;
 import com.schnabel.schnabel.procurement.repository.IOrderRepository;
+import com.schnabel.schnabel.users.model.Supplier;
+import com.schnabel.schnabel.users.repository.ISupplierRepository;
 import com.schnabel.schnabel.users.service.IPharmacyAdminService;
 
 import org.springframework.data.domain.Page;
@@ -36,8 +38,9 @@ public class OrderService extends JpaService<Order, Long, IOrderRepository> impl
     private final IDrugService drugService;
     private final IOrderItemService orderItemService;
     private final IOfferService offerService;
+    private final ISupplierRepository supplierRepository;
 
-    public OrderService(IOrderRepository repository, OrderDTOAssembler orderDTOAssembler, PagedResourcesAssembler<Order> orderPagedResourcesAssembler, IPharmacyAdminService pharmacyAdminService, IDrugService drugService, IOrderItemService orderItemService, IOfferService offerService)
+    public OrderService(IOrderRepository repository, OrderDTOAssembler orderDTOAssembler, PagedResourcesAssembler<Order> orderPagedResourcesAssembler, IPharmacyAdminService pharmacyAdminService, IDrugService drugService, IOrderItemService orderItemService, IOfferService offerService, ISupplierRepository supplierRepository)
     {
 		super(repository);
         this.orderDTOAssembler = orderDTOAssembler;
@@ -46,6 +49,7 @@ public class OrderService extends JpaService<Order, Long, IOrderRepository> impl
         this.drugService = drugService;
         this.orderItemService = orderItemService;
         this.offerService = offerService;
+        this.supplierRepository = supplierRepository;
     }
 
     @Override
@@ -71,8 +75,9 @@ public class OrderService extends JpaService<Order, Long, IOrderRepository> impl
 
     @Override
     @Transactional
-    public PagedModel<OrderDTO> getNewOrders(Pageable pageable, Long id) {
-        Page<Order> orders = repository.findByDeadlineAfterAndSupplierId(pageable, LocalDate.now(), id);
+    public PagedModel<OrderDTO> getNewOrders(Pageable pageable, String email) {
+        Optional<Supplier> supplier = supplierRepository.findByEmail(email);
+        Page<Order> orders = repository.findByDeadlineAfterAndSupplierId(pageable, LocalDate.now(), supplier.get().getId());
         return orderPagedResourcesAssembler.toModel(orders, orderDTOAssembler);
     }
     

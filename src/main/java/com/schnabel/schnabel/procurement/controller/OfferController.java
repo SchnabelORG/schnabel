@@ -1,7 +1,7 @@
 package com.schnabel.schnabel.procurement.controller;
 
-import com.schnabel.schnabel.procurement.dto.OfferCreationDTO;
-import com.schnabel.schnabel.procurement.dto.OfferDTO;
+import com.schnabel.schnabel.procurement.dto.*;
+
 import java.util.Optional;
 
 import com.schnabel.schnabel.procurement.dto.OfferCreationDTO;
@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -58,16 +60,48 @@ public class OfferController
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("supplier/{id}")
-    public ResponseEntity<PagedModel<OfferDTO>> getBySupplier(Pageable pageable, @PathVariable long id)
+    @PreAuthorize("hasRole('ROLE_SUPPLIER')")
+    @GetMapping("supplier")
+    public ResponseEntity<PagedModel<OfferDTO>> getBySupplier(Pageable pageable, @RequestHeader("Authorization") String authHeader)
     {
-        return new ResponseEntity<>(offerService.findBySupplier(pageable, id), HttpStatus.OK);
+        String jws;
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            jws = authHeader.substring(7, authHeader.length());
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+
+        String email = jwtUtils.getEmailFromJws(jws);
+        return new ResponseEntity<>(offerService.findBySupplier(pageable, email), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_SUPPLIER')")
+    @PostMapping("supplier/filter")
+    public ResponseEntity<PagedModel<OfferDTO>> getBySupplierFiltered(Pageable pageable, @RequestBody OfferFilterDTO dto, @RequestHeader("Authorization") String authHeader) {
+        String jws;
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            jws = authHeader.substring(7, authHeader.length());
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+        String email = jwtUtils.getEmailFromJws(jws);
+        return new ResponseEntity<>(offerService.findBySupplierFiltered(pageable, email, dto.getOfferStatus()), HttpStatus.OK);
+    }
+
+
+    @PreAuthorize("hasRole('ROLE_SUPPLIER')")
     @PostMapping("makeoffer")
-    public ResponseEntity<String> createOffer(@RequestBody OfferCreationDTO creationDTO)
+    public ResponseEntity<String> createOffer(@RequestBody OfferCreationDTO creationDTO, @RequestHeader("Authorization") String authHeader)
     {
-        return offerService.createOffer(creationDTO.getPrice(), creationDTO.getDateOfDelivery(), creationDTO.getOrderId()) ?
+        String jws;
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            jws = authHeader.substring(7, authHeader.length());
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+
+        String email = jwtUtils.getEmailFromJws(jws);
+        return offerService.createOffer(creationDTO.getPrice(), creationDTO.getDateOfDelivery(), creationDTO.getOrderId(), email) ?
                 ResponseEntity.ok("Offer made.")
                 : ResponseEntity.badRequest().build();
     }
