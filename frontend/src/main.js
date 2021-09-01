@@ -4,6 +4,7 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import App from './App.vue'
+import store from './store'
 
 import VueLayers from 'vuelayers'
 import 'vuelayers/lib/style.css'
@@ -20,11 +21,11 @@ Vue.use(Vuex)
 Vue.use(VueLayers)
 Vue.use(DatetimePicker)
 
-const store = new Vuex.Store({
+/*const store = new Vuex.Store({
   state: {
     jws: "",
   },
-})
+})*/
 
 Vue.component('main-navigation', MainNavigation)
 Vue.component('sidebar', Sidebar, {

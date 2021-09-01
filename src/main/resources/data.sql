@@ -43,6 +43,7 @@ insert into pharmacyadmins(id, "name", surname, email, "password", city, postcod
 insert into suppliers(id, "name", surname, email, "password", city, postcode, street, street_no, latitude, longitude, firm, is_activated) values (9, 'Zoki', 'Zokic', 'zoki@gmail.com', '$2y$10$pTN2xTyuOLd3pyReU4QlGecab7eTQxgEevZrdbVYRYKqiU0timsga ', '11000', 'Beograd', 'Carlija Caplina', '12', 0.0, 0.0, 'Dobavljac Zoki', true);--password:Sifra1337
 insert into suppliers(id, "name", surname, email, "password", city, postcode, street, street_no, latitude, longitude, firm, is_activated) values (10, 'Jovan', 'Jovanovic', 'jovan@gmail.com', '$2y$10$ll2ULAuxZbDQUg7mCVhTF.aa2Xx7Al2BNaFMyhmlOVxDoRurB52ji ', '21000', 'Novi Sad', 'Bulevar Oslobodjenja', '14a', 0.0, 0.0, 'Jova trans', true);--password:Sifra1337
 
+
 insert into refresh_tokens(email, token) values('rzupunski@gmail.com', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyenVwdW5za2lAZ21haWwuY29tIiwiZXhwIjoxNjM4ODI1NDE5fQ.TIwAS7n4zkBX1ABzuj_ujKSW3RQMms6efsWTb2yCHLHuSosKZtYTKCXlO6XRdCxgiPtGlHBAe19TcBz6G827RQ');
 insert into refresh_tokens(email, token) values('ivos.jovan@protonmail.ch', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpdm9zLmpvdmFuQHByb3Rvbm1haWwuY2giLCJleHAiOjE2Mzg4MjU2Mjh9.Qvcf4xicLI7YW-973aPsvgcVmyAm3NOe7HG0g7cF_HheuZ9LEiKTcdiTqqFk4twhIr4oc38t0JmwGC-7UeZ4fA');
 insert into refresh_tokens(email, token) values ('jankovicpharmacy@gmail.com', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYW5rb3ZpY3BoYXJtYWN5QGdtYWlsLmNvbSIsImV4cCI6MTYzODgyOTUxOH0._kd3LUd9yME1DpHU19gfaVmc37PO-VsQs6lsEs59bjhxSexTXlv5nG9f-O8EAPUnGbcZ6GAGrHypwfCm30bmqA');
@@ -113,6 +114,32 @@ insert into roles("name") values ('ROLE_PATIENT');
 insert into roles("name") values ('ROLE_ADMIN');
 insert into roles("name") values ('ROLE_PHARMACIST');
 insert into roles("name") values ('ROLE_DERMATOLOGIST');
+insert into roles("name") values ('ROLE_SUPPLIER');
+insert into roles("name") values ('ROLE_PHARMACYADMIN');
+
+insert into userss(id, "email", "password") values (1, 'ivos.jovan@protonmail.ch', '$2a$10$IevzxrzynxfElyhc1zuUferMhXfAWbDRsob0cXmCc6jEETM7xhCiG');
+insert into userss(id, "email", "password") values (2, 'lemara98@gmail.com', '$2y$10$VS2RQAcHBqO.aLSEGlaYGe2b2605tXpUxAKCeZfXYTnMGriXGguoy');
+insert into userss(id, "email", "password") values (3, 'rzupunski@gmail.com', '$2a$10$8mp7f8oEHCVXnv8jkfBvtOxn/FPASROZJQ10Bi3820tf0qzlCs4Pm');
+insert into userss(id, "email", "password") values (4, 'madrina@gmail.com', '$2y$10$leO4PmaV5fPPfuEMVNCVjOqUwOHWrsLB5Ylnoyhs3MFewSFLZssGy');
+insert into userss(id, "email", "password") values (5, 'sanjaa.d98@gmail.com', '$2y$10$vzEuI84K9v1pnVnDGmdcZOw35RPpcvn.dYymkbc0mvfuonWGOSx1y');
+insert into userss(id, "email", "password") values (6, 'radovan.zupunski@uns.ac.rs', '$2y$10$TmwHZ68VGAFjrozSbdbFce3AS0uB9Bnj2.AkMrPXhG27z1QpJrb9y');
+insert into userss(id, "email", "password") values (8, 'jankovicpharmacy@gmail.com', '$2y$10$XX.wKVB2GvZA024rrB672OUXfZZ9c9Whqbp8qAqCTiIfVEM8h9buK');
+insert into userss(id, "email", "password") values (11, 'zoran@gmail.com', '$2y$10$XX.wKVB2GvZA024rrB672OUXfZZ9c9Whqbp8qAqCTiIfVEM8h9buK');
+insert into userss(id, "email", "password") values (9, 'zoki@gmail.com', '$2y$10$pTN2xTyuOLd3pyReU4QlGecab7eTQxgEevZrdbVYRYKqiU0timsga ');
+insert into userss(id, "email", "password") values (10, 'jovan@gmail.com', '$2y$10$ll2ULAuxZbDQUg7mCVhTF.aa2Xx7Al2BNaFMyhmlOVxDoRurB52ji ');
+
+insert into users_roles("user_id", "role_id") values(1,1);
+insert into users_roles("user_id", "role_id") values(2,1);
+insert into users_roles("user_id", "role_id") values(3,3);
+insert into users_roles("user_id", "role_id") values(4,3);
+insert into users_roles("user_id", "role_id") values(5,3);
+insert into users_roles("user_id", "role_id") values(6,4);
+insert into users_roles("user_id", "role_id") values(8,6);
+insert into users_roles("user_id", "role_id") values(11,6);
+insert into users_roles("user_id", "role_id") values(9,5);
+insert into users_roles("user_id", "role_id") values(10,5);
+
+
 
 insert into user_roles(role_id, user_id) values (1, 1);
 insert into user_roles(role_id, user_id) values (2, 8);

@@ -18,7 +18,8 @@ import java.util.Set;
 @Table(name = "userss")
 public class UserS implements IIdentifiable<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "users_seq_gen", sequenceName = "user_seq", initialValue = 100, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_gen")
     private Long id;
 
     @NotBlank

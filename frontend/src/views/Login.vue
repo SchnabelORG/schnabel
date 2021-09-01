@@ -9,7 +9,7 @@
             id="login-form"
             v-model="isFormValid"
             @submit="login">
-                <b class="err">{{err}}</b>
+                <b class="err">{{error}}</b>
                 <v-text-field 
                 v-model="email"
                 label="Email"
@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import User from '../models/user';
+
 export default {
     data() {
         return {
@@ -42,20 +44,30 @@ export default {
             showPassword: false,
             email: '',
             password: '',
+            message: '',
             rules: {
                 required: v => !!v || "Required",
             },
+            user: new User('', ''),
         }
+    },
+    computed: {
+        loggedIn() {
+            return this.$store.state.auth.status.loggedIn;
+            }
+        },
+    mounted() {
+        this.checkLogin();
     },
     
     methods: {
         login: function(e) {
             e.preventDefault();
             this.error = '';
-            let dto = {
+            /*let dto = {
                 email: this.email,
                 password: this.password,
-            };
+            };/*
             this.axios.post("api/auth/login", dto)
                 .then(r => {
                     this.$store.state.jws = r.data;
@@ -68,8 +80,33 @@ export default {
                 })
                 .catch(() => {
                     this.error = "Bad credentials";
-                });
+                });*/
+            this.user.email = this.email;
+            this.user.password = this.password;
+            console.log(this.user);
+            if (this.user.email && this.user.password) {
+                this.$store.dispatch('auth/login', this.user).then(
+                    () => {
+                        console.log(this.user);
+                        this.$router.push('/redirect');
+                    },
+                    error => {
+                        console.log("error");
+                        this.loading = false;
+                        this.message =
+                            (error.response && error.response.data) ||
+                            error.message ||
+                            error.toString();
+
+                    }
+                );
+            }
         },
+        checkLogin: function() {
+            if (this.loggedIn) {
+                this.$router.push('/redirect');
+            }
+        }
     },
 }
 </script>
