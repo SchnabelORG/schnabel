@@ -24,5 +24,6 @@ public interface IOfferService extends IJpaService<Offer, Long>
     boolean acceptOffer(Long offerId, String email, Pageable pageable);
     boolean checkEmptyOrderOfferList(Long orderId, Pageable pageable);
     PagedModel<OfferDTO> findBySupplierFiltered(Pageable pageable, String email, OfferStatus offerStatus);
+    boolean isEditable(Long offerId);
 }
 

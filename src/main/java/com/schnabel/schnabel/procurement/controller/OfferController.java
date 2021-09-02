@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.schnabel.schnabel.procurement.dto.OfferCreationDTO;
 import com.schnabel.schnabel.procurement.dto.OfferDTO;
 import com.schnabel.schnabel.procurement.model.Offer;
+import com.schnabel.schnabel.procurement.model.OfferStatus;
 import com.schnabel.schnabel.procurement.service.IOfferService;
 import com.schnabel.schnabel.security.util.JwtUtils;
 
@@ -76,8 +77,8 @@ public class OfferController
     }
 
     @PreAuthorize("hasRole('ROLE_SUPPLIER')")
-    @PostMapping("supplier/filter")
-    public ResponseEntity<PagedModel<OfferDTO>> getBySupplierFiltered(Pageable pageable, @RequestBody OfferFilterDTO dto, @RequestHeader("Authorization") String authHeader) {
+    @GetMapping("supplier/filter/{f}")
+    public ResponseEntity<PagedModel<OfferDTO>> getBySupplierFiltered(Pageable pageable, @PathVariable("f")OfferStatus status, OfferFilterDTO dto, @RequestHeader("Authorization") String authHeader) {
         String jws;
         if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
             jws = authHeader.substring(7, authHeader.length());
@@ -85,7 +86,7 @@ public class OfferController
             return ResponseEntity.badRequest().build();
         }
         String email = jwtUtils.getEmailFromJws(jws);
-        return new ResponseEntity<>(offerService.findBySupplierFiltered(pageable, email, dto.getOfferStatus()), HttpStatus.OK);
+        return ResponseEntity.ok(offerService.findBySupplierFiltered(pageable, email, status));
     }
 
 
@@ -126,5 +127,12 @@ public class OfferController
         return offerService.acceptOffer(offerId, jwtUtils.getEmailFromJws(jws), pageable) ?
             ResponseEntity.ok("Accepted")
             : ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("editable/{id}")
+    public ResponseEntity<String> editable(@PathVariable("id") Long id) {
+        return offerService.isEditable(id) ?
+                ResponseEntity.ok("Editable")
+                : ResponseEntity.badRequest().build();
     }
 }
