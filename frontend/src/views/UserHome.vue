@@ -301,6 +301,7 @@
                         <v-card-text>
                           <v-data-table
                           :headers="subHeaders"
+                          loa
                           :items="subs">
                             <template v-slot:item="row">
                               <tr>
@@ -544,7 +545,7 @@ export default {
           this.axios.get("api/patient/unsubscribe/"+item.id, {headers:{"Authorization": "Bearer " + this.currentUser}})
           .then(r => {
             console.log(r.data);
-            this.getSubscritions();
+            window.location.reload();
           })
           .catch(r => {
             console.log(r.data);
