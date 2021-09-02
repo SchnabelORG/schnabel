@@ -65,6 +65,7 @@ public class SupplierController
      * @param req - Supplier registration request containing required info
      * @return OK if registered, else BadRequest
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<String> registerSupplier(@RequestBody RegisterSupplierRequest req)
     {

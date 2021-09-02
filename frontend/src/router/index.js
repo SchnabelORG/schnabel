@@ -10,13 +10,21 @@ const routes = [
     path: '/',
     beforeEnter: (to, from, next) => {
       if(localStorage.jws) {
-        axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + localStorage.getItem('user')}})
+        axios.get('api/auth/role', {headers: {"Authorization": "Bearer " + JSON.parse(localStorage.getItem('user'))}})
         .then(r => {
           if(r.data == 'ROLE_PATIENT') {
             next({name: 'UserHome'});
           } else if (r.data == 'ROLE_ADMIN') {
+            next({name: 'SystemAdminHome'});
+          } else if (r.data == 'ROLE_PHARMACIST') {
+            next({name: 'PharmacistHome'});
+          } else if (r.data == 'ROLE_DERMATOLOGIST') {
+            next({name: 'DermatologistHome'}); 
+          } else if (r.data == 'ROLE_SUPPLIER') {
+            next({name: 'SupplierHome'});
+          } else if (r.data == 'ROLE_PHARMACYADMIN') {
             next({name: 'PharmacyAdminHome'});
-          } else {
+          }else {
             next({name: 'Home'});
           }
         })
@@ -74,15 +82,16 @@ const routes = [
           if(r.data == 'ROLE_PATIENT') {
             next({name: 'UserHome'});
           } else if (r.data == 'ROLE_ADMIN') {
-            next({name: 'PharmacyAdminHome'});
+            next({name: 'SystemAdminHome'});
           } else if (r.data == 'ROLE_PHARMACIST') {
-            next({name: 'PharmacistHome'}); 
+            next({name: 'PharmacistHome'});
           } else if (r.data == 'ROLE_DERMATOLOGIST') {
             next({name: 'DermatologistHome'}); 
           } else if (r.data == 'ROLE_SUPPLIER') {
             next({name: 'SupplierHome'});
-          }
-          else {
+          } else if (r.data == 'ROLE_PHARMACYADMIN') {
+            next({name: 'PharmacyAdminHome'});
+          }else {
             next({name: 'Home'});
           }
         })
@@ -293,6 +302,8 @@ const routes = [
     ],
   },
 
+//System Admin
+
   {
     path: '/systemadmin',
     name: 'SystemAdminPanel',
@@ -319,7 +330,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminDermatologists.vue'),
       },
       {
-        path: 'suppliers',
+        path: 'sytemadmin',
         name: 'SystemAdminSupplier',
         component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminSupplier.vue'),
       },
@@ -327,6 +338,21 @@ const routes = [
         path: 'drugs',
         name: 'SystemAdminDrugs',
         component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminDrugs.vue'),
+      },
+      {
+        path: 'suppliers',
+        name: 'SystemAdminSupplier',
+        component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminSupplier.vue'),
+      },
+      {
+        path: 'changepass',
+        name: 'SystemAdminChangePassword',
+        component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminChangePassword.vue'),
+      },
+      {
+        path: 'register',
+        name: 'SystemAdminRegistration',
+        component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminRegistration.vue'),
       },
     ],
   },

@@ -58,6 +58,9 @@ public class SupplierService extends JpaService<Supplier, Long, ISupplierReposit
                                    String company) {
         String encodedPassword = passwordEncoder.encode(password);
         Supplier newSupplier= new Supplier(name, surname, email, encodedPassword, address, false, company);
+        newSupplier.setActivated(false);
+        if(repository.findByEmail(email).isPresent())
+            return false;
         Optional<Supplier> supplier = add(newSupplier);
         Set<Role> roles = new HashSet<>();
         Role role = roleRepository.findByName(ERole.ROLE_SUPPLIER)
@@ -66,13 +69,7 @@ public class SupplierService extends JpaService<Supplier, Long, ISupplierReposit
         UserS user = new UserS(email, encodedPassword);
         user.setRoles(roles);
         userssRepository.save(user);
-        if(supplier.isPresent()) {
-            //Todo(Marko): Send activation email after supplier registration
-            //return sendActivationEmail(email);
-            return true;
-        }
-        return false;
-       
+        return true;
     }
 
     @Override

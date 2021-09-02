@@ -17,5 +17,6 @@ public interface ISystemAdminService extends IJpaService<SystemAdmin, Long>
     Optional<SystemAdminDTO> getDTO(Long id);
     PagedModel<SystemAdminDTO> getAllDTO(Pageable pageable);
     boolean registerSystemAdmin(String name, String surname, String email, String password, Address address);
-
-}
+    boolean isActive(String email);
+    boolean changePassword(String email, String password);
+    Optional<SystemAdminDTO> findByEmail(String email);}

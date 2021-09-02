@@ -93,6 +93,11 @@ export default {
             },
         }
     },
+    computed: {
+        currentUser() {
+            return this.$store.state.auth.user;
+        }
+    },
     methods: {
         getPharmacyAdmins: function() {
             this.axios.get("api/pharmacyadmin/all")
@@ -122,7 +127,7 @@ export default {
                     streetNo: this.streetNo,
                 },
             }
-            this.axios.post("api/pharmacy/register", request)
+            this.axios.post("api/pharmacy/register", request, {headers:{"Authorization": "Bearer " + this.currentUser}})
             .then(r => {
                 console.log(r.data)
                 

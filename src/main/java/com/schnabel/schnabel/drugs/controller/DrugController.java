@@ -57,6 +57,7 @@ public class DrugController
         return ResponseEntity.ok(service.findAllDTO());
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<String> registerDrug(@RequestBody DrugRegistrationDTO registrationDTO)
     {
@@ -91,7 +92,7 @@ public class DrugController
     public ResponseEntity<List<DrugDTO>> getSubstitute(@PathVariable("id") Long id) {
         return ResponseEntity.ok(service.getSubstitute(id));
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping
     public ResponseEntity<String> update(@RequestBody DrugUpdateDTO dto) {
         return service.updateDrug(dto.getId(), dto.getCode(), dto.getName(), dto.getDescription(), dto.getDrugState(), dto.getDrugOrigin(), dto.getDrugType(), dto.getProducer(), dto.getDosage(), dto.getIssuingType(), dto.getSubstituteDrugs()) ?

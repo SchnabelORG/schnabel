@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -66,6 +67,7 @@ public class PharmacyController
      * @param creationDTO - Pharmacy registration required info
      * @return OK if registered, else BadRequest
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("register")
     public ResponseEntity<String> registerPharamcy(@RequestBody PharmacyCreationDTO creationDTO)
     {

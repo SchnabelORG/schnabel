@@ -300,6 +300,11 @@
                 },
             }
         },
+        computed: {
+            currentUser() {
+                return this.$store.state.auth.user;
+            }
+        },
         methods: {
             getDrugs: function() {
                 this.axios.get("api/drug/")
@@ -382,7 +387,7 @@
                     substituteDrugs: s,
                 };
                 console.log(d);
-                this.axios.post("api/drug", d)
+                this.axios.post("api/drug", d,  {headers:{"Authorization": "Bearer " + this.currentUser}})
                 .then(r => 
                 {
                     console.log("Successfully added", r.data);
@@ -413,7 +418,7 @@
                     issuingType: this.drug.issuingtype,
                     substituteDrugs: s,
                 };
-                this.axios.put("api/drug/", d)
+                this.axios.put("api/drug/", d,  {headers:{"Authorization": "Bearer " + this.currentUser}})
                 .then(r => {
                     console.log("Successfully updated", r.data);
                     alert("Successfully updated!");

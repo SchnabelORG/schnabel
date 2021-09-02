@@ -111,6 +111,11 @@
                 },
             }
         },
+        computed:{
+            currentUser() {
+                return this.$store.state.auth.user;
+            }
+        },
         methods: {
             getSuppliers: function() {
                 this.axios.get("api/supplier")
@@ -184,7 +189,7 @@
             addSupplier: function() {
                 var adr = {postcode: this.postcode, city: this.city, street: this.street, streetNo: this.streetNo}
                 let request = { name: this.name, surname: this.surname, email: this.email, password: this.password, address: adr, firm: this.firm };
-                this.axios.post("api/supplier/", request)
+                this.axios.post("api/supplier/", request, {headers:{"Authorization": "Bearer " + this.currentUser}})
                 .then(response => {
                     console.log("Successfully added supplier", response.data);
                     this.getSuppliers();

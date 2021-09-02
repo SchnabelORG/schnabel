@@ -43,6 +43,7 @@ insert into pharmacyadmins(id, "name", surname, email, "password", city, postcod
 insert into suppliers(id, "name", surname, email, "password", city, postcode, street, street_no, latitude, longitude, firm, is_activated) values (9, 'Zoki', 'Zokic', 'zoki@gmail.com', '$2a$10$7JMB1YaL6mEljudbAhnt/.x7fk9hU6FPFaEJ8Fl4WrqqSXshpXPAu', '11000', 'Beograd', 'Carlija Caplina', '12', 0.0, 0.0, 'Dobavljac Zoki', false);--password:Sifra1337
 insert into suppliers(id, "name", surname, email, "password", city, postcode, street, street_no, latitude, longitude, firm, is_activated) values (10, 'Jovan', 'Jovanovic', 'jovan@gmail.com', '$2a$10$7JMB1YaL6mEljudbAhnt/.x7fk9hU6FPFaEJ8Fl4WrqqSXshpXPAu', '21000', 'Novi Sad', 'Bulevar Oslobodjenja', '14a', 0.0, 0.0, 'Jova trans', true);--password:Sifra1337
 
+insert into systemadmins(id, "name", surname, email, "password", city, postcode, street, street_no, latitude, longitude, is_activated) values (42, 'Pera', 'Peric', 'admin@gmail.com', '$2a$10$7JMB1YaL6mEljudbAhnt/.x7fk9hU6FPFaEJ8Fl4WrqqSXshpXPAu', '21000', 'Novi Sad', 'Balzakova', '69', 0.0, 0.0, false); --password:Sifra123
 
 insert into refresh_tokens(email, token) values('rzupunski@gmail.com', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyenVwdW5za2lAZ21haWwuY29tIiwiZXhwIjoxNjM4ODI1NDE5fQ.TIwAS7n4zkBX1ABzuj_ujKSW3RQMms6efsWTb2yCHLHuSosKZtYTKCXlO6XRdCxgiPtGlHBAe19TcBz6G827RQ');
 insert into refresh_tokens(email, token) values('ivos.jovan@protonmail.ch', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpdm9zLmpvdmFuQHByb3Rvbm1haWwuY2giLCJleHAiOjE2Mzg4MjU2Mjh9.Qvcf4xicLI7YW-973aPsvgcVmyAm3NOe7HG0g7cF_HheuZ9LEiKTcdiTqqFk4twhIr4oc38t0JmwGC-7UeZ4fA');
@@ -127,6 +128,7 @@ insert into userss(id, "email", "password") values (8, 'jankovicpharmacy@gmail.c
 insert into userss(id, "email", "password") values (11, 'zoran@gmail.com', '$2y$10$XX.wKVB2GvZA024rrB672OUXfZZ9c9Whqbp8qAqCTiIfVEM8h9buK');
 insert into userss(id, "email", "password") values (9, 'zoki@gmail.com', '$2a$10$7JMB1YaL6mEljudbAhnt/.x7fk9hU6FPFaEJ8Fl4WrqqSXshpXPAu');
 insert into userss(id, "email", "password") values (10, 'jovan@gmail.com', '$2a$10$7JMB1YaL6mEljudbAhnt/.x7fk9hU6FPFaEJ8Fl4WrqqSXshpXPAu');
+insert into userss(id, "email", "password") values (42, 'admin@gmail.com', '$2a$10$7JMB1YaL6mEljudbAhnt/.x7fk9hU6FPFaEJ8Fl4WrqqSXshpXPAu');
 
 insert into users_roles("user_id", "role_id") values(1,1);
 insert into users_roles("user_id", "role_id") values(2,1);
@@ -138,6 +140,7 @@ insert into users_roles("user_id", "role_id") values(8,6);
 insert into users_roles("user_id", "role_id") values(11,6);
 insert into users_roles("user_id", "role_id") values(9,5);
 insert into users_roles("user_id", "role_id") values(10,5);
+insert into users_roles("user_id", "role_id") values(42,2);
 
 
 

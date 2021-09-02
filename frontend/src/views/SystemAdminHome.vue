@@ -4,6 +4,7 @@
             <v-row>
                 <v-col>
                     <v-card color="#385F73"
+                    @click="$router.push('/systemadmin/pharmacies')"
                     dark>
                         <v-card-title class="text-h6">
                             Pharmacies
@@ -33,6 +34,7 @@
                 </v-col>
                 <v-col>
                      <v-card color="#385F73"
+                     @click="$router.push('/systemadmin/dermatologists')"
                     dark>
                         <v-card-title class="text-h6">
                             Dermatologits
@@ -46,6 +48,7 @@
                 </v-col>
                 <v-col>
                      <v-card color="#385F73"
+                     @click="$router.push('/systemadmin/suppliers')"
                     dark>
                         <v-card-title class="text-h6">
                             Suppliers
@@ -61,6 +64,7 @@
             <v-row>
                 <v-col>
                      <v-card color="#385F73"
+                     @click="$router.push('/systemadmin/drugs')"
                     dark>
                         <v-card-title class="text-h6">
                             Drugs

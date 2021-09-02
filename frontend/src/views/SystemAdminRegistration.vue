@@ -3,41 +3,13 @@
         <v-card
         id="pharmacists-card"
         elevation="2">
-            <v-card-title>Dermatologists</v-card-title>
+            <v-card-title>New System Admin</v-card-title>
             <v-card-text>
-                <v-btn @click="newDermatologist()">
-                    New
-                </v-btn>
-                <div id="pharmacists-table">
-                    <v-data-table :headers="headers"
-                                    :items="dermatologists"
-                                    :search="search">
-                        <template v-slot:item="row">
-                            <tr>
-                                <td>{{row.item.name}}</td>
-                                <td>{{row.item.surname}}</td>
-                                <td>{{row.item.email}}</td>
-                                <td>
-                                    <v-btn @click="deleteDermatologist(row.item.id)">
-                                        Delete
-                                    </v-btn>
-                                </td>                       
-                            </tr>
-                        </template>
-                    </v-data-table>
-                </div>
-            </v-card-text>
-        </v-card>
-        <v-dialog v-model="this.new" persistent>
-            <v-card id="new-card">
-                <v-card-title>Dermatologist</v-card-title>
-                <v-spacer></v-spacer>
-                 <v-text-field
+                <v-text-field
                         v-model="name"
                         :rules="[rules.required]"
                         label="Name"
                         ></v-text-field>
-                <v-spacer></v-spacer>
                 <v-text-field
                         v-model="surname"
                         :rules="[rules.required]"
@@ -75,14 +47,14 @@
                         ></v-text-field>
                 <v-spacer></v-spacer>
            
-            <v-btn class="primary" @click="addDermatologist()" :disabled="!name || !surname || !email">
+            <v-btn class="primary" @click="createSystemAdmin()" :disabled="!password || !name || !email">
                 Add
             </v-btn>
             <v-btn class="accent" @click="cancel()">
                 Cancel
             </v-btn>
-            </v-card>
-        </v-dialog>
+            </v-card-text>
+        </v-card>
     </div>
 </template>
 
@@ -90,8 +62,7 @@
     export default {
         data() {
             return {
-                dermatologists: [],
-                new: false,
+                systemAdmin: {},
                 name: '',
                 surname: '',
                 email: '',
@@ -100,69 +71,45 @@
                 city: '',
                 street: '',
                 streetNo: '',
-                startTime: '',
-                endTime: '',
-                time: {},
                 id: '',
                 search: '',
-                headers: [
-                    { text: "Name" },
-                    { text: "Surname" },
-                    { text: "Email"},
-                    { text: "Delete" },
-                ],
                 rules: {
                     required: value => !!value || 'Required.',
                 },
             }
         },
-        computed: {
+        computed:{
             currentUser() {
                 return this.$store.state.auth.user;
             }
         },
         methods: {
-            getDermatologists: function() {
-                this.axios.get("api/dermatologist")
+            getSystemAdmin: function() {
+                this.axios.get("api/systemAdmin/get", {headers:{"Authorization": "Bearer " + this.currentUser}})
                 .then(r =>
                 {
-                    this.dermatologists = r.data._embedded.dermatologists;
+                    this.systemAdmin = r.data;
                 })
                 .catch(r => 
                 {
+                    this.$router.push('/redirect');
                     console.log(r.data);
                 })
             },
-
-            //TODO fix later
-            deleteDermatologist: function(id) {
-                this.axios.delete("api/dermatologist/remove/" + id)
-                .then(r => 
-                {
-                    console.log(r.data);
-                    this.getDermatologists();
-                })
-                .catch(r =>
-                {
-                    console.log("Failed to remove dermatologist", r.data);
-                })
+            getAddress: function(address) {
+                var a = address.street + ' ' + address.streetNo + ', ' + address.city + ', ' + address.postcode; 
+                return a;
             },
-            newDermatologist: function() {
-                this.new = true;
-            },
-
-            //TODO n
-            
-            addDermatologist: function() {
+            createSystemAdmin: function() {
                 var adr = {postcode: this.postcode, city: this.city, street: this.street, streetNo: this.streetNo}
-                let request = { name: this.name, surname: this.surname, email: this.email, password: this.password, address: adr, startTime: this.validFrom, endTime: this.validUntil };
-                this.axios.post("api/dermatologist/register", request, {headers:{"Authorization": "Bearer " + this.currentUser}})
+                let request = { name: this.name, surname: this.surname, email: this.email, password: this.password, address: adr };
+                this.axios.post("api/systemAdmin/", request, {headers:{"Authorization": "Bearer " + this.currentUser}})
                 .then(response => {
-                    console.log("Successfully added dermatologist", response.data);
-                    this.getDermatologists();
+                    console.log("Successfully regirested system admin", response.data);
+                    this.getSuppliers();
                 })
                 .catch(response => {
-                    console.log("Failed to add dermatologist", response.data);
+                    console.log("Failed to add system admin", response.data);
                 });
                 
                 this.new = false;
@@ -179,13 +126,14 @@
                 this.email = '';
                 this.validFrom = '';
                 this.validUntil = '';
+                this.firm = '';
             },
         },
         mounted() {
-            this.getDermatologists();
         },
     }
 </script>
+
 
 <style scoped>
     #pharmacists-main {
