@@ -17,8 +17,11 @@
           <div class="card-body">
             <p class="info--text">Subscribe and be one of the first to know about our promotions and discounts.</p>
           </div>
-          <div class="card-footer">
-            <v-btn class='primary'>Subscribe</v-btn>
+          <div v-if="!subscribed" class="card-footer">
+            <v-btn class='primary' @click="subscribe()">Subscribe</v-btn>
+          </div>
+          <div v-else class="card-footer">
+            <v-btn class='secondary'>Subscribed</v-btn>
           </div>
         </div>
         <div class="card">
@@ -144,12 +147,18 @@
                 id: '',
                 pharmacy: '',
                 avarageGrade: '',
+                subscribed: true,
                 pharmacyName: 'Schnabel Liman',
                 zoom: 12,
                 center: [19.882, 45.254],
                 rotation: 0,
                 geolocPosition: undefined,
                 overlayCoordinate: [19.882, 45.254],
+            }
+        },
+        computed:{
+            currentUser() {
+                return this.$store.state.auth.user;
             }
         },
         methods: {
@@ -175,9 +184,32 @@
                     console.log("Failed to get avarage grade", response.data);
                 });
           },
+          isSubscribed: function() {
+            this.axios.get("api/patient/subscribed/" + this.$route.params.id, {headers:{"Authorization": "Bearer " + this.currentUser}})
+            .then(r => {
+              this.subscribed = true;
+              console.log(r.data);
+            })
+            .catch(r => {
+              this.subscribed = false;
+              console.log(r.data);
+            })
+          },
+          subscribe: function() {
+            this.axios.get("api/patient/subscribe/" + this.$route.params.id, {headers:{"Authorization": "Bearer " + this.currentUser}})
+            .then(r => {
+              this.subscribed = true;
+              console.log(r.data);
+            })
+            .catch(r => {
+              this.subscribed = false;
+              console.log(r.data);
+            })
+          }
         },
         mounted() {
           this.getPharmacy();
+          this.isSubscribed();
         },
     }
 </script>

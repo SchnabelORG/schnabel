@@ -1,6 +1,7 @@
 package com.schnabel.schnabel.users.service;
 
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
 import com.schnabel.schnabel.appointment.service.IAppointmentService;
@@ -9,21 +10,25 @@ import com.schnabel.schnabel.drugs.service.IDrugReservationService;
 import com.schnabel.schnabel.email.service.IMailService;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.misc.model.Address;
+import com.schnabel.schnabel.pharmacies.model.Pharmacy;
+import com.schnabel.schnabel.pharmacies.repository.IPharmacyRepository;
 import com.schnabel.schnabel.users.dto.ConsultRequest;
 import com.schnabel.schnabel.users.dto.DrugReservationRequest;
 import com.schnabel.schnabel.users.dto.PatientDTO;
-import com.schnabel.schnabel.users.model.ERole;
-import com.schnabel.schnabel.users.model.Patient;
-import com.schnabel.schnabel.users.model.Role;
+import com.schnabel.schnabel.users.dto.PharmacyDTO;
+import com.schnabel.schnabel.users.model.*;
 import com.schnabel.schnabel.users.repository.IPatientRepository;
 
 import com.schnabel.schnabel.users.repository.IRoleRepository;
+import com.schnabel.schnabel.users.repository.IUserssRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 /**
  * Patient service implementation
@@ -37,14 +42,18 @@ public class PatientService extends JpaService<Patient, Long, IPatientRepository
     private final IRefreshTokenService refreshTokenService;
     private final IRoleRepository roleRepository;
     private final IDrugReservationService drugResService;
+    private final IUserssRepository userssRepository;
+    private final IPharmacyRepository pharmacyRepository;
     
     @Autowired
-    public PatientService(IPatientRepository patientRepository, IMailService mailService, IRefreshTokenService refreshTokenService, IAppointmentService appointmentService, IDrugReservationService drugResService, IRoleRepository roleRepository)
+    public PatientService(IPatientRepository patientRepository, IMailService mailService, IRefreshTokenService refreshTokenService, IAppointmentService appointmentService, IDrugReservationService drugResService, IRoleRepository roleRepository, IUserssRepository userssRepository, IPharmacyRepository pharmacyRepository)
     {
         super(patientRepository);
         this.appointmentService = appointmentService;
         this.mailService = mailService;
         this.roleRepository = roleRepository;
+        this.userssRepository = userssRepository;
+        this.pharmacyRepository = pharmacyRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
         this.refreshTokenService = refreshTokenService;
         this.drugResService = drugResService;
@@ -76,11 +85,17 @@ public class PatientService extends JpaService<Patient, Long, IPatientRepository
 
     public boolean registerPatient(String name, String surname, String email, String password, Address address,
             String phoneNo) {
+        if(repository.findByEmail(email).isPresent())
+            return false;
         String encodedPassword = passwordEncoder.encode(password);
         Patient newPatient = new Patient(name, surname, email, encodedPassword, address, false, phoneNo);
         Role role = roleRepository.findByName(ERole.ROLE_PATIENT).get();
-        newPatient.getRoles().add(role);
         Optional<Patient> patient = add(newPatient);
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
+        UserS user = new UserS(email, encodedPassword);
+        user.setRoles(roles);
+        userssRepository.save(user);
         if(patient.isPresent()) {
             return sendActivationEmail(email);
         }
@@ -178,5 +193,65 @@ public class PatientService extends JpaService<Patient, Long, IPatientRepository
         patient.get().setAddress(req.getAddress());
         return update(patient.get());
     }
+
+    @Transactional
+    @Override
+    public boolean isSubscribed(String email, Long pharmacyId) {
+        Optional<Patient> patient = findByEmail(email);
+        if(!patient.isPresent()) {
+            return false;
+        }
+        for (Pharmacy p: patient.get().getSubscriptions()) {
+            if(p.getId() == pharmacyId)
+                return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    @Override
+    public boolean subscribe(String email, Long pharmacyId) {
+        Optional<Patient> patient = findByEmail(email);
+        if(!patient.isPresent()) {
+            return false;
+        }
+        Optional<Pharmacy> pharmacy = pharmacyRepository.findById(pharmacyId);
+        if(!pharmacy.isPresent()) {
+            return false;
+        }
+        patient.get().getSubscriptions().add(pharmacy.get());
+        return update(patient.get());
+    }
+
+    @Transactional
+    @Override
+    public Collection<PharmacyDTO> getSubscritions(String email) {
+        Optional<Patient> patient = findByEmail(email);
+        if(!patient.isPresent()) {
+            return null;
+        }
+        List<PharmacyDTO> list = patient.get().getSubscriptions().stream()
+                .map(p -> new PharmacyDTO(p.getId(),p.getName())
+                ).collect(Collectors.toList());
+        return list;
+    }
+
+    @Transactional
+    @Override
+    public boolean unsubscribe(String email, Long pharmacyId) {
+        Optional<Patient> patient = findByEmail(email);
+        if(!patient.isPresent()) {
+            return false;
+        }
+        List<Pharmacy> pharmacies = new ArrayList<>();
+        for (Pharmacy p: patient.get().getSubscriptions()) {
+            if(p.getId() != pharmacyId) {
+                pharmacies.add(p);
+            }
+        }
+        patient.get().setSubscriptions(pharmacies);
+        return update(patient.get());
+    }
+
 
 }

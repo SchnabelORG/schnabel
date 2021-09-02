@@ -9,6 +9,8 @@ import javax.validation.constraints.Min;
 import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.misc.model.IIdentifiable;
 import com.schnabel.schnabel.users.model.Dermatologist;
+import com.schnabel.schnabel.users.model.Patient;
+import com.schnabel.schnabel.users.model.Patient_;
 import com.schnabel.schnabel.users.model.Pharmacist;
 
 import lombok.AllArgsConstructor;
@@ -44,6 +46,9 @@ public class Pharmacy implements IIdentifiable<Long>
 
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY)
     private List<Pharmacist> pharmacists;
+
+    @ManyToMany(mappedBy = "subscriptions", fetch = FetchType.LAZY)
+    private List<Patient> subscribers;
 
     @Min(0)
     @Max(5)

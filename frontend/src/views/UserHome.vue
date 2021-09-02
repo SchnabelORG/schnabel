@@ -302,8 +302,18 @@
                           <v-data-table
                           :headers="subHeaders"
                           :items="subs">
-
+                            <template v-slot:item="row">
+                              <tr>
+                              <td>{{row.item.name}}</td>
+                              <td>
+                                <v-btn @click="unsubscribe(row.item)">
+                                        Unsubscribe
+                                    </v-btn>
+                              </td>
+                            </tr>
+                            </template>
                           </v-data-table>
+
                         </v-card-text>
                     </v-card>
                     </v-tab-item>
@@ -325,12 +335,10 @@ export default {
           tabs: null,
           //
           subHeaders: [
-            { text: 'Pharmacy', value: 'pharmacyName' },
-            { text: 'Valid until', value: 'endTime' },
+            { text: 'Pharmacy', value: 'name' },
+            { text: 'Unsubscribe', value: 'endTime' },
           ],
-          subs: [
-            { pharmacyName: 'Liman Schnabel', endTime: '2021-07-02' },
-          ],
+          subs: [],
           //
           eDrugHeaders: [
             { text: 'Name', value: 'name' },
@@ -417,13 +425,15 @@ export default {
             },
         }
     },
+    computed:{
+            currentUser() {
+                return this.$store.state.auth.user;
+            }
+        },
 
     methods: {
         getPenalties: function() {
-          this.refreshToken()
-            .then(rr => {
-              localStorage.jws = rr.data;
-              this.axios.get('api/penalty/patient', {headers: this.getAHeader()})
+              this.axios.get('api/penalty/patient', {headers:{"Authorization": "Bearer " + this.currentUser}})
                 .then(r => {
                   if(r.data._embedded) {
                     this.penalties = r.data._embedded.penalties;
@@ -431,23 +441,16 @@ export default {
                     this.penalties = [];
                   }
                 })
-            })
         },
 
         cancelDrugReservation: function(item) {
-          this.refreshToken()
-            .then(rr => {
-              localStorage.jws = rr.data;
-              this.axios.delete('api/dreservation/' + item.id, {headers: this.getAHeader()})
+              this.axios.delete('api/dreservation/' + item.id, {headers:{"Authorization": "Bearer " + this.currentUser}})
                 .then(() => this.getDrugHistory())
-            }).catch(() => this.$router.push('/'));
+                .catch(() => this.$router.push('/'));
         },
 
         getConsultAppts: function() {
-          this.refreshToken()
-            .then(rr => {
-              localStorage.jws = rr.data;
-              this.axios.get('api/patient/consult', {headers: this.getAHeader()})
+              this.axios.get('api/patient/consult', {headers:{"Authorization": "Bearer " + this.currentUser}})
                 .then(r => {
                   if(r.data._embedded) {
                     r.data._embedded.appointments.forEach(a => {
@@ -464,14 +467,10 @@ export default {
                     this.$refs.calendar.checkChange()
                   }
                 })
-            })
         },
 
         getDrugHistory: function() {
-          this.refreshToken()
-            .then(rr => {
-              localStorage.jws = rr.data;
-              this.axios.get('api/dreservation/patient', {headers: this.getAHeader()})
+              this.axios.get('api/dreservation/patient', {headers:{"Authorization": "Bearer " + this.currentUser}})
                 .then(r => {
                   if(r.data._embedded) {
                     this.drugReservations = r.data._embedded.drugs_reservations;
@@ -484,14 +483,10 @@ export default {
                     this.drugReservations = [];
                   }
                 })
-            })
         },
 
         getConsultHistory: function() {
-          this.refreshToken()
-            .then(rr => {
-              localStorage.jws = rr.data;
-              this.axios.get('api/appointment/patient/consult', {headers: this.getAHeader()})
+              this.axios.get('api/appointment/patient/consult', {headers:{"Authorization": "Bearer " + this.currentUser}})
                 .then(r => {
                   if(r.data._embedded) {
                     this.consultHistory = r.data._embedded.appointments;
@@ -499,14 +494,10 @@ export default {
                     this.consultHistory = [];
                   }
                 })
-            }).catch(() => this.$router.push('/'));
         },
 
         getDermHistory: function() {
-          this.refreshToken()
-            .then(rr => {
-              localStorage.jws = rr.data;
-              this.axios.get('api/appointment/patient/dermatology', {headers: this.getAHeader()})
+              this.axios.get('api/appointment/patient/dermatology', {headers:{"Authorization": "Bearer " + this.currentUser}})
                 .then(r => {
                   if(r.data._embedded) {
                     this.dermApptHistory = r.data._embedded.appointments;
@@ -514,7 +505,6 @@ export default {
                     this.dermApptHistory = [];
                   }
                 })
-            }).catch(() => this.$router.push('/'));
         },
 
         getAppointments: function() {
@@ -531,29 +521,38 @@ export default {
 
         cancelAppt: function() {
             this.selectedOpen = false;
-            this.refreshToken()
-                .then(rr => {
-                    localStorage.jws = rr.data;
                     this.axios.post('api/patient/appointemnt/cancel',
                         this.selectedEvent.appt.id,
-                        { headers : {
-                            'Content-Type' : 'application/json',
-                            'Authorization' : 'Bearer ' + localStorage.jws,
-                        }})
+                        {headers:{"Authorization": "Bearer " + this.currentUser}})
                         .then(() => {
                             this.getAppointments();
                         });
-                })
-                .catch(() => {
-                    this.$router.push("/");
-                })
+        },
+        getSubscritions: function() {
+          this.axios.get("api/patient/subscriptions", {headers:{"Authorization": "Bearer " + this.currentUser}})
+          .then(r => {
+            for(var p of r.data){
+              this.subs.push(p);
+            }
+            console.log(r.data);
+          })
+          .catch(r => {
+            console.log(r.data);
+          })
+        },
+        unsubscribe: function(item) {
+          this.axios.get("api/patient/unsubscribe/"+item.id, {headers:{"Authorization": "Bearer " + this.currentUser}})
+          .then(r => {
+            console.log(r.data);
+            this.getSubscritions();
+          })
+          .catch(r => {
+            console.log(r.data);
+          })
         },
 
         getDermAppts: function() {
-            this.refreshToken()
-                .then(rr => {
-                    localStorage.jws = rr.data;
-                    this.axios.get("api/patient/apptderm", { headers: { 'Authorization' : 'Bearer ' + localStorage.jws } })
+                    this.axios.get("api/patient/apptderm", {headers:{"Authorization": "Bearer " + this.currentUser}})
                         .then(r => {
                             if(r.data._embedded) {
                                 r.data._embedded.appointments.forEach(a => {
@@ -570,10 +569,6 @@ export default {
                                 this.$refs.calendar.checkChange()
                             }
                         })
-                })
-                .catch(() => {
-                    this.$router.push("/");
-                })
         },
 
         getPharmacies: function() {
@@ -588,20 +583,13 @@ export default {
       },
 
       getUser: function() {
-          this.refreshToken()
-            .then(rr => {
-                localStorage.jws = rr.data;
-                this.axios.get("api/patient", {headers:{"Authorization": "Bearer " + localStorage.jws}})
+                this.axios.get("api/patient", {headers:{"Authorization": "Bearer " + this.currentUser}})
                     .then(r => {
                         this.patient = r.data;
                     })
                     .catch(() => {
                         this.$router.push("/");
                     });
-            })
-            .catch(() => {
-                this.$router.push("/");
-            });
         //   let jws = this.$store.state.jws;
       },
         //
@@ -671,18 +659,15 @@ export default {
         }
     },
 
-    computed: {
-    },
-
     mounted() {
-        this.refreshToken()
+       /* this.refreshToken()
           .then(rr => {
             localStorage.jws = rr.data;
             this.axios.get('api/penalty/patient/count', {headers: this.getAHeader()})
               .then(r => {
                 this.penaltyCount = r.data;
               })
-          }).catch(() => this.$router.push('/login'));
+          }).catch(() => this.$router.push('/login'));*/
         this.getPenalties();
         this.getUser();
         this.getPharmacies();
@@ -690,6 +675,7 @@ export default {
         this.getDermHistory();
         this.getConsultHistory();
         this.getDrugHistory();
+        this.getSubscritions();
         this.$refs.calendar.checkChange()
     },
 }

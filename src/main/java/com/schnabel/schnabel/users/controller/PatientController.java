@@ -2,11 +2,7 @@ package com.schnabel.schnabel.users.controller;
 
 import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
 import com.schnabel.schnabel.security.util.JwtUtils;
-import com.schnabel.schnabel.users.dto.ConsultRequest;
-import com.schnabel.schnabel.users.dto.DrugReservationRequest;
-import com.schnabel.schnabel.users.dto.PatientDTO;
-import com.schnabel.schnabel.users.dto.PatientDTOAssembler;
-import com.schnabel.schnabel.users.dto.RegisterRequest;
+import com.schnabel.schnabel.users.dto.*;
 import com.schnabel.schnabel.users.service.IPatientService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Collection;
 
 /**
  * Patient REST controller
@@ -156,4 +155,45 @@ public class PatientController
             ResponseEntity.ok("Reserved")
             : ResponseEntity.badRequest().build();
     }
+
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    @GetMapping("subscribed/{id}")
+    public ResponseEntity<?> isSubscribed(@PathVariable long id, @RequestHeader("Authorization") String auth) {
+        String email = jwtUtils.getEmailFromJws(jwtUtils.parseJwtFromAuthorizationHeader(auth));
+        boolean b = service.isSubscribed(email, id);
+        return b ?
+                ResponseEntity.ok("Subscribed")
+                : ResponseEntity.badRequest().build();
+    }
+
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    @GetMapping("subscribe/{id}")
+    public ResponseEntity<?> subscribe(@PathVariable long id, @RequestHeader("Authorization") String auth) {
+        String email = jwtUtils.getEmailFromJws(jwtUtils.parseJwtFromAuthorizationHeader(auth));
+        boolean b = service.subscribe(email, id);
+        return b ?
+                ResponseEntity.ok("Subscribed")
+                : ResponseEntity.badRequest().build();
+    }
+
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    @GetMapping("subscriptions")
+    public ResponseEntity<Collection<PharmacyDTO>> subscriptions(@RequestHeader("Authorization") String auth) {
+        String email = jwtUtils.getEmailFromJws(jwtUtils.parseJwtFromAuthorizationHeader(auth));
+        return ResponseEntity.ok(service.getSubscritions(email));
+    }
+
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    @GetMapping("unsubscribe/{id}")
+    public ResponseEntity<?> unsubscribe(@PathVariable long id, @RequestHeader("Authorization") String auth) {
+        String email = jwtUtils.getEmailFromJws(jwtUtils.parseJwtFromAuthorizationHeader(auth));
+        boolean b = service.unsubscribe(email, id);
+        return b ?
+                ResponseEntity.ok("Subscribed")
+                : ResponseEntity.badRequest().build();
+    }
+
+
+
+
 }

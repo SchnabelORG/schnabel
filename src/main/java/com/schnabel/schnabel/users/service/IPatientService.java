@@ -1,5 +1,6 @@
 package com.schnabel.schnabel.users.service;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import com.schnabel.schnabel.appointment.dto.AppointmentDTO;
@@ -8,6 +9,7 @@ import com.schnabel.schnabel.misc.model.Address;
 import com.schnabel.schnabel.users.dto.ConsultRequest;
 import com.schnabel.schnabel.users.dto.DrugReservationRequest;
 import com.schnabel.schnabel.users.dto.PatientDTO;
+import com.schnabel.schnabel.users.dto.PharmacyDTO;
 import com.schnabel.schnabel.users.model.Patient;
 
 import org.springframework.data.domain.Pageable;
@@ -33,4 +35,8 @@ public interface IPatientService extends IJpaService<Patient, Long>
     boolean isAllowedToGradeDrug(Long patientId, Long drugId);
     PagedModel<AppointmentDTO> findConsults(String email, Pageable pageable);
     boolean update(PatientDTO req);
+    boolean isSubscribed(String email, Long pharmacyId);
+    boolean subscribe(String email, Long pharmacyId);
+    Collection<PharmacyDTO> getSubscritions(String email);
+    boolean unsubscribe(String email, Long pharmacyId);
 }

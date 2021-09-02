@@ -105,6 +105,7 @@
               pharmacyId: '',
               avarageGrade: '',
               pharmacyName: '',
+              subscribed: false,
               zoom: 12,
               center: [19.882, 45.254],
               rotation: 0,
@@ -112,11 +113,14 @@
               overlayCoordinate: [19.882, 45.254],
             }
         },
+        computed:{
+            currentUser() {
+                return this.$store.state.auth.user;
+            }
+        },
         methods: {
           getPharmacyAdmin: function() {
-                this.refreshToken().then(response => {
-                    localStorage.jws = response.data;
-                    this.axios.get("api/pharmacyadmin", {headers:{"Authorization": "Bearer " + localStorage.jws, "Content-Type" : "application/json",}})
+                    this.axios.get("api/pharmacyadmin", {headers:{"Authorization": "Bearer " + this.currentUser, "Content-Type" : "application/json",}})
                         .then(response => {
                             this.pharmacyAdmin = response.data;
                             this.pharmacyId = this.pharmacyAdmin.pharmacy.id;
@@ -125,11 +129,6 @@
                         .catch(response => {
                             console.log("Failed to get pharmacy admin", response.data);
                         });
-                   })
-                    .catch(response => {
-                    console.log(response.data);
-                    this.$router.push("/");
-                });
             },
             getPharmacy: function() {
               this.axios.get("api/pharmacy/" + this.pharmacyId)

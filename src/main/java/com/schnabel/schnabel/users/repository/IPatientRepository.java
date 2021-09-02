@@ -52,4 +52,12 @@ public interface IPatientRepository extends JpaRepository<Patient, Long>
         + " AND dr.taken = 'T'",
         nativeQuery = true)
     boolean hasPickedUpDrug(@Param("patient_id") Long patientId, @Param("drug_id") Long drugId);
+
+    @Query(value = "SELECT CASE WHEN COUNT(s) > 0"
+            + " THEN true ELSE false END"
+            + " FROM subscriptions s"
+            + " WHERE s.patient_id = :patient_id"
+            + " AND s.pharmacy_id = :pharmacy_id",
+        nativeQuery = true)
+    boolean isSubscribed(@Param("patient_id") Long patientId, @Param("pharmacy_id") Long pharmacyId);
 }

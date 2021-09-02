@@ -98,5 +98,6 @@ public class PharmacyController
     public ResponseEntity<PagedModel<PharmacyDTO>> getWithStock(@PathVariable("id") Long drugId, Pageable pageable) {
         return new ResponseEntity<>(service.findWithStock(drugId, pageable), HttpStatus.OK);
     }
+
 }
 
