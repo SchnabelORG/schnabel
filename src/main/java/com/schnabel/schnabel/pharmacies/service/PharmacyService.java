@@ -1,15 +1,17 @@
 package com.schnabel.schnabel.pharmacies.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.schnabel.schnabel.drugs.model.Drug;
+import com.schnabel.schnabel.drugs.repository.IDrugRepository;
 import com.schnabel.schnabel.misc.implementations.JpaService;
-import com.schnabel.schnabel.pharmacies.dto.PharmacyCreationDTO;
-import com.schnabel.schnabel.pharmacies.dto.PharmacyDTO;
-import com.schnabel.schnabel.pharmacies.dto.PharmacyDTOAssembler;
+import com.schnabel.schnabel.pharmacies.dto.*;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.pharmacies.repository.IPharmacyRepository;
 import com.schnabel.schnabel.pharmacies.repository.PharmacySpecification;
@@ -31,13 +33,15 @@ public class PharmacyService extends JpaService<Pharmacy, Long, IPharmacyReposit
     private final PharmacyDTOAssembler dtoAsm;
     private final PagedResourcesAssembler<Pharmacy> pageAsm;
     private static final long CONSULT_DURATION_MINUTES = 15;
+    private final IDrugRepository drugRepository;
 
     @Autowired
-    public PharmacyService(IPharmacyRepository pharmacyRepository, PharmacyDTOAssembler pharmacyDTOasm, PagedResourcesAssembler<Pharmacy> pharmacyPageAsm)
+    public PharmacyService(IPharmacyRepository pharmacyRepository, PharmacyDTOAssembler pharmacyDTOasm, PagedResourcesAssembler<Pharmacy> pharmacyPageAsm, IDrugRepository drugRepository)
     {
 		  super(pharmacyRepository);
           this.dtoAsm = pharmacyDTOasm;
           this.pageAsm = pharmacyPageAsm;
+        this.drugRepository = drugRepository;
     }
 
     @Override
@@ -95,6 +99,18 @@ public class PharmacyService extends JpaService<Pharmacy, Long, IPharmacyReposit
     public PagedModel<PharmacyDTO> findGradeable(Long patientId, Pageable pageable) {
         Page<Pharmacy> pharmacies = repository.findGradeable(patientId, pageable);
         return pageAsm.toModel(pharmacies, dtoAsm);
+    }
+
+    @Override
+    public PagedModel<PharmacyDTO> findForERecipe(ERecipeDTO dto, Pageable pageable) {
+        List<Drug> drugs = new ArrayList<>();
+        for(ERecipeDrugDTO d: dto.getDrugs()) {
+            Optional<Drug> drug = drugRepository.findByName(d.getName());
+            drugs.add(drug.get());
+        }
+
+
+        return null;
     }
 
 }

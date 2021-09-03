@@ -3,6 +3,7 @@ package com.schnabel.schnabel.pharmacies.controller;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+import com.schnabel.schnabel.pharmacies.dto.ERecipeDTO;
 import com.schnabel.schnabel.pharmacies.dto.PharmacyCreationDTO;
 import com.schnabel.schnabel.pharmacies.dto.PharmacyDTO;
 import com.schnabel.schnabel.pharmacies.dto.UploadFileResponse;
@@ -105,6 +106,12 @@ public class PharmacyController
     public ResponseEntity<PagedModel<PharmacyDTO>> getWithStock(@PathVariable("id") Long drugId, Pageable pageable) {
         return new ResponseEntity<>(service.findWithStock(drugId, pageable), HttpStatus.OK);
     }
+
+    @PostMapping("drug/erecipe")
+    public ResponseEntity<?> findFromERecipe(@RequestBody ERecipeDTO dto) {
+        return ResponseEntity.badRequest().build();
+    }
+
 
     @PreAuthorize("hasRole('ROLE_PATIENT')")
     @PostMapping("/uploadFile")

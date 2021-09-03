@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.schnabel.schnabel.misc.interfaces.IJpaService;
+import com.schnabel.schnabel.pharmacies.dto.ERecipeDTO;
 import com.schnabel.schnabel.pharmacies.dto.PharmacyDTO;
 import com.schnabel.schnabel.pharmacies.dto.PharmacyCreationDTO;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
@@ -26,5 +27,6 @@ public interface IPharmacyService extends IJpaService<Pharmacy, Long>
     PagedModel<PharmacyDTO> findWithStock(Long drugId, Pageable pageable);
     PagedModel<PharmacyDTO> findGraded(Long patientId, Pageable pageable);
     PagedModel<PharmacyDTO> findGradeable(Long patientId, Pageable pageable);
+    PagedModel<PharmacyDTO> findForERecipe(ERecipeDTO dto, Pageable pageable);
 }
 
