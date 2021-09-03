@@ -12,5 +12,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(collectionResourceRel = "complaints", path = "complaint")
 public interface IComplaintRepository extends JpaRepository<Complaint, Long>
 {
-    Page<Complaint> findByResponse(Pageable pageable, String complaintText);
+    Page<Complaint> findByResponseNull(Pageable pageable);
 }

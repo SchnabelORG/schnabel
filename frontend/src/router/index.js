@@ -152,6 +152,12 @@ const routes = [
     name: 'DermatologistSearch',
     component: () => import(/* webpackChunkName: "pharmacy" */ '../views/DermatologistSearch.vue'),
   },
+  {
+    path: '/complaint',
+    name: 'Complaint',
+    component: () => import(/* webpackChunkName: "pharmacy" */ '../views/Complaint.vue'),
+  },
+  
 
   {
     path: '/pharmacistsearch',
@@ -363,6 +369,11 @@ const routes = [
         path: 'loyalty',
         name: 'SystemAdminLoyalty',
         component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminLoyalty.vue'),
+      },
+      {
+        path: 'complaints',
+        name: 'SystemAdminComplaints',
+        component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminComplaints.vue'),
       },
     ],
   },

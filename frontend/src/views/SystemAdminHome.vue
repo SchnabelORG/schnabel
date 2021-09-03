@@ -90,6 +90,21 @@
                         </v-card-actions>
                     </v-card>
                 </v-col>
+                <v-col>
+                     <v-card color="#385F73"
+                    dark>
+                        <v-card-title class="text-h6">
+                            Complaints
+                        </v-card-title>
+                        <v-card-actions>
+                            <v-btn text
+                            @click="$router.push('/systemadmin/complaints')"
+                            >
+                                See more
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-col>
             </v-row>
         </v-container>
     </div>

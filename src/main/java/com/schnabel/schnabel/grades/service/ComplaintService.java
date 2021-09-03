@@ -5,6 +5,9 @@ import com.schnabel.schnabel.grades.dto.ComplaintDTOAssembler;
 import com.schnabel.schnabel.grades.model.Complaint;
 import com.schnabel.schnabel.grades.repository.IComplaintRepository;
 import com.schnabel.schnabel.misc.implementations.JpaService;
+import com.schnabel.schnabel.users.model.Patient;
+import com.schnabel.schnabel.users.repository.IPatientRepository;
+import com.schnabel.schnabel.users.repository.IUserssRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,12 +23,16 @@ public class ComplaintService extends JpaService<Complaint, Long, IComplaintRepo
 
     private final ComplaintDTOAssembler complaintDTOAssembler;
     private final PagedResourcesAssembler<Complaint> complaintPagedResourcesAssemgler;
+    private final IUserssRepository userssRepository;
+    private final IPatientRepository patientRepository;
 
     @Autowired
-    public ComplaintService(IComplaintRepository repository, ComplaintDTOAssembler complaintDTOAssembler, PagedResourcesAssembler<Complaint> complaintPagedResourcesAssemgler) {
+    public ComplaintService(IComplaintRepository repository, ComplaintDTOAssembler complaintDTOAssembler, PagedResourcesAssembler<Complaint> complaintPagedResourcesAssemgler, IUserssRepository userssRepository, IPatientRepository patientRepository) {
         super(repository);
         this.complaintDTOAssembler = complaintDTOAssembler;
         this.complaintPagedResourcesAssemgler = complaintPagedResourcesAssemgler;
+        this.userssRepository = userssRepository;
+        this.patientRepository = patientRepository;
     }
 
     @Override
@@ -44,7 +51,7 @@ public class ComplaintService extends JpaService<Complaint, Long, IComplaintRepo
     @Override
     @Transactional
     public PagedModel<ComplaintDTO> getWithoutResponse(Pageable pageable) {
-        Page<Complaint> complaints = repository.findByResponse(pageable,null);
+        Page<Complaint> complaints = repository.findByResponseNull(pageable);
         return complaintPagedResourcesAssemgler.toModel(complaints, complaintDTOAssembler);
     }
 
@@ -61,6 +68,18 @@ public class ComplaintService extends JpaService<Complaint, Long, IComplaintRepo
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public boolean createComplain(String text, String email) {
+        Optional<Patient> patient = patientRepository.findByEmail(email);
+        if(!patient.isPresent())
+            return false;
+        Complaint newComplaint = new Complaint();
+        newComplaint.setPatient(patient.get());
+        newComplaint.setComplaintText(text);
+        add(newComplaint);
+        return true;
     }
 
 
