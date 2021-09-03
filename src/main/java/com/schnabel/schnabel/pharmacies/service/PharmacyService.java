@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.*;
 
 import javax.transaction.Transactional;
 
@@ -12,8 +13,14 @@ import com.schnabel.schnabel.drugs.model.Drug;
 import com.schnabel.schnabel.drugs.repository.IDrugRepository;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.pharmacies.dto.*;
+import com.schnabel.schnabel.pharmacies.dto.PharmacyCreationDTO;
+import com.schnabel.schnabel.pharmacies.dto.PharmacyDTO;
+import com.schnabel.schnabel.pharmacies.dto.PharmacyDTOAssembler;
+import com.schnabel.schnabel.pharmacies.dto.PharmacyDrugDTO;
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
+import com.schnabel.schnabel.pharmacies.model.WareHouseItem;
 import com.schnabel.schnabel.pharmacies.repository.IPharmacyRepository;
+import com.schnabel.schnabel.pharmacies.repository.IWareHouseItemRepository;
 import com.schnabel.schnabel.pharmacies.repository.PharmacySpecification;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +41,16 @@ public class PharmacyService extends JpaService<Pharmacy, Long, IPharmacyReposit
     private final PagedResourcesAssembler<Pharmacy> pageAsm;
     private static final long CONSULT_DURATION_MINUTES = 15;
     private final IDrugRepository drugRepository;
+    private final IWareHouseItemRepository wareHouseRepository;
 
     @Autowired
-    public PharmacyService(IPharmacyRepository pharmacyRepository, PharmacyDTOAssembler pharmacyDTOasm, PagedResourcesAssembler<Pharmacy> pharmacyPageAsm, IDrugRepository drugRepository)
+    public PharmacyService(IPharmacyRepository pharmacyRepository, PharmacyDTOAssembler pharmacyDTOasm, PagedResourcesAssembler<Pharmacy> pharmacyPageAsm, IDrugRepository drugRepository, IWareHouseItemRepository wareHouseRepository)
     {
 		  super(pharmacyRepository);
           this.dtoAsm = pharmacyDTOasm;
           this.pageAsm = pharmacyPageAsm;
         this.drugRepository = drugRepository;
+        this.wareHouseRepository = wareHouseRepository;
     }
 
     @Override
@@ -82,11 +91,34 @@ public class PharmacyService extends JpaService<Pharmacy, Long, IPharmacyReposit
         Page<Pharmacy> pharmacies = repository.findByFreePharmacistAppointment(startTime, startTime.plusMinutes(CONSULT_DURATION_MINUTES), pageable);
         return pageAsm.toModel(pharmacies, dtoAsm);
     }
-
+    /*
     @Override
     public PagedModel<PharmacyDTO> findWithStock(Long drugId, Pageable pageable) {
         Page<Pharmacy> pharmacies = repository.findWithStock(drugId, pageable);
         return pageAsm.toModel(pharmacies, dtoAsm);
+    }*/
+
+    @Transactional
+    @Override
+    public Collection<PharmacyDrugDTO> findWithStock(Long drugId, Pageable pageable) {
+        Page<Pharmacy> pharmacies = repository.findWithStock(drugId, pageable);
+        List<PharmacyDrugDTO> ph = new ArrayList<>();
+        for(Pharmacy p: pharmacies){
+            PharmacyDrugDTO pddto = new PharmacyDrugDTO(p.getId(), p.getName(), p.getAddress().getCity(), p.getAddress().getStreet());
+            Optional<WareHouseItem> wareHouseItem = wareHouseRepository.findByPharmacyIdAndDrugId(drugId, p.getId());
+            double price;
+            if(!wareHouseItem.isPresent()) {
+                price = 0;
+            }
+            price = wareHouseItem.get().getPriceForToday().getPrice();
+            pddto.setPrice(price);
+            ph.add(pddto);
+        }
+        return ph;
+        /*pharmacies.stream()
+                .map(p -> new PharmacyDrugDTO(p.getId(), p.getName(), p.getAddress().getCity(), p.getAddress().getStreet(), wareHouseItemService.getPrice(p.getId(), drugId)))
+                .collect(Collectors.toList());
+        return pageAsm.toModel(pharmacies, dtoAsm);*/
     }
 
     @Override

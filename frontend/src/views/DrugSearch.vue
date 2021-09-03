@@ -43,17 +43,33 @@
                     step="1">
                         <v-text-field 
                         v-model="search"
-                        placeholder="Search drugs..."
+                        placeholder="Search drugs by name..."
                         @keydown.enter="searchDrugs"
                         dense/>
                         <b class="err">{{error}}</b>
+                        <div>
+                                <v-combobox
+                                    v-model="drugtype"
+                                    :items="drugtypes"
+                                    return-object
+                                    label="Drug Type"
+                                    clearable
+                                    @change="searchDrugs"
+                                >
+                                </v-combobox>
+                        </div>
+                        <v-text-field 
+                            v-model="searchscore"
+                            placeholder="Search drugs by score..."
+                            @keydown.enter="searchDrugs"
+                            dense/>
                         <div id="results-container">
                             <div id="results">
                                 <v-card
                                 class='result'
                                 v-for="drug in drugs" :key="drug.id"
                                 @click="selectDrug(drug)">
-                                    <v-card-title>{{drug.name}}</v-card-title>
+                                    <v-card-title>{{getDrugText(drug)}}</v-card-title>
                                     <v-card-text>
                                         <p>{{drug.description}}</p>
                                     </v-card-text>
@@ -71,6 +87,14 @@
                         :headers="pharmacyHeaders"
                         :items="pharmacies"
                         @click:row="selectPharmacy">
+                            <template v-slot:item="row">
+                                <tr>
+                                    <td>{{row.item.name}}</td>  
+                                    <td>{{row.item.city}}</td>                   
+                                    <td>{{row.item.street}}</td>
+                                    <td>{{row.item.price}}</td>
+                                </tr>
+                            </template>
                         </v-data-table>
                         <div class='d-flex flex-row'>
                             <v-btn plain @click="--steps">&#60; Search for different drug</v-btn>
@@ -156,6 +180,7 @@ export default {
                 { text: 'Name', value: 'name' },
                 { text: 'City', value: 'address.city' },
                 { text: 'Street', value: 'address.street' },
+                { text: 'Price'}
             ],
             pharmacies: [],
             selectedPharmacy: {},
@@ -170,6 +195,24 @@ export default {
             search: '',
             drugs: [],
             selectedDrug: {},
+            drugtypes: [
+                '',
+                'ANTIPYRETIC',
+                'ANALGESIC',
+                'ANTIMALARIAL',
+                'ANTIBIOTICS',
+                'ANTISEPTIC',
+                'MOOD_STABILIZERS',
+                'HORMONE_REPLACEMENTS',
+                'ORAL_CONTRACEPTIVES',
+                'STIMULANTS',
+                'TRANQUILIZERS',
+                'STATINS',
+                'OTHER',
+            ],
+            drugtype: '',
+            searchscore: '',
+            loadingPrice: true,
         }
     },
 
@@ -179,6 +222,9 @@ export default {
     },
 
     methods: {
+        getDrugText(drug) {
+            return drug.name + ', ' + drug.dosage + '; ' + drug.drugType + '; ' + 'score: ' + drug.score;
+        },
         reserveDrug: function() {
             this.error = '';
             if(this.penaltyCount >= 3) {
@@ -227,8 +273,8 @@ export default {
                     localStorage.jws = rr.data;
                     this.axios.get('api/pharmacy/drug/' + drug.id, {headers: this.getAHeader()})
                         .then(r => {
-                            if(r.data._embedded) {
-                                this.pharmacies = r.data._embedded.pharmacies;
+                            if(r.data) {
+                                this.pharmacies = r.data;
                                 ++this.steps;
                             } else {
                                 this.pharmacies = [];
@@ -239,9 +285,37 @@ export default {
                 })
                 .catch(() => this.$router.push('/login'));
         },
+        getPrice: function(id) {
+            var dto = {pharmacyId: id, drugId: this.selectedDrug.id}
+            console.log(dto)
+            this.axios.post("api/warehouseitem/drug/price", dto)
+            .then(r =>{
+                return r.data;
+            })
+            .catch(r => {
+                console.log(r.data);
+                return 0;
+            })
+        },
 
         searchDrugs: function() {
-            this.axios.get('api/drug/search?name=' + this.search)
+            let queryparam = '';
+            if(this.search) {
+                queryparam += 'name='+this.search;
+            }
+            if(this.drugtype && this.search){
+                queryparam += '&type='+this.drugtype;
+            } else if(this.drugtype) {
+                queryparam += 'type='+this.drugtype;
+            }
+
+            if((this.drugtype || this.search) && this.searchscore){
+                queryparam += '&score='+this.searchscore;
+            } else if(this.searchscore) {
+                queryparam += 'score='+this.searchscore;
+            }
+            console.log(queryparam);
+            this.axios.get('api/drug/search?' + queryparam)
                 .then(r => {
                     if(r.data._embedded) {
                         this.drugs = r.data._embedded.drugs;

@@ -32,4 +32,5 @@ public interface IWareHouseItemService extends IJpaService<WareHouseItem, Long>
     boolean updateWareHouseItem(WareHouseItemUpdateRequest wareHouseItemUpdateRequest);
     boolean addWareHouseItem(WareHouseItemRequest wareHouseItemRequest);
     boolean addDrugPrice(DrugPriceRequest drugPriceRequest);
+    double getPrice(Long pharmacyId, Long drugId);
 }

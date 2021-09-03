@@ -1,13 +1,10 @@
 package com.schnabel.schnabel.pharmacies.controller;
 
-import com.schnabel.schnabel.pharmacies.dto.DoesHaveDrugDTO;
-import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
+import com.schnabel.schnabel.pharmacies.dto.*;
 import com.schnabel.schnabel.pharmacies.model.WareHouseItem;
 
 import com.schnabel.schnabel.drugs.dto.DrugPriceRequest;
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
-import com.schnabel.schnabel.pharmacies.dto.WareHouseItemRequest;
-import com.schnabel.schnabel.pharmacies.dto.WareHouseItemUpdateRequest;
 
 
 import com.schnabel.schnabel.pharmacies.service.IWareHouseItemService;
@@ -112,6 +109,11 @@ public class WareHouseItemController
         return service.addDrugPrice(drugPriceRequest) ?
             ResponseEntity.ok("Added")
             : ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("drug/price")
+    public ResponseEntity<?> getPrice(@RequestBody PharmacyDrugPriceDTO dto) {
+        return ResponseEntity.ok(service.getPrice(dto.getPharmacyId(), dto.getDrugId()));
     }
 
 }
