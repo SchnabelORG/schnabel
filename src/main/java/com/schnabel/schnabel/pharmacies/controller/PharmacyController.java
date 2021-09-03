@@ -4,8 +4,11 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Map;
 
+import com.schnabel.schnabel.pharmacies.dto.ERecipeDTO;
 import com.schnabel.schnabel.pharmacies.dto.PharmacyCreationDTO;
 import com.schnabel.schnabel.pharmacies.dto.PharmacyDTO;
+import com.schnabel.schnabel.pharmacies.dto.UploadFileResponse;
+import com.schnabel.schnabel.pharmacies.service.FileStorageService;
 import com.schnabel.schnabel.pharmacies.dto.PharmacyDrugDTO;
 import com.schnabel.schnabel.pharmacies.service.IPharmacyService;
 
@@ -16,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.transaction.Transactional;
 
@@ -27,6 +32,9 @@ import javax.transaction.Transactional;
 public class PharmacyController
 {
     private final IPharmacyService service;
+
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @Autowired
     public PharmacyController(IPharmacyService pharmacyService)
@@ -99,6 +107,28 @@ public class PharmacyController
     @GetMapping("drug/{id}")
     public ResponseEntity<Collection<PharmacyDrugDTO>> getWithStock(@PathVariable("id") Long drugId, Pageable pageable) {
         return new ResponseEntity<>(service.findWithStock(drugId, pageable), HttpStatus.OK);
+    }
+
+
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    @PostMapping("drug/erecipe")
+    public ResponseEntity<Collection<PharmacyDrugDTO>> findFromERecipe(@RequestBody ERecipeDTO dto) {
+        return new ResponseEntity<>(service.findForERecipe(dto), HttpStatus.OK);
+    }
+
+
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    @PostMapping("/uploadFile")
+    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
+        String fileName = fileStorageService.storeFile(file);
+
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/downloadFile/")
+                .path(fileName)
+                .toUriString();
+
+        return new UploadFileResponse(fileName, fileDownloadUri,
+                file.getContentType(), file.getSize());
     }
 
 }

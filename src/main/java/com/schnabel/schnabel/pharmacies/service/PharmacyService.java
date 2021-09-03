@@ -1,11 +1,18 @@
 package com.schnabel.schnabel.pharmacies.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.*;
 
 import javax.transaction.Transactional;
 
+import com.schnabel.schnabel.drugs.model.Drug;
+import com.schnabel.schnabel.drugs.repository.IDrugRepository;
 import com.schnabel.schnabel.misc.implementations.JpaService;
+import com.schnabel.schnabel.pharmacies.dto.*;
 import com.schnabel.schnabel.pharmacies.dto.PharmacyCreationDTO;
 import com.schnabel.schnabel.pharmacies.dto.PharmacyDTO;
 import com.schnabel.schnabel.pharmacies.dto.PharmacyDTOAssembler;
@@ -33,14 +40,16 @@ public class PharmacyService extends JpaService<Pharmacy, Long, IPharmacyReposit
     private final PharmacyDTOAssembler dtoAsm;
     private final PagedResourcesAssembler<Pharmacy> pageAsm;
     private static final long CONSULT_DURATION_MINUTES = 15;
+    private final IDrugRepository drugRepository;
     private final IWareHouseItemRepository wareHouseRepository;
 
     @Autowired
-    public PharmacyService(IPharmacyRepository pharmacyRepository, PharmacyDTOAssembler pharmacyDTOasm, PagedResourcesAssembler<Pharmacy> pharmacyPageAsm, IWareHouseItemRepository wareHouseRepository)
+    public PharmacyService(IPharmacyRepository pharmacyRepository, PharmacyDTOAssembler pharmacyDTOasm, PagedResourcesAssembler<Pharmacy> pharmacyPageAsm, IDrugRepository drugRepository, IWareHouseItemRepository wareHouseRepository)
     {
 		  super(pharmacyRepository);
           this.dtoAsm = pharmacyDTOasm;
           this.pageAsm = pharmacyPageAsm;
+        this.drugRepository = drugRepository;
         this.wareHouseRepository = wareHouseRepository;
     }
 
@@ -122,6 +131,42 @@ public class PharmacyService extends JpaService<Pharmacy, Long, IPharmacyReposit
     public PagedModel<PharmacyDTO> findGradeable(Long patientId, Pageable pageable) {
         Page<Pharmacy> pharmacies = repository.findGradeable(patientId, pageable);
         return pageAsm.toModel(pharmacies, dtoAsm);
+    }
+
+    @Transactional
+    @Override
+    public List<PharmacyDrugDTO> findForERecipe(ERecipeDTO dto) {
+        List<Pharmacy> pharmaciesList = repository.findAll();
+        List<Drug> drugs = new ArrayList<>();
+        for(ERecipeDrugDTO d: dto.getDrugs()) {
+            Optional<Drug> drug = drugRepository.findByName(d.getName());
+            drugs.add(drug.get());
+            List<Pharmacy> pharmacies = repository.findForER(drug.get().getId(), d.getQuantity());
+            List<Pharmacy> newList = new ArrayList<>();
+            for(Pharmacy p : pharmacies){
+                if(pharmaciesList.contains(p)){
+                    newList.add(p);
+                }
+            }
+            pharmaciesList = newList;
+        }
+
+        List<PharmacyDrugDTO> ph = new ArrayList<>();
+        for(Pharmacy p: pharmaciesList){
+            PharmacyDrugDTO pddto = new PharmacyDrugDTO(p.getId(), p.getName(), p.getAddress().getCity(), p.getAddress().getStreet());
+            double price = 0;
+            for(Drug d: drugs) {
+                Optional<WareHouseItem> wareHouseItem = wareHouseRepository.findByPharmacyIdAndDrugId(d.getId(), p.getId());
+                if (!wareHouseItem.isPresent()) {
+                    price += 0;
+                }
+                price += wareHouseItem.get().getPriceForToday().getPrice();
+                pddto.setPrice(price);
+                ph.add(pddto);
+            }
+        }
+        return ph;
+
     }
 
 }

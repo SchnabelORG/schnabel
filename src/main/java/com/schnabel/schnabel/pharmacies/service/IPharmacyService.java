@@ -2,10 +2,12 @@ package com.schnabel.schnabel.pharmacies.service;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import com.schnabel.schnabel.misc.interfaces.IJpaService;
+import com.schnabel.schnabel.pharmacies.dto.ERecipeDTO;
 import com.schnabel.schnabel.pharmacies.dto.PharmacyDTO;
 import com.schnabel.schnabel.pharmacies.dto.PharmacyCreationDTO;
 import com.schnabel.schnabel.pharmacies.dto.PharmacyDrugDTO;
@@ -28,5 +30,6 @@ public interface IPharmacyService extends IJpaService<Pharmacy, Long>
     Collection<PharmacyDrugDTO> findWithStock(Long drugId, Pageable pageable);
     PagedModel<PharmacyDTO> findGraded(Long patientId, Pageable pageable);
     PagedModel<PharmacyDTO> findGradeable(Long patientId, Pageable pageable);
+    List<PharmacyDrugDTO> findForERecipe(ERecipeDTO dto);
 }
 

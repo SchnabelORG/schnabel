@@ -37,6 +37,13 @@ spring:
           auth: true
           starttls:
             enable: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
+
 mail:
   smtp:
     debug: true
@@ -49,3 +56,5 @@ custom:
   refSecret: ${SCHNABEL_REF_SECRET}
   refExpMonth: 6
   max_penalties: 3
+file:
+  upload-dir: /schnabel/images
