@@ -118,7 +118,7 @@
                 })
             },
             getPharmacies: function() {
-                this.axios.post('api/pharmacy/erecipe', this.ereceipt, {headers:{"Authorization": "Bearer " + this.currentUser}})
+                this.axios.post('api/pharmacy/drug/erecipe', this.ereceipt, {headers:{"Authorization": "Bearer " + this.currentUser}})
                 .then(r => {
                     if(r.data) {
                         this.pharmacies = r.data;

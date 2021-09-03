@@ -1,8 +1,13 @@
-insert into drugs("description", "name", score) values('anestetik', 'Lidokain 50mg', 0.0);
-insert into drugs("description", "name", score) values('anestetik', 'Prokain 100mg', 0.0);
-insert into drugs("description", "name", score) values('anestetik', 'Tetrakain 100mg', 0.0);
-insert into drugs("description", "name", score) values('sedativ', 'Bensedin 100mg', 0.0);
-insert into drugs("description", "name", score) values('sedativ', 'Xanax 100mg', 0.0);
+
+insert into drugs(id, "code", "name", "description", "drug_type","drug_state",  "drug_origin", "producer", "dosage", "issuing_type", score, points) values(1, '2125782161', 'Lidokain', 'Dont take on empty stomach', 'ANALGESIC', 'PILL', 'HERBAL', 'BYER',  '50mg', 'ON_PRESCRIPTION', 0, 2);
+insert into drugs(id, "code", "name", "description", "drug_type","drug_state",  "drug_origin", "producer", "dosage", "issuing_type", score, points) values(2, '2125362161', 'Prokain', 'Possible allergy', 'ANTIBIOTICS', 'CAPSULE', 'HERBAL', 'Galenika ',  '50mg', 'ON_PRESCRIPTION', 0, 3);
+insert into drugs(id, "code", "name", "description", "drug_type","drug_state",  "drug_origin", "producer", "dosage", "issuing_type", score, points) values(3, '4355782161', 'Eferalgan', 'Possible allergy', 'ANTISEPTIC', 'POWDER', 'HERBAL', 'BYER',  '50mg', 'ON_PRESCRIPTION', 0, 5);
+insert into drugs(id, "code", "name", "description", "drug_type","drug_state",  "drug_origin", "producer", "dosage", "issuing_type", score, points) values(4, '2155432161', 'Tetrakain', 'Dont take on empty stomach', 'STIMULANTS', 'BIOLOGICAL', 'Galenika ', 'BYER',  '50mg', 'ON_PRESCRIPTION', 0, 1);
+insert into drugs(id, "code", "name", "description", "drug_type","drug_state",  "drug_origin", "producer", "dosage", "issuing_type", score, points) values(5, '2419674621', 'Xanax', 'Dont take on empty stomach', 'ANTIBIOTICS', 'BIOLOGICAL', 'Galenika ', 'BYER',  '100mg', 'ON_PRESCRIPTION', 0, 5);
+insert into drugs(id, "code", "name", "description", "drug_type","drug_state",  "drug_origin", "producer", "dosage", "issuing_type", score, points) values(6, '2520160013', 'Bensedin', 'Possible allergy', 'MOOD_STABILIZERS', 'BIOLOGICAL', 'HERBAL', 'BYER',  '50mg', 'ON_PRESCRIPTION', 40, 5);
+insert into drugs(id, "code", "name", "description", "drug_type","drug_state",  "drug_origin", "producer", "dosage", "issuing_type", score, points) values(7, '6144614336', 'Andol', 'Possible allergy', 'MOOD_STABILIZERS', 'BIOLOGICAL', 'Galenika ', 'Alkaloid AD-Skopje',  '250mg', 'ON_PRESCRIPTION', 0, 4);
+insert into drugs(id, "code", "name", "description", "drug_type","drug_state",  "drug_origin", "producer", "dosage", "issuing_type", score, points) values(8, '6514614146', 'Brufen', 'Dont take on empty stomach', 'ANALGESIC', 'CAPSULE', 'HERBAL', 'Alkaloid AD-Skopje',  '50mg', 'ON_PRESCRIPTION', 0, 6);
+insert into drugs(id, "code", "name", "description", "drug_type","drug_state",  "drug_origin", "producer", "dosage", "issuing_type", score, points) values(9, '6416747988', 'lidokain', 'Possible allergy ', 'OTHER', 'CAPSULE', 'HERBAL', 'BYER',  '50mg', 'ON_PRESCRIPTION', 0, 2);
 
 insert into loyalty(id, pharmacy_points, dermatologist_points, points_for_bronze, bronze_discount, points_for_silver, silver_discount, points_for_gold, gold_discount) values (1, 5, 7, 150, 0.1, 300, 0.3, 500, 0.4);
 
@@ -18,12 +23,33 @@ insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(10, 
 insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 40, 3, 2);
 insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 40, 4, 2);
 insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 40, 5, 2);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 40, 6, 2);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 40, 7, 2);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 40, 8, 2);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 40, 1, 2);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 40, 2, 2);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 40, 6, 3);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 40, 7, 3);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 40, 8, 3);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 40, 1, 3);
+insert into warehouseitem(available, quantity, drug_id, pharmacy_id) values(20, 40, 2, 3);
+
 
 insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(100, '2021-12-12', '2020-01-01', 1);
 insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(200, '2021-12-20', '2020-01-01', 2);
 insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(300, '2022-12-01', '2020-01-01', 3);
 insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(250, '2022-12-01', '2020-01-01', 4);
-insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(200, '2022-12-01', '2020-01-01', 5);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(250, '2022-12-01', '2020-01-01', 5);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(210, '2022-12-01', '2020-01-01', 6);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(500, '2022-12-01', '2020-01-01', 7);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(600, '2022-12-01', '2020-01-01', 8);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(400, '2022-12-01', '2020-01-01', 9);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(600, '2022-12-01', '2020-01-01', 10);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(600, '2022-12-01', '2020-01-01', 11);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(410, '2022-12-01', '2020-01-01', 12);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(330, '2022-12-01', '2020-01-01', 13);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(550, '2022-12-01', '2020-01-01', 14);
+insert into drugprice(price, price_end_date, price_start_date, warehouseitem_id) values(660, '2022-12-01', '2020-01-01', 15);
 
 insert into patients(id, "name", surname, email, "password", city, postcode, street, street_no, latitude, longitude, is_activated, phone_no) values (1, 'Jovan', 'Ivosevic', 'ivos.jovan@protonmail.ch', '$2a$10$IevzxrzynxfElyhc1zuUferMhXfAWbDRsob0cXmCc6jEETM7xhCiG', '21000', 'Novi Sad', 'Balzakova', '69', 0.0, 0.0, true, '0607671370'); --password:Sifra1337
 insert into patients(id, "name", surname, email, "password", city, postcode, street, street_no, latitude, longitude, is_activated, phone_no) values (2, 'Mile', 'Knezevic', 'lemara98@gmail.com', '$2y$10$VS2RQAcHBqO.aLSEGlaYGe2b2605tXpUxAKCeZfXYTnMGriXGguoy', '21000', 'Novi Sad', 'Bulevar Oslobodjenja', '42', 0.0, 0.0, true, '0631931345'); --password:Sifra1337
