@@ -43,15 +43,16 @@ public class ERecipeService extends JpaService<ERecipe, Long, IERecipeRepository
         hashMap.put(EncodeHintType.ERROR_CORRECTION,
                 ErrorCorrectionLevel.L);
         try {
+            FileInputStream inputStream = new FileInputStream(filePath);
             BinaryBitmap binaryBitmap
                     = new BinaryBitmap(new HybridBinarizer(
                     new BufferedImageLuminanceSource(
                             ImageIO.read(
-                                    new FileInputStream(filePath)))));
+                                    inputStream))));
 
             Result result
                     = new MultiFormatReader().decode(binaryBitmap);
-
+            inputStream.close();
             return result.getText();
         } catch (Exception e) {
             e.printStackTrace();

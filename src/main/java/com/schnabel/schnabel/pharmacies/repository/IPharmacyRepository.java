@@ -1,7 +1,7 @@
 package com.schnabel.schnabel.pharmacies.repository;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
@@ -71,9 +71,9 @@ public interface IPharmacyRepository extends JpaRepository<Pharmacy, Long>, JpaS
             + " FROM pharmacies ph"
             + " INNER JOIN warehouseitem w"
             + " ON ph.id = w.pharmacy_id"
-            + " WHERE w.drug_id IN :drugs"
+            + " WHERE w.drug_id IN :drug_id"
             + " AND w.available >= :quantity"
             + " GROUP BY ph.id",
             nativeQuery = true)
-    Page<Pharmacy> findForER(@Param("drugs") Collection<Long> drugs,@Param("quantity") double quantity, Pageable pageable);
+    List<Pharmacy> findForER(@Param("drug_id") Long drugId, @Param("quantity") double quantity);
 }

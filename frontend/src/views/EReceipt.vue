@@ -20,10 +20,7 @@
                             <tr>
                                 <td>{{row.item.code}}</td>  
                                 <td>{{row.item.name}}</td>                   
-                                <td>{{row.item.dosage}}</td>
-                                <td>{{row.item.producer}}</td>
-                                <td>{{row.item.drugType}}</td>
-                                <td>{{row.item.description}}</td>
+                                <td>{{row.item.quantity}}</td>
                             </tr>
                         </template>
                     </v-data-table>
@@ -34,11 +31,11 @@
                                     >
                         <template v-slot:item="row">
                             <tr>
-                                <td>{{row.item.name}}</td>                   
-                                <td>{{row.item.address}}</td>
-                                <td>{{row.item.score}}</td>
-                                <td>{{row.item.price}}</td>
-                            </tr>
+                                    <td>{{row.item.name}}</td>  
+                                    <td>{{row.item.city}}</td>                   
+                                    <td>{{row.item.street}}</td>
+                                    <td>{{row.item.price}}</td>
+                                </tr>
                         </template>
                     </v-data-table>
                 </div>
@@ -72,18 +69,13 @@
                 headers: [
                     { text: "Code", value: 'code' },
                     { text: "Name", value: 'name' },
-                    { text: "Dosage", value: 'dosage' },
-                    { text: "Producer", value: 'producer' },
-                    { text: "Drug Type", value: 'drugtype'},
-                    { text: "Description"},
-                    {text: "Edit"},
-                    { text: "Delete"},
+                    { text: "Quantity", value: 'quantity' },
                 ],
                 headers2: [
-                    { text: "Name", value: 'name' },
-                    { text: "Address", value: 'address' },
-                    { text: "Score", value: 'score' },
-                    { text: "Price", value: 'price'},
+                    { text: 'Name', value: 'name' },
+                    { text: 'City', value: 'address.city' },
+                    { text: 'Street', value: 'address.street' },
+                    { text: 'Price'}
                 ],
                 rules: {
                     required: value => !!value || 'Required.',
@@ -119,12 +111,24 @@
                     console.log(r.data);
                     this.ereceipt = r.data;
                     this.drugs = r.data.drugs;
+                    this.getPharmacies();
                 })
                 .catch(r => {
                     console.log(r.data);
                 })
             },
-            
+            getPharmacies: function() {
+                this.axios.post('api/pharmacy/erecipe', this.ereceipt, {headers:{"Authorization": "Bearer " + this.currentUser}})
+                .then(r => {
+                    if(r.data) {
+                        this.pharmacies = r.data;
+                    } else {
+                        this.pharmacies = [];
+                    }
+                })
+                .catch(() => console.log('No pharmacies found with drug in stock.'))
+            }
+
         },
         mounted() {
         },

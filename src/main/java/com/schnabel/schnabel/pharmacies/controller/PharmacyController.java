@@ -109,9 +109,11 @@ public class PharmacyController
         return new ResponseEntity<>(service.findWithStock(drugId, pageable), HttpStatus.OK);
     }
 
+
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
     @PostMapping("drug/erecipe")
-    public ResponseEntity<?> findFromERecipe(@RequestBody ERecipeDTO dto) {
-        return ResponseEntity.badRequest().build();
+    public ResponseEntity<Collection<PharmacyDrugDTO>> findFromERecipe(@RequestBody ERecipeDTO dto) {
+        return new ResponseEntity<>(service.findForERecipe(dto), HttpStatus.OK);
     }
 
 

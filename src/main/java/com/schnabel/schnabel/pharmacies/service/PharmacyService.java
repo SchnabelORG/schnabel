@@ -133,16 +133,40 @@ public class PharmacyService extends JpaService<Pharmacy, Long, IPharmacyReposit
         return pageAsm.toModel(pharmacies, dtoAsm);
     }
 
+    @Transactional
     @Override
-    public PagedModel<PharmacyDTO> findForERecipe(ERecipeDTO dto, Pageable pageable) {
+    public List<PharmacyDrugDTO> findForERecipe(ERecipeDTO dto) {
+        List<Pharmacy> pharmaciesList = repository.findAll();
         List<Drug> drugs = new ArrayList<>();
         for(ERecipeDrugDTO d: dto.getDrugs()) {
             Optional<Drug> drug = drugRepository.findByName(d.getName());
             drugs.add(drug.get());
+            List<Pharmacy> pharmacies = repository.findForER(drug.get().getId(), d.getQuantity());
+            List<Pharmacy> newList = new ArrayList<>();
+            for(Pharmacy p : pharmacies){
+                if(pharmaciesList.contains(p)){
+                    newList.add(p);
+                }
+            }
+            pharmaciesList = newList;
         }
 
+        List<PharmacyDrugDTO> ph = new ArrayList<>();
+        for(Pharmacy p: pharmaciesList){
+            PharmacyDrugDTO pddto = new PharmacyDrugDTO(p.getId(), p.getName(), p.getAddress().getCity(), p.getAddress().getStreet());
+            double price = 0;
+            for(Drug d: drugs) {
+                Optional<WareHouseItem> wareHouseItem = wareHouseRepository.findByPharmacyIdAndDrugId(d.getId(), p.getId());
+                if (!wareHouseItem.isPresent()) {
+                    price += 0;
+                }
+                price += wareHouseItem.get().getPriceForToday().getPrice();
+                pddto.setPrice(price);
+                ph.add(pddto);
+            }
+        }
+        return ph;
 
-        return null;
     }
 
 }
