@@ -16,12 +16,7 @@
                             <tr>
                                 <td>{{row.item.name}}</td>
                                 <td>{{row.item.surname}}</td>
-                                <td>{{row.item.email}}</td>
-                                <td>
-                                    <v-btn @click="deleteDermatologist(row.item.id)">
-                                        Delete
-                                    </v-btn>
-                                </td>                       
+                                <td>{{row.item.email}}</td>                      
                             </tr>
                         </template>
                     </v-data-table>
@@ -109,7 +104,6 @@
                     { text: "Name" },
                     { text: "Surname" },
                     { text: "Email"},
-                    { text: "Delete" },
                 ],
                 rules: {
                     required: value => !!value || 'Required.',

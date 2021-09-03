@@ -26,7 +26,7 @@
                     </v-data-table>
                 </div>
                 <div>
-                    <v-data-table :headers="headers"
+                    <v-data-table :headers="headers2"
                                     :items="pharmacies"
                                     >
                         <template v-slot:item="row">
@@ -35,6 +35,9 @@
                                     <td>{{row.item.city}}</td>                   
                                     <td>{{row.item.street}}</td>
                                     <td>{{row.item.price}}</td>
+                                    <td>
+                                        <v-btn @click="acceptPh()">Accept</v-btn>
+                                    </td>
                                 </tr>
                         </template>
                     </v-data-table>
@@ -75,7 +78,8 @@
                     { text: 'Name', value: 'name' },
                     { text: 'City', value: 'address.city' },
                     { text: 'Street', value: 'address.street' },
-                    { text: 'Price'}
+                    { text: 'Price'},
+                    { text: 'Accept'}
                 ],
                 rules: {
                     required: value => !!value || 'Required.',
@@ -127,6 +131,9 @@
                     }
                 })
                 .catch(() => console.log('No pharmacies found with drug in stock.'))
+            },
+            acceptPh: function() {
+                this.$router.push("/user");
             }
 
         },

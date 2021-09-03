@@ -270,6 +270,7 @@
                         <v-card tile class="flex-grow-1">
                             <v-card-title class="primary white--text">E-Prescriptions</v-card-title>
                             <v-card-text>
+                                <v-btn plain to="/ereceipt">&#62; Submit QR code</v-btn>
                                 <v-text-field
                                 v-model="ePrescSearch"
                                 label="Search"

@@ -26,7 +26,8 @@ import java.util.List;
 public class Drug implements IIdentifiable<Long>
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "drug_seq_gen", sequenceName = "drug_seq", initialValue = 100, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "drug_seq_gen")
     private Long id;
     @Column
     private String code;

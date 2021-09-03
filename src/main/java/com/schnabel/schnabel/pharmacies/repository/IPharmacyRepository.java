@@ -71,7 +71,7 @@ public interface IPharmacyRepository extends JpaRepository<Pharmacy, Long>, JpaS
             + " FROM pharmacies ph"
             + " INNER JOIN warehouseitem w"
             + " ON ph.id = w.pharmacy_id"
-            + " WHERE w.drug_id IN :drug_id"
+            + " WHERE w.drug_id = :drug_id"
             + " AND w.available >= :quantity"
             + " GROUP BY ph.id",
             nativeQuery = true)

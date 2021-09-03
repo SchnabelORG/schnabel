@@ -16,12 +16,7 @@
                             <tr>
                                 <td>{{row.item.firm}}</td>
                                 <td>{{row.item.email}}</td>
-                                <td>{{getAddress(row.item.address)}}</td>
-                                <td>
-                                    <v-btn @click="deleteSupplier(row.item.id)">
-                                        Delete
-                                    </v-btn>
-                                </td>                       
+                                <td>{{getAddress(row.item.address)}}</td>                   
                             </tr>
                         </template>
                     </v-data-table>
@@ -104,7 +99,6 @@
                     { text: "Fimr" },
                     { text: "Email" },
                     { text: "Adress"},
-                    { text: "Delete" },
                 ],
                 rules: {
                     required: value => !!value || 'Required.',

@@ -27,11 +27,6 @@
                                         Edit
                                     </v-btn>
                                 </td>
-                                <td>
-                                    <v-btn @click="deleteDrug(row.item.id)">
-                                        Delete
-                                    </v-btn>
-                                </td>
                             </tr>
                         </template>
                         <template v-slot:expanded-item="{headers, item}">
@@ -291,7 +286,6 @@
                     { text: "Drug Type", value: 'drugtype'},
                     { text: "Description"},
                     {text: "Edit"},
-                    { text: "Delete"},
                 ],
                 headers2: [
                     { text: "Code", value: 'code' },

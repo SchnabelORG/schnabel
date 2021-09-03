@@ -10,6 +10,8 @@ import java.util.*;
 import javax.transaction.Transactional;
 
 import com.schnabel.schnabel.drugs.model.Drug;
+import com.schnabel.schnabel.drugs.model.DrugPrice;
+import com.schnabel.schnabel.drugs.model.DrugPrice_;
 import com.schnabel.schnabel.drugs.repository.IDrugRepository;
 import com.schnabel.schnabel.misc.implementations.JpaService;
 import com.schnabel.schnabel.pharmacies.dto.*;
@@ -160,7 +162,10 @@ public class PharmacyService extends JpaService<Pharmacy, Long, IPharmacyReposit
                 if (!wareHouseItem.isPresent()) {
                     price += 0;
                 }
-                price += wareHouseItem.get().getPriceForToday().getPrice();
+                DrugPrice dp = wareHouseItem.get().getPriceForToday();
+                if(dp == null)
+                    continue;
+                price += dp.getPrice();
                 pddto.setPrice(price);
                 ph.add(pddto);
             }
