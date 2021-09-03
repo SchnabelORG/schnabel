@@ -78,6 +78,7 @@
                 </v-col>
                 <v-col>
                      <v-card color="#385F73"
+                     @click="$router.push('/systemadmin/loyalty')"
                     dark>
                         <v-card-title class="text-h6">
                             Loyalti Program

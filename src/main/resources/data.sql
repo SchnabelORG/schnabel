@@ -4,6 +4,8 @@ insert into drugs("description", "name", score) values('anestetik', 'Tetrakain 1
 insert into drugs("description", "name", score) values('sedativ', 'Bensedin 100mg', 0.0);
 insert into drugs("description", "name", score) values('sedativ', 'Xanax 100mg', 0.0);
 
+insert into loyalty(id, pharmacy_points, dermatologist_points, points_for_bronze, bronze_discount, points_for_silver, silver_discount, points_for_gold, gold_discount) values (1, 5, 7, 150, 0.1, 300, 0.3, 500, 0.4);
+
 insert into pharmacies("name", city, postcode, street, street_no, latitude, longitude, score, consult_price) values('Schnabel Liman', 'Novi Sad', '21000', 'Balzakova', '24a', 45.2378, 19.8297, 4, 2000);
 insert into pharmacies("name", city, postcode, street, street_no, latitude, longitude, score, consult_price) values('Schnabel Grbavica', 'Novi Sad', '21000', 'Aleksa Santica', '2', 45.2452, 19.8365, 3, 3000);
 insert into pharmacies("name", city, postcode, street, street_no, latitude, longitude, score, consult_price) values('Schnabel Beograd', 'Beograd', '11000', 'Proleterska', '4b', 44.6806, 20.4476, 4, 1570);

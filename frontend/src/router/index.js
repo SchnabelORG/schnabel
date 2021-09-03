@@ -354,6 +354,16 @@ const routes = [
         name: 'SystemAdminRegistration',
         component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminRegistration.vue'),
       },
+      {
+        path: 'pharmacyadmins',
+        name: 'SystemAdminPharmacyAdmins',
+        component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminPharmacyAdmins.vue'),
+      },
+      {
+        path: 'loyalty',
+        name: 'SystemAdminLoyalty',
+        component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminLoyalty.vue'),
+      },
     ],
   },
 

@@ -27,6 +27,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -120,6 +121,7 @@ public class PharmacyAdminController
                 : ResponseEntity.badRequest().build();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("register")
     public ResponseEntity<String> registerPharmacyAdmin(@RequestBody RegisterPharmacyEmployeeRequest request)
     {

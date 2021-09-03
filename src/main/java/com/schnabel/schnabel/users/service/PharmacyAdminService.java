@@ -2,16 +2,12 @@ package com.schnabel.schnabel.users.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import javax.transaction.Transactional;
 
 import com.schnabel.schnabel.appointment.model.Appointment;
 import com.schnabel.schnabel.appointment.repository.IAppointmentRepository;
-import com.schnabel.schnabel.appointment.service.IAppointmentService;
 import com.schnabel.schnabel.drugs.model.DrugReservation;
 import com.schnabel.schnabel.drugs.repository.IDrugReservationRepository;
 import com.schnabel.schnabel.misc.implementations.JpaService;
@@ -20,20 +16,17 @@ import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.pharmacies.repository.IPharmacyRepository;
 import com.schnabel.schnabel.users.dto.PharmacyAdminDTO;
 import com.schnabel.schnabel.users.dto.PharmacyAdminDTOAssembler;
-import com.schnabel.schnabel.users.model.Patient;
+import com.schnabel.schnabel.users.model.*;
 import com.schnabel.schnabel.pharmacies.dto.WareHouseItemDTO;
-import com.schnabel.schnabel.pharmacies.model.Pharmacy;
 import com.schnabel.schnabel.pharmacies.service.IWareHouseItemService;
 import com.schnabel.schnabel.users.dto.DermatologistDTO;
 import com.schnabel.schnabel.users.dto.DermatologistRequest;
 import com.schnabel.schnabel.users.dto.PharmacistDTO;
 import com.schnabel.schnabel.users.dto.PharmacistRequest;
-import com.schnabel.schnabel.users.model.Dermatologist;
-import com.schnabel.schnabel.users.model.Pharmacist;
-import com.schnabel.schnabel.users.model.PharmacyAdmin;
-import com.schnabel.schnabel.users.model.Shift;
 import com.schnabel.schnabel.users.repository.IPharmacyAdminRepository;
 
+import com.schnabel.schnabel.users.repository.IRoleRepository;
+import com.schnabel.schnabel.users.repository.IUserssRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +34,6 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -59,14 +51,18 @@ public class PharmacyAdminService extends JpaService<PharmacyAdmin, Long, IPharm
     private final IAppointmentRepository appointmentRepository;
     private final IDrugReservationRepository drugReservationRepository;
     private final IShiftService shiftService;
+    private final IRoleRepository roleRepository;
+    private final IUserssRepository userssRepository;
 
     @Autowired
-    public PharmacyAdminService(IPharmacyAdminRepository pharmacyAdminRepository, PharmacyAdminDTOAssembler pharmacyAdminDTOAssembler, PagedResourcesAssembler<PharmacyAdmin> pharmacyAdminDtoPagedResourcesAssembler, IPharmacyRepository pharmacyRepository, IDermatologistService dermatologistService, IPharmacistService pharmacistService, IWareHouseItemService wareHouseItemService, IAppointmentRepository appointmentRepository, IShiftService shiftService, IDrugReservationRepository drugReservationRepository)
+    public PharmacyAdminService(IPharmacyAdminRepository pharmacyAdminRepository, PharmacyAdminDTOAssembler pharmacyAdminDTOAssembler, PagedResourcesAssembler<PharmacyAdmin> pharmacyAdminDtoPagedResourcesAssembler, IPharmacyRepository pharmacyRepository, IDermatologistService dermatologistService, IPharmacistService pharmacistService, IWareHouseItemService wareHouseItemService, IAppointmentRepository appointmentRepository, IShiftService shiftService, IDrugReservationRepository drugReservationRepository, IRoleRepository roleRepository, IUserssRepository userssRepository)
     {
         super(pharmacyAdminRepository);
         this.pharmacyAdminDTOAssembler = pharmacyAdminDTOAssembler;
         this.pharmacyAdminDtoPagedResourcesAssembler = pharmacyAdminDtoPagedResourcesAssembler;
         this.pharmacyRepository = pharmacyRepository;
+        this.roleRepository = roleRepository;
+        this.userssRepository = userssRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
         this.dermatologistService = dermatologistService;
         this.pharmacistService = pharmacistService;
@@ -120,6 +116,14 @@ public class PharmacyAdminService extends JpaService<PharmacyAdmin, Long, IPharm
     public boolean registerPharmacyAdmin(String name, String surname, String email, String password, Address address) {
         String encodedPassword = passwordEncoder.encode(password);
         PharmacyAdmin newPharmacyAdmin = new PharmacyAdmin(name, surname, email, encodedPassword, address, false);
+        newPharmacyAdmin.setActivated(false);
+        Set<Role> roles = new HashSet<>();
+        Role role = roleRepository.findByName(ERole.ROLE_PHARMACYADMIN)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        roles.add(role);
+        UserS user = new UserS(email, encodedPassword);
+        user.setRoles(roles);
+        userssRepository.save(user);
         Optional<PharmacyAdmin> pharmacyAdmin = add(newPharmacyAdmin);
         if(pharmacyAdmin.isPresent())
             return true;
