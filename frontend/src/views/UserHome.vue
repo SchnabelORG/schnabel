@@ -44,7 +44,7 @@
                       <h3 class="info--text">Feedback</h3>
                       <div class="d-flex flex-column align-start">
                         <v-btn plain to="/rating">&#62; Leave a rating</v-btn>
-                        <v-btn plain to="/">&#62; Submit a complaint</v-btn>
+                        <v-btn plain to="/complaint">&#62; Submit a complaint</v-btn>
                       </div>
                     </div>
                     <div v-if="penalties" class="info-card">

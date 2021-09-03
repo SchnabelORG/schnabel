@@ -1,13 +1,16 @@
 package com.schnabel.schnabel.grades.controller;
 
+import com.schnabel.schnabel.grades.dto.ComplainRequset;
 import com.schnabel.schnabel.grades.dto.ComplaintDTO;
 import com.schnabel.schnabel.grades.dto.ComplaintRespsonseDTO;
 import com.schnabel.schnabel.grades.service.IComplaintService;
+import com.schnabel.schnabel.security.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,10 +18,12 @@ import org.springframework.web.bind.annotation.*;
 public class ComplaintController {
 
     private final IComplaintService complaintService;
+    private final JwtUtils jwtUtils;
 
     @Autowired
-    public ComplaintController(IComplaintService complaintService) {
+    public ComplaintController(IComplaintService complaintService, JwtUtils jwtUtils) {
         this.complaintService = complaintService;
+        this.jwtUtils = jwtUtils;
     }
 
     /**
@@ -65,6 +70,15 @@ public class ComplaintController {
     {
         return complaintService.addResponse(respsonseDTO.getId(), respsonseDTO.getResponse()) ?
                 ResponseEntity.ok("Responded")
+                : ResponseEntity.badRequest().build();
+    }
+
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    @PostMapping("complain")
+    public ResponseEntity<String> complain(@RequestBody ComplainRequset req,  @RequestHeader("Authorization") String auth) {
+        String email = jwtUtils.getEmailFromJws(jwtUtils.parseJwtFromAuthorizationHeader(auth));
+        return complaintService.createComplain(req.getText(), email) ?
+                ResponseEntity.ok("Created")
                 : ResponseEntity.badRequest().build();
     }
 

@@ -13,4 +13,5 @@ public interface IComplaintService extends IJpaService<Complaint, Long> {
     PagedModel<ComplaintDTO> getAllDTO(Pageable pageable);
     PagedModel<ComplaintDTO> getWithoutResponse(Pageable pageable);
     boolean addResponse(Long id, String response);
+    boolean createComplain(String text, String email);
 }
