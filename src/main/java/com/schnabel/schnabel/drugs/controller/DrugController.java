@@ -61,7 +61,7 @@ public class DrugController
     @PostMapping
     public ResponseEntity<String> registerDrug(@RequestBody DrugRegistrationDTO registrationDTO)
     {
-        return service.registerDrug(registrationDTO.getCode(), registrationDTO.getName(), registrationDTO.getDescription(), registrationDTO.getDrugState(), registrationDTO.getDrugOrigin(), registrationDTO.getDrugType(), registrationDTO.getProducer(), registrationDTO.getDosage(), registrationDTO.getIssuingType(), registrationDTO.getSubstituteDrugs()) ?
+        return service.registerDrug(registrationDTO.getCode(), registrationDTO.getName(), registrationDTO.getDescription(), registrationDTO.getDrugState(), registrationDTO.getDrugOrigin(), registrationDTO.getDrugType(), registrationDTO.getProducer(), registrationDTO.getDosage(), registrationDTO.getIssuingType(), registrationDTO.getSubstituteDrugs(), registrationDTO.getPoints()) ?
                 ResponseEntity.ok("Registered")
                 : ResponseEntity.badRequest().build();
     }

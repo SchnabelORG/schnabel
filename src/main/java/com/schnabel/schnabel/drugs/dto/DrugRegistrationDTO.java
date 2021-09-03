@@ -29,4 +29,5 @@ public class DrugRegistrationDTO {
     private String dosage;
     private IssuingType issuingType;
     private List<Long> substituteDrugs;
+    private double points;
 }

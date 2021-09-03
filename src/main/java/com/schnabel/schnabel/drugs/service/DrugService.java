@@ -13,12 +13,7 @@ import com.schnabel.schnabel.misc.implementations.JpaService;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.schnabel.schnabel.drugs.dto.DrugDTO;
-import com.schnabel.schnabel.drugs.dto.DrugDTOAssembler;
-import com.schnabel.schnabel.drugs.model.Drug;
 import com.schnabel.schnabel.drugs.repository.DrugSpecification;
-import com.schnabel.schnabel.drugs.repository.IDrugRepository;
-import com.schnabel.schnabel.misc.implementations.JpaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -81,12 +76,13 @@ public class DrugService extends JpaService<Drug, Long, IDrugRepository> impleme
 
 
     @Override
-    public boolean registerDrug(String code, String name, String description, DrugState drugState, DrugOrigin drugOrigin, DrugType drugType, String producer, String dosage, IssuingType issuingType, List<Long> substituteDrugs) {
+    public boolean registerDrug(String code, String name, String description, DrugState drugState, DrugOrigin drugOrigin, DrugType drugType, String producer, String dosage, IssuingType issuingType, List<Long> substituteDrugs, double points) {
         Drug newDrug = new Drug(code, name,  description, drugType, drugState, drugOrigin , producer, dosage, issuingType);
         for(Long id : substituteDrugs){
             Drug d = repository.findById(id).get();
             newDrug.getSubstituteDrugs().add(d);
         }
+        newDrug.setPoints(points);
         Optional<Drug> drug = add(newDrug);
         if(drug.isPresent())
             return true;

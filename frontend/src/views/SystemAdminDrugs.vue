@@ -105,6 +105,11 @@
                     v-model="description"
                     label="Description"
                     ></v-textarea>
+                <v-text-field
+                    v-model="points"
+                    :rules="[rules.required]"
+                    label="Points"
+                ></v-text-field>
                 <v-spacer></v-spacer>
                 <v-card-subtitle>Substitute Drugs</v-card-subtitle>
                 <v-combobox
@@ -268,6 +273,7 @@
                 drugorigin: '',
                 drugstate: '',
                 description: '',
+                points: '',
                 issuingType: '',
                 substitue: [],
                 drugsubstitue: [],
@@ -385,6 +391,7 @@
                     dosage: this.dosage,
                     issuingType: this.issuingtype,
                     substituteDrugs: s,
+                    points: this.points,
                 };
                 console.log(d);
                 this.axios.post("api/drug", d,  {headers:{"Authorization": "Bearer " + this.currentUser}})
