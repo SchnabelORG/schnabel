@@ -157,4 +157,14 @@ public class WareHouseItemService extends JpaService<WareHouseItem, Long, IWareH
         return drugPrice.isPresent();
     }
 
+    @Override
+    @Transactional
+    public double getPrice(Long pharmacyId, Long drugId) {
+        Optional<WareHouseItem> wareHouseItem = repository.findByPharmacyIdAndDrugId(drugId, pharmacyId);
+        if(!wareHouseItem.isPresent()) {
+            return 0;
+        }
+        return wareHouseItem.get().getPriceForToday().getPrice();
+    }
+
 }

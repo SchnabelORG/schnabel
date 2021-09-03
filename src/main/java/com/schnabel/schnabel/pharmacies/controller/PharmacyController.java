@@ -1,10 +1,12 @@
 package com.schnabel.schnabel.pharmacies.controller;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Map;
 
 import com.schnabel.schnabel.pharmacies.dto.PharmacyCreationDTO;
 import com.schnabel.schnabel.pharmacies.dto.PharmacyDTO;
+import com.schnabel.schnabel.pharmacies.dto.PharmacyDrugDTO;
 import com.schnabel.schnabel.pharmacies.service.IPharmacyService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,7 +97,7 @@ public class PharmacyController
      * Return pharmacies that have specific drug in stock
      */
     @GetMapping("drug/{id}")
-    public ResponseEntity<PagedModel<PharmacyDTO>> getWithStock(@PathVariable("id") Long drugId, Pageable pageable) {
+    public ResponseEntity<Collection<PharmacyDrugDTO>> getWithStock(@PathVariable("id") Long drugId, Pageable pageable) {
         return new ResponseEntity<>(service.findWithStock(drugId, pageable), HttpStatus.OK);
     }
 
