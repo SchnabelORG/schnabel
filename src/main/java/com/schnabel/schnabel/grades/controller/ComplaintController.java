@@ -65,6 +65,7 @@ public class ComplaintController {
      * @param respsonseDTO - complaintId, response
      * @return OK if responded, else BadRequest
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("addRespond")
     public ResponseEntity<String> respond(@RequestBody ComplaintRespsonseDTO respsonseDTO)
     {

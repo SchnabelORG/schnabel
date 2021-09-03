@@ -360,6 +360,11 @@ const routes = [
         name: 'SystemAdminRegistration',
         component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminRegistration.vue'),
       },
+      {
+        path: 'complaints',
+        name: 'SystemAdminComplaints',
+        component: () => import(/* webpackChunkName: "systemadmin" */ '../views/SystemAdminComplaints.vue'),
+      },
     ],
   },
 

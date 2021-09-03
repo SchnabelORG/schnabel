@@ -51,7 +51,7 @@ public class ComplaintService extends JpaService<Complaint, Long, IComplaintRepo
     @Override
     @Transactional
     public PagedModel<ComplaintDTO> getWithoutResponse(Pageable pageable) {
-        Page<Complaint> complaints = repository.findByResponse(pageable,null);
+        Page<Complaint> complaints = repository.findByResponseNull(pageable);
         return complaintPagedResourcesAssemgler.toModel(complaints, complaintDTOAssembler);
     }
 
