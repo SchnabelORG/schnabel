@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import com.schnabel.schnabel.drugs.model.Drug;
 
+import com.schnabel.schnabel.drugs.model.enums.DrugType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,4 +29,13 @@ public interface IDrugRepository extends JpaRepository<Drug, Long>, JpaSpecifica
         nativeQuery = true)
     Page<Drug> findGradeable(@Param("patient_id") Long patientId, Pageable pageable);       
     Optional<Drug> findByName(String name);
+    Page<Drug> findByNameLikeAndDrugTypeAndScoreGreaterThanEqual(String name, DrugType drugType, double score, Pageable pageable);
+    Page<Drug> findByNameLikeAndScoreGreaterThanEqual(String name, double score, Pageable pageable);
+    Page<Drug> findByNameLike(String name, Pageable pageable);
+    Page<Drug> findByNameLikeAndDrugType(String name,DrugType drugType, Pageable pageable);
+    Page<Drug> findByDrugType(DrugType drugType, Pageable pageable);
+    Page<Drug> findByDrugTypeAndScoreGreaterThanEqual(DrugType drugType, double score, Pageable pageable);
+    Page<Drug> findByScoreGreaterThanEqual(double score, Pageable pageable);
+
+
 }

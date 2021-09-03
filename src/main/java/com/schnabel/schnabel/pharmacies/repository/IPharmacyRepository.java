@@ -1,6 +1,7 @@
 package com.schnabel.schnabel.pharmacies.repository;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Optional;
 
 import com.schnabel.schnabel.pharmacies.model.Pharmacy;
@@ -64,4 +65,5 @@ public interface IPharmacyRepository extends JpaRepository<Pharmacy, Long>, JpaS
         + " GROUP BY ph.id",
         nativeQuery = true)
     Page<Pharmacy> findGradeable(@Param("patient_id") Long patientId, Pageable pageable);
+
 }

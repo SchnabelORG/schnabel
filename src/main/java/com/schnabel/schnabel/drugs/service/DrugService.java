@@ -3,6 +3,7 @@ package com.schnabel.schnabel.drugs.service;
 import com.schnabel.schnabel.drugs.dto.DrugDTO;
 import com.schnabel.schnabel.drugs.dto.DrugDTOAssembler;
 import com.schnabel.schnabel.drugs.model.Drug;
+import com.schnabel.schnabel.drugs.model.Drug_;
 import com.schnabel.schnabel.drugs.model.enums.DrugOrigin;
 import com.schnabel.schnabel.drugs.model.enums.DrugState;
 import com.schnabel.schnabel.drugs.model.enums.DrugType;
@@ -46,9 +47,55 @@ public class DrugService extends JpaService<Drug, Long, IDrugRepository> impleme
         return get(id).map(dtoAsm::toModel);
     }
 
-    @Override
+    /*@Override
     public PagedModel<DrugDTO> filteredSearch(Map<String, String> params, Pageable pageable) {
         Page<Drug> drugs = repository.findAll(DrugSpecification.filteredQuery(params), pageable);
+        return pageAsm.toModel(drugs, dtoAsm);
+    }
+
+    if(params.containsKey("name")) {
+        predicates.add(cb.like(cb.lower(root.get(Drug_.NAME)), "%" + params.get("name").toLowerCase() + "%"));
+    } else if(params.containsKey("type") && params.containsKey("name")) {
+        predicates.add(cb.like(cb.lower(root.get(Drug_.DRUG_TYPE)), "%" + DrugType.convert(params.get("type")) + "%"));
+        predicates.add(cb.like(cb.lower(root.get(Drug_.NAME)), "%" + params.get("name").toLowerCase() + "%"));
+    } else if(params.containsKey("type") && !params.containsKey("name")) {
+        predicates.add(cb.like(cb.lower(root.get(Drug_.DRUG_TYPE)),DrugType.convert(params.get("type"))));
+    } else if(params.containsKey("type") && params.containsKey("name") && params.containsKey("score")){
+        predicates.add(cb.like(cb.lower(root.get(Drug_.DRUG_TYPE)), "%" + params.get("type") + "%"));
+        predicates.add(cb.like(cb.lower(root.get(Drug_.NAME)), "%" + params.get("name").toLowerCase() + "%"));
+        predicates.add(cb.like(cb.lower(root.get(Drug_.SCORE)), "%" + params.get("name").toLowerCase() + "%"));
+    } else if(params.containsKey("type") && !params.containsKey("name") && params.containsKey("score")){
+        predicates.add(cb.like(cb.lower(root.get(Drug_.DRUG_TYPE)), "%" + params.get("type") + "%"));
+        predicates.add(cb.like(cb.lower(root.get(Drug_.SCORE)), "%" + params.get("name").toLowerCase() + "%"));
+    } else if(!params.containsKey("type") && params.containsKey("name") && params.containsKey("score")){
+        predicates.add(cb.like(cb.lower(root.get(Drug_.NAME)), "%" + params.get("name").toLowerCase() + "%"));
+        predicates.add(cb.like(cb.lower(root.get(Drug_.SCORE)), "%" + params.get("name").toLowerCase() + "%"));
+    } else if(!params.containsKey("type") && !params.containsKey("name") && params.containsKey("score")){
+        predicates.add(cb.like(cb.lower(root.get(Drug_.SCORE)), "%" + params.get("name").toLowerCase() + "%"));
+    }
+
+    */
+
+    @Override
+    public PagedModel<DrugDTO> filteredSearch(Map<String, String> params, Pageable pageable) {
+        Page<Drug> drugs;
+        if(params.containsKey("name")) {
+            drugs = repository.findByNameLike(params.get("name"), pageable);
+        } else if(params.containsKey("type") && params.containsKey("name")) {
+            drugs = repository.findByNameLikeAndDrugType(params.get("name"), DrugType.convert(params.get("type")), pageable);
+        } else if(params.containsKey("type") && !params.containsKey("name")) {
+            drugs = repository.findByDrugType(DrugType.convert(params.get("type")), pageable);
+        } else if(params.containsKey("type") && params.containsKey("name") && params.containsKey("score")){
+            drugs = repository.findByNameLikeAndDrugTypeAndScoreGreaterThanEqual(params.get("name"), DrugType.convert(params.get("type")), Double.parseDouble(params.get("score")), pageable);
+        } else if(params.containsKey("type") && !params.containsKey("name") && params.containsKey("score")){
+            drugs = repository.findByDrugTypeAndScoreGreaterThanEqual(DrugType.convert(params.get("type")), Double.parseDouble(params.get("score")), pageable);
+        } else if(!params.containsKey("type") && params.containsKey("name") && params.containsKey("score")){
+            drugs = repository.findByNameLikeAndScoreGreaterThanEqual(params.get("name"), Double.parseDouble(params.get("score")), pageable);
+        } else if(!params.containsKey("type") && !params.containsKey("name") && params.containsKey("score")) {
+            drugs = repository.findByScoreGreaterThanEqual(Double.parseDouble(params.get("score")), pageable);
+        } else {
+            drugs = repository.findAll(pageable);
+        }
         return pageAsm.toModel(drugs, dtoAsm);
     }
 
