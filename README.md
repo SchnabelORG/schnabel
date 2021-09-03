@@ -161,7 +161,7 @@ For frontend:
   cd frontend && npm run serve
 ```
 
-## Running
+## Testing
 Password for all users is: Sifra123 
 
 Images for testing QR code are in folder [images](https://github.com/SchnabelORG/schnabel/tree/odbrana-septembar/images)
