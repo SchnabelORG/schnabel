@@ -166,6 +166,17 @@ public class OfferService extends JpaService<Offer, Long, IOfferRepository> impl
         return offerPagedResourcesAssembler.toModel(offers, offerDTOAssembler);
     }
 
+    @Transactional
+    @Override
+    public boolean isEditable(Long offerId) {
+        Optional<Offer> offer = repository.findById(offerId);
+        if(!offer.isPresent())
+            return false;
+        if(offer.get().getOfferStatus().equals(OfferStatus.CREATED) && LocalDate.now().isAfter(offer.get().getOrder().getDeadline()) )
+            return true;
+        return false;
+    }
+
     private boolean updateWareHouseItems(Offer offer, Order order, Pageable pageable)
     {
         List<OrderItem> orderItems = orderItemService.findAllByOrderId(order.getId());
@@ -181,5 +192,7 @@ public class OfferService extends JpaService<Offer, Long, IOfferRepository> impl
         }
         return true;
     }
+
+
 
 }

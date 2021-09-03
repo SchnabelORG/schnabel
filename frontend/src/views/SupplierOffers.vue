@@ -6,31 +6,31 @@
                 <v-card
                 id="orders-card"
                 elevation="2">
-                    <v-card-title>Orders</v-card-title>
+                    <v-card-title>Offers</v-card-title>
                     <v-card-text>
                         <div id="orders-table">
-                            <v-radio-group v-model="filter" row >
-                                <v-radio
-                                    @change="getOffers()"
-                                    label="All"
-                                    value="ALL"
-                                ></v-radio>
-                                <v-radio
-                                    @change="getOffers()"
-                                    label="Created"
-                                    value="CREATED"
-                                ></v-radio>
-                                <v-radio
-                                    @change="getOffers()"
-                                    label="Accepted"
-                                    value="ACCEPTED"
-                                ></v-radio>
-                                <v-radio
-                                    @change="getOffers()"
-                                    label="Rejected"
-                                    value="REJECTED"
-                                ></v-radio>
-                            </v-radio-group>
+                            <v-row>
+                                <v-btn
+                                    @click="getAllOffers()"
+                                >
+                                    All
+                                </v-btn>
+                                <v-btn
+                                    @click="getCreated()"
+                                >
+                                    CREATED
+                                </v-btn>
+                                <v-btn
+                                    @click="getRejected()"
+                                >
+                                    REJECTED
+                                </v-btn>
+                                <v-btn
+                                    @click="getAccepted()"
+                                >
+                                    ACCEPTED
+                                </v-btn>
+                            </v-row>
                             <v-data-table :headers="headers"
                                             :items="offers"
                                             :search="search"
@@ -41,6 +41,12 @@
                                         <td>{{row.item.price}}</td>
                                         <td>{{row.item.dateOfDelivery}}</td>
                                         <td>{{row.item.offerStatus}}</td>
+                                        <td>
+                                            <v-btn v-if="editable(row.item.id)"
+                                            >
+                                                Edit
+                                            </v-btn>
+                                        </td>
                                                               
                                     </tr>
                                 </template>
@@ -58,7 +64,7 @@
             return {
                 offers: [],
                 order: {},
-                filter: 'ALL',
+                filterby: 'ALL',
                 new: false,
                 menu: false,
                 time: {},
@@ -85,17 +91,35 @@
                 }
         },
         methods: {
-            getOffers: function() {
-                if(this.filter === 'ALL') {
-                    this.getAllOffers();
-                } else {
-                    this.getFiltered();
-                }
-            },
-            getFiltered: function() {
-                this.axios.get("api/offer/supplier/filter", this.filter, {headers:{"Authorization": "Bearer " + this.currentUser}})
+            getCreated: function() {
+                this.axios.get("api/offer/supplier/filter/CREATED",{headers:{"Authorization": "Bearer " + this.currentUser}})
                 .then(r =>
                 {
+                    this.offers = [];
+                    this.offers = r.data._embedded.offers;
+                })
+                .catch(r => 
+                {
+                    console.log(r.data);
+                })
+            },
+            getRejected: function() {
+                this.axios.get("api/offer/supplier/filter/REJECTED",{headers:{"Authorization": "Bearer " + this.currentUser}})
+                .then(r =>
+                {
+                    this.offers = [];
+                    this.offers = r.data._embedded.offers;
+                })
+                .catch(r => 
+                {
+                    console.log(r.data);
+                })
+            },
+            getAccepted: function() {
+                this.axios.get("api/offer/supplier/filter/ACCEPTED",{headers:{"Authorization": "Bearer " + this.currentUser}})
+                .then(r =>
+                {
+                    this.offers = [];
                     this.offers = r.data._embedded.offers;
                 })
                 .catch(r => 
@@ -104,9 +128,11 @@
                 })
             },
             getAllOffers: function() {
+                console.log("standard")
                 this.axios.get("api/offer/supplier", {headers:{"Authorization": "Bearer " + this.currentUser}})
                 .then(r =>
                 {
+                    this.offers = [];
                     this.offers = r.data._embedded.offers;
                 })
                 .catch(r => 
@@ -114,9 +140,23 @@
                     console.log(r.data);
                 })
             },
+            editable: function(id) {
+                console.log(id);
+                this.axios.get("api/offer/editable/"+id)
+                .then(r =>
+                {
+                    console.log(r.data);
+                    return true;
+                })
+                .catch(r => 
+                {
+                    console.log(r.data);
+                    return false;
+                })
+            }
         },
         mounted() {
-            this.getOffers();
+            this.getAllOffers();
         },
     }
 </script>

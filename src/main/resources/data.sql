@@ -103,10 +103,10 @@ insert into orderitems(quantity, drug_id, order_id) values (20, 3, 1);
 insert into orderitems(quantity, drug_id, order_id) values (30, 4, 2);
 insert into orderitems(quantity, drug_id, order_id) values (20, 5, 3);
 
-insert into offers(price, date_of_delivery, order_id, supplier_id, offer_status) values (500, '2021-05-05', 1, 9, 'CREATED');
+insert into offers(price, date_of_delivery, order_id, supplier_id, offer_status) values (500, '2021-05-05', 1, 9, 'ACCEPTED');
 insert into offers(price, date_of_delivery, order_id, supplier_id, offer_status) values (700, '2021-05-02', 1, 10, 'CREATED');
 insert into offers(price, date_of_delivery, order_id, supplier_id, offer_status) values (800, '2021-08-01', 2, 9, 'CREATED');
-insert into offers(price, date_of_delivery, order_id, supplier_id, offer_status) values (900, '2021-08-03', 2, 10, 'CREATED');
+insert into offers(price, date_of_delivery, order_id, supplier_id, offer_status) values (900, '2021-08-03', 2, 10, 'ACCEPTED');
 
 insert into promotions("description", start_time, end_time, pharmacy_id) values ('New promotion!!!', '2021-05-04','2021-06-04', 1);
 
