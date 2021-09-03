@@ -14,6 +14,7 @@ and recieve professional consulting from pharmacists and dermatologists.
     + [Mac](#mac)
   * [Windows](#windows)
 - [Running](#running)
+- [Testing](#testing)
 - [Members and functionalities](#members-and-functionalities)
   * [Optional functionalities](#optional-functionalities)
 
@@ -160,6 +161,13 @@ For frontend:
   cd frontend && npm run serve
 ```
 
+## Running
+Password for all users is: Sifra123 
+
+Images for testing QR code are in folder [images](https://github.com/SchnabelORG/schnabel/tree/odbrana-septembar/images)
+
+If there is a problem with logging out delete user from localStorage.
+
 ## Members and functionalities
 
 Basic functionalities required of all members.
@@ -218,16 +226,16 @@ Status values:
 
 | Spec. id | Functionality                                     | Status |
 |----------|---------------------------------------------------|:------:|
-| 3.2      | User registration and log in                      |   ✗    |
-| 3.6      | Admin profile                                     |   ✗    |
-| 3.7      | Supplier profile                                  |   ✗    |
-| 3.23     | Discount and special offer subscription           |   ✗    |
-| 3.25     | Order form offer provision as supplier            |   ✗    |
-| 3.34     | Drug search and filtering                         |   ✗    |
-| 3.35     | eReceipt (QR) drug search and hand out            |   ✗    |
-| 3.39     | Complaint creation and response                   |   ✗    |
-| 3.40     | Loyalty program creation                          |   ✗    |
-| 3.42     | Drug and eReceipt specification                   |   ✗    |
+| 3.2      | User registration and log in                      |   ✓    |
+| 3.6      | Admin profile                                     |   ✓    |
+| 3.7      | Supplier profile                                  |   ✓    |
+| 3.23     | Discount and special offer subscription           |   ✓    |
+| 3.25     | Order form offer provision as supplier            |   ✓    |
+| 3.34     | Drug search and filtering                         |   ✓    |
+| 3.35     | eReceipt (QR) drug search and hand out            |   ✓    |
+| 3.39     | Complaint creation and response                   |   ✓    |
+| 3.40     | Loyalty program creation                          |   ✓    |
+| 3.42     | Drug and eReceipt specification                   |   ✓    |
 
 
 ### Optional functionalities  
@@ -266,7 +274,7 @@ Status values:
 
 | Spec. id | Functionality                                     | Status |
 |----------|---------------------------------------------------|:------:|
-|    /     | eReceipt serach and handout; loyalty program def. |   ✗    |
+|    /     | eReceipt serach and handout; loyalty program def. |   ✓    |
 | 5.4      | Concurrent database access                        |   ✗    |
 | 5.7      | DevOps (micro) flow                               |   ✗    |
 |    /     | 5 unit and integrational test                     |   ✗    |
