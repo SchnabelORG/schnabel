@@ -1,9 +1,13 @@
 # Apothecary Schnabel  
-[![Build Status](https://travis-ci.com/SchnabelORG/schnabel.svg?branch=develop)](https://travis-ci.com/SchnabelORG/schnabel)
+[![Build Status](https://travis-ci.com/SchnabelORG/schnabel.svg?branch=develop)](https://travis-ci.com/SchnabelORG/schnabel)  
 Internet Software Architectures class project
 
 Centralized Pharmacy Information System allowing users to acquire medical supplies  
 and recieve professional consulting from pharmacists and dermatologists.
+
+![home](imgs/homeschnabel.png)
+![member](imgs/memberschnabel.png)
+![search](imgs/pretragaschnabel.png)
 
 After setup, to run:
 
